@@ -42,7 +42,6 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_category, container, false);
 

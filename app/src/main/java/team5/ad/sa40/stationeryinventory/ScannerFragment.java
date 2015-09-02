@@ -11,8 +11,11 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import eu.livotov.zxscan.ScannerView;
 
 
@@ -29,6 +32,8 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
     @Bind(R.id.category_value) TextView textCategory;
     @Bind(R.id.waitLabel) TextView waitLabel;
     @Bind(R.id.scannerRoot) FrameLayout embeddedScannerRoot;
+    @Bind(R.id.fab) FloatingActionButton btnFab;
+    Boolean scannerRunning = false;
 
     //zxscanlib
     private String lastEmbeddedScannerScannedData;
@@ -57,10 +62,31 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
 
     }
 
+    //Button Events Here
+    //Butterknife
+    @OnClick(R.id.btnStopScanner) void stopScan(){
+        stopEmbeddedScanner();
+        getFragmentManager().popBackStack();
+    }
+
+    @OnClick(R.id.rescanBtn) void restartScan(){
+        if(scannerRunning){
+            return;
+        }
+        else {
+            startEmbeddedScanner();
+        }
+    }
+
+    @OnClick(R.id.fab) void actionAdd(){
+        //Add to request card methods to be implement here
+        Toast.makeText(ScannerFragment.this.getActivity(), "Fab clicked.", Toast.LENGTH_SHORT).show();
+    }
 
     private void startEmbeddedScanner()
     {
-        embeddedScannerRoot.setVisibility(View.VISIBLE);
+        scannerRunning = true;
+        embeddedScanner.setVisibility(View.VISIBLE);
         waitLabel.setVisibility(View.VISIBLE);
         embeddedScanner.startScanner();
     }
@@ -68,11 +94,12 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
     private void stopEmbeddedScanner()
     {
         embeddedScanner.stopScanner();
-        embeddedScannerRoot.setVisibility(View.INVISIBLE);
+        embeddedScanner.setVisibility(View.INVISIBLE);
     }
 
     private void displayScannedResult(final String data)
     {
+        textItemNumber.setText(data);
         Toast.makeText(getActivity(), "Data scanned: " + data, Toast.LENGTH_SHORT).show();
     }
 
