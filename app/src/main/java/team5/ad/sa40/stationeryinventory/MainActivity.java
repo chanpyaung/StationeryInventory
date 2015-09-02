@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.cart:
-                    Toast.makeText(MainActivity.this, "Request cart is selected", Toast.LENGTH_SHORT).show();
-                    return true;
+                        Toast.makeText(MainActivity.this, "Request cart is selected", Toast.LENGTH_SHORT).show();
+                        return true;
 
                     case R.id.Dept:
                         Toast.makeText(MainActivity.this, "Department is selected", Toast.LENGTH_SHORT).show();
