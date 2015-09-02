@@ -5,7 +5,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -15,15 +14,26 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+    public String role = "Delegate";
     //Call UI element with butter knife
     @Bind(R.id.toolbar) android.support.v7.widget.Toolbar toolbar;
     @Bind(R.id.navigation_view) NavigationView navigationView;
     @Bind(R.id.drawer) DrawerLayout drawerLayout;
 
+    private CategoryFragment mCategoryFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        //Check user role and redirect to respective layout
+        if (role.equals("Delegate")){
+            setContentView(R.layout.empdelegate_activity_main);
+        }
+        else{
+            setContentView(R.layout.activity_main);
+        }
+
 
         //Bind to activity
         ButterKnife.bind(this);
@@ -44,17 +54,21 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (menuItem.getItemId()) {
 
+                    case R.id.catalog:
+                        Toast.makeText(MainActivity.this, "Catalog is selected", Toast.LENGTH_SHORT).show();
+                        mCategoryFragment = new CategoryFragment();
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.frame, mCategoryFragment);
+                        fragmentTransaction.commit();
+                        return true;
+
                     case R.id.requisition:
                         Toast.makeText(MainActivity.this, "Requisition is selected", Toast.LENGTH_SHORT).show();
                         return true;
 
                     case R.id.cart:
-                        Toast.makeText(MainActivity.this, "Request cart is selected", Toast.LENGTH_SHORT).show();
-                        return true;
-
-                    case R.id.catalog:
-                        Toast.makeText(MainActivity.this, "Catalog is selected", Toast.LENGTH_SHORT).show();
-                        return true;
+                    Toast.makeText(MainActivity.this, "Request cart is selected", Toast.LENGTH_SHORT).show();
+                    return true;
 
                     case R.id.Dept:
                         Toast.makeText(MainActivity.this, "Department is selected", Toast.LENGTH_SHORT).show();
@@ -86,14 +100,24 @@ public class MainActivity extends AppCompatActivity {
         };
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+
+
+        //Set Fragment
+        mCategoryFragment = new CategoryFragment();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame, mCategoryFragment);
+        fragmentTransaction.commit();
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -109,4 +133,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    */
+
 }
