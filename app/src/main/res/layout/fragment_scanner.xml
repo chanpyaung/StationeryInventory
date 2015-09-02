@@ -1,0 +1,152 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="team5.ad.sa40.stationeryinventory.ScannerFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/scan_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/scan_hearder_text"
+        android:textAllCaps="true"
+        android:layout_gravity="center"
+        android:textSize="24dp"
+        />
+    <FrameLayout
+        android:id="@+id/scannerRoot"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:visibility="invisible">
+
+    <eu.livotov.zxscan.ScannerView
+            android:id="@+id/scanner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <Button
+            android:id="@+id/rescanBtn"
+            android:text="@string/rescanBtn"
+            android:layout_gravity="left|bottom"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@android:color/white"
+            android:background="@color/PrimaryColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.Material.Button"/>
+
+        <Button
+            android:id="@+id/btnStopScanner"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@android:color/white"
+            android:background="@color/PrimaryColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:text="@string/close_scanner"
+            style="@android:style/Widget.Material.Button"/>
+
+    <TextView
+            android:id="@+id/waitLabel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:text="@string/start_cam"/>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/textAreaLayout1"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/itemNumber"
+            android:text="@string/itemNumber"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"/>
+
+        <TextView
+            android:id="@+id/itemNumberValue"
+            android:text="213454221224"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/textAreaLayout2"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/item_name"
+            android:text="@string/name"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"/>
+
+        <TextView
+            android:id="@+id/item_name_value"
+            android:text="Team 5 Pen"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/textAreaLayout3"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/category"
+            android:text="@string/category"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"/>
+
+        <TextView
+            android:id="@+id/category_value"
+            android:text="Pen"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"/>
+
+    </LinearLayout>
+
+</LinearLayout>

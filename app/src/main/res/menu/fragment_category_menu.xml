@@ -6,7 +6,7 @@
     tools:context=".CategoryFragment.getBaseContext()">
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_scan"
         android:icon="@drawable/ic_center_focus_strong_white_24dp"
         android:title="Scan Barcode"
         android:orderInCategory="100"

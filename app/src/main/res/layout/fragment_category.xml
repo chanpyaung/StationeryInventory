@@ -7,7 +7,7 @@
 
     <SearchView
         android:id="@+id/searchCat"
-        android:queryHint="@string/abc_search_hint"
+        android:queryHint="@string/searchHintCat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

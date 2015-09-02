@@ -3,11 +3,13 @@ package team5.ad.sa40.stationeryinventory;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
@@ -116,5 +118,17 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         this.getActivity().getMenuInflater().inflate(R.menu.fragment_category_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_scan){
+            ScannerFragment scanFrag = new ScannerFragment();
+            FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+            fragTran.replace(R.id.frame,scanFrag);
+            fragTran.commit();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
