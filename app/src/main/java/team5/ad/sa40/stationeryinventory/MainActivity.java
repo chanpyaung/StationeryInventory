@@ -14,13 +14,12 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-<<<<<<< HEAD
-    public String role = "Delegate";
+
+    //public String role = "Delegate";
 
     public static ActionBarDrawerToggle actionBarDrawerToggle;
-=======
+
     public String role = "Representative";
->>>>>>> origin/master
     //Call UI element with butter knife
     @Bind(R.id.toolbar) android.support.v7.widget.Toolbar toolbar;
     @Bind(R.id.navigation_view) NavigationView navigationView;
