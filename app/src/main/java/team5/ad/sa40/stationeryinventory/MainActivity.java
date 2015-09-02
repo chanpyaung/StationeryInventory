@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTran.replace(R.id.frame, settingFragment);
                         fragmentTran.commit();
                         return true;
-                    
+
                     case R.id.disburse://change
                         DisbursementList disbursementList = new DisbursementList();
                         fragmentTran = getSupportFragmentManager().beginTransaction();

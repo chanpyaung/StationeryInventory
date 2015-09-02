@@ -74,6 +74,7 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
             return;
         }
         else {
+
             startEmbeddedScanner();
         }
     }
@@ -93,6 +94,7 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
 
     private void stopEmbeddedScanner()
     {
+        scannerRunning = false;
         embeddedScanner.stopScanner();
         embeddedScanner.setVisibility(View.INVISIBLE);
     }
