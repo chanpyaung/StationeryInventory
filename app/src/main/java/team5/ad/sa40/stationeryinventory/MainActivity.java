@@ -14,19 +14,24 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+<<<<<<< HEAD
 
     //public String role = "Delegate";
 
     public static ActionBarDrawerToggle actionBarDrawerToggle;
 
     public String role = "Representative";
+=======
+    public String role = "Delegate";
+
+    public static ActionBarDrawerToggle actionBarDrawerToggle;
+>>>>>>> parent of a0bd691... Merge remote-tracking branch 'origin/master'
     //Call UI element with butter knife
     @Bind(R.id.toolbar) android.support.v7.widget.Toolbar toolbar;
     @Bind(R.id.navigation_view) NavigationView navigationView;
     @Bind(R.id.drawer) DrawerLayout drawerLayout;
 
     private CategoryFragment mCategoryFragment;
-    android.support.v4.app.FragmentTransaction fragmentTran;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +41,9 @@ public class MainActivity extends AppCompatActivity {
         if (role.equals("Delegate")){
             setContentView(R.layout.empdelegate_activity_main);
         }
-        else if(role.equals("Representative")){
-            setContentView(R.layout.emprep_activity_main);
-        }
         else{
             setContentView(R.layout.activity_main);
         }
-
 
 
         //Bind to activity
@@ -80,19 +81,12 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Request cart is selected", Toast.LENGTH_SHORT).show();
                     return true;
 
-                    case R.id.disburse://change
-                        DisbursementList disbursementList = new DisbursementList();
-                        fragmentTran = getSupportFragmentManager().beginTransaction();
-                        fragmentTran.replace(R.id.frame, disbursementList);
-                        fragmentTran.commit();
-                        return true;
-
                     case R.id.Dept:
                         Toast.makeText(MainActivity.this, "Department is selected", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.setting:
                         SettingListFragment settingFragment = new SettingListFragment();
-                        fragmentTran = getSupportFragmentManager().beginTransaction();
+                        android.support.v4.app.FragmentTransaction fragmentTran = getSupportFragmentManager().beginTransaction();
                         //FragmentTransaction fragmentTran = getSupportFragmentManager().beginTransaction();
                         fragmentTran.replace(R.id.frame, settingFragment);
                         fragmentTran.commit();
