@@ -16,15 +16,18 @@ import java.util.List;
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
 
     List<CategoryItem> mItems;
-    String[] categoryNames = new String[]{"Clap", "Envelope", "Eraser", "Exercise", "File", "Pen", "Puncher", "Pad", "Paper","Ruler","Scissors","Tape","Sharpener","Shorthand","Stapler","Tacks","Tparency","Tray"};
+    String[] categoryNames = new String[]{"Clip", "Envelope", "Eraser", "Exercise", "File", "Pen", "Puncher", "Pad", "Paper","Ruler","Scissors","Tape","Sharpener","Shorthand","Stapler","Tacks","Transparency","Tray"};
     int[] thumbnail = new int[]{R.drawable.stapler, R.drawable.clip};
+
+    OnItemClickListener mItemClickListener;
+
     public GridAdapter() {
         super();
         mItems = new ArrayList<CategoryItem>();
         for (String s : categoryNames){
             CategoryItem catItem = new CategoryItem();
             catItem.setCatName(s);
-            catItem.setCatThumbnail(thumbnail[1]);
+            catItem.setCatThumbnail(thumbnail[0]);
             mItems.add(catItem);
         }
     }
@@ -50,7 +53,58 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
         return mItems.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    public CategoryItem removeItem(int position) {
+        final CategoryItem item = mItems.remove(position);
+        notifyItemRemoved(position);
+        return item;
+    }
+
+    public void addItem(int position, CategoryItem item) {
+        mItems.add(position, item);
+        notifyItemInserted(position);
+    }
+
+    public void moveItem(int fromPosition, int toPosition) {
+        final CategoryItem model = mItems.remove(fromPosition);
+        mItems.add(toPosition, model);
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    public void animateTo(List<CategoryItem> items) {
+        applyAndAnimateRemovals(items);
+        applyAndAnimateAdditions(items);
+        applyAndAnimateMovedItems(items);
+    }
+
+    private void applyAndAnimateRemovals(List<CategoryItem> newItems) {
+        for (int i = mItems.size() - 1; i >= 0; i--) {
+            final CategoryItem model = mItems.get(i);
+            if (!newItems.contains(model)) {
+                removeItem(i);
+            }
+        }
+    }
+
+    private void applyAndAnimateAdditions(List<CategoryItem> newModels) {
+        for (int i = 0, count = newModels.size(); i < count; i++) {
+            final CategoryItem item = newModels.get(i);
+            if (!mItems.contains(item)) {
+                addItem(i, item);
+            }
+        }
+    }
+
+    private void applyAndAnimateMovedItems(List<CategoryItem> newModels) {
+        for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
+            final CategoryItem model = newModels.get(toPosition);
+            final int fromPosition = mItems.indexOf(model);
+            if (fromPosition >= 0 && fromPosition != toPosition) {
+                moveItem(fromPosition, toPosition);
+            }
+        }
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public ImageView imgThumbnail;
         public TextView catName;
@@ -59,7 +113,23 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
             super(itemView);
             imgThumbnail = (ImageView)itemView.findViewById(R.id.img_thumbnail);
             catName = (TextView)itemView.findViewById(R.id.cat_name);
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            if(mItemClickListener!=null){
+                mItemClickListener.onItemClick(v, getAdapterPosition());
+            }
+        }
+    }
+
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int position);
+    }
+
+    public void SetOnItemClickListener (final OnItemClickListener mItemClickListener){
+        this.mItemClickListener = mItemClickListener;
     }
 
 
