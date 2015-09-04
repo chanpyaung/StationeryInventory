@@ -1,6 +1,6 @@
 package team5.ad.sa40.stationeryinventory;
 
-import android.support.v7.widget.CardView;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+
+import team5.ad.sa40.stationeryinventory.Model.Retrieval;
 
 public class RetListAdapter extends RecyclerView.Adapter<RetListAdapter.ViewHolder> {
 
@@ -63,7 +63,11 @@ public class RetListAdapter extends RecyclerView.Adapter<RetListAdapter.ViewHold
 
         //format to date only:
         viewHolder.retDate.setText(Setup.parseDateToString(ret.getDate()));
+
         viewHolder.retStatus.setText(ret.getStatus());
+        if(viewHolder.retStatus.getText().equals("Pending")) {
+            viewHolder.retStatus.setTextColor(Color.RED);
+        }
         viewHolder.retIfEmpIDNeeded.setText("");
         viewHolder.retEmpID.setText("");
     }

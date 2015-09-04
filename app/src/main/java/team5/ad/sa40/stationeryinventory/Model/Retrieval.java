@@ -1,4 +1,4 @@
-package team5.ad.sa40.stationeryinventory;
+package team5.ad.sa40.stationeryinventory.Model;
 
 
 import org.json.JSONArray;
@@ -9,6 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import team5.ad.sa40.stationeryinventory.Employee;
+import team5.ad.sa40.stationeryinventory.JSONParser;
+import team5.ad.sa40.stationeryinventory.RetrievalDetail;
+import team5.ad.sa40.stationeryinventory.Setup;
 
 public class Retrieval {
 
@@ -69,8 +74,8 @@ public class Retrieval {
     public static List<Retrieval> getAllRetrievals(){
         List<Retrieval> retrievalList = new ArrayList<Retrieval>();
         Employee e = new Employee();
-        JSONArray result = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getRetrieval/%s",
-                Setup.baseurl,Employee.EmpID));
+        JSONArray result = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getRetrieval/%s/null/null",
+                Setup.baseurl, Employee.EmpID));
 
         try {
             for (int retrieval = 0; retrieval < result.length(); retrieval++) {
@@ -97,7 +102,7 @@ public class Retrieval {
     public static Retrieval getRetrieval(int id) {
         Retrieval r = new Retrieval();
 
-        JSONObject result = JSONParser.getJSONFromUrl(String.format("%s/retrievalapi.svc/getRetrieval///%s",
+        JSONObject result = JSONParser.getJSONFromUrl(String.format("%s/retrievalapi.svc/getRetrieval/null/null/%s",
                 Setup.baseurl,Integer.toString(id)));
         JSONArray resultItems = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getRetrievalDetail/%s",
                 Setup.baseurl,Integer.toString(id)));

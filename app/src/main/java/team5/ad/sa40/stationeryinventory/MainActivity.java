@@ -122,16 +122,18 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         //Set Fragment
+
         mCategoryFragment = new CategoryFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame, mCategoryFragment);
         fragmentTransaction.commit();
+
         /*
         RetrievalList retrievalList = new RetrievalList();
         fragmentTran = getSupportFragmentManager().beginTransaction();
         fragmentTran.replace(R.id.frame, retrievalList);
-        fragmentTran.commit();
-        */
+        fragmentTran.commit();*/
+
     }
 
     /*
