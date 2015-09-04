@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context=".CategoryFragment.getBaseContext()">
+    tools:context=".DisbursementListDetail.getBaseContext()">
 
     <item
-        android:id="@+id/action_settings"
-        android:icon="@drawable/ic_today_white_24dp"
-        android:title="Date Search"
+        android:id="@+id/action_details"
+        android:icon="@drawable/ic_info_white_24dp"
+        android:title="Disbursement"
         android:orderInCategory="100"
         app:showAsAction="always"
         />
