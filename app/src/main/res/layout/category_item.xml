@@ -10,11 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="3dp"
-        android:layout_marginTop="9dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        card_view:cardElevation="0.01dp"
-        android:layout_marginBottom="0dp" >
+        android:layout_margin="1dp"
+        card_view:cardElevation="0.01dp">
 
         <RelativeLayout
             android:id="@+id/top_layout"
@@ -26,7 +23,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="150dp"
                 android:scaleType="fitXY"
-                andriod:background="@drawable/ic_shopping_cart_black_24dp"
                 android:layout_above="@+id/cat_name" />
 
             <TextView

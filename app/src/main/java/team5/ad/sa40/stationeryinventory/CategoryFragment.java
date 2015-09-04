@@ -18,6 +18,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
 import team5.ad.sa40.stationeryinventory.GridAdapter.OnItemClickListener;
 
 
@@ -55,6 +56,11 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
         mAdapter.SetOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                //need to load item list based on category id
+                //call api here
+                ItemListFragment iLFrag = new ItemListFragment();
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragTran.replace(R.id.frame, iLFrag).commit();
                 Toast.makeText(CategoryFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
             }
         });
@@ -84,17 +90,20 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-
         mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 2));
         mItems = new ArrayList<>();
         for(CategoryItem c: mAdapter.mItems){
             mItems.add(c);
         }
         mAdapter = new GridAdapter();
-        mRecyclerView.setAdapter(mAdapter);
+        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(mAdapter);
+        mRecyclerView.setAdapter(alphaAdapter);
         mAdapter.SetOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                ItemListFragment iLFrag = new ItemListFragment();
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragTran.replace(R.id.frame, iLFrag).addToBackStack("TAG").commit();
                 Toast.makeText(CategoryFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
             }
         });
@@ -130,4 +139,6 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
