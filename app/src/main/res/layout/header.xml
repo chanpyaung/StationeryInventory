@@ -10,7 +10,7 @@
         android:id="@+id/profile_image"
         android:layout_width="76dp"
         android:layout_height="76dp"
-        android:src="@drawable/jmj"
+        android:src="@drawable/logo"
         app:border_color="#FF000000"
         android:layout_marginLeft="24dp"
         android:layout_centerVertical="true"

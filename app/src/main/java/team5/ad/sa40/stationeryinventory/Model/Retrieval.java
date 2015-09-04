@@ -75,6 +75,7 @@ public class Retrieval {
         List<Retrieval> retrievalList = new ArrayList<Retrieval>();
         Employee e = new Employee();
         JSONArray result = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getRetrieval/%s/null/null",
+        JSONArray result = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getRetrieval/%s",
                 Setup.baseurl, Employee.EmpID));
 
         try {
