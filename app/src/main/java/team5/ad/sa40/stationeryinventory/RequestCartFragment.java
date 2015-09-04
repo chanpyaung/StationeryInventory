@@ -3,7 +3,6 @@ package team5.ad.sa40.stationeryinventory;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,21 +22,22 @@ import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.adapters.ScaleInAnimationAdapter;
 import team5.ad.sa40.stationeryinventory.Model.Item;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ItemListFragment extends android.support.v4.app.Fragment {
+public class RequestCartFragment extends android.support.v4.app.Fragment {
 
-    @Bind(R.id.item_recycler_view) RecyclerView mRecyclerView;
+
+    @Bind(R.id.item_recycler_view)
+    RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     ItemListAdapter mAdapter;
-    @Bind(R.id.searchItem) SearchView search;
+    @Bind(R.id.searchItem)
+    SearchView search;
     private List<Item> mItems;
     private List<Item> itemList;
 
-
-    public ItemListFragment() {
+    public RequestCartFragment() {
         // Required empty public constructor
     }
 
@@ -45,10 +45,9 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_item_list,container,false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -68,24 +67,23 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
-        mItems = new ArrayList<>();
         mAdapter = new ItemListAdapter();
-        itemList = mAdapter.myItemlist;
+        mAdapter.myItemlist = MainActivity.requestCart;
+        mItems = new ArrayList<>();
         ScaleInAnimationAdapter animatedAdapter = new ScaleInAnimationAdapter(mAdapter);
         mRecyclerView.setAdapter(animatedAdapter);
-        for(Item it: itemList){
+        for(Item it: mAdapter.cartItemList){
             mItems.add(it);
         }
         mAdapter.SetOnItemClickListener(new ItemListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(ItemListFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(RequestCartFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -107,7 +105,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        this.getActivity().getMenuInflater().inflate(R.menu.fragment_item_menu, menu);
+        this.getActivity().getMenuInflater().inflate(R.menu.fragment_requestcart_done_menu, menu);
     }
 
     @Override
@@ -115,12 +113,10 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
         int id = item.getItemId();
         if(id == R.id.action_requestCart){
             //to load request cart list inside here
-            mAdapter.myItemlist = mAdapter.cartItemList;
-            RequestCartFragment reqCartFrag = new RequestCartFragment();
-            FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-            fragTran.replace(R.id.frame, reqCartFrag).addToBackStack("REQUEST_CART TAG").commit();
+
             Toast.makeText(this.getActivity(), "View Request Cart is clicked", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

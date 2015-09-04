@@ -1,9 +1,7 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.app.Activity;
-
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,8 +11,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-import org.json.JSONObject;
 
 
 public class LoginActivity extends Activity implements AdapterView.OnClickListener {
@@ -24,7 +20,11 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
+<<<<<<< Updated upstream
             "11233:hello", "99877:world"
+=======
+            "11233:hello", "11234:world","11235:hello"
+>>>>>>> Stashed changes
     };
 
     // UI references.
@@ -132,6 +132,9 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                 mUseridView.setError(null);
                 mPasswordView.setError(null);
                 Intent i = new Intent(this, MainActivity.class);
+                String userID = mUseridView.getText().toString();
+                Log.i("Extra", userID);
+                i.putExtra("User", userID);
                 startActivity(i);
             }
         }

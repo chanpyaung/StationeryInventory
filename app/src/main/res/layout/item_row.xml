@@ -93,7 +93,8 @@
                 fab:fab_colorNormal="@color/PrimaryColor"
                 fab:fab_colorPressed="@color/PrimaryDarkColor"
                 fab:fab_colorRipple="@color/PrimaryInvertedColor"
-                android:visibility="visible"/>
+                android:visibility="invisible"
+                />
 
         </LinearLayout>
 
