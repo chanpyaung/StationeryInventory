@@ -94,6 +94,13 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTran.commit();
                         return true;
 
+                    case R.id.retrieval://change
+                        RetrievalList retrievalList = new RetrievalList();
+                        fragmentTran = getSupportFragmentManager().beginTransaction();
+                        fragmentTran.replace(R.id.frame, retrievalList);
+                        fragmentTran.commit();
+                        return true;
+
                     default:
                         Toast.makeText(MainActivity.this, "Default", Toast.LENGTH_SHORT).show();
                         return true;
@@ -119,6 +126,12 @@ public class MainActivity extends AppCompatActivity {
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame, mCategoryFragment);
         fragmentTransaction.commit();
+        /*
+        RetrievalList retrievalList = new RetrievalList();
+        fragmentTran = getSupportFragmentManager().beginTransaction();
+        fragmentTran.replace(R.id.frame, retrievalList);
+        fragmentTran.commit();
+        */
     }
 
     /*

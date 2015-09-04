@@ -24,7 +24,7 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "11233:hello", "11234:world"
+            "11233:hello", "99877:world"
     };
 
     // UI references.

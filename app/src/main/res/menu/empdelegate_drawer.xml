@@ -16,6 +16,12 @@
             android:title="Requisition"/>
 
         <item
+            android:id="@+id/retrieval"
+            android:checked="false"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Retrieval" />
+
+        <item
             android:id="@+id/cart"
             android:checked="false"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
