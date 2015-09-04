@@ -1,8 +1,9 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.app.Activity;
-import android.content.Intent;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,13 +13,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import org.json.JSONObject;
 
 
-/**
- * A login screen that offers login via email/password.
- */
 public class LoginActivity extends Activity implements AdapterView.OnClickListener {
 
     /**
@@ -32,7 +30,6 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
     // UI references.
     private AutoCompleteTextView mUseridView;
     private EditText mPasswordView;
-    private View mLoginFormView;
     private TextView mStatus;
 
     @Override
@@ -43,7 +40,6 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
         mUseridView = (AutoCompleteTextView) findViewById(R.id.userid);
         mPasswordView = (EditText) findViewById(R.id.password);
         mStatus = (TextView) findViewById(R.id.textViewStatus);
-        mLoginFormView = findViewById(R.id.login_form);
 
         Button signInButton = (Button) findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(this);
@@ -60,7 +56,7 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(mPasswordView.getText().toString())) {
             mPasswordView.setError(getString(R.string.error_field_required));
-            Log.e("password field blank:",getString(R.string.error_field_required));
+            Log.e("password field blank:", getString(R.string.error_field_required));
             focusView = mPasswordView;
         }
 
@@ -70,46 +66,77 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
             focusView = mUseridView;
         }
 
-        if(!TextUtils.isEmpty(mPasswordView.getText().toString())&&!TextUtils.isEmpty(mUseridView.getText().toString())) {
+        if (!TextUtils.isEmpty(mPasswordView.getText().toString()) && !TextUtils.isEmpty(mUseridView.getText().toString())) {
             //attempt login:
+            /*
             try {
-                /*
                 JSONObject user = new JSONObject();
                 user.put("EmpID", mUseridView.getText().toString());
                 user.put("Password", mPasswordView.getText().toString());
                 String json = user.toString();
-                String result = JSONParser.getStream(
-                        String.format("%s/employee.svc/login", Setup.baseurl),
-                        json);
-                */
+                Toast.makeText(this,json,Toast.LENGTH_SHORT);
 
-                String result = null;
-                for (String credential : DUMMY_CREDENTIALS) {
-                    String[] pieces = credential.split(":");
-                    if (pieces[0].equals(mUseridView.getText().toString()) && (pieces[1].equals(mPasswordView.getText().toString()))) {
-                        result = "HttpResponse_OK";
+                new AsyncTask<String, Void, Employee>() {
+                    @Override
+                    protected Employee doInBackground(String... params) {
+                        return getEmployee(params[0]);
                     }
-                }
 
-                if (result == null || result != "HttpResponse_OK") {
-                    mStatus.setText(getString(R.string.error_login_failed));
-                    mUseridView.setError("");
-                    mPasswordView.setError("");
-                } else {
-                    mStatus.setText("Logged in successfully.");
-                    mUseridView.setError(null);
-                    mPasswordView.setError(null);
-                    Setup.empId = mUseridView.getText().toString();
-                    Log.e("empId",Setup.empId);
-                    Intent i = new Intent(this, MainActivity.class);
-                    startActivity(i);
-                }
+                    @Override
+                    protected void onPostExecute(Employee result) {
+                        TextView t = (TextView) findViewById(R.id.textViewStatus);
+                        String p = String.format("Employee: %s\n%s\n%s\n%s",
+                                result.get("EmpID"), result.get("EmpName"),
+                                result.get("RoleID"));
+                        t.setText(p);
+                        mStatus.setText("Logged in successfully.");
+                    }
+                }.execute(json);
+
             } catch (Exception e) {
-                Log.e("login", "JSON error");
+                e.printStackTrace();
+                Log.e("login json error:", e.toString());
                 mStatus.setText(getString(R.string.error_connection_failed));
             }
+
         }
     }
 
+    Employee getEmployee (String data) {
+        Employee emp = null;
+        try {
+            JSONObject e = JSONParser.getJSONFromUrlPOST("http://www.team5.com:8425/employeeapi.svc/login", data);
+            emp = new Employee(e.getString("EmpID"), e.getString("EmpName"), e.getString("DeptID"), e.getString("RoleID"), e.getInt("Phone"), e.getString("Email"), e.getString("Password"));
+            mStatus.setText(emp.toString());
+        } catch (Exception e) {
+        }
+        return emp;
+    }
+}*/
+            String result = null;
+
+            for (String credential : DUMMY_CREDENTIALS) {
+                String[] pieces = credential.split(":");
+                if (pieces[0].equals(mUseridView.getText().toString()) && (pieces[1].equals(mPasswordView.getText().toString()))) {
+                    result = "HttpResponse_OK";
+                }
+            }
+
+
+            if (result == null || result != "HttpResponse_OK") {
+                mStatus.setText(getString(R.string.error_login_failed));
+                mUseridView.setError("");
+                mPasswordView.setError("");
+            } else {
+                mStatus.setText("Logged in successfully.");
+                mUseridView.setError(null);
+                mPasswordView.setError(null);
+                Intent i = new Intent(this, MainActivity.class);
+                startActivity(i);
+            }
+        }
+    }
 }
+
+
 
