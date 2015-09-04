@@ -140,7 +140,14 @@ public class DisbursementList extends android.support.v4.app.Fragment {
         mAdapter.SetOnItemClickListener(new DisListGridAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(DisbursementList.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(DisbursementList.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
+                android.support.v4.app.Fragment frag = new DisbursementListDetail();
+                Bundle bundle = new Bundle();
+                Disbursement temp = mDisbursement.get(position);
+                bundle.putSerializable("disbursement", temp);
+                frag.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Dis")
+                        .commit();
             }
         });
     }
