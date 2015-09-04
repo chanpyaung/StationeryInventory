@@ -1,10 +1,14 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.github.clans.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +23,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
 
     Item myItem, myItem1, myItem2, myItem3, myItem4, myItem5, myItem6, myItem7, myItem8, myItem9;
     List<Item> myItemlist;
+    List<Item> cartItemList;
 
     OnItemClickListener mItemClickListener;
 
@@ -35,6 +40,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         myItem8 = new Item("CVH78323456789","Clip I", 1, 33, 50, "pcs", 84, "SHELF3L3");
         myItem9 = new Item("MMM987654234","Clip J", 1, 44, 50, "pcs", 43, "SHELF3L3");
         myItemlist = new ArrayList<Item>();
+        cartItemList = new ArrayList<Item>();
         Item[] itemList = new Item[]{myItem, myItem1, myItem2,myItem3,myItem4,myItem5,myItem6,myItem7,myItem8,myItem9};
         for (Item i: itemList){
             myItemlist.add(i);
@@ -69,12 +75,24 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         CircleImageView itemImage;
         TextView itemName;
         TextView uom;
+        public FloatingActionButton fab;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemImage = (CircleImageView)itemView.findViewById(R.id.item_image);
             itemName = (TextView)itemView.findViewById(R.id.item_Name_text);
             uom = (TextView)itemView.findViewById(R.id.UOM);
+            fab = (FloatingActionButton)itemView.findViewById(R.id.add_fab);
+            fab.setVisibility(View.VISIBLE);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cartItemList.add(myItemlist.get(getAdapterPosition()));
+                    MainActivity.requestCart.add(myItemlist.get(getAdapterPosition()));
+                    Log.i("Cart Item: ", myItemlist.get(getAdapterPosition()).getItemName());
+                    Toast.makeText(v.getContext(), "Added to cart", Toast.LENGTH_SHORT).show();
+                }
+            });
             itemView.setOnClickListener(this);
         }
 

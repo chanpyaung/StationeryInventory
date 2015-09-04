@@ -5,20 +5,24 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import team5.ad.sa40.stationeryinventory.Model.Item;
 
 public class MainActivity extends AppCompatActivity {
 
     public static ActionBarDrawerToggle actionBarDrawerToggle;
     android.support.v4.app.FragmentTransaction fragmentTran;
 
-    //public String role = "Representative";
-    public String role = "Delegate";
+    public static List<Item> requestCart = new ArrayList<Item>();
 
     //Call UI element with butter knife
     @Bind(R.id.toolbar) android.support.v7.widget.Toolbar toolbar;
@@ -32,11 +36,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //Check user role and redirect to respective layout
-        if (role.equals("Delegate")){
-            setContentView(R.layout.empdelegate_activity_main);
-        }
-        else{
-            setContentView(R.layout.emprep_activity_main);
+        Bundle extras = getIntent().getExtras();
+        Log.i("Extra get: ", extras.toString());
+        if ( extras != null){
+            String user = extras.getString("User");
+            Log.i("User value", user);
+                switch (user) {
+                    case "11233":
+                        setContentView(R.layout.activity_main);
+                        break;
+                    case "11234":
+                        setContentView(R.layout.empdelegate_activity_main);
+                        break;
+                    case "11235":
+                        setContentView(R.layout.emprep_activity_main);
+                        break;
+                    default:
+                        setContentView(R.layout.activity_main);
+                        break;
+                }
         }
 
 
@@ -78,6 +96,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.Dept:
                         Toast.makeText(MainActivity.this, "Department is selected", Toast.LENGTH_SHORT).show();
                         return true;
+
+                    case R.id.noti:
+                        NotificationFragment notiFrag = new NotificationFragment();
+                        fragmentTran = getSupportFragmentManager().beginTransaction();
+                        fragmentTran.replace(R.id.frame, notiFrag).addToBackStack("NOTI TAG").commit();
 
                     case R.id.setting:
                         SettingListFragment settingFragment = new SettingListFragment();
