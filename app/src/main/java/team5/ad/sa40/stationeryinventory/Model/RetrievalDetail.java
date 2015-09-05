@@ -1,4 +1,4 @@
-package team5.ad.sa40.stationeryinventory;
+package team5.ad.sa40.stationeryinventory.Model;
 
 
 import java.util.HashMap;

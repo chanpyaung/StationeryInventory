@@ -23,30 +23,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Retrieval # "
+                android:text="P040"
                 android:id="@+id/inv_itemCode"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="10/08/2015"
-                android:id="@+id/ret_date"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/inv_itemCode"
-                android:layout_alignStart="@+id/inv_itemCode"
-                android:textSize="14dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Retrieved"
                 android:textStyle="bold"
-                android:id="@+id/ret_status"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/inv_itemName" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Available"
+                android:textStyle="bold"
+                android:id="@+id/inv_status"
                 android:gravity="center_vertical"
                 android:textColor="#08AE9E"
                 android:layout_alignBottom="@+id/inv_itemName"
@@ -57,31 +46,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="0004"
-                android:id="@+id/ret_id"
-                android:layout_alignTop="@+id/inv_itemCode"
-                android:layout_toEndOf="@+id/inv_itemCode"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text=" . "
-                android:id="@+id/ret_ifEmpIDNeeded"
-                android:layout_alignTop="@+id/ret_date"
-                android:layout_toEndOf="@+id/ret_date"
-                android:textSize="14dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Wong Sook Huey"
+                android:text="Pencil"
                 android:id="@+id/inv_itemName"
-                android:layout_alignTop="@+id/ret_ifEmpIDNeeded"
-                android:layout_toEndOf="@+id/ret_ifEmpIDNeeded"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                android:layout_below="@+id/inv_itemCode"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="50dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -95,6 +65,16 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:textSize="24dp" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/inv_icon"
+                android:layout_weight="0.06"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignBottom="@+id/inv_itemName"
+                android:layout_above="@+id/inv_itemName" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

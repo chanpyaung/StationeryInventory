@@ -23,6 +23,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import team5.ad.sa40.stationeryinventory.Model.Retrieval;
+import team5.ad.sa40.stationeryinventory.Model.RetrievalDetail;
 
 
 public class RetrievalFormDetails extends android.support.v4.app.Fragment implements AdapterView.OnClickListener {
@@ -48,7 +49,7 @@ public class RetrievalFormDetails extends android.support.v4.app.Fragment implem
         ret = new Retrieval();
 
         inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_retrieval_pending, container, false);
+        View view = inflater.inflate(R.layout.fragment_retrieval_form_details, container, false);
         ButterKnife.bind(this, view);
         Setup s = new Setup();
 

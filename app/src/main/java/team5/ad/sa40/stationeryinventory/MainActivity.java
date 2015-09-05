@@ -124,6 +124,13 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTran.commit();
                         return true;
 
+                    case R.id.inventory://change
+                        InventoryList fragment = new InventoryList();
+                        fragmentTran = getSupportFragmentManager().beginTransaction();
+                        fragmentTran.replace(R.id.frame, fragment);
+                        fragmentTran.commit();
+                        return true;
+
                     default:
                         Toast.makeText(MainActivity.this, "Default", Toast.LENGTH_SHORT).show();
                         return true;
@@ -146,16 +153,17 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
         //Set Fragment
 
+        /*
         mCategoryFragment = new CategoryFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame, mCategoryFragment);
         fragmentTransaction.commit();
+        */
 
-        /*
-        RetrievalList retrievalList = new RetrievalList();
+        InventoryList fragment = new InventoryList();
         fragmentTran = getSupportFragmentManager().beginTransaction();
-        fragmentTran.replace(R.id.frame, retrievalList);
-        fragmentTran.commit();*/
+        fragmentTran.replace(R.id.frame, fragment);
+        fragmentTran.commit();
 
     }
 

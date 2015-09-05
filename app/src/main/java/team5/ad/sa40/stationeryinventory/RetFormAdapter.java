@@ -12,6 +12,7 @@ import java.util.List;
 
 import team5.ad.sa40.stationeryinventory.Model.Requisition;
 import team5.ad.sa40.stationeryinventory.Model.Retrieval;
+import team5.ad.sa40.stationeryinventory.Model.RetrievalDetail;
 
 public class RetFormAdapter extends RecyclerView.Adapter<RetFormAdapter.ViewHolder> {
 
@@ -150,7 +151,7 @@ public class RetFormAdapter extends RecyclerView.Adapter<RetFormAdapter.ViewHold
 
         public ViewHolder(final View itemView){
             super(itemView);
-            itemId = (TextView) itemView.findViewById(R.id.ret_detail_itemID);
+            itemId = (TextView) itemView.findViewById(R.id.inv_itemCode);
             itemName = (TextView) itemView.findViewById(R.id.ret_detail_itemName);
             bin = (TextView) itemView.findViewById(R.id.ret_detail_bin);
             requestQty = (TextView) itemView.findViewById(R.id.ret_detail_requestQty);
@@ -174,7 +175,7 @@ public class RetFormAdapter extends RecyclerView.Adapter<RetFormAdapter.ViewHold
                         }
 
                         if(input > Integer.parseInt(requestQty.getText().toString())){
-                            actualQty.setError("Value cannot be greater than requested qty");
+                            actualQty.setError("Value cannot be greater than qty needed");
                             Log.e("error:", "actualQty > Request Qty");
                             View focusView = null;
                             focusView = actualQty;

@@ -1,9 +1,13 @@
 package team5.ad.sa40.stationeryinventory.Model;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by johnmajor on 9/3/15.
  */
-public class Item {
+public class Item implements Comparable {
 
     private String ItemID;
     private String ItemName;
@@ -87,5 +91,44 @@ public class Item {
 
     public void setBin(String bin) {
         Bin = bin;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+
+        Item f = (Item) o;
+
+        if (getItemID().compareTo(f.getItemID()) > 0) {
+            return 1;
+        }
+        else if (getItemID().compareTo(f.getItemID()) < 0) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+
+    }
+
+
+    public static List<Item> initializeData(){
+        List<Item> itemList = new ArrayList<Item>();
+        int i = 0;
+        Item item = new Item("C001","Clip 11 inch",i+1,100, 50, "Dozen", 80, "A7");
+        itemList.add(item);
+        i++;
+        do {
+            Item item2 = new Item("E00"+i,"Envelope Brown A4",i,100, 50, "Each", 200, "B3");
+            itemList.add(item2);
+            i++;
+        } while (i<18);
+        i=0;
+        do {
+            Item item2 = new Item("P00"+i,"Pen",i+5,100, 50, "Box", 80, "E8");
+            itemList.add(item2);
+            i++;
+        } while (i<5);
+
+        return itemList;
     }
 }

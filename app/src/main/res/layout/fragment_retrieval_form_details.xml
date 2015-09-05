@@ -112,7 +112,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="ItemID   Name                           Bin#    Need   Actual"
+        android:text="ItemID   Name                           Bin#   Needed   Actual"
         android:id="@+id/textView6"
         android:textSize="16dp"
         android:layout_row="2"

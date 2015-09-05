@@ -12,7 +12,6 @@ import java.util.List;
 
 import team5.ad.sa40.stationeryinventory.Employee;
 import team5.ad.sa40.stationeryinventory.JSONParser;
-import team5.ad.sa40.stationeryinventory.RetrievalDetail;
 import team5.ad.sa40.stationeryinventory.Setup;
 
 public class Retrieval {

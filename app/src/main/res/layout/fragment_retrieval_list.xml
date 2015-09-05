@@ -10,7 +10,7 @@
 
     <Spinner
         android:layout_width="361dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:id="@+id/spinnerRet"
         android:spinnerMode="dropdown"
         android:layout_marginLeft="15dp"
@@ -19,7 +19,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ret_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="522dp"
         android:layout_marginTop="10dp"/>
 
 </LinearLayout>

@@ -22,6 +22,12 @@
             android:title="Retrieval" />
 
         <item
+            android:id="@+id/inventory"
+            android:checked="false"
+            android:icon="@drawable/ic_storage_black_24dp"
+            android:title="Inventory" />
+
+        <item
             android:id="@+id/cart"
             android:checked="false"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
