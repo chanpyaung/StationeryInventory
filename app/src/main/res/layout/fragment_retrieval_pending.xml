@@ -1,0 +1,126 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="team5.ad.sa40.stationeryinventory.RetrievalFormDetails"
+    android:rowCount="4"
+    android:columnCount="3"
+    android:id="@+id/ret_detail">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Retrieval Form #"
+        android:id="@+id/textView2"
+        android:textStyle="bold"
+        android:textSize="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0004"
+        android:id="@+id/ret_detail_retID"
+        android:textStyle="bold"
+        android:textSize="25dp"
+        android:layout_alignTop="@+id/textView2"
+        android:layout_toEndOf="@+id/textView2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Date: "
+        android:id="@+id/textView7"
+        android:textSize="16dp"
+        android:layout_row="2"
+        android:layout_column="0"
+        android:layout_below="@+id/textView2"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="28/08/2015"
+        android:id="@+id/ret_detail_date"
+        android:textSize="16dp"
+        android:layout_row="2"
+        android:layout_column="0"
+        android:layout_alignTop="@+id/textView7"
+        android:layout_toEndOf="@+id/textView7" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Requisition Forms: "
+        android:id="@+id/textView9"
+        android:textSize="16dp"
+        android:layout_row="2"
+        android:layout_column="0"
+        android:layout_below="@+id/textView7"
+        android:layout_alignStart="@+id/textView7"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0019, 0020, 0021, 0031"
+        android:id="@+id/ret_detail_reqId"
+        android:textSize="16dp"
+        android:layout_row="2"
+        android:layout_column="0"
+        android:layout_below="@+id/textView9"
+        android:layout_alignStart="@+id/textView9"
+        android:layout_marginRight="5dp"
+        android:maxLines="3" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ret_detail_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/textView6"
+        android:layout_marginTop="3dp"
+        android:layout_alignParentBottom="true" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="SUBMIT"
+        android:id="@+id/ret_detail_submit"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="25dp"
+        android:background="#08AE9E"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="#ffffffff" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="ItemID   Name                           Bin#    Need   Actual"
+        android:id="@+id/textView6"
+        android:textSize="16dp"
+        android:layout_row="2"
+        android:layout_column="0"
+        android:layout_below="@+id/ret_detail_reqId"
+        android:layout_alignStart="@+id/ret_detail_reqId"
+        android:layout_marginTop="13dp"
+        android:textStyle="bold"
+        android:layout_marginRight="5dp" />
+
+</RelativeLayout>

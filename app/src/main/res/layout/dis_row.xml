@@ -25,7 +25,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="No:"
                 android:textStyle="bold"
-                android:id="@+id/textView3"
+                android:id="@+id/ret_detail_itemID"
                 android:layout_marginTop="2dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
@@ -39,8 +39,8 @@
                 android:textStyle="bold"
                 android:id="@+id/textView4"
                 android:layout_marginTop="5dp"
-                android:layout_below="@+id/textView3"
-                android:layout_alignStart="@+id/textView3" />
+                android:layout_below="@+id/ret_detail_itemID"
+                android:layout_alignStart="@+id/ret_detail_itemID" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Disbursement No"
                 android:id="@+id/dis_no_value"
-                android:layout_alignTop="@+id/textView3"
+                android:layout_alignTop="@+id/ret_detail_itemID"
                 android:layout_toEndOf="@+id/textView5"
                 android:layout_marginStart="2dp" />
 

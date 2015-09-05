@@ -21,6 +21,7 @@ public class Retrieval {
     private Date date;
     private String status;
     private List<RetrievalDetail> items;
+    private List<String> reqForms;
 
     public int getRetID(){
         return retID;
@@ -36,6 +37,10 @@ public class Retrieval {
 
     public String getStatus(){
         return status;
+    }
+
+    public List<String> getReqForms() {
+        return reqForms;
     }
 
     public void setRetID(int id){
@@ -71,11 +76,26 @@ public class Retrieval {
         return retrievalList;
     }
 
+    public static List<RetrievalDetail> initializeDataDetails(int RetID){
+        List<RetrievalDetail> retrievalDetailList = new ArrayList<RetrievalDetail>();
+        int i=0;
+        int retID = RetID;
+        RetrievalDetail rp = new RetrievalDetail(i+1, retID, "C001","Clip 11 inch","A7",12,0);
+        retrievalDetailList.add(rp);
+        i++;
+        do {
+            RetrievalDetail r = new RetrievalDetail(i+1, retID, "E00"+i,"Envelope Brown A4","D5",(i*10),0);
+            retrievalDetailList.add(r);
+            i++;
+        } while (i<10);
+
+        return retrievalDetailList;
+    }
+
     public static List<Retrieval> getAllRetrievals(){
         List<Retrieval> retrievalList = new ArrayList<Retrieval>();
         Employee e = new Employee();
         JSONArray result = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getRetrieval/%s/null/null",
-        JSONArray result = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getRetrieval/%s",
                 Setup.baseurl, Employee.EmpID));
 
         try {
@@ -100,12 +120,14 @@ public class Retrieval {
         return retrievalList;
     }
 
-    public static Retrieval getRetrieval(int id) {
+    public Retrieval getRetrieval(int id) {
         Retrieval r = new Retrieval();
 
         JSONObject result = JSONParser.getJSONFromUrl(String.format("%s/retrievalapi.svc/getRetrieval/null/null/%s",
                 Setup.baseurl,Integer.toString(id)));
         JSONArray resultItems = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getRetrievalDetail/%s",
+                Setup.baseurl, Integer.toString(id)));
+        JSONArray resultReqForms = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getReqAllocation/%s",
                 Setup.baseurl,Integer.toString(id)));
 
         if(result!=null) {
@@ -132,6 +154,17 @@ public class Retrieval {
 
             } catch(Exception e) {
                 e.printStackTrace();
+            }
+        }
+
+        if(resultReqForms != null) {
+            try {
+                for (int reqForm = 0; reqForm < resultItems.length(); reqForm++) {
+                    JSONObject i = new JSONObject(resultReqForms.getString(reqForm));
+                    r.reqForms.add(i.get("ReqID").toString());
+                }
+            } catch(Exception e) {
+            e.printStackTrace();
             }
         }
 

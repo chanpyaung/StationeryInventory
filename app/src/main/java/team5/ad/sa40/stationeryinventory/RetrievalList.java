@@ -94,7 +94,19 @@ public class RetrievalList extends android.support.v4.app.Fragment {
         adapter.SetOnItemClickListener(new RetListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(RetrievalList.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
+                Retrieval selected =  allRetrievals.get(position);
+                Bundle args = new Bundle();
+                args.putInt("RetID", selected.getRetID());
+                Log.i("selected retID: ", Integer.toString(selected.getRetID()));
+                Setup s = new Setup();
+                args.putString("RetDate", Setup.parseDateToString(selected.getDate()));
+                args.putString("RetStatus", selected.getStatus());
+                RetrievalFormDetails fragment = new RetrievalFormDetails();
+                fragment.setArguments(args);
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame, fragment);
+                fragmentTransaction.commit();
+
             }
         });
     }

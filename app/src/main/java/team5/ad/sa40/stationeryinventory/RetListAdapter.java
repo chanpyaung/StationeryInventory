@@ -1,6 +1,7 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.List;
 
 import team5.ad.sa40.stationeryinventory.Model.Retrieval;
@@ -152,6 +154,7 @@ public class RetListAdapter extends RecyclerView.Adapter<RetListAdapter.ViewHold
         public void onClick(View v) {
             if(mItemClickListener!=null){
                 mItemClickListener.onItemClick(v, getAdapterPosition());
+
             }
         }
     }
