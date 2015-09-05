@@ -124,7 +124,7 @@ public class Item implements Comparable {
         } while (i<18);
         i=0;
         do {
-            Item item2 = new Item("P00"+i,"Pen",i+5,100, 50, "Box", 80, "E8");
+            Item item2 = new Item("E00"+i,"Pen",i+5,100, 50, "Box", 80, "E8");
             itemList.add(item2);
             i++;
         } while (i<5);
