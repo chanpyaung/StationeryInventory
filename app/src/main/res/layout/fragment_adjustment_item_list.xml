@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="team5.ad.sa40.stationeryinventory.AdjustmentItemListFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_alignParentStart="true"
+        android:id="@+id/itemCodeHeader"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ITEM CODE"/>
+
+    <TextView
+        android:id="@+id/reasonHeader"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reason"/>
+
+    <TextView
+        android:id="@+id/qtyHeader"
+        android:layout_toLeftOf="@+id/reasonHeader"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="QTY"/>
+
+    <ListView
+        android:id="@+id/reported_item_list"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/itemCodeHeader"
+        android:layout_width="match_parent"
+        android:layout_height="450dp" />
+
+    <Button
+        android:layout_below="@+id/reported_item_list"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:id="@+id/btnSubmit"
+        android:layout_margin="15dp"
+        android:background="@color/PrimaryInvertedColor"
+        android:text="SUBMIT"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

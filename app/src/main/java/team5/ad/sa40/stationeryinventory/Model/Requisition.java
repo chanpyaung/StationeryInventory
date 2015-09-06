@@ -156,5 +156,21 @@ public class Requisition {
         return requisitionList;
     }
 
+    public static List<RequisitionDetail> initializeDataDetails(int ReqID){
+        List<RequisitionDetail> requisitionDetailList = new ArrayList<RequisitionDetail>();
+        int i=0;
+        int reqID = ReqID;
+        RequisitionDetail rp = new RequisitionDetail(i+1, reqID, "C001","Clip 11 inch",12,0,"");
+        requisitionDetailList.add(rp);
+        i++;
+        do {
+            RequisitionDetail r = new RequisitionDetail(i+1, reqID, "E00"+i,"Envelope Brown A4",(i*10),0, "");
+            requisitionDetailList.add(r);
+            i++;
+        } while (i<10);
+
+        return requisitionDetailList;
+    }
+
     //add in JSON-Obj methods
 }

@@ -106,7 +106,48 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
         adapter.SetOnItemClickListener(new RequisitionListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(RequisitionListFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
+                Requisition selected = allRequisitions.get(position);
+                Bundle args = new Bundle();
+                args.putInt("ReqID", selected.getReqID());
+                args.putString("ReqDate", selected.getDate().toString());
+                String status = "";
+                String priority = "";
+                if (selected.getStatusID()==1){
+                    status = "Approved";
+                }
+                else if (selected.getStatusID()==2){
+                    status= "Rejected";
+                }
+                else if (selected.getStatusID()==3){
+                    status= "Processed";
+                }
+                else if (selected.getStatusID()==4){
+                    status= "Collected";
+                }
+
+                if(selected.getPriorityID()==1){
+                    priority = "High";
+                }
+                else if (selected.getPriorityID()==2){
+                    priority = "Normal";
+                }
+                else if (selected.getPriorityID()==3){
+                    priority = "Low";
+                }
+                //get Dept ID first, then based on DeptID > get DeptHead Name
+                args.putString("approvedBy", selected.getDeptID());
+                //pass store clerk empID & convert to name on next Fragment
+                args.putInt("processedBy", selected.getHandledBy());
+                args.putInt("StatusID", selected.getStatusID());
+                args.putString("Status", status);
+                args.putString("Priority", priority);
+                args.putString("Remark", selected.getRemark());
+                args.putString("Reason", selected.getpRemark());
+                RequisitionDetailFragment reqDetailFrag = new RequisitionDetailFragment();
+                reqDetailFrag.setArguments(args);
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame, reqDetailFrag);
+                fragmentTransaction.commit();
             }
         });
     }

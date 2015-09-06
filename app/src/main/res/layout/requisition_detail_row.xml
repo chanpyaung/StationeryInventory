@@ -36,59 +36,45 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Clip 11&quot;"
-                android:id="@+id/ret_detail_itemName"
+                android:id="@+id/itemName"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
                 android:layout_toEndOf="@+id/inv_itemCode"
                 android:maxLines="2"
                 android:gravity="center_vertical"
-                android:textSize="18dp" />
+                android:textSize="16sp" />
 
             <TextView
-                android:layout_width="40dp"
-                android:layout_height="45dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="100"
                 android:textStyle="bold"
-                android:id="@+id/ret_detail_requestQty"
+                android:id="@+id/qty_needed"
                 android:textSize="18dp"
                 android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/ret_detail_actualQty"
+                android:layout_toEndOf="@+id/itemName"
                 android:minHeight="45dp"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="3dp"
                 android:textColor="#ffff4a53" />
 
-            <EditText
-                android:layout_width="60dp"
-                android:layout_height="45dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/ret_detail_actualQty"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="100"
+                android:textStyle="bold"
+                android:id="@+id/qty_actual"
+                android:textSize="18dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:hint="0"
-                android:gravity="center_vertical|center_horizontal"
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:editable="true"
-                android:numeric="integer"
-                android:phoneNumber="true" />
-
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="45dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="E8"
-                android:id="@+id/ret_detail_bin"
-                android:textSize="18dp"
+                android:layout_toEndOf="@+id/qty_needed"
                 android:minHeight="45dp"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_marginRight="3dp"
-                android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/ret_detail_requestQty" />
-
+                android:layout_alignParentBottom="true"
+                android:textColor="#ffff4a53" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

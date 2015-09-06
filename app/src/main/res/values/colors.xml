@@ -4,4 +4,6 @@
     <color name="PrimaryDarkColor">#05796E</color>
     <color name="PrimaryInvertedColor">#f75161</color>
     <color name="PrimaryDarkInvertedColor">#ff485a</color>
+    <color name="SecondaryColor">#3F51B5</color>
+    <color name="SecondaryDarkColor">#303F9F</color>
 </resources>

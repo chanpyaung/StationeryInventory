@@ -22,9 +22,11 @@
     <string name="password">Password</string>
     <string name="error_login_failed">Invalid user id and password</string>
     <string name="error_field_required">This field is required</string>
-
+    <string name="add_new_item">  ADD NEW ITEM</string>
     <string name="error_connection_failed">No connection found</string>
-
+    <string name="adjVouchers">ADJUSTMENT VOUCHERS</string>
+    <string name="genadjVoucher">GENERATE ADJUSTMENT VOUCHER</string>
+    
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

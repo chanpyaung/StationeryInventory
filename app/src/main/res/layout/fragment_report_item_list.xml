@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="team5.ad.sa40.stationeryinventory.ReportItemListFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <Button
+        android:id="@+id/add_new_item"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_alignParentStart="true"
+        android:padding="10dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        android:background="@color/SecondaryColor"
+        android:text="@string/add_new_item"
+        android:layout_width="170dp"
+        android:layout_height="75dp"
+        android:drawableLeft="@drawable/ic_m_add_white_24dp"/>
+
+
+    <Button
+        android:id="@+id/adjVouchers"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:padding="10dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        android:background="@color/SecondaryColor"
+        android:layout_alignParentEnd="true"
+        android:text="@string/adjVouchers"
+        android:layout_width="170dp"
+        android:layout_height="75dp"
+        android:drawableLeft="@drawable/ic_folder_open_white_24dp"/>
+
+    <View style="@style/Divider"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="1dp"
+        android:layout_below="@id/add_new_item"
+        android:background="@color/background_floating_material_dark"/>
+
+    <FrameLayout
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/add_new_item"
+        android:layout_above="@id/genAdjVoucher"
+        android:id="@+id/reportedItemPlaceHolder"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent" />
+
+    <Button
+        android:id="@+id/genAdjVoucher"
+        android:layout_margin="15dp"
+        android:padding="10dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        android:background="@color/PrimaryColor"
+        android:layout_alignParentBottom="true"
+        android:text="@string/genadjVoucher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>

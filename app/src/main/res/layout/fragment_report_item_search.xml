@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="team5.ad.sa40.stationeryinventory.ReportItemSearchFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <EditText
+        android:id="@+id/search_itemCode"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="Item Code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/search_itemName"
+        android:layout_below="@+id/search_itemCode"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="Item Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/spinner_item_category"
+        android:layout_below="@id/search_itemName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_below="@+id/spinner_item_category"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:id="@+id/btnSearchItem"
+        android:layout_margin="15dp"
+        android:background="@color/PrimaryColor"
+        android:text="SEARCH"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="Search Results: "
+        android:layout_marginLeft="15dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title"
+        android:layout_below="@+id/btnSearchItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ListView
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/btnSearchItem"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent" />
+
+</RelativeLayout>

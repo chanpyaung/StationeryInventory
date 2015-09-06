@@ -1,0 +1,148 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="team5.ad.sa40.stationeryinventory.ReportItemFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <TextView
+        android:id="@+id/itemCodeLabel"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="80dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Item Code: " />
+
+    <TextView
+        android:id="@+id/itemCode"
+        android:layout_margin="15dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:layout_toRightOf="@+id/itemCodeLabel"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="P042" />
+
+    <TextView
+        android:id="@+id/itemNameLabel"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="100dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_below="@+id/itemCodeLabel"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Item Name: " />
+
+    <TextView
+        android:id="@+id/itemName"
+        android:layout_marginLeft="15dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_below="@+id/itemCode"
+        android:layout_toRightOf="@+id/itemNameLabel"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pencil B" />
+
+    <TextView
+        android:id="@+id/qtyLabel"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="88dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_below="@+id/itemNameLabel"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Available Qty:" />
+
+    <TextView
+        android:id="@+id/qty"
+        android:layout_margin="15dp"
+        android:layout_marginLeft="2dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_below="@+id/itemName"
+        android:layout_toRightOf="@+id/qtyLabel"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="P042" />
+
+    <TextView
+        android:id="@+id/reOrderLabel"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="85dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_below="@+id/qtyLabel"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reorder Level: " />
+
+    <TextView
+        android:id="@+id/reOrderLvl"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_toRightOf="@+id/itemCodeLabel"
+        android:layout_marginLeft="-12dp"
+        android:layout_below="@+id/qty"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="P042" />
+
+    <View style="@style/Divider"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="1dp"
+        android:layout_below="@id/reOrderLabel"
+        android:background="@color/background_floating_material_dark"/>
+
+    <EditText
+        android:layout_margin="15dp"
+        android:id="@+id/reported_qty"
+        android:inputType="number"
+        android:layout_below="@+id/reOrderLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Quantity to report"
+        android:textAlignment="center"
+        android:gravity="center"/>
+
+    <Spinner
+        android:layout_below="@+id/reported_qty"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:id="@+id/reasonSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:gravity="center_vertical"/>
+
+    <EditText
+        android:id="@+id/remark_text"
+        android:layout_margin="15dp"
+        android:layout_below="@+id/reasonSpinner"
+        android:hint="Remark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:id="@+id/add2Adj"
+        android:layout_below="@id/remark_text"
+        android:background="@color/PrimaryColor"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ADD TO ADJUSTMENT VOUCHER"
+        android:textColor="@android:color/white"/>
+
+</RelativeLayout>
