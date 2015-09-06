@@ -77,14 +77,15 @@ public class Disbursement implements Serializable {
 
     public static ArrayList<Disbursement> getAllDisbursement(){
         ArrayList<Disbursement> temp = new ArrayList<>();
-
+        String[] depts = {"REGR", "ENG", "MATHS", "SCIENCE", "PHYSICS"};
         for (int i = 0; i < 5; i++){
 
             Disbursement dis = new Disbursement();
             dis.setDisbursementId(i+1);
             dis.setDisbursementDate(new Date());
             dis.setDisbursementStatus("Pending");
-            dis.setDisbursement_colID(i);
+            dis.setDisbursement_colID(4);
+            dis.setDeptID(depts[i]);
             temp.add(dis);
         }
         return temp;

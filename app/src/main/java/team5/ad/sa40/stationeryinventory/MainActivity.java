@@ -129,6 +129,13 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTran.commit();
                         return true;
 
+                    case R.id.disbursement:
+                        ClerkDisList temp = new ClerkDisList();
+                        fragmentTran = getSupportFragmentManager().beginTransaction();
+                        fragmentTran.replace(R.id.frame, temp);
+                        fragmentTran.commit();
+                        return true;
+
                     case R.id.retrieval://change
                         RetrievalList retrievalList = new RetrievalList();
                         fragmentTran = getSupportFragmentManager().beginTransaction();

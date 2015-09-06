@@ -45,7 +45,7 @@ public class CollectionPoint {
         colPt_long = lon;
     }
 
-    static String[] names = {"ISS", "iCube", "Eusoff Hall", "NUH", "Science Park"};
+    static String[] names = {"ISS", "iCube", "Eusoff Hall", "NUH", "Stationary"};
     static Float[] lats = {1.292248F, 1.2925393F, 1.293354F, 1.294373F, 1.289117F};
     static Float[] longs = {103.776611F, 103.7756831F, 103.770356F, 103.783401F, 103.781034F};
 
