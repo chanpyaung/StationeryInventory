@@ -143,7 +143,7 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
 
             if(user_dept == "Dept"){
                 noNeedLabel1 = (TextView) itemView.findViewById(R.id.ret_ifEmpIDNeeded);
-                noNeedLable2 = (TextView) itemView.findViewById(R.id.ret_EmpID);
+                noNeedLable2 = (TextView) itemView.findViewById(R.id.inv_itemName);
                 disNoLabel = (TextView) itemView.findViewById(R.id.inv_itemCode);
                 disNo = (TextView) itemView.findViewById(R.id.ret_id);
                 disDate = (TextView) itemView.findViewById(R.id.ret_date);
