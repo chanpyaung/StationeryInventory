@@ -121,11 +121,11 @@ public class AdjListSearch extends android.support.v4.app.Fragment {
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
         mAdjustment = new ArrayList<>();
+        mAdapter = new AdjListGridAdapter("Adj");
+        mRecyclerView.setAdapter(mAdapter);
         for(Adjustment c: mAdapter.mAdjustments){
             mAdjustment.add(c);
         }
-        mAdapter = new AdjListGridAdapter("Adj");
-        mRecyclerView.setAdapter(mAdapter);
         Log.i("Size of created list", String.valueOf(mAdjustment.size()));
         mAdapter.SetOnItemClickListener(new AdjListGridAdapter.OnItemClickListener() {
             @Override
