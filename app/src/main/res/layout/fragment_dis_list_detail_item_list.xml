@@ -1,0 +1,15 @@
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:id="@+id/scrollView"
+    android:layout_marginTop="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:stretchColumns="0,1"
+        android:id="@+id/item_table"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_width="270dp">
+    </TableLayout>
+</ScrollView>

@@ -48,6 +48,24 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Department:"
+                android:paddingLeft="30dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtDept"
+                android:text="dept"
+                android:paddingLeft="5dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="25dp"
             android:orientation="horizontal"
             android:paddingTop="10dp">
@@ -64,86 +82,62 @@
                 android:text="collection_point"
                 android:paddingLeft="5dp"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="27dp"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Status:"
-                android:paddingLeft="30dp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtStatus"
-                android:text="status_value"
-                android:paddingLeft="5dp"/>
-        </LinearLayout>
     </LinearLayout>
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapview"
         android:paddingLeft="30dp"
         android:paddingTop="3dp"
         android:layout_width="300dp"
-        android:layout_height="150dp" />
+        android:layout_height="200dp" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="180dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/PrimaryColor">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="View disbursed items"
-            android:id="@+id/btnView"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Collected by"
-            android:textStyle="bold"
-            android:layout_marginLeft="40dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Disbursed by"
-            android:textStyle="bold"
-            android:layout_marginLeft="50dp"/>
-
-    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="3dp">
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/img2"
             android:layout_marginLeft="30dp"
-            android:src="@drawable/sign"/>
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/img3"
-            android:layout_marginLeft="30dp"
             android:src="@drawable/jmj"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="Representative:"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="Peter Jones" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Employee No:" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3dp"
+                    android:text="11233:" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <ImageView
             android:layout_width="50dp"
@@ -152,26 +146,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/phonecall"/>
-
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="3dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Peter Jones"
-            android:textStyle="bold"
-            android:layout_marginLeft="40dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Jenny"
-            android:textStyle="bold"
-            android:layout_marginLeft="50dp"/>
 
-    </LinearLayout>
 
 </LinearLayout>

@@ -1,14 +1,15 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+
+import team5.ad.sa40.stationeryinventory.Model.Disbursement;
 
 /**
  * Created by student on 2/9/15.
@@ -16,25 +17,29 @@ import java.util.List;
 public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.ViewHolder> {
 
     List<Disbursement> mdisbursements;
-    String[] disNo;
     DisListGridAdapter.OnItemClickListener mItemClickListener;
+    String user_dept;
 
-    public DisListGridAdapter(){
+    public DisListGridAdapter(String part){
         super();
-        mdisbursements = Disbursement.getAllDisbursement();
-        Log.i("Size of list", String.valueOf(mdisbursements.size()));
-        disNo = new String[mdisbursements.size()];
-        for(int i = 0; i < mdisbursements.size(); i++){
-            String temp = String.valueOf(mdisbursements.get(i).getDisbursementId());
-            disNo[i] = temp;
+        user_dept = part;
+        mdisbursements = new ArrayList<>();
+        //Place for adding the JSON list if elseif else
+        if (user_dept != "Search"){
+            mdisbursements = Disbursement.getAllDisbursement();
         }
-        Log.i("First of list ", mdisbursements.get(0).getDisbursementStatus());
-        Log.i("First of string ", disNo[0]);
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.dis_row, viewGroup, false);
+        View v;
+        if(user_dept == "Dept") {
+            v = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.ret_row, viewGroup, false);
+        }
+        else{
+            v = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.dis_row, viewGroup, false);
+        }
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
@@ -42,11 +47,24 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Disbursement disItem = mdisbursements.get(i);
-        viewHolder.disNo.setText(String.valueOf(disItem.getDisbursementId()));
-        SimpleDateFormat format = new SimpleDateFormat("dd-M-yyyy");
-        String string_date = format.format(disItem.getDisbursementDate());
-        viewHolder.disDate.setText(string_date);
-        viewHolder.disStatus.setText(disItem.getDisbursementStatus());
+        if (user_dept == "Dept") {
+            viewHolder.disNoLabel.setText("Disbursement #");
+            viewHolder.noNeedLabel1.setText("");
+            viewHolder.noNeedLable2.setText("");
+            viewHolder.disNo.setText(String.valueOf(disItem.getDisbursementId()));
+            String string_date = Setup.parseDateToString(disItem.getDisbursementDate());
+            viewHolder.disDate.setText(string_date);
+            viewHolder.disStatus.setText(disItem.getDisbursementStatus());
+        }
+        else{
+            viewHolder.txtdisNo.setText(String.valueOf(disItem.getDisbursementId()));
+            String string_date = Setup.parseDateToString(disItem.getDisbursementDate());
+            viewHolder.txtdisDate.setText(string_date);
+            viewHolder.txtdisStatus.setText(disItem.getDisbursementStatus());
+            viewHolder.txtDept.setText(disItem.getDeptID());
+            viewHolder.txtCol.setText("Stationary");
+        }
+
     }
     @Override
     public int getItemCount() {
@@ -110,12 +128,34 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
         public TextView disNo;
         public TextView disDate;
         public TextView disStatus;
+        public TextView disNoLabel;
+        public TextView noNeedLabel1;
+        public TextView noNeedLable2;
+
+        public TextView txtdisNo;
+        public TextView txtdisDate;
+        public TextView txtdisStatus;
+        public TextView txtDept;
+        public TextView txtCol;
 
         public ViewHolder(View itemView){
             super(itemView);
-            disNo = (TextView) itemView.findViewById(R.id.dis_no_value);
-            disDate = (TextView) itemView.findViewById(R.id.dis_date_value);
-            disStatus = (TextView) itemView.findViewById(R.id.dis_status_value);
+
+            if(user_dept == "Dept"){
+                noNeedLabel1 = (TextView) itemView.findViewById(R.id.ret_ifEmpIDNeeded);
+                noNeedLable2 = (TextView) itemView.findViewById(R.id.ret_EmpID);
+                disNoLabel = (TextView) itemView.findViewById(R.id.inv_itemCode);
+                disNo = (TextView) itemView.findViewById(R.id.ret_id);
+                disDate = (TextView) itemView.findViewById(R.id.ret_date);
+                disStatus = (TextView) itemView.findViewById(R.id.ret_status);
+            }
+            else{
+                txtdisNo = (TextView) itemView.findViewById(R.id.txtDisNo);
+                txtdisDate = (TextView) itemView.findViewById(R.id.txtDisDate);
+                txtDept = (TextView) itemView.findViewById(R.id.txtDept);
+                txtdisStatus = (TextView) itemView.findViewById(R.id.txtStatus);
+                txtCol = (TextView) itemView.findViewById(R.id.txtCP);
+            }
             itemView.setOnClickListener(this);
         }
 
