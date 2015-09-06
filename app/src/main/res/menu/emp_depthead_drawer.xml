@@ -21,19 +21,29 @@
             android:icon="@drawable/ic_shopping_cart_black_24dp"
             android:title="Request Cart"/>
 
-        <!--<item-->
-            <!--android:id="@+id/retrieval"-->
-            <!--android:checked="false"-->
-            <!--android:icon="@drawable/ic_add_black_24dp"-->
-            <!--android:title="Retrieval" />-->
+        <item
+            android:id="@+id/approval"
+            android:checked="false"
+            android:icon="@drawable/ic_assignment_turned_in_black_24dp"
+            android:title="Approval"/>
+
+        <item
+            android:id="@+id/disburse"
+            android:checked="false"
+            android:icon="@drawable/ic_swap_calls_black_24dp"
+            android:title="Disbursement"/>
 
         <!--<item-->
-            <!--android:id="@+id/inventory"-->
-            <!--android:checked="false"-->
-            <!--android:icon="@drawable/ic_storage_black_24dp"-->
-            <!--android:title="Inventory" />-->
+        <!--android:id="@+id/retrieval"-->
+        <!--android:checked="false"-->
+        <!--android:icon="@drawable/ic_add_black_24dp"-->
+        <!--android:title="Retrieval" />-->
 
-        <View style="@style/Divider"/>
+        <item
+        android:id="@+id/delegate"
+        android:checked="false"
+        android:icon="@drawable/ic_person_add_black_24dp"
+        android:title="Delegate" />
 
         <item
             android:id="@+id/Dept"

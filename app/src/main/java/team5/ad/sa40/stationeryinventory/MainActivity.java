@@ -42,14 +42,23 @@ public class MainActivity extends AppCompatActivity {
             String user = extras.getString("User");
             Log.i("User value", user);
                 switch (user) {
-                    case "11233":
+                    case "hello":
                         setContentView(R.layout.activity_main);
                         break;
-                    case "11234":
+                    case "delegate":
                         setContentView(R.layout.empdelegate_activity_main);
                         break;
-                    case "11235":
+                    case "rep":
                         setContentView(R.layout.emprep_activity_main);
+                        break;
+                    case "head":
+                        setContentView(R.layout.depthead_activity_main);
+                        break;
+                    case "clerk":
+                        setContentView(R.layout.storeclerk_activity_main);
+                        break;
+                    case "supervisor":
+                        setContentView(R.layout.storesupervisor_activity_main);
                         break;
                     default:
                         setContentView(R.layout.activity_main);
@@ -86,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.requisition:
+                        RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.frame,reqListFrag).commit();
                         Toast.makeText(MainActivity.this, "Requisition is selected", Toast.LENGTH_SHORT).show();
                         return true;
 

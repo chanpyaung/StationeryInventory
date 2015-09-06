@@ -128,9 +128,9 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                 mUseridView.setError(null);
                 mPasswordView.setError(null);
                 Intent i = new Intent(this, MainActivity.class);
-                String userID = mUseridView.getText().toString();
-                Log.i("Extra", userID);
-                i.putExtra("User", userID);
+                String userRole = mPasswordView.getText().toString();
+                Log.i("Extra", userRole);
+                i.putExtra("User", userRole);
                 startActivity(i);
             }
         }

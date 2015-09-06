@@ -3,11 +3,6 @@
 
     <group android:checkableBehavior="single">
 
-        <item
-            android:id="@+id/catalog"
-            android:checked="false"
-            android:icon="@drawable/ic_storage_black_24dp"
-            android:title="Catalog" />
 
         <item
             android:id="@+id/requisition"
@@ -16,30 +11,28 @@
             android:title="Requisition"/>
 
         <item
-            android:id="@+id/cart"
+            android:id="@+id/retrieval"
             android:checked="false"
-            android:icon="@drawable/ic_shopping_cart_black_24dp"
-            android:title="Request Cart"/>
-
-        <!--<item-->
-            <!--android:id="@+id/retrieval"-->
-            <!--android:checked="false"-->
-            <!--android:icon="@drawable/ic_add_black_24dp"-->
-            <!--android:title="Retrieval" />-->
-
-        <!--<item-->
-            <!--android:id="@+id/inventory"-->
-            <!--android:checked="false"-->
-            <!--android:icon="@drawable/ic_storage_black_24dp"-->
-            <!--android:title="Inventory" />-->
-
-        <View style="@style/Divider"/>
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Retrieval" />
 
         <item
-            android:id="@+id/Dept"
+            android:id="@+id/disburse"
             android:checked="false"
-            android:icon="@drawable/ic_business_black_24dp"
-            android:title="Department" />
+            android:icon="@drawable/ic_swap_calls_black_24dp"
+            android:title="Disbursement"/>
+
+        <item
+        android:id="@+id/inventory"
+        android:checked="false"
+        android:icon="@drawable/ic_storage_black_24dp"
+        android:title="Inventory" />
+
+        <item
+            android:id="@+id/reportItem"
+            android:checked="false"
+            android:icon="@drawable/ic_error_black_24dp"
+            android:title="Report Item" />
 
         <item
             android:id="@+id/noti"

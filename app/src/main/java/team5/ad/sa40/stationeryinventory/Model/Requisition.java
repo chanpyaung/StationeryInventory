@@ -125,13 +125,30 @@ public class Requisition {
         request.setReqID(i+1);
         request.setDate(new Date());
         request.setStatusID(1);
+        request.setDeptID("   ENG");
         requisitionList.add(request);
         i++;
         do {
             Requisition rq = new Requisition();
             rq.setReqID(i+1);
             rq.setDate(new Date());
-            rq.setStatusID(2);
+            if (i<=3){
+                rq.setStatusID(1);
+                rq.setDeptID("   SCIENCE");
+            }
+            else if (i>3 && i<=5){
+                rq.setStatusID(2);
+                rq.setDeptID("   RGR");
+            }
+            else if (i>5 && i<=8){
+                rq.setStatusID(3);
+                rq.setDeptID("   BIZ");
+            }
+            else if (i>8){
+
+                rq.setStatusID(4);
+                rq.setDeptID("   COM");
+            }
             requisitionList.add(rq);
             i++;
         } while (i<10);

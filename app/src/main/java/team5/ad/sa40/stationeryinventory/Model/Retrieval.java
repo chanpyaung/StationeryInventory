@@ -96,7 +96,6 @@ public class Retrieval {
         Employee e = new Employee();
         JSONArray result = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getRetrieval/%s/null/null",
                 Setup.baseurl, Employee.EmpID));
-
         try {
             for (int retrieval = 0; retrieval < result.length(); retrieval++) {
                 JSONObject ret = new JSONObject(result.getString(retrieval));
@@ -123,7 +122,7 @@ public class Retrieval {
         Retrieval r = new Retrieval();
 
         JSONObject result = JSONParser.getJSONFromUrl(String.format("%s/retrievalapi.svc/getRetrieval/null/null/%s",
-                Setup.baseurl,Integer.toString(id)));
+                Setup.baseurl, Integer.toString(id)));
         JSONArray resultItems = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getRetrievalDetail/%s",
                 Setup.baseurl, Integer.toString(id)));
         JSONArray resultReqForms = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getReqAllocation/%s",
