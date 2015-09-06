@@ -44,7 +44,6 @@
     <FrameLayout
         android:layout_marginTop="15dp"
         android:layout_below="@+id/add_new_item"
-        android:layout_above="@id/genAdjVoucher"
         android:id="@+id/reportedItemPlaceHolder"
         android:layout_width="match_parent"
         android:layout_height="fill_parent" />
