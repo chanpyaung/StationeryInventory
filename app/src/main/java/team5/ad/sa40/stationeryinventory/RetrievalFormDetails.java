@@ -67,10 +67,6 @@ public class RetrievalFormDetails extends android.support.v4.app.Fragment implem
             }
             ret.setStatus(getArguments().getString("RetStatus"));
         }
-        else {
-            ret.setRetID(123);
-            ret.setDate(new Date());
-        }
         retrievalDate.setText(Setup.parseDateToString(ret.getDate()));
 
         String idDisplay = "";

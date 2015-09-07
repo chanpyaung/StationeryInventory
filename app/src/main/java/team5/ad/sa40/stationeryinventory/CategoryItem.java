@@ -23,4 +23,7 @@ public class CategoryItem {
     public void setCatThumbnail(int catThumbnail) {
         this.catThumbnail = catThumbnail;
     }
+
+    public static String[] categories = {"All Categories","Clip","Envelope","Eraser","Exercise","File","Pen","Puncher",
+            "Pad","Paper","Ruler","Scissors","Tape","Sharpener","Shorthand","Stapler","Tacks","Tparency","Tray"};
 }

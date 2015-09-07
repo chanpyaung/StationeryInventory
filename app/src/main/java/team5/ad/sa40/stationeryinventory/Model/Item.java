@@ -1,5 +1,7 @@
 package team5.ad.sa40.stationeryinventory.Model;
 
+import android.media.Image;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +20,7 @@ public class Item implements Comparable {
     private int Stock;
     private String Bin;
     private List<ItemPrice> itemPriceList;
+    private Image Image;
 
     public Item(String itemID, String itemName, int itemCatID, int roLvl, int roQty, String UOM, int stock, String bin) {
         ItemID = itemID;
@@ -94,6 +97,14 @@ public class Item implements Comparable {
 
     public void setBin(String bin) {
         Bin = bin;
+    }
+
+    public Image getImage() {
+        return Image;
+    }
+
+    public List<ItemPrice> getItemPriceList() {
+        return itemPriceList;
     }
 
     @Override

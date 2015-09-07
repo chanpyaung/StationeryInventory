@@ -27,10 +27,9 @@ import team5.ad.sa40.stationeryinventory.Model.Retrieval;
 public class InventoryList extends android.support.v4.app.Fragment {
 
 
-    private String[] categories = {"All Categories","Clip","Envelope","Eraser","Exercise","File","Pen","Puncher",
-            "Pad","Paper","Ruler","Scissors","Tape","Sharpener","Shorthand","Stapler","Tacks","Tparency","Tray"};
+    public String[] categories;
     private String[] filters = {"View All","Low Stock","Available"};
-    private List<Item> allInv;
+    public List<Item> allInv;
     private RecyclerView mRecyclerView;
     private InvListAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -54,6 +53,8 @@ public class InventoryList extends android.support.v4.app.Fragment {
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_inventory_list, container, false);
         ButterKnife.bind(this, view);
+        CategoryItem i = new CategoryItem();
+        categories = CategoryItem.categories;
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.inv_recycler_view);
         mRecyclerView.setHasFixedSize(true);
