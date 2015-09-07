@@ -1,7 +1,6 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -184,7 +183,7 @@ public class InvListAdapter extends RecyclerView.Adapter<InvListAdapter.ViewHold
 
         public ViewHolder(View itemView){
             super(itemView);
-            itemID = (TextView) itemView.findViewById(R.id.inv_itemCode);
+            itemID = (TextView) itemView.findViewById(R.id.sc_date);
             itemName = (TextView) itemView.findViewById(R.id.inv_itemName);
             itemStatus = (TextView) itemView.findViewById(R.id.inv_status);
             itemCatIcon = (ImageView) itemView.findViewById(R.id.inv_icon);

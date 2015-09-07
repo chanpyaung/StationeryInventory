@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Retrieval # "
-                android:id="@+id/inv_itemCode"
+                android:id="@+id/sc_date"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
                 android:textStyle="bold" />
@@ -36,8 +36,8 @@
                 android:text="10/08/2015"
                 android:id="@+id/ret_date"
                 android:layout_marginTop="5dp"
-                android:layout_below="@+id/inv_itemCode"
-                android:layout_alignStart="@+id/inv_itemCode"
+                android:layout_below="@+id/sc_date"
+                android:layout_alignStart="@+id/sc_date"
                 android:textSize="14dp" />
 
             <TextView
@@ -59,8 +59,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="0004"
                 android:id="@+id/ret_id"
-                android:layout_alignTop="@+id/inv_itemCode"
-                android:layout_toEndOf="@+id/inv_itemCode"
+                android:layout_alignTop="@+id/sc_date"
+                android:layout_toEndOf="@+id/sc_date"
                 android:textStyle="bold" />
 
             <TextView

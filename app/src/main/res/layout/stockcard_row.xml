@@ -3,7 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="70dp">
+    android:layout_height="60dp">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
@@ -19,30 +19,45 @@
             android:layout_height="fill_parent">
 
             <TextView
-                android:layout_width="55dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="C003"
+                android:text="02/01/2015"
                 android:id="@+id/sc_date"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="true"
                 android:layout_marginRight="5dp"
                 android:gravity="center_vertical"
-                android:textSize="18dp" />
+                android:textSize="14dp"
+                android:singleLine="true"
+                android:layout_alignBottom="@+id/sc_trx" />
 
             <TextView
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
+                android:layout_width="190dp"
+                android:layout_height="30dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Clip 11&quot;"
-                android:id="@+id/ret_detail_itemName"
+                android:id="@+id/sc_trx"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
                 android:layout_toEndOf="@+id/sc_date"
                 android:maxLines="2"
                 android:gravity="center_vertical"
-                android:textSize="18dp" />
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="+4"
+                android:textStyle="bold"
+                android:id="@+id/sc_change"
+                android:textSize="14dp"
+                android:minHeight="45dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginRight="3dp"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/sc_balance"
+                android:layout_alignBottom="@+id/sc_trx" />
 
             <TextView
                 android:layout_width="40dp"
@@ -50,44 +65,13 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="100"
                 android:textStyle="bold"
-                android:id="@+id/sc_change"
-                android:textSize="18dp"
-                android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/ret_detail_actualQty"
+                android:id="@+id/sc_balance"
+                android:textSize="14dp"
                 android:minHeight="45dp"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="3dp"
-                android:textColor="#ffff4a53" />
-
-            <EditText
-                android:layout_width="60dp"
-                android:layout_height="45dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/ret_detail_actualQty"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:hint="0"
-                android:gravity="center_vertical|center_horizontal"
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:editable="true"
-                android:numeric="integer"
-                android:phoneNumber="true" />
-
-            <TextView
-                android:layout_width="30dp"
-                android:layout_height="45dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="E8"
-                android:id="@+id/ret_detail_bin"
-                android:textSize="18dp"
-                android:minHeight="45dp"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_marginRight="3dp"
-                android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/sc_change" />
+                android:layout_alignBottom="@+id/sc_change" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

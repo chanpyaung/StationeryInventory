@@ -151,10 +151,10 @@ public class RetFormAdapter extends RecyclerView.Adapter<RetFormAdapter.ViewHold
 
         public ViewHolder(final View itemView){
             super(itemView);
-            itemId = (TextView) itemView.findViewById(R.id.inv_itemCode);
+            itemId = (TextView) itemView.findViewById(R.id.sc_date);
             itemName = (TextView) itemView.findViewById(R.id.ret_detail_itemName);
             bin = (TextView) itemView.findViewById(R.id.ret_detail_bin);
-            requestQty = (TextView) itemView.findViewById(R.id.ret_detail_requestQty);
+            requestQty = (TextView) itemView.findViewById(R.id.sc_change);
             actualQty = (EditText) itemView.findViewById(R.id.ret_detail_actualQty);
 
             itemView.setOnClickListener(this);
