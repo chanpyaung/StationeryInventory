@@ -3,6 +3,7 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
+<<<<<<< HEAD
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
     <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
@@ -25,6 +26,13 @@
           <item index="3" class="java.lang.String" itemvalue="android.support.annotation.NonNull" />
         </list>
       </value>
+=======
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Bundled (Maven 3)" />
+      </MavenGeneralSettings>
+>>>>>>> origin/master
     </option>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">

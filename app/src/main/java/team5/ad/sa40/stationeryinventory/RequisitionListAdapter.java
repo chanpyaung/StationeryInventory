@@ -162,7 +162,7 @@ public class RequisitionListAdapter extends RecyclerView.Adapter<RequisitionList
 
         public ViewHolder(View itemView){
             super(itemView);
-            retHeader = (TextView) itemView.findViewById(R.id.sc_date);
+            retHeader = (TextView) itemView.findViewById(R.id.inv_itemCode);
             retId = (TextView) itemView.findViewById(R.id.ret_id);
             retDate = (TextView) itemView.findViewById(R.id.ret_date);
             retStatus = (TextView) itemView.findViewById(R.id.ret_status);

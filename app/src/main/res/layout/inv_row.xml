@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="P040"
-                android:id="@+id/sc_date"
+                android:id="@+id/inv_itemCode"
                 android:textStyle="bold"
                 android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/inv_itemName" />
@@ -49,7 +49,7 @@
                 android:text="Pencil"
                 android:id="@+id/inv_itemName"
                 android:textSize="14dp"
-                android:layout_below="@+id/sc_date"
+                android:layout_below="@+id/inv_itemCode"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="50dp" />
 

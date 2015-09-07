@@ -183,7 +183,7 @@ public class InvListAdapter extends RecyclerView.Adapter<InvListAdapter.ViewHold
 
         public ViewHolder(View itemView){
             super(itemView);
-            itemID = (TextView) itemView.findViewById(R.id.sc_date);
+            itemID = (TextView) itemView.findViewById(R.id.inv_itemCode);
             itemName = (TextView) itemView.findViewById(R.id.inv_itemName);
             itemStatus = (TextView) itemView.findViewById(R.id.inv_status);
             itemCatIcon = (ImageView) itemView.findViewById(R.id.inv_icon);

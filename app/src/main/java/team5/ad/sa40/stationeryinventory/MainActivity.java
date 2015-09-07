@@ -150,6 +150,13 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTran.commit();
                         return true;
 
+                    case R.id.delegate:
+                        DelegateList del = new DelegateList();
+                        fragmentTran = getSupportFragmentManager().beginTransaction();
+                        fragmentTran.replace(R.id.frame, del);
+                        fragmentTran.commit();
+                        return true;
+
                     default:
                         Toast.makeText(MainActivity.this, "Default", Toast.LENGTH_SHORT).show();
                         return true;
