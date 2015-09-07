@@ -107,11 +107,19 @@
         android:layout_marginBottom="5dp"
         android:textColor="#ffffffff" />
 
+    <View style="@style/Divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/background_floating_material_dark"
+        android:layout_below="@+id/ret_detail_reqId"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="3dp" />
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="ItemID   Name                             Bin   Needed  Actual"
+        android:text="ItemID   Name                              Bin   Needed  Actual"
         android:id="@+id/textView6"
         android:textSize="16dp"
         android:layout_row="2"

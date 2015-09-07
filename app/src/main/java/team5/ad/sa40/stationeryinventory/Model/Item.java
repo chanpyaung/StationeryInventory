@@ -17,6 +17,7 @@ public class Item implements Comparable {
     private String UOM;
     private int Stock;
     private String Bin;
+    private List<ItemPrice> itemPriceList;
 
     public Item(String itemID, String itemName, int itemCatID, int roLvl, int roQty, String UOM, int stock, String bin) {
         ItemID = itemID;
@@ -27,6 +28,8 @@ public class Item implements Comparable {
         this.UOM = UOM;
         Stock = stock;
         Bin = bin;
+        itemPriceList = new ArrayList<ItemPrice>();
+        itemPriceList = ItemPrice.getAllItemPrices(itemID);
     }
 
     public String getItemID() {

@@ -38,7 +38,7 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
     private RequisitionFormAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    @Bind(R.id.id_text) TextView reqFormID;
+    @Bind(R.id.inv_detail_itemName) TextView reqFormID;
 //    @Bind(R.id.approvedPerson) TextView approvedPerson;
 //    @Bind(R.id.processedPerson) TextView processedPerson;
     @Bind(R.id.priority_text) TextView priority;

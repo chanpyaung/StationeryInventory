@@ -15,7 +15,7 @@ import team5.ad.sa40.stationeryinventory.Model.Item;
 
 public class InventoryDetails extends android.support.v4.app.Fragment {
 
-    private Item ret;
+    private Item item;
     private RecyclerView mRecyclerView;
     private RetFormAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
