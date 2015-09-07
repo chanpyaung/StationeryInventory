@@ -28,12 +28,26 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/inv_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="0dp"
         android:layout_below="@+id/spinnerInvCat"
-        android:layout_alignParentBottom="true" />
+        android:layout_above="@+id/scanBtn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SCAN BARCODE"
+        android:id="@+id/scanBtn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/spinnerInvCat"
+        android:layout_alignEnd="@+id/spinnerInvStatus"
+        android:layout_marginBottom="5dp"
+        android:background="#08AE9E"
+        android:textColor="#ffffffff"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp" />
 
 
 </RelativeLayout>

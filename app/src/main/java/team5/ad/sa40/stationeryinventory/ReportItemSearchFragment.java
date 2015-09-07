@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReportItemSearchFragment extends Fragment {
+public class ReportItemSearchFragment extends android.support.v4.app.Fragment {
 
 
     public ReportItemSearchFragment() {
@@ -22,8 +22,10 @@ public class ReportItemSearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_report_item_search, container, false);
+        inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.fragment_report_item_search, container, false);
+
+        return view;
     }
 
 

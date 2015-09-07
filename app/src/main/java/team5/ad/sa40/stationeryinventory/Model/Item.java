@@ -22,6 +22,18 @@ public class Item implements Comparable {
     public List<ItemPrice> itemPriceList;
     private Image Image;
 
+    public Item(){
+        itemPriceList = new ArrayList<ItemPrice>();
+        ItemID = "";
+        ItemName = "";
+        ItemCatID = 0;
+        RoLvl = 0;
+        RoQty = 0;
+        UOM = "";
+        Stock = 0;
+        Bin = "";
+    }
+
     public Item(String itemID, String itemName, int itemCatID, int roLvl, int roQty, String UOM, int stock, String bin) {
         ItemID = itemID;
         ItemName = itemName;

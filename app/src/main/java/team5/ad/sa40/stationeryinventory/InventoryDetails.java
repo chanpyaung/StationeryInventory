@@ -75,6 +75,7 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
         CategoryItem ci = new CategoryItem();
         categories = CategoryItem.categories;
         allInv = new ArrayList<Item>();
+        item = new Item();
         allInv = Item.initializeData();
 
         if (getArguments() != null) {
@@ -110,16 +111,18 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
         //populate supplier info
         supplierList = Supplier.initializeData();
         List<ItemPrice> itemPrices= item.getItemPriceList();
-        itemPrice1Field.setText(formatPrice(Double.parseDouble(itemPrices.get(0).get("Price").toString())));
-        supplier1Field.setText(itemPrices.get(0).get("SupplierID").toString());
-        itemPrice2Field.setText(formatPrice(Double.parseDouble(itemPrices.get(1).get("Price").toString())));
-        supplier2Field.setText(itemPrices.get(1).get("SupplierID").toString());
-        itemPrice3Field.setText(formatPrice(Double.parseDouble(itemPrices.get(2).get("Price").toString())));
-        supplier3Field.setText(itemPrices.get(2).get("SupplierID").toString());
-        for(int i=0; i<supplierList.size(); i++) {
-            for(int j=0; j<itemPrices.size(); j++) {
-                if (supplierList.get(i).get("SupplierID") == itemPrices.get(j).get("SupplierID")){
-                    supplierNum.add(supplierList.get(i).get("Phone").toString());
+        if(itemPrices.size() > 0) {
+            itemPrice1Field.setText(formatPrice(Double.parseDouble(itemPrices.get(0).get("Price").toString())));
+            supplier1Field.setText(itemPrices.get(0).get("SupplierID").toString());
+            itemPrice2Field.setText(formatPrice(Double.parseDouble(itemPrices.get(1).get("Price").toString())));
+            supplier2Field.setText(itemPrices.get(1).get("SupplierID").toString());
+            itemPrice3Field.setText(formatPrice(Double.parseDouble(itemPrices.get(2).get("Price").toString())));
+            supplier3Field.setText(itemPrices.get(2).get("SupplierID").toString());
+            for (int i = 0; i < supplierList.size(); i++) {
+                for (int j = 0; j < itemPrices.size(); j++) {
+                    if (supplierList.get(i).get("SupplierID") == itemPrices.get(j).get("SupplierID")) {
+                        supplierNum.add(supplierList.get(i).get("Phone").toString());
+                    }
                 }
             }
         }
@@ -131,12 +134,14 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
                 Bundle args = new Bundle();
                 args.putString("ItemID", item.getItemID());
                 Log.i("selected itemID: ", item.getItemID());
+                args.putString("ItemName", item.getItemName());
+                args.putInt("StockQty",item.getStock());
+                args.putInt("ROLvl", item.getRoLvl());
 
                 InventoryStockCard fragment = new InventoryStockCard();
                 fragment.setArguments(args);
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.frame, fragment).addToBackStack("INVENTORYDETAILS1 TAG").commit();
             }
         });
         reportItemBtn.setOnClickListener(new View.OnClickListener() {
@@ -149,8 +154,8 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
                 ReportItemFragment fragment = new ReportItemFragment();
                 fragment.setArguments(args);
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment);
-                fragmentTransaction.commit();*/
+                fragmentTransaction.replace(R.id.frame, fragment).addToBackStack("INVENTORYDETAILS2 TAG").commit();
+                */
             }
         });
         callSupplier1Btn.setOnClickListener(new View.OnClickListener() {

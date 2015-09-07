@@ -3,14 +3,19 @@ package team5.ad.sa40.stationeryinventory;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -42,14 +47,15 @@ public class InventoryList extends android.support.v4.app.Fragment {
 
     @Bind(R.id.spinnerInvCat) Spinner spinnerInvCat;
     @Bind(R.id.spinnerInvStatus) Spinner spinnerInvStatus;
+    @Bind(R.id.scanBtn) Button scanBarcodeBtn;
 
     public InventoryList() {
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_inventory_list, container, false);
         ButterKnife.bind(this, view);
@@ -189,6 +195,15 @@ public class InventoryList extends android.support.v4.app.Fragment {
             }
         });
 
+        scanBarcodeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScannerFragment fragment1 = new ScannerFragment();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame, fragment1).addToBackStack("INVENTORYLIST1 TAG").commit();
+            }
+        });
+
         return view;
     }
 
@@ -207,11 +222,10 @@ public class InventoryList extends android.support.v4.app.Fragment {
                 args.putString("ItemID", selected.getItemID());
                 Log.i("selected itemID: ", selected.getItemID());
 
-                InventoryDetails fragment = new InventoryDetails();
-                fragment.setArguments(args);
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment);
-                fragmentTransaction.commit();
+                InventoryDetails fragment2 = new InventoryDetails();
+                fragment2.setArguments(args);
+                android.support.v4.app.FragmentTransaction fragmentTransaction2 = getFragmentManager().beginTransaction();
+                fragmentTransaction2.replace(R.id.frame, fragment2).addToBackStack("INVENTORYLIST TAG").commit();
 
             }
         });
@@ -284,5 +298,23 @@ public class InventoryList extends android.support.v4.app.Fragment {
         Collections.sort(categoryItems);
         adapter.mItems = categoryItems;
         mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        this.getActivity().getMenuInflater().inflate(R.menu.fragment_inventory_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = R.id.action_search;
+        if(id == R.id.action_search){
+            ReportItemSearchFragment fragment3 = new ReportItemSearchFragment();
+            FragmentTransaction fragTran3 = getFragmentManager().beginTransaction();
+            fragTran3.replace(R.id.frame, fragment3).addToBackStack("INVENTORYLIST3 TAG").commit();
+            Toast.makeText(this.getActivity(), "Search is clicked", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

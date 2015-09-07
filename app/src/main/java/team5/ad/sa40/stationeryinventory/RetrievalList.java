@@ -104,8 +104,7 @@ public class RetrievalList extends android.support.v4.app.Fragment {
                 RetrievalFormDetails fragment = new RetrievalFormDetails();
                 fragment.setArguments(args);
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.frame, fragment).addToBackStack("RETRIEVALLIST TAG").commit();
 
             }
         });

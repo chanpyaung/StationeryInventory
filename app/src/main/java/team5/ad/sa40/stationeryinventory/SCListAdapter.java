@@ -114,9 +114,9 @@ public class SCListAdapter extends RecyclerView.Adapter<SCListAdapter.ViewHolder
 
         public ViewHolder(final View itemView){
             super(itemView);
-            SCDate = (TextView) itemView.findViewById(R.id.inv_itemCode);
+            SCDate = (TextView) itemView.findViewById(R.id.sc_date);
             SCDesc = (TextView) itemView.findViewById(R.id.sc_trx);
-            SCChange = (TextView) itemView.findViewById(R.id.ret_detail_reqId);
+            SCChange = (TextView) itemView.findViewById(R.id.sc_change);
             SCBalance = (TextView) itemView.findViewById(R.id.sc_balance);
 
             itemView.setOnClickListener(this);

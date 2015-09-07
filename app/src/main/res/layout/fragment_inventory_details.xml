@@ -30,7 +30,7 @@
         android:id="@+id/inv_detail_image"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
         android:src="@android:drawable/star_off"
         android:layout_marginRight="10dp"
