@@ -104,35 +104,35 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
         label_date.setId(+20);
         label_date.setText("ItemCode");
         label_date.setTextColor(Color.WHITE);
-        label_date.setPadding(5, 5, 5, 5);
+        label_date.setPadding(3, 3, 3, 3);
         tr_head.addView(label_date);// add the column to the table row here
 
         TextView label_weight_kg = new TextView(this.getActivity());
         label_weight_kg.setId(+21);// define id that must be unique
         label_weight_kg.setText("Adjustment"); // set the text for the header
         label_weight_kg.setTextColor(Color.WHITE); // set the color
-        label_weight_kg.setPadding(5, 5, 5, 5); // set the padding (if required)
+        label_weight_kg.setPadding(3, 3, 3, 3); // set the padding (if required)
         tr_head.addView(label_weight_kg); // add the column to the table row here
 
         TextView label_price = new TextView(this.getActivity());
         label_price.setId(+22);// define id that must be unique
         label_price.setText("Price"); // set the text for the header
         label_price.setTextColor(Color.WHITE); // set the color
-        label_price.setPadding(5, 5, 5, 5); // set the padding (if required)
+        label_price.setPadding(3, 3, 3, 3); // set the padding (if required)
         tr_head.addView(label_price); // add the column to the table row here
 
         TextView label_reason = new TextView(this.getActivity());
         label_reason.setId(+23);// define id that must be unique
         label_reason.setText("Reason"); // set the text for the header
         label_reason.setTextColor(Color.WHITE); // set the color
-        label_reason.setPadding(5, 5, 5, 5); // set the padding (if required)
+        label_reason.setPadding(3, 3, 3, 3); // set the padding (if required)
         tr_head.addView(label_reason); // add the column to the table row here
 
         TextView label_remark = new TextView(this.getActivity());
         label_remark.setId(+24);// define id that must be unique
         label_remark.setText("Details"); // set the text for the header
         label_remark.setTextColor(Color.WHITE); // set the color
-        label_remark.setPadding(5, 5, 5, 5); // set the padding (if required)
+        label_remark.setPadding(3, 3, 3, 3); // set the padding (if required)
         tr_head.addView(label_remark); // add the column to the table row here
 
 
@@ -156,7 +156,7 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
             ladelName.setId(+(200 + z));
             //ladelName.setTextColor(Color.WHITE);
             ladelName.setText(items.get(z - 1).getItemID());
-            ladelName.setPadding(2, 0, 5, 0);
+            //ladelName.setPadding(2, 0, 5, 0);
             tr.addView(ladelName);
 
             TextView labelQty = new TextView(this.getActivity());

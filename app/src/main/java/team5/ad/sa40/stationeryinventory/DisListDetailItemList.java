@@ -4,6 +4,7 @@ package team5.ad.sa40.stationeryinventory;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class DisListDetailItemList extends android.support.v4.app.Fragment {
         TextView label_weight_kg = new TextView(this.getActivity());
         label_weight_kg.setId(+21);// define id that must be unique
         label_weight_kg.setText("Quantity"); // set the text for the header
+        label_weight_kg.setGravity(Gravity.CENTER);
         label_weight_kg.setTextColor(Color.WHITE); // set the color
         label_weight_kg.setPadding(5, 5, 5, 5); // set the padding (if required)
         tr_head.addView(label_weight_kg); // add the column to the table row here
@@ -86,6 +88,7 @@ public class DisListDetailItemList extends android.support.v4.app.Fragment {
 
             TextView labelQty = new TextView(this.getActivity());
             labelQty.setId(+(300+z));
+            labelQty.setGravity(Gravity.CENTER);
             //labelQty.setTextColor(Color.WHITE);
             labelQty.setText(String.valueOf(items.get(z-1).getStock()));
             tr.addView(labelQty);
