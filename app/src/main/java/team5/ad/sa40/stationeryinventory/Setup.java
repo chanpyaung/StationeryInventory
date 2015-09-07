@@ -16,4 +16,16 @@ public class Setup {
         output = out.format(d);
         return output;
     }
+
+    public static Date parseStringToDate(String d){
+        try{
+            Date temp;
+            SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy");
+            temp = out.parse(d);
+            return temp;
+        }catch (ParseException e){
+
+        }
+        return null;
+    }
 }
