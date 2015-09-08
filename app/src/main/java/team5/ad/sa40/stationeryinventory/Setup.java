@@ -5,10 +5,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import team5.ad.sa40.stationeryinventory.Model.Employee;
+
 public class Setup {
     public static String baseurl = "http://www.team5.com/api";
     public static String GTokenForNotification = "";
-
+    public static Employee user;
 
     public static String parseDateToString(Date d) {
         String output = "";

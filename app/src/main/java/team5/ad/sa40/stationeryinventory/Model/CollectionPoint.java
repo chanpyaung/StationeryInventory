@@ -1,6 +1,13 @@
 package team5.ad.sa40.stationeryinventory.Model;
 
+import android.util.Log;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+
+import team5.ad.sa40.stationeryinventory.JSONParser;
+import team5.ad.sa40.stationeryinventory.Setup;
 
 /**
  * Created by student on 3/9/15.
@@ -12,6 +19,15 @@ public class CollectionPoint {
     private String colPt_address;
     private float colPt_lat;
     private float colPt_long;
+
+    public CollectionPoint(){}
+    public CollectionPoint(int _colID, String _colName, String _colAddress, float _lat, float _long){
+        colPt_id = _colID;
+        colPt_name = _colName;
+        colPt_address = _colAddress;
+        colPt_lat = _lat;
+        colPt_long = _long;
+    }
 
     public int getColPt_id(){
         return colPt_id;
@@ -62,5 +78,19 @@ public class CollectionPoint {
             temp_colPt.add(col_pt);
         }
         return temp_colPt;
+    }
+
+    public static CollectionPoint getCollectionByID(int _id){
+        JSONObject temp = JSONParser.getJSONFromUrl(Setup.baseurl + "/collectionAPI.svc/getCollectionPointbyID/" +
+                String.valueOf(_id));
+        CollectionPoint col = null;
+        try{
+            col = new CollectionPoint(temp.getInt("CPID"), temp.getString("CPName"), temp.getString("CPAddress"),
+                    (float)temp.getDouble("CPLat"), (float)temp.getDouble("CPLgt"));
+        }
+        catch (Exception e){
+            Log.e("getCollectionByID", "JSONError");
+        }
+        return col;
     }
 }
