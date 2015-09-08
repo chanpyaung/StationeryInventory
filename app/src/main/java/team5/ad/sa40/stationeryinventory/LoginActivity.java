@@ -90,7 +90,6 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                 //hash password:
                 String pwHashed = MD5.getMD5(mPasswordView.getText().toString());
                 Log.i("pwhashed:", pwHashed);
-                mStatus.setText(pwHashed);
 
                 //attempt login:
             /*
