@@ -1,7 +1,10 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,6 +26,7 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
     private AutoCompleteTextView mUseridView;
     private EditText mPasswordView;
     private TextView mStatus;
+    private Button forgetPasswordBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,37 +36,63 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
         mUseridView = (AutoCompleteTextView) findViewById(R.id.userid);
         mPasswordView = (EditText) findViewById(R.id.password);
         mStatus = (TextView) findViewById(R.id.textViewStatus);
+        forgetPasswordBtn = (Button) findViewById(R.id.forgetPassword);
 
         Button signInButton = (Button) findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(this);
 
+        forgetPasswordBtn.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        // Reset errors.
-        mUseridView.setError(null);
-        mPasswordView.setError(null);
-        View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(mPasswordView.getText().toString())) {
-            mPasswordView.setError(getString(R.string.error_field_required));
-            Log.e("password field blank:", getString(R.string.error_field_required));
-            focusView = mPasswordView;
+        if(v.getId() == R.id.forgetPassword) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("To reset your password, please contact Logic University Stationery Store administrator at (65)6542-2123.")
+                    .setPositiveButton("Call", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Uri uri = Uri.parse("tel:"+ "65422123");
+                            Intent i = new Intent(Intent.ACTION_DIAL, uri);
+                            startActivity(i);
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create();
+            builder.show();
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(mUseridView.getText().toString())) {
-            mUseridView.setError(getString(R.string.error_field_required));
-            focusView = mUseridView;
-        }
+        else {
+            // Reset errors.
+            mUseridView.setError(null);
+            mPasswordView.setError(null);
+            View focusView = null;
 
-        if (!TextUtils.isEmpty(mPasswordView.getText().toString()) && !TextUtils.isEmpty(mUseridView.getText().toString())) {
-            //hash password:
-            //String pwHashed = MD5.getMD5(mPasswordView.getText().toString());
+            // Check for a valid password, if the user entered one.
+            if (TextUtils.isEmpty(mPasswordView.getText().toString())) {
+                mPasswordView.setError(getString(R.string.error_field_required));
+                Log.e("password field blank:", getString(R.string.error_field_required));
+                focusView = mPasswordView;
+            }
 
-            //attempt login:
+            // Check for a valid email address.
+            if (TextUtils.isEmpty(mUseridView.getText().toString())) {
+                mUseridView.setError(getString(R.string.error_field_required));
+                focusView = mUseridView;
+            }
+
+            if (!TextUtils.isEmpty(mPasswordView.getText().toString()) && !TextUtils.isEmpty(mUseridView.getText().toString())) {
+                //hash password:
+                String pwHashed = MD5.getMD5(mPasswordView.getText().toString());
+                Log.i("pwhashed:", pwHashed);
+                mStatus.setText(pwHashed);
+
+                //attempt login:
             /*
             try {
                 JSONObject user = new JSONObject();
@@ -108,29 +138,30 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
         return emp;
     }
 }*/
-            String result = null;
+                String result = null;
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mUseridView.getText().toString()) && (pieces[1].equals(mPasswordView.getText().toString()))) {
-                    result = "HttpResponse_OK";
+                for (String credential : DUMMY_CREDENTIALS) {
+                    String[] pieces = credential.split(":");
+                    if (pieces[0].equals(mUseridView.getText().toString()) && (pieces[1].equals(mPasswordView.getText().toString()))) {
+                        result = "HttpResponse_OK";
+                    }
                 }
-            }
 
 
-            if (result == null || result != "HttpResponse_OK") {
-                mStatus.setText(getString(R.string.error_login_failed));
-                mUseridView.setError("");
-                mPasswordView.setError("");
-            } else {
-                mStatus.setText("Logged in successfully.");
-                mUseridView.setError(null);
-                mPasswordView.setError(null);
-                Intent i = new Intent(this, MainActivity.class);
-                String userRole = mPasswordView.getText().toString();
-                Log.i("Extra", userRole);
-                i.putExtra("User", userRole);
-                startActivity(i);
+                if (result == null || result != "HttpResponse_OK") {
+                    mStatus.setText(getString(R.string.error_login_failed));
+                    mUseridView.setError("");
+                    mPasswordView.setError("");
+                } else {
+                    mStatus.setText("Logged in successfully.");
+                    mUseridView.setError(null);
+                    mPasswordView.setError(null);
+                    Intent i = new Intent(this, MainActivity.class);
+                    String userRole = mPasswordView.getText().toString();
+                    Log.i("Extra", userRole);
+                    i.putExtra("User", userRole);
+                    startActivity(i);
+                }
             }
         }
     }

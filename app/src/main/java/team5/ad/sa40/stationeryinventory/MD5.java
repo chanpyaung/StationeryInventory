@@ -20,8 +20,4 @@ public class MD5 {
             throw new RuntimeException(e);
         }
     }
-
-    public static void main(String[] args) throws NoSuchAlgorithmException {
-        System.out.println(getMD5("Javarmi.com"));
-    }
 }
