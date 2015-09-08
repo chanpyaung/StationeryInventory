@@ -1,6 +1,7 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import team5.ad.sa40.stationeryinventory.Model.Disbursement;
 import team5.ad.sa40.stationeryinventory.Model.Item;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX);
         //Check user role and redirect to respective layout
         Bundle extras = getIntent().getExtras();
         Log.i("Extra get: ", extras.toString());
@@ -106,7 +108,16 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.Dept:
-                        Toast.makeText(MainActivity.this, "Department is selected", Toast.LENGTH_SHORT).show();
+                        DepartmentInfoFragment deptFrag = new DepartmentInfoFragment();
+
+                        Bundle bundle = new Bundle();
+                        Disbursement temp2 = new Disbursement();
+                        List<Disbursement> mDisbursement = temp2.getAllDisbursement();
+                        Disbursement temp1 = mDisbursement.get(1);
+                        bundle.putSerializable("disbursement", temp1);
+                        deptFrag.setArguments(bundle);
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.frame,deptFrag).commit();
                         return true;
 
                     case R.id.noti:
@@ -154,6 +165,13 @@ public class MainActivity extends AppCompatActivity {
                         DelegateList del = new DelegateList();
                         fragmentTran = getSupportFragmentManager().beginTransaction();
                         fragmentTran.replace(R.id.frame, del);
+                        fragmentTran.commit();
+                        return true;
+
+                    case R.id.reportItem://change
+                        ReportItemSearchFragment reportItemFrag = new ReportItemSearchFragment();
+                        fragmentTran = getSupportFragmentManager().beginTransaction();
+                        fragmentTran.replace(R.id.frame, reportItemFrag);
                         fragmentTran.commit();
                         return true;
 

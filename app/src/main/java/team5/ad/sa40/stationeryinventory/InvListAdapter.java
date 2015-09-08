@@ -24,6 +24,7 @@ public class InvListAdapter extends RecyclerView.Adapter<InvListAdapter.ViewHold
         super();
         //mItems = Item.getAllItems();
         mItems = Item.initializeData();
+        //mItems = CategoryItem.getAllCategoryItems();
         Collections.sort(mItems);
         retId = new String[mItems.size()];
         Log.i("Size of list", String.valueOf(mItems.size()));

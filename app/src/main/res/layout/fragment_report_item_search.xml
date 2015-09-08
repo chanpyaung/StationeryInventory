@@ -38,6 +38,7 @@
         android:layout_margin="15dp"
         android:background="@color/PrimaryColor"
         android:text="SEARCH"
+        android:textColor="@android:color/white"
         android:layout_width="250dp"
         android:layout_height="wrap_content" />
 
@@ -50,6 +51,7 @@
         android:layout_height="wrap_content" />
 
     <ListView
+        android:id="@+id/search_result_list"
         android:layout_marginTop="25dp"
         android:layout_below="@+id/btnSearchItem"
         android:layout_marginLeft="5dp"

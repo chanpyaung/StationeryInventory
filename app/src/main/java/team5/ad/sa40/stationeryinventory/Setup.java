@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Setup {
-    public static String baseurl = "http://www.team5.com:8425";
+    public static String baseurl = "http://www.team5.com/api";
     public static String GTokenForNotification = "";
 
 

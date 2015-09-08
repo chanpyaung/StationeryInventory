@@ -1,0 +1,160 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="team5.ad.sa40.stationeryinventory.DepartmentInfoFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/contactLabel"
+        android:layout_alignParentStart="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="15dp"
+        android:textSize="14sp"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Contact Name: " />
+
+    <EditText
+        android:layout_toEndOf="@+id/contactLabel"
+        android:textSize="14sp"
+        android:id="@+id/contactName"
+        android:hint="Mrs Pamela Kow"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/contactLabel"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="14sp"
+        android:id="@+id/telLabel"
+        android:text="Telephone No: "
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="15dp"/>
+
+
+    <EditText
+        android:textSize="14sp"
+        android:layout_below="@+id/contactName"
+        android:layout_toEndOf="@+id/telLabel"
+        android:layout_marginTop="-5dp"
+        android:id="@+id/telephone"
+        android:hint="94725311"
+        android:inputType="number"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/telLabel"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="14sp"
+        android:id="@+id/faxLabel"
+        android:text="Fax No: "
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="15dp"/>
+
+
+    <EditText
+        android:layout_below="@+id/telephone"
+        android:layout_toEndOf="@+id/faxLabel"
+        android:textSize="14sp"
+        android:id="@+id/fax"
+        android:layout_marginTop="-5dp"
+        android:hint="4324954332"
+        android:inputType="number"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/faxLabel"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="14sp"
+        android:id="@+id/deptHeadLabel"
+        android:text="Department Head: "
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="15dp"/>
+
+
+    <EditText
+        android:layout_below="@+id/fax"
+        android:layout_toEndOf="@+id/deptHeadLabel"
+        android:textSize="14sp"
+        android:layout_marginTop="-5dp"
+        android:id="@+id/deptHead"
+        android:hint="Prof. Ezra Pound"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/deptHeadLabel"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="14sp"
+        android:id="@+id/repLabel"
+        android:text="Representative: "
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="15dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerRep"
+        android:layout_toEndOf="@+id/repLabel"
+        android:textSize="14sp"
+        android:layout_marginTop="-5dp"
+        android:layout_below="@+id/deptHead"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/repLabel"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="14sp"
+        android:id="@+id/cpLabel"
+        android:text="Collection Point: "
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="15dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerCPoint"
+        android:layout_toEndOf="@+id/cpLabel"
+        android:textSize="14sp"
+        android:layout_marginTop="-5dp"
+        android:layout_below="@+id/spinnerRep"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content" />
+
+    <View style="@style/Divider"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="1dp"
+        android:layout_below="@id/cpLabel"
+        android:background="@color/background_floating_material_dark"/>
+
+    <com.google.android.gms.maps.MapView
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/cpLabel"
+        android:id="@+id/mapview"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

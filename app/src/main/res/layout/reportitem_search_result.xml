@@ -24,6 +24,7 @@
     <Button
         android:id="@+id/btnReportItem"
         android:text="REPORT ITEM"
+        android:textColor="@android:color/white"
         android:layout_alignParentEnd="true"
         android:layout_margin="10dp"
         android:padding="10dp"
