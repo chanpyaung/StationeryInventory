@@ -88,6 +88,7 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
 
             if (!TextUtils.isEmpty(mPasswordView.getText().toString()) && !TextUtils.isEmpty(mUseridView.getText().toString())) {
                 //hash password:
+                MD5 md = new MD5();
                 String pwHashed = MD5.getMD5(mPasswordView.getText().toString());
                 Log.i("pwhashed:", pwHashed);
 
