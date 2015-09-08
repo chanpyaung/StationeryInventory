@@ -109,13 +109,6 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.Dept:
                         DepartmentInfoFragment deptFrag = new DepartmentInfoFragment();
-
-                        Bundle bundle = new Bundle();
-                        Disbursement temp2 = new Disbursement();
-                        List<Disbursement> mDisbursement = temp2.getAllDisbursement();
-                        Disbursement temp1 = mDisbursement.get(1);
-                        bundle.putSerializable("disbursement", temp1);
-                        deptFrag.setArguments(bundle);
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.frame,deptFrag).commit();
                         return true;

@@ -2,6 +2,7 @@ package team5.ad.sa40.stationeryinventory.Model;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -67,15 +68,14 @@ public class CollectionPoint {
 
     public static ArrayList<CollectionPoint> getAllCollectionPoints(){
         ArrayList<CollectionPoint> temp_colPt = new ArrayList<>();
-        for(int i=0; i <5; i++){
-            CollectionPoint col_pt = new CollectionPoint();
-            col_pt.setColPt_id(i);
-            col_pt.setColPt_name(names[i]);
-            col_pt.setColPt_address("ColPt_Address " + i);
-            col_pt.setColPt_lat(lats[i]);
-            col_pt.setColPt_long(longs[i]);
-
-            temp_colPt.add(col_pt);
+        JSONArray temp = JSONParser.getJSONArrayFromUrl(Setup.baseurl + "/collectionAPI.svc/getCollectionPoint");
+        try{
+            for(int i = 0; i < temp.length(); i++){
+                JSONObject obj = temp.getJSONObject(i);
+                temp_colPt.add(new CollectionPoint(obj.getInt("CPID"), obj.getString("CPName"), obj.getString("CPAddress"), (float)obj.getDouble("CPLat"),(float)obj.getDouble("CPLgt")));
+            }
+        }catch (Exception e){
+            Log.e("getAllCollectionPoints", "JSONError");
         }
         return temp_colPt;
     }
