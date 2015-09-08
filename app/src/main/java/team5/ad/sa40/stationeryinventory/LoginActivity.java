@@ -15,10 +15,6 @@ import android.widget.TextView;
 
 public class LoginActivity extends Activity implements AdapterView.OnClickListener {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "11233:hello", "11235:rep", "11236:delegate", "11272:head", "99877:clerk", "98765:supervisor"
     };
@@ -63,12 +59,15 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
         }
 
         if (!TextUtils.isEmpty(mPasswordView.getText().toString()) && !TextUtils.isEmpty(mUseridView.getText().toString())) {
+            //hash password:
+            //String pwHashed = MD5.getMD5(mPasswordView.getText().toString());
+
             //attempt login:
             /*
             try {
                 JSONObject user = new JSONObject();
                 user.put("EmpID", mUseridView.getText().toString());
-                user.put("Password", mPasswordView.getText().toString());
+                user.put("Password",pwHashed);
                 String json = user.toString();
                 Toast.makeText(this,json,Toast.LENGTH_SHORT);
 
