@@ -41,7 +41,7 @@ public class Setup {
     }
 
     public static String parseJSONDateToString(String JSONDate){
-        Date d = parseJSONDateToJavaDate(d);
+        Date d = parseJSONDateToJavaDate(JSONDate);
         return parseDateToString(d);
     }
 }

@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
 
                     case R.id.catalog:
-                        Toast.makeText(MainActivity.this, "Catalog is selected", Toast.LENGTH_SHORT).show();
                         mCategoryFragment = new CategoryFragment();
                         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.frame, mCategoryFragment);

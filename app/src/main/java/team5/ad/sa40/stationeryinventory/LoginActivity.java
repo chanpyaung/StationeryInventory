@@ -122,7 +122,8 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                     public void success(JSONEmployee employee, Response response) {
                         Log.i("Return :", employee.getEmpID().toString()+" "+ employee.getEmpName().toString());
                         Log.i("User ROle: ", employee.getRoleID().toString());
-                        Log.i("Response: ", response.toString());
+                        Log.i("Response: ", response.getBody().toString());
+                        System.out.println("Response Status "+response.getStatus());
                         Setup.user = employee;
                         Intent i = new Intent(LoginActivity.this,MainActivity.class);
                         startActivity(i);

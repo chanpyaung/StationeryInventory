@@ -67,7 +67,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
             @Override
             protected void onPostExecute(List<Item> result){
                 itemList = result;
-                mAdapter.myItemlist = itemList;
+                ItemListAdapter.myItemlist = itemList;
             }
         }.execute();
         ButterKnife.bind(this, view);
