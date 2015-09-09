@@ -43,7 +43,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
         JSONItem mitem = CategoryFragment.itemsbyCategory.get(i);
-        System.out.println("OnBindViewHolder" + myItemlist.get(i));
+        System.out.println("OnBindViewHolder" + CategoryFragment.itemsbyCategory.get(i));
         viewHolder.itemName.setText(mitem.getItemName());
         viewHolder.uom.setText(mitem.getUOM());
 

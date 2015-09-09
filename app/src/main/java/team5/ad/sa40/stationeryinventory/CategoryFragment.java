@@ -33,7 +33,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONItem;
  */
 public class CategoryFragment extends android.support.v4.app.Fragment {
 
-    public static List<JSONItem> itemsbyCategory;
+    public static List<JSONItem> itemsbyCategory = new ArrayList<JSONItem>();
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     GridAdapter mAdapter;
@@ -60,6 +60,7 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new GridAdapter();
         mRecyclerView.setAdapter(mAdapter);
+        /*
         mAdapter.SetOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -75,6 +76,7 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
                 //Toast.makeText(CategoryFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
             }
         });
+        */
 
         search = (SearchView)view.findViewById(R.id.searchCat);
 
@@ -111,7 +113,7 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
         mRecyclerView.setAdapter(alphaAdapter);
         mAdapter.SetOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(View view, final int position) {
 
                 RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
                 ItemAPI itemAPI = restAdapter.create(ItemAPI.class);
@@ -120,27 +122,27 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
                     @Override
                     public void success(List<JSONItem> jsonItems, Response response) {
                         itemsbyCategory = jsonItems;
-                        System.out.println("JSON Result : "+jsonItems);
-                        System.out.println("Response "+ response.getStatus());
-                        for(JSONItem jitem : jsonItems){
-                            System.out.println("ITem "+ jitem.getItemID()+" "+jitem.getItemName());
+                        System.out.println("JSON Result : " + jsonItems);
+                        System.out.println("Response " + response.getStatus());
+                        for (JSONItem jitem : jsonItems) {
+                            System.out.println("ITem " + jitem.getItemID() + " " + jitem.getItemName());
                             //itemsbyCategory.add(jitem);
                         }
+                        ItemListFragment iLFrag = new ItemListFragment();
+                        Bundle args = new Bundle();
+                        args.putString("CategoryName", mAdapter.categoryNames[position]);
+                        Log.i("CategoryName", mAdapter.categoryNames[position]);
+                        FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                        iLFrag.setArguments(args);
+                        fragTran.replace(R.id.frame, iLFrag).addToBackStack("TAG").commit();
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
-                        System.out.println("Failure: "+ error.toString());
+                        System.out.println("Failure: " + error.toString());
                     }
                 });
 
-                ItemListFragment iLFrag = new ItemListFragment();
-                Bundle args = new Bundle();
-                args.putString("CategoryName", mAdapter.categoryNames[position]);
-                Log.i("CategoryName", mAdapter.categoryNames[position]);
-                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                iLFrag.setArguments(args);
-                fragTran.replace(R.id.frame, iLFrag).addToBackStack("TAG").commit();
 //                Toast.makeText(CategoryFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
             }
         });

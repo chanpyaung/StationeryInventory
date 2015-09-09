@@ -31,7 +31,6 @@ import team5.ad.sa40.stationeryinventory.Model.JSONItem;
  */
 public class ItemListFragment extends android.support.v4.app.Fragment {
 
-
     @Bind(R.id.item_recycler_view) RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     ItemListAdapter mAdapter;
@@ -42,6 +41,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
 
     public ItemListFragment() {
         // Required empty public constructor
+        Log.i("Size of item List", String.valueOf(CategoryFragment.itemsbyCategory.size()));
     }
 
 
