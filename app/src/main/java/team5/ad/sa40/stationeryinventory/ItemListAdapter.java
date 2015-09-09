@@ -14,41 +14,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import team5.ad.sa40.stationeryinventory.Model.Item;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 /**
  * Created by johnmajor on 9/3/15.
  */
 public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHolder> {
 
-    Item myItem, myItem1, myItem2, myItem3, myItem4, myItem5, myItem6, myItem7, myItem8, myItem9;
-    public static List<Item> myItemlist = new ArrayList<Item>();
-    List<Item> cartItemList;
+    public static List<JSONItem> myItemlist = new ArrayList<JSONItem>();
+    List<JSONItem> cartItemList;
 
     OnItemClickListener mItemClickListener;
 
     public ItemListAdapter() {
         super();
-
-        //StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX);
-        myItem = new Item("002211144433EE","Clip A", 1, 30, 50, "pcs", 400, "SHELF3L3");
-        myItem1 = new Item("EE123489393","Clip B", 1, 20, 50, "pcs", 200, "SHELF3L3");
-        myItem2 = new Item("3332122fAAA","Clip C", 1, 30, 50, "pcs", 30, "SHELF3L3");
-        myItem3 = new Item("FE345678902","Clip D", 1, 43, 22, "pcs", 69, "SHELF3L3");
-        myItem4 = new Item("BBW2567843CCC","Clip E", 1, 12, 64, "pcs", 77, "SHELF3L3");
-        myItem5 = new Item("EEC9876543","Clip F", 1, 30, 50, "pcs", 33, "SHELF3L3");
-        myItem6 = new Item("SDFG765434322345","Clip G", 1, 30, 50, "pcs", 22, "SHELF3L3");
-        myItem7 = new Item("YHN9876543","Clip H", 1, 59, 100, "pcs", 98, "SHELF3L3");
-        myItem8 = new Item("CVH78323456789","Clip I", 1, 33, 50, "pcs", 84, "SHELF3L3");
-        myItem9 = new Item("MMM987654234","Clip J", 1, 44, 50, "pcs", 43, "SHELF3L3");
-        //myItemlist = CategoryItem.getAllCategoryItems();
-//        Log.i("My Item list", myItemlist.toString());
-        cartItemList = new ArrayList<Item>();
-//        Item[] itemList = new Item[]{myItem, myItem1, myItem2,myItem3,myItem4,myItem5,myItem6,myItem7,myItem8,myItem9};
-//        for (Item i: itemList){
-//            myItemlist.add(i);
-//        }
-
+        cartItemList = new ArrayList<JSONItem>();
     }
 
     @Override
@@ -62,7 +42,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
-        Item mitem = myItemlist.get(i);
+        JSONItem mitem = CategoryFragment.itemsbyCategory.get(i);
         System.out.println("OnBindViewHolder" + myItemlist.get(i));
         viewHolder.itemName.setText(mitem.getItemName());
         viewHolder.uom.setText(mitem.getUOM());
@@ -71,8 +51,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        System.out.println("Size "+myItemlist.size());
-        return myItemlist.size();
+        System.out.println("Size "+CategoryFragment.itemsbyCategory.size());
+        return CategoryFragment.itemsbyCategory.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -92,9 +72,9 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    cartItemList.add(myItemlist.get(getAdapterPosition()));
-                    MainActivity.requestCart.add(myItemlist.get(getAdapterPosition()));
-                    Log.i("Cart Item: ", myItemlist.get(getAdapterPosition()).getItemName());
+                    cartItemList.add(CategoryFragment.itemsbyCategory.get(getAdapterPosition()));
+                    MainActivity.requestCart.add(CategoryFragment.itemsbyCategory.get(getAdapterPosition()));
+                    Log.i("Cart Item: ", CategoryFragment.itemsbyCategory.get(getAdapterPosition()).getItemName());
                     Toast.makeText(v.getContext(), "Added to cart", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -117,51 +97,51 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         this.mItemClickListener = mItemClickListener;
     }
 
-    public Item removeItem(int position) {
-        final Item item = myItemlist.remove(position);
+    public JSONItem removeItem(int position) {
+        final JSONItem item = CategoryFragment.itemsbyCategory.remove(position);
         notifyItemRemoved(position);
         return item;
     }
 
-    public void addItem(int position, Item item) {
-        myItemlist.add(position, item);
+    public void addItem(int position, JSONItem item) {
+        CategoryFragment.itemsbyCategory.add(position, item);
         notifyItemInserted(position);
     }
 
     public void moveItem(int fromPosition, int toPosition) {
-        final Item model = myItemlist.remove(fromPosition);
-        myItemlist.add(toPosition, model);
+        final JSONItem model = CategoryFragment.itemsbyCategory.remove(fromPosition);
+        CategoryFragment.itemsbyCategory.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
 
-    public void animateTo(List<Item> items) {
+    public void animateTo(List<JSONItem> items) {
         applyAndAnimateRemovals(items);
         applyAndAnimateAdditions(items);
         applyAndAnimateMovedItems(items);
     }
 
-    private void applyAndAnimateRemovals(List<Item> newItems) {
-        for (int i = myItemlist.size() - 1; i >= 0; i--) {
-            final Item model = myItemlist.get(i);
+    private void applyAndAnimateRemovals(List<JSONItem> newItems) {
+        for (int i = CategoryFragment.itemsbyCategory.size() - 1; i >= 0; i--) {
+            final JSONItem model = CategoryFragment.itemsbyCategory.get(i);
             if (!newItems.contains(model)) {
                 removeItem(i);
             }
         }
     }
 
-    private void applyAndAnimateAdditions(List<Item> newModels) {
+    private void applyAndAnimateAdditions(List<JSONItem> newModels) {
         for (int i = 0, count = newModels.size(); i < count; i++) {
-            final Item item = newModels.get(i);
-            if (!myItemlist.contains(item)) {
+            final JSONItem item = newModels.get(i);
+            if (!CategoryFragment.itemsbyCategory.contains(item)) {
                 addItem(i, item);
             }
         }
     }
 
-    private void applyAndAnimateMovedItems(List<Item> newModels) {
+    private void applyAndAnimateMovedItems(List<JSONItem> newModels) {
         for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
-            final Item model = newModels.get(toPosition);
-            final int fromPosition = myItemlist.indexOf(model);
+            final JSONItem model = newModels.get(toPosition);
+            final int fromPosition = CategoryFragment.itemsbyCategory.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
             }

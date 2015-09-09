@@ -1,6 +1,8 @@
 package team5.ad.sa40.stationeryinventory.Model;
 
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,6 +22,13 @@ public class Retrieval {
     private String status;
     private List<RetrievalDetail> items;
     private List<String> reqForms;
+
+    public Retrieval(){
+        retID = 0;
+        status = "";
+        items = new ArrayList<RetrievalDetail>();
+        reqForms = new ArrayList<String>();
+    }
 
     public int getRetID(){
         return retID;
@@ -74,98 +83,144 @@ public class Retrieval {
         return retrievalList;
     }
 
-    public static List<RetrievalDetail> initializeDataDetails(int RetID){
-        List<RetrievalDetail> retrievalDetailList = new ArrayList<RetrievalDetail>();
-        int i=0;
-        int retID = RetID;
-        RetrievalDetail rp = new RetrievalDetail(i+1, retID, "C001","Clip 11 inch","A7",12,0);
-        retrievalDetailList.add(rp);
-        i++;
-        do {
-            RetrievalDetail r = new RetrievalDetail(i+1, retID, "E00"+i,"Envelope Brown A4","D5",(i*10),0);
-            retrievalDetailList.add(r);
-            i++;
-        } while (i<10);
-
-        return retrievalDetailList;
-    }
-
     public static List<Retrieval> getAllRetrievals(){
         List<Retrieval> retrievalList = new ArrayList<Retrieval>();
-        Employee e = new Employee();
-        JSONArray result = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getRetrieval/%s/null/null",
+        Setup s = new Setup();
+        JSONArray result = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalAPI.svc/getRetrieval/%s/null/null",
                 Setup.baseurl, Setup.user.getEmpID()));
         try {
+            Log.i("json retrievals: ", result.toString());
             for (int retrieval = 0; retrieval < result.length(); retrieval++) {
-                JSONObject ret = new JSONObject(result.getString(retrieval));
+                JSONObject ret = result.getJSONObject(retrieval);
                 Retrieval r = new Retrieval();
                 r.setRetID(Integer.parseInt(ret.getString("RetID")));
                 r.setStatus(ret.getString("Status"));
-                try {
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                    Date d = format.parse(ret.getString("Date"));
-                    System.out.println(d);
+                if(ret.getString("Date") != null || ret.getString("Date")!="") {
+                    Setup setup = new Setup();
+                    Date d = Setup.parseJSONDateToJavaDate(ret.getString("Date").toString());
                     r.setDate(d);
-                } catch (ParseException exp) {
-                    exp.printStackTrace();
                 }
                 retrievalList.add(r);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Log.e("getAllCollectionPoints", "JSONError");
         }
         return retrievalList;
     }
 
-    public Retrieval getRetrieval(int id) {
+    public static Retrieval getRetrieval(int id, String status) {
         Retrieval r = new Retrieval();
 
-        JSONObject result = JSONParser.getJSONFromUrl(String.format("%s/retrievalapi.svc/getRetrieval/null/null/%s",
+        JSONArray resultObj = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalAPI.svc/getRetrieval/%s/%s/%s",
+                Setup.baseurl, Setup.user.getEmpID(), status, Integer.toString(id)));
+        JSONArray resultItems = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalAPI.svc/getRetrievalDetail/%s",
                 Setup.baseurl, Integer.toString(id)));
-        JSONArray resultItems = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getRetrievalDetail/%s",
-                Setup.baseurl, Integer.toString(id)));
-        JSONArray resultReqForms = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getReqAllocation/%s",
+        JSONArray resultReqForms = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalAPI.svc/getReqAllocation/%s",
                 Setup.baseurl,Integer.toString(id)));
 
-        if(result!=null) {
+        Log.i("resultObj:",resultObj.toString());
+        Log.i("resultItems:",resultItems.toString());
+        Log.i("resultReqForms:",resultReqForms.toString());
+
+        try {
+            JSONObject result = resultObj.getJSONObject(0);
+            r.setRetID(Integer.parseInt(result.getString("RetID")));
+            r.setStatus(result.getString("Status"));
+            if(result.getString("Date") != null || result.getString("Date")!="") {
+                Setup setup = new Setup();
+                Date d = Setup.parseJSONDateToJavaDate(result.getString("Date").toString());
+                r.setDate(d);
+            }
+
+            for (int retItem=0; retItem<resultItems.length(); retItem++) {
+                JSONObject i = resultItems.getJSONObject(retItem);
+                RetrievalDetail item = new RetrievalDetail(i.getString("ItemID"), i.getString("ItemName"),
+                        i.getString("Bin"), Integer.parseInt(i.getString("TotalQty")),
+                        Integer.parseInt(i.getString("ActualQty")));
+                r.getItems().add(item);
+                Log.i("r.getItems:", r.getItems().toString());
+            }
+
+            for (int reqForm = 0; reqForm < resultItems.length(); reqForm++) {
+                JSONObject i = resultReqForms.getJSONObject(reqForm);
+                if(r.getReqForms().size() == 0){
+                    r.getReqForms().add(i.getString("ReqID").toString());
+                    Log.i("r.getReqForms:", r.getReqForms().toString());
+                }
+                for(int form=0; form<r.getReqForms().size(); form++) {
+                    if(i.getString("ReqID") != r.getReqForms().get(form)) {
+                        r.getReqForms().add(i.getString("ReqID").toString());
+                        Log.i("r.getReqForms:", r.getReqForms().toString());
+                        break;
+                    }
+                }
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return r;
+    }
+
+    public static String saveRetrieval(Retrieval ret, List<RetrievalDetail> allItems) {
+        String result = null;
+        JSONArray jsonArray = new JSONArray();
+
+        for (int i = 0; i < allItems.size(); i++) {
+
             try {
-                r.setRetID(Integer.parseInt(result.getString("RetID")));
-                r.setStatus(result.getString("Status"));
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                try {
-                    Date d = format.parse(result.getString("Date"));
-                    System.out.println(d);
-                    r.setDate(d);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                JSONObject obj = new JSONObject();
+                obj.put("RetID", Integer.toString(ret.getRetID()));
+                obj.put("ItemID", allItems.get(i).get("itemID").toString());
+                if(allItems.get(i).get("ActualQty") == null) {
+                    allItems.get(i).put("ActualQty","0");
                 }
-
-                for (int retItem=0; retItem<resultItems.length(); retItem++) {
-                    JSONObject i = new JSONObject(resultItems.getString(retItem));
-                    RetrievalDetail item = new RetrievalDetail(Integer.parseInt(i.getString("RetSN")),
-                            Integer.parseInt(i.getString("RetID")), i.getString("itemID"), i.getString("itemName"),
-                            i.getString("Bin"), Integer.parseInt(i.getString("RequestQty")),
-                            Integer.parseInt(i.getString("ActualQty")));
-                    r.getItems().add(item);
-                }
-
-            } catch(Exception e) {
+                obj.put("ActualQty", allItems.get(i).get("ActualQty").toString());
+                jsonArray.put(obj);
+                Log.i("json post array:", jsonArray.toString());
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        if(resultReqForms != null) {
+        //update retrieval form in server
+        Setup s = new Setup();
+        result = JSONParser.postStream(String.format("%s/retrievalAPI.svc/save", Setup.baseurl),
+                jsonArray.toString());
+        Log.i("json post result:", result);
+
+        return result;
+    }
+
+    public static String submitRetrieval(Retrieval ret, List<RetrievalDetail> allItems) {
+        String result = null;
+        JSONArray jsonArray = new JSONArray();
+
+        for (int i = 0; i < allItems.size(); i++) {
+
             try {
-                for (int reqForm = 0; reqForm < resultItems.length(); reqForm++) {
-                    JSONObject i = new JSONObject(resultReqForms.getString(reqForm));
-                    r.reqForms.add(i.get("ReqID").toString());
+                JSONObject obj = new JSONObject();
+                obj.put("RetID", Integer.toString(ret.getRetID()));
+                obj.put("ItemID", allItems.get(i).get("itemID").toString());
+                if(allItems.get(i).get("ActualQty") == null) {
+                    allItems.get(i).put("ActualQty","0");
                 }
-            } catch(Exception e) {
-            e.printStackTrace();
+                obj.put("ActualQty", allItems.get(i).get("ActualQty").toString());
+                jsonArray.put(obj);
+                Log.i("json post array:", jsonArray.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
-        return r;
+        //update retrieval form in server
+        Setup s = new Setup();
+        result = JSONParser.postStream(String.format("%s/retrievalAPI.svc/submit", Setup.baseurl),
+                jsonArray.toString());
+        Log.i("json post result:", result);
+
+        return result;
     }
 
 }

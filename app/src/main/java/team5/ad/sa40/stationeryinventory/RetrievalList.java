@@ -1,5 +1,6 @@
 package team5.ad.sa40.stationeryinventory;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,6 @@ public class RetrievalList extends android.support.v4.app.Fragment {
         spinnerRetStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(RetrievalList.this.getActivity(), "Selected: " + position, Toast.LENGTH_SHORT).show();
                 Log.i("spinner's:", filters[position]);
                 switch (position) {
                     case (0):
@@ -87,34 +86,50 @@ public class RetrievalList extends android.support.v4.app.Fragment {
     }
 
     public void showAllRetrieval() {
-        adapter = new RetListAdapter();
         allRetrievals = new ArrayList<Retrieval>();
-        allRetrievals = adapter.mRetrievals;
-        mRecyclerView.setAdapter(adapter);
-        adapter.SetOnItemClickListener(new RetListAdapter.OnItemClickListener() {
+        new AsyncTask<Void, Void, RetListAdapter>(){
             @Override
-            public void onItemClick(View view, int position) {
-                Retrieval selected =  allRetrievals.get(position);
-                Bundle args = new Bundle();
-                args.putInt("RetID", selected.getRetID());
-                Log.i("selected retID: ", Integer.toString(selected.getRetID()));
-                Setup s = new Setup();
-                args.putString("RetDate", Setup.parseDateToString(selected.getDate()));
-                args.putString("RetStatus", selected.getStatus());
-                RetrievalFormDetails fragment = new RetrievalFormDetails();
-                fragment.setArguments(args);
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment).addToBackStack("RETRIEVALLIST TAG").commit();
+            protected RetListAdapter doInBackground(Void... params) {
+                adapter = new RetListAdapter();
+                return adapter;
+            }
+            @Override
+            protected void onPostExecute(RetListAdapter result) {
+                allRetrievals = result.mRetrievals;
+                mRecyclerView.setAdapter(result);
+                result.SetOnItemClickListener(new RetListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Retrieval selected =  allRetrievals.get(position);
+                        Bundle args = new Bundle();
+                        args.putInt("RetID", selected.getRetID());
+                        Log.i("selected retID: ", Integer.toString(selected.getRetID()));
+                        Setup s = new Setup();
+                        if(selected.getDate()!=null) {
+                            args.putString("RetDate", Setup.parseDateToString(selected.getDate()));
+                        }
+                        else {
+                            args.putString("RetDate","");
+                        }
+                        args.putString("RetStatus", selected.getStatus());
+                        Log.i("selected retStatus: ",selected.getStatus());
+                        RetrievalFormDetails fragment = new RetrievalFormDetails();
+                        fragment.setArguments(args);
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.frame, fragment).addToBackStack("RETRIEVALLIST TAG").commit();
+
+                    }
+                });
 
             }
-        });
+        }.execute();
     }
 
     public void showPendingRetrieval() {
         List<Retrieval> pendingRetrievals = new ArrayList<Retrieval>();
         for(int i=0; i<allRetrievals.size(); i++) {
             Retrieval r = allRetrievals.get(i);
-            if(r.getStatus()=="Pending") {
+            if(r.getStatus().equals("PENDING")) {
                 pendingRetrievals.add(r);
             }
         }
@@ -126,7 +141,7 @@ public class RetrievalList extends android.support.v4.app.Fragment {
         List<Retrieval> retrievedRetrievals = new ArrayList<Retrieval>();
         for(int i=0; i<allRetrievals.size(); i++) {
             Retrieval r = allRetrievals.get(i);
-            if(r.getStatus()=="Retrieved") {
+            if(r.getStatus().equals("RETRIEVED")) {
                 retrievedRetrievals.add(r);
             }
         }

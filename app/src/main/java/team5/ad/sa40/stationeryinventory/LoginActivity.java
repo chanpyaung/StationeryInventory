@@ -15,6 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.EmployeeAPI;
+import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
 
 public class LoginActivity extends Activity implements AdapterView.OnClickListener {
 
@@ -27,6 +35,7 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
     private EditText mPasswordView;
     private TextView mStatus;
     private Button forgetPasswordBtn;
+    private Setup setup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +99,47 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                 //hash password:
                 MD5 md = new MD5();
                 String pwHashed = MD5.getMD5(mPasswordView.getText().toString());
+                //String pwHashed = "81dc9bdb52d04dc20036dbd8313ed055";
                 Log.i("pwhashed:", pwHashed);
+
+
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("EmpID", mUseridView.getText().toString());
+                jsonObject.addProperty("Password", pwHashed);
+
+                //attempt employeeAPI.svc/login API usig retrofit
+
+                //create an adapter for retrofit with base url
+                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(setup.baseurl).build();
+
+                //creating a service for adapter with our POST class
+                EmployeeAPI empAPI = restAdapter.create(EmployeeAPI.class);
+
+                //call for response
+                //retrofit will convert gson for JSON-POJO (JSONEmployee)
+                empAPI.login(jsonObject, new Callback<JSONEmployee>() {
+                    @Override
+                    public void success(JSONEmployee employee, Response response) {
+                        Log.i("Return :", employee.getEmpID().toString()+" "+ employee.getEmpName().toString());
+                        Log.i("User ROle: ", employee.getRoleID().toString());
+                        Log.i("Response: ", response.getBody().toString());
+                        System.out.println("Response Status " + response.getStatus());
+                        Setup.user = employee;
+                        Intent i = new Intent(LoginActivity.this,MainActivity.class);
+                        startActivity(i);
+                        mUseridView.setError(null);
+                        mPasswordView.setError(null);
+                        mStatus.setText("Logged in successfully.");
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.i("Error: ", error.toString());
+                        mStatus.setText(getString(R.string.error_login_failed));
+                        mUseridView.setError("");
+                        mPasswordView.setError("");
+                    }
+                });
 
                 //attempt login:
             /*
@@ -114,7 +163,7 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                                 result.get("EmpID"), result.get("EmpName"),
                                 result.get("RoleID"));
                         t.setText(p);
-                        mStatus.setText("Logged in successfully.");
+
                     }
                 }.execute(json);
 
@@ -138,6 +187,7 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
         return emp;
     }
 }*/
+                /* by John
                 String result = null;
 
                 for (String credential : DUMMY_CREDENTIALS) {
@@ -149,19 +199,17 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
 
 
                 if (result == null || result != "HttpResponse_OK") {
-                    mStatus.setText(getString(R.string.error_login_failed));
-                    mUseridView.setError("");
-                    mPasswordView.setError("");
+
                 } else {
                     mStatus.setText("Logged in successfully.");
-                    mUseridView.setError(null);
-                    mPasswordView.setError(null);
+
                     Intent i = new Intent(this, MainActivity.class);
                     String userRole = mPasswordView.getText().toString();
                     Log.i("Extra", userRole);
                     i.putExtra("User", userRole);
                     startActivity(i);
                 }
+                */
             }
         }
     }
