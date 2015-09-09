@@ -5,12 +5,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import team5.ad.sa40.stationeryinventory.Model.Employee;
+import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
 
 public class Setup {
     public static String baseurl = "http://192.168.31.202/api";
     public static String GTokenForNotification = "";
-    public static Employee user;
+    public static JSONEmployee user;
 
     public static String parseDateToString(Date d) {
         String output = "";

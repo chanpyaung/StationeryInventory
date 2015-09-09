@@ -5,7 +5,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -15,7 +14,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import team5.ad.sa40.stationeryinventory.Model.Disbursement;
 import team5.ad.sa40.stationeryinventory.Model.Item;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,34 +35,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Check user role and redirect to respective layout
-        Bundle extras = getIntent().getExtras();
-        Log.i("Extra get: ", extras.toString());
-        if ( extras != null){
-            user = extras.getString("User");
-            Log.i("User value", user);
-                switch (user) {
-                    case "hello":
-                        setContentView(R.layout.activity_main);
-                        break;
-                    case "delegate":
-                        setContentView(R.layout.empdelegate_activity_main);
-                        break;
-                    case "rep":
-                        setContentView(R.layout.emprep_activity_main);
-                        break;
-                    case "head":
-                        setContentView(R.layout.depthead_activity_main);
-                        break;
-                    case "clerk":
-                        setContentView(R.layout.storeclerk_activity_main);
-                        break;
-                    case "supervisor":
-                        setContentView(R.layout.storesupervisor_activity_main);
-                        break;
-                    default:
-                        setContentView(R.layout.activity_main);
-                        break;
-                }
+        switch (Setup.user.getRoleID()) {
+            case "EM":
+                setContentView(R.layout.activity_main);
+                break;
+            case "DD":
+                setContentView(R.layout.empdelegate_activity_main);
+                break;
+            case "DR":
+                setContentView(R.layout.emprep_activity_main);
+                break;
+            case "DH":
+                setContentView(R.layout.depthead_activity_main);
+                break;
+            case "SC":
+                setContentView(R.layout.storeclerk_activity_main);
+                break;
+            case "SS":
+                setContentView(R.layout.storesupervisor_activity_main);
+                break;
+            case "SM":
+                setContentView(R.layout.storesupervisor_activity_main);
+                break;
+            default:
+                setContentView(R.layout.activity_main);
+                break;
         }
 
 
