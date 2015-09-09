@@ -22,7 +22,7 @@
         android:layout_height="117dp"
         android:id="@+id/imageLogo"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/logo"
+        android:src="@drawable/logo_200"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="100dp" />
 
@@ -82,6 +82,16 @@
                 android:layout_weight="0.88"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="10dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Forget Password?"
+                android:id="@+id/forgetPassword"
+                android:layout_gravity="center_horizontal"
+                android:background="#00ffffff"
+                android:textColor="#ffffff"
+                android:shadowColor="#00ffffff" />
 
         </LinearLayout>
     </ScrollView>

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import team5.ad.sa40.stationeryinventory.Employee;
 import team5.ad.sa40.stationeryinventory.JSONParser;
 import team5.ad.sa40.stationeryinventory.Setup;
 
@@ -95,7 +94,7 @@ public class Retrieval {
         List<Retrieval> retrievalList = new ArrayList<Retrieval>();
         Employee e = new Employee();
         JSONArray result = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalapi.svc/getRetrieval/%s/null/null",
-                Setup.baseurl, Employee.EmpID));
+                Setup.baseurl, Setup.user.getEmpID()));
         try {
             for (int retrieval = 0; retrieval < result.length(); retrieval++) {
                 JSONObject ret = new JSONObject(result.getString(retrieval));

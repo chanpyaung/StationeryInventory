@@ -1,6 +1,14 @@
 package team5.ad.sa40.stationeryinventory.Model;
 
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+
+import team5.ad.sa40.stationeryinventory.JSONParser;
+import team5.ad.sa40.stationeryinventory.Setup;
 
 /**
  * Created by student on 3/9/15.
@@ -12,6 +20,15 @@ public class CollectionPoint {
     private String colPt_address;
     private float colPt_lat;
     private float colPt_long;
+
+    public CollectionPoint(){}
+    public CollectionPoint(int _colID, String _colName, String _colAddress, float _lat, float _long){
+        colPt_id = _colID;
+        colPt_name = _colName;
+        colPt_address = _colAddress;
+        colPt_lat = _lat;
+        colPt_long = _long;
+    }
 
     public int getColPt_id(){
         return colPt_id;
@@ -51,16 +68,29 @@ public class CollectionPoint {
 
     public static ArrayList<CollectionPoint> getAllCollectionPoints(){
         ArrayList<CollectionPoint> temp_colPt = new ArrayList<>();
-        for(int i=0; i <5; i++){
-            CollectionPoint col_pt = new CollectionPoint();
-            col_pt.setColPt_id(i);
-            col_pt.setColPt_name(names[i]);
-            col_pt.setColPt_address("ColPt_Address " + i);
-            col_pt.setColPt_lat(lats[i]);
-            col_pt.setColPt_long(longs[i]);
-
-            temp_colPt.add(col_pt);
+        JSONArray temp = JSONParser.getJSONArrayFromUrl(Setup.baseurl + "/collectionAPI.svc/getCollectionPoint");
+        try{
+            for(int i = 0; i < temp.length(); i++){
+                JSONObject obj = temp.getJSONObject(i);
+                temp_colPt.add(new CollectionPoint(obj.getInt("CPID"), obj.getString("CPName"), obj.getString("CPAddress"), (float)obj.getDouble("CPLat"),(float)obj.getDouble("CPLgt")));
+            }
+        }catch (Exception e){
+            Log.e("getAllCollectionPoints", "JSONError");
         }
         return temp_colPt;
+    }
+
+    public static CollectionPoint getCollectionByID(int _id){
+        JSONObject temp = JSONParser.getJSONFromUrl(Setup.baseurl + "/collectionAPI.svc/getCollectionPointbyID/" +
+                String.valueOf(_id));
+        CollectionPoint col = null;
+        try{
+            col = new CollectionPoint(temp.getInt("CPID"), temp.getString("CPName"), temp.getString("CPAddress"),
+                    (float)temp.getDouble("CPLat"), (float)temp.getDouble("CPLgt"));
+        }
+        catch (Exception e){
+            Log.e("getCollectionByID", "JSONError");
+        }
+        return col;
     }
 }
