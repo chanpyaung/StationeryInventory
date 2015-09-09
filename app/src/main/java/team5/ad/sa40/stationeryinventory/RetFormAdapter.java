@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import team5.ad.sa40.stationeryinventory.Model.Requisition;
@@ -17,51 +18,61 @@ import team5.ad.sa40.stationeryinventory.Model.RetrievalDetail;
 public class RetFormAdapter extends RecyclerView.Adapter<RetFormAdapter.ViewHolder> {
 
     List<RetrievalDetail> mRetrievalDetails;
+    Retrieval mRetrieval;
     String[] retDetailId;
     String mReqForms = "";
     RetFormAdapter.OnItemClickListener mItemClickListener;
     String mStatus = "";
+    List<String> req;
 
     public RetFormAdapter(int RetID, String status){
         super();
-        mRetrievalDetails = Retrieval.initializeDataDetails(RetID);
-        mStatus = status;
-        List<Requisition> req = Requisition.initializeData();
-        for(int i=0; i<req.size(); i++) {
-            String idDisplay = "";
-            int id = req.get(i).getReqID();
-            if(id<10) {
-                idDisplay = "000" + String.valueOf(id);
-            }
-            else if(id<100) {
-                idDisplay = "00" + String.valueOf(id);
-            }
-            else if(id<1000) {
-                idDisplay = "0" + String.valueOf(id);
-            }
-            else if(id<10000) {
-                idDisplay = String.valueOf(id);
-            }
-            if(i == (req.size() - 1)) {
-                mReqForms = mReqForms + idDisplay;
-            }
-            else {
-                mReqForms = mReqForms + idDisplay + ", ";
-            }
+        mRetrieval = Retrieval.getRetrieval(RetID, status);
+        Log.i("mRetrieval: ", Integer.toString(mRetrieval.getRetID()));
+        mRetrievalDetails = new ArrayList<RetrievalDetail>();
+        if(mRetrieval.getItems() != null) {
+            mRetrievalDetails = mRetrieval.getItems();
         }
-        Retrieval r = new Retrieval();
-        //r.getRetrieval(RetID);
-        //mReqForms = r.getReqForms();
-        //mRetrievalDetails = r.getItems();
+        Log.i("mRetrievalDetails: ", mRetrieval.getItems().toString());
+        mStatus = mRetrieval.getStatus();
+        Log.i("mStatus: ", mRetrieval.getStatus());
 
-        retDetailId = new String[mRetrievalDetails.size()];
-        Log.i("Size of list", String.valueOf(mRetrievalDetails.size()));
-        Setup s = new Setup();
-        for(int i = 0; i < mRetrievalDetails.size(); i++){
-            String temp = String.valueOf(mRetrievalDetails.get(i).get("itemID"));
-            retDetailId[i] = temp;
+        if(mRetrieval.getReqForms() != null) {
+            req = mRetrieval.getReqForms();
+            Log.i("req: ", mRetrieval.getReqForms().toString());
+            for (int i = 0; i < req.size(); i++) {
+                String idDisplay = "";
+                int id = Integer.parseInt(req.get(i));
+                if (id < 10) {
+                    idDisplay = "000" + String.valueOf(id);
+                } else if (id < 100) {
+                    idDisplay = "00" + String.valueOf(id);
+                } else if (id < 1000) {
+                    idDisplay = "0" + String.valueOf(id);
+                } else if (id < 10000) {
+                    idDisplay = String.valueOf(id);
+                }
+                if (i == (req.size() - 1)) {
+                    mReqForms = mReqForms + idDisplay;
+                } else {
+                    mReqForms = mReqForms + idDisplay + ", ";
+                }
+            }
         }
-        Log.i("First of string ", retDetailId[0]);
+        else {
+            req = new ArrayList<String>();
+        }
+
+        if(mRetrievalDetails.size()>0) {
+            retDetailId = new String[mRetrievalDetails.size()];
+            Log.i("Size of list", String.valueOf(mRetrievalDetails.size()));
+            Setup s = new Setup();
+            for (int i = 0; i < mRetrievalDetails.size(); i++) {
+                String temp = String.valueOf(mRetrievalDetails.get(i).get("itemID"));
+                retDetailId[i] = temp;
+            }
+            Log.i("First of string ", retDetailId[0]);
+        }
     }
 
     @Override
@@ -79,7 +90,8 @@ public class RetFormAdapter extends RecyclerView.Adapter<RetFormAdapter.ViewHold
         viewHolder.itemName.setText(ret.get("itemName").toString());
         viewHolder.requestQty.setText(ret.get("RequestQty").toString());
         viewHolder.bin.setText(ret.get("Bin").toString());
-        if(mStatus == "Retrieved") {
+        if(mStatus.equals("RETRIEVED")) {
+            viewHolder.actualQty.setText(ret.get("ActualQty").toString());
             viewHolder.actualQty.setEnabled(false);
         }
     }
@@ -161,33 +173,32 @@ public class RetFormAdapter extends RecyclerView.Adapter<RetFormAdapter.ViewHold
             actualQty.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
-                    if(!actualQty.hasFocus()) {
-                        String in = actualQty.getText().toString();
-                        Log.i("actual qty:", in);
-                        if(in == null || in == "") {
-                            in = "0";
-                        }
-                        int input;
-                        try {
-                            input = Integer.parseInt(in);
-                        }catch (Exception e) {
-                            input = 0;
-                        }
+                    String in = actualQty.getText().toString();
+                    Log.i("actual qty:", in);
+                    if(in == null || in == "") {
+                        in = "0";
+                    }
+                    int input;
+                    try {
+                        input = Integer.parseInt(in);
+                    }catch (Exception e) {
+                        input = 0;
+                    }
 
-                        if(input > Integer.parseInt(requestQty.getText().toString())){
-                            actualQty.setError("Value cannot be greater than qty needed");
-                            Log.e("error:", "actualQty > Request Qty");
-                            View focusView = null;
-                            focusView = actualQty;
-                        }
-                        else {
-                            for(int i=0; i<mRetrievalDetails.size(); i++) {
-                                if(mRetrievalDetails.get(i).get("itemID").toString() == itemId.getText().toString()) {
-                                    mRetrievalDetails.get(i).put("ActualQty", input);
-                                }
+                    if(input > Integer.parseInt(requestQty.getText().toString())){
+                        actualQty.setError("Value cannot be greater than qty needed");
+                        Log.e("error:", "actualQty > Request Qty");
+                        View focusView = null;
+                        focusView = actualQty;
+                    }
+                    else {
+                        for(int i=0; i<mRetrievalDetails.size(); i++) {
+                            if(mRetrievalDetails.get(i).get("itemID").toString() == itemId.getText().toString()) {
+                                mRetrievalDetails.get(i).put("ActualQty", input);
                             }
                         }
                     }
+
                 }
             });
         }

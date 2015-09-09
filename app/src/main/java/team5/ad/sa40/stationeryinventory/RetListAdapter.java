@@ -1,6 +1,7 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,8 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import team5.ad.sa40.stationeryinventory.Model.CollectionPoint;
+import team5.ad.sa40.stationeryinventory.Model.Department;
+import team5.ad.sa40.stationeryinventory.Model.Employee;
 import team5.ad.sa40.stationeryinventory.Model.Retrieval;
 
 public class RetListAdapter extends RecyclerView.Adapter<RetListAdapter.ViewHolder> {
@@ -20,16 +25,18 @@ public class RetListAdapter extends RecyclerView.Adapter<RetListAdapter.ViewHold
 
     public RetListAdapter(){
         super();
-        //mRetrievals = Retrieval.getAllRetrievals();
-        mRetrievals = Retrieval.initializeData();
+        mRetrievals = Retrieval.getAllRetrievals();
+
         retId = new String[mRetrievals.size()];
         Log.i("Size of list", String.valueOf(mRetrievals.size()));
         Setup s = new Setup();
-        for(int i = 0; i < mRetrievals.size(); i++){
-            String temp = String.valueOf(mRetrievals.get(i).getRetID());
-            retId[i] = temp;
+        if(mRetrievals.size()>0) {
+            for (int i = 0; i < mRetrievals.size(); i++) {
+                String temp = String.valueOf(mRetrievals.get(i).getRetID());
+                retId[i] = temp;
+            }
+            Log.i("First of string ", retId[0]);
         }
-        Log.i("First of string ", retId[0]);
     }
 
     @Override
@@ -62,10 +69,13 @@ public class RetListAdapter extends RecyclerView.Adapter<RetListAdapter.ViewHold
         viewHolder.retId.setText(idDisplay);
 
         //format to date only:
-        viewHolder.retDate.setText(Setup.parseDateToString(ret.getDate()));
+        if(ret.getDate()!=null) {
+            viewHolder.retDate.setText(Setup.parseDateToString(ret.getDate()));
+        }
+        else {viewHolder.retDate.setText("");}
 
         viewHolder.retStatus.setText(ret.getStatus());
-        if(viewHolder.retStatus.getText().equals("Pending")) {
+        if(viewHolder.retStatus.getText().equals("PENDING")) {
             viewHolder.retStatus.setTextColor(Color.RED);
         }
         viewHolder.retIfEmpIDNeeded.setText("");

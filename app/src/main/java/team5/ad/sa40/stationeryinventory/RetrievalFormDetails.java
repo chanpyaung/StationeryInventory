@@ -3,6 +3,7 @@ package team5.ad.sa40.stationeryinventory;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,20 +55,22 @@ public class RetrievalFormDetails extends android.support.v4.app.Fragment implem
         Setup s = new Setup();
 
         if (getArguments() != null) {
-            Log.i("arguments: ",getArguments().toString());
+            Log.i("arguments: ", getArguments().toString());
             ret.setRetID(getArguments().getInt("RetID"));
-            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            Log.i("date passed:",getArguments().getString("RetDate"));
-            try {
-                Date d = format.parse(getArguments().getString("RetDate"));
-                System.out.println(d);
-                ret.setDate(d);
-            } catch (ParseException e) {
-                e.printStackTrace();
+            if (getArguments().getString("RetDate") != "" || getArguments().getString("RetDate") != null) {
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                Log.i("date passed:", getArguments().getString("RetDate"));
+                try {
+                    Date d = format.parse(getArguments().getString("RetDate"));
+                    System.out.println(d);
+                    ret.setDate(d);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                retrievalDate.setText(Setup.parseDateToString(ret.getDate()));
             }
             ret.setStatus(getArguments().getString("RetStatus"));
         }
-        retrievalDate.setText(Setup.parseDateToString(ret.getDate()));
 
         String idDisplay = "";
         int id = ret.getRetID();
@@ -84,29 +87,41 @@ public class RetrievalFormDetails extends android.support.v4.app.Fragment implem
             idDisplay = String.valueOf(id);
         }
         retFormID.setText(idDisplay);
-
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.ret_detail_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        adapter = new RetFormAdapter(ret.getRetID(),ret.getStatus());
-        allItems = new ArrayList<RetrievalDetail>();
-        allItems = adapter.mRetrievalDetails;
-        mRecyclerView.setAdapter(adapter);
-        adapter.SetOnItemClickListener(new RetFormAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                RetrievalDetail selected = allItems.get(position);
-            }
-        });
-        requsitionForms.setText(adapter.mReqForms);
-
-        if(ret.getStatus() == "Pending") {
+        Log.i("status: ", ret.getStatus());
+        if(ret.getStatus().equals("PENDING")) {
             submitBtn.setOnClickListener(this);
         }
         else {
             submitBtn.setVisibility(View.GONE);
         }
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.ret_detail_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        allItems = new ArrayList<RetrievalDetail>();
+
+        new AsyncTask<Void, Void, RetFormAdapter>(){
+            @Override
+            protected RetFormAdapter doInBackground(Void... params) {
+                adapter = new RetFormAdapter(ret.getRetID(),ret.getStatus());
+                return adapter;
+            }
+            @Override
+            protected void onPostExecute(RetFormAdapter result) {
+                allItems = result.mRetrievalDetails;
+                ret = result.mRetrieval;
+                mRecyclerView.setAdapter(result);
+                result.SetOnItemClickListener(new RetFormAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        RetrievalDetail selected = allItems.get(position);
+                    }
+                });
+                requsitionForms.setText(result.mReqForms);
+
+            }
+        }.execute();
 
         return view;
     }
@@ -115,63 +130,51 @@ public class RetrievalFormDetails extends android.support.v4.app.Fragment implem
     public void onClick(View v) {
 
         Boolean checkIfNoNull = true;
-        // Check for a valid password, if the user entered one.
         for (int i=0; i<allItems.size(); i++) {
             if(allItems.get(i).get("ActualQty") == "0") {
                 checkIfNoNull = false;
             }
         }
-        /*
 
         if(checkIfNoNull == true) {
 
-            JSONArray jsonArray = new JSONArray();
-
-            for (int i = 0; i < allItems.size(); i++) {
-
-                try {
-                    JSONObject obj = new JSONObject();
-                    obj.put("RetID", Integer.toString(ret.getRetID()));
-                    obj.put("ItemID", allItems.get(i).get("itemID"));
-                    obj.put("ActualQty", allItems.get(i).get("ActualQty"));
-                    jsonArray.put(obj);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... params) {
+                    return Retrieval.saveRetrieval(ret, allItems);
                 }
-            }
 
-            //update retrieval form in server
-            Setup s = new Setup();
-            String result = JSONParser.postStream(String.format("%s/retrieval.svc/save", Setup.baseurl),
-                    jsonArray.toString());
-            Log.i("json post result:", result);
-            */
+                @Override
+                protected void onPostExecute(String result) {
 
-            String result = "HttpResponse_OK";
-            //process retrieval update status
-            if (result != "HttpResponse_OK") {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Submission of Retrieval Form #" + ret.getRetID() + " failed. Please try again.")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        }).create();
-                builder.show();
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Retrieval Form #" + ret.getRetID() + " has been successfully submitted! Please login to the web for allocation of items retrieved.")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                RetrievalList fragment = new RetrievalList();
-                                android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                                fragmentTransaction.replace(R.id.frame, fragment);
-                                fragmentTransaction.commit();
-                            }
-                        }).create();
-                builder.show();
-            }
-        //}
+                    //process retrieval update status
+                    if (result == "true") {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Retrieval Form #" + ret.getRetID() + " has been successfully submitted! Please login to the web for allocation of items retrieved.")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        RetrievalList fragment = new RetrievalList();
+                                        android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                        fragmentTransaction.replace(R.id.frame, fragment);
+                                        fragmentTransaction.commit();
+                                    }
+                                }).create();
+                        builder.show();
+
+                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Submission of Retrieval Form #" + ret.getRetID() + " failed. Please try again.")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+                                    }
+                                }).create();
+                        builder.show();
+                    }
+
+                }
+            }.execute();
+        }
 
     }
 

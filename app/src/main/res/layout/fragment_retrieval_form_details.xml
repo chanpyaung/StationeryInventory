@@ -76,7 +76,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="0019, 0020, 0021, 0031"
+        android:text=""
         android:id="@+id/ret_detail_reqId"
         android:textSize="14dp"
         android:layout_row="2"
