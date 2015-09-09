@@ -83,11 +83,55 @@ public class JSONParser {
         return readStream(is);
     }
 
+    public static String postStream2(String url, String data) {
+        InputStream is = null;
+        String flag = "";
+        try {
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.setEntity(new StringEntity(data));
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Content-type", "application/json");
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            Log.i("Httpresponse:",httpResponse.toString());
+            Log.i("Http Response:", String.valueOf(httpResponse.getStatusLine().getStatusCode()));
+            if(String.valueOf(httpResponse.getStatusLine().getStatusCode()).trim().equals("404")){
+                flag = "false";
+            }
+            else{
+                flag = "true";
+            }
+            HttpEntity httpEntity = httpResponse.getEntity();
+            is = httpEntity.getContent();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            Log.e("JSON post error:", e.toString());
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+            Log.e("JSON post error:", e.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("JSON post error:", e.toString());
+        }
+        Log.e("is:", is.toString());
+        return flag;
+    }
+
     public static JSONObject getJSONFromUrl(String url) {
         JSONObject jObj = null;
         try {
             jObj = new JSONObject(getStream(url));
         } catch (JSONException e) {
+            Log.e("JSON Parser", "Error parsing data " + e.toString());
+        }
+        return jObj;
+    }
+    public static String getJSONFromUrl2(String url) {
+        String jObj = "";
+        try {
+            Log.e("getStreamValue", getStream(url));
+            jObj = getStream(url).trim();
+        } catch (Exception e) {
             Log.e("JSON Parser", "Error parsing data " + e.toString());
         }
         return jObj;
@@ -98,6 +142,16 @@ public class JSONParser {
         try {
             jObj = new JSONObject(postStream(url,data));
         } catch (JSONException e) {
+            Log.e("JSON Parser", "Error parsing data " + e.toString());
+        }
+        return jObj;
+    }
+
+    public static String getJSONFromUrlPOST2(String url, String data) {
+        String jObj = "";
+        try {
+            jObj = postStream2(url,data).trim();
+        } catch (Exception e) {
             Log.e("JSON Parser", "Error parsing data " + e.toString());
         }
         return jObj;

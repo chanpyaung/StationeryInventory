@@ -68,6 +68,19 @@ public class Employee implements Serializable {
         }
         return employees;
     }
+
+    public static String updateEmployeeRole(String empID, String roleID){
+        String temp = JSONParser.getJSONFromUrl2(Setup.baseurl + "/employeeAPI.svc/updateEmployeeRole/" + empID + "/" + roleID);
+        String flag = "";
+        Log.e("url", Setup.baseurl + "/employeeAPI.svc/updateEmployeeRole/" + empID + "/" + roleID);
+        try{
+            Log.e("String value in test", temp);
+            flag = temp;
+        }catch (Exception e){
+            Log.e("updateEmployeeRole","JSONError");
+        }
+        return flag;
+    }
     /*
       public static ArrayList<CollectionPoint> getAllCollectionPoints(){
         ArrayList<CollectionPoint> temp_colPt = new ArrayList<>();

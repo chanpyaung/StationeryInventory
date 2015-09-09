@@ -66,6 +66,29 @@ public class Department implements Serializable{
         }
         return dept;
     }
+
+    public static String updateDepartment(Department dept){
+        String temp = "";
+        try{
+            JSONObject obj = new JSONObject();
+            obj.put("DeptID", dept.getDeptID());
+            obj.put("DeptName", dept.getDeptName());
+            obj.put("DeptRep", dept.getDeptRep());
+            obj.put("DeptHead", dept.getDeptHead());
+            obj.put("Contact", dept.getContact());
+            obj.put("CPID", dept.getCpID());
+            obj.put("Fax", dept.getFax());
+            obj.put("Phone", dept.getPhone());
+
+            Log.i("JSON String", obj.toString());
+            String url = Setup.baseurl + "/departmentAPI.svc/updateDept";
+
+            temp = JSONParser.getJSONFromUrlPOST2(url, obj.toString());
+        }catch (Exception e){
+            Log.e("updateDepartment", "JSONError");
+        }
+        return temp;
+    }
     /*
      public static ArrayList<Disbursement> getAllDisbursement(){
 
