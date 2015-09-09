@@ -34,10 +34,14 @@ public class RetrievalFormDetails extends android.support.v4.app.Fragment implem
     private RecyclerView mRecyclerView;
     private RetFormAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private View vBtn;
+    private String btnPressedNameSuccess = "Error. Please try again.";
+    private String btnPressedNameFail = "Error. Please try again.";
 
     @Bind(R.id.ret_detail_retID) TextView retFormID;
     @Bind(R.id.ret_detail_reqId) TextView requsitionForms;
     @Bind(R.id.ret_detail_date) TextView retrievalDate;
+    @Bind(R.id.ret_detail_save) Button saveBtn;
     @Bind(R.id.ret_detail_submit) Button submitBtn;
 
     public RetrievalFormDetails() {
@@ -90,9 +94,11 @@ public class RetrievalFormDetails extends android.support.v4.app.Fragment implem
         Log.i("status: ", ret.getStatus());
         if(ret.getStatus().equals("PENDING")) {
             submitBtn.setOnClickListener(this);
+            saveBtn.setOnClickListener(this);
         }
         else {
             submitBtn.setVisibility(View.GONE);
+            saveBtn.setVisibility(View.GONE);
         }
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.ret_detail_recycler_view);
@@ -129,53 +135,74 @@ public class RetrievalFormDetails extends android.support.v4.app.Fragment implem
     @Override
     public void onClick(View v) {
 
-        Boolean checkIfNoNull = true;
-        for (int i=0; i<allItems.size(); i++) {
-            if(allItems.get(i).get("ActualQty") == "0") {
-                checkIfNoNull = false;
-            }
+        vBtn = v;
+        String btnPressedName;
+        if(vBtn.getId() == R.id.ret_detail_submit) {
+            btnPressedName = "submit";
+            btnPressedNameSuccess = "Retrieval Form #" + ret.getRetID() + " has been successfully submitted! Please login to the web to allocate items retrieved.";
+            btnPressedNameFail = "Submission of Retrieval Form #" + ret.getRetID() + " failed. Please try again.";
+        }
+        else {
+            btnPressedName = "save";
+            btnPressedNameSuccess = "Retrieval Form #" + ret.getRetID() + " has been successfully saved!";
+            btnPressedNameFail = "Unable to save Retrieval Form #" + ret.getRetID() + ". Please try again.";
         }
 
-        if(checkIfNoNull == true) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Are you sure you want to " + btnPressedName + " this retrieval form?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        new AsyncTask<Void, Void, String>() {
+                            @Override
+                            protected String doInBackground(Void... params) {
+                                String result = "";
+                                if (vBtn.getId() == R.id.ret_detail_submit) {
+                                    result = Retrieval.submitRetrieval(ret, allItems);
+                                } else {
+                                    result = Retrieval.saveRetrieval(ret, allItems);
+                                }
+                                return result;
+                            }
 
-            new AsyncTask<Void, Void, String>() {
-                @Override
-                protected String doInBackground(Void... params) {
-                    return Retrieval.saveRetrieval(ret, allItems);
-                }
+                            @Override
+                            protected void onPostExecute(String result) {
+                                Log.i("result->", result);
+                                //process retrieval update status
+                                if (result == null) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                    builder.setMessage(btnPressedNameFail)
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    RetrievalList fragment = new RetrievalList();
+                                                    android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                                    fragmentTransaction.replace(R.id.frame, fragment);
+                                                    fragmentTransaction.commit();
+                                                }
+                                            }).create();
+                                    builder.show();
+                                } else {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                    builder.setMessage(btnPressedNameSuccess)
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    RetrievalList fragment = new RetrievalList();
+                                                    android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                                    fragmentTransaction.replace(R.id.frame, fragment);
+                                                    fragmentTransaction.commit();
+                                                }
+                                            }).create();
+                                    builder.show();
+                                }
 
-                @Override
-                protected void onPostExecute(String result) {
+                            }
+                        }.execute();
 
-                    //process retrieval update status
-                    if (result == "true") {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage("Retrieval Form #" + ret.getRetID() + " has been successfully submitted! Please login to the web for allocation of items retrieved.")
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        RetrievalList fragment = new RetrievalList();
-                                        android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                                        fragmentTransaction.replace(R.id.frame, fragment);
-                                        fragmentTransaction.commit();
-                                    }
-                                }).create();
-                        builder.show();
-
-                    } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage("Submission of Retrieval Form #" + ret.getRetID() + " failed. Please try again.")
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.dismiss();
-                                    }
-                                }).create();
-                        builder.show();
                     }
-
-                }
-            }.execute();
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }}).create();
+        builder.show();
         }
-
     }
-
-}

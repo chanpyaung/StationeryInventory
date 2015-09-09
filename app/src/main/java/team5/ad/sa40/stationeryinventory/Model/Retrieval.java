@@ -86,11 +86,8 @@ public class Retrieval {
     public static List<Retrieval> getAllRetrievals(){
         List<Retrieval> retrievalList = new ArrayList<Retrieval>();
         Setup s = new Setup();
-        JSONArray result = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalAPI.svc/getRetrieval/99877/PENDING/2",
-                Setup.baseurl));
-        /*JSONArray result = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalAPI.svc/getRetrieval/%s/null/null",
-                Setup.baseurl, Integer.toString(Setup.user.getEmpID())));*/
-        //Log.i("Set up user id: ",Integer.toString(Setup.user.getEmpID()));
+        JSONArray result = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalAPI.svc/getRetrieval/%s/null/null",
+                Setup.baseurl, Setup.user.getEmpID()));
         try {
             Log.i("json retrievals: ", result.toString());
             for (int retrieval = 0; retrieval < result.length(); retrieval++) {
@@ -114,8 +111,8 @@ public class Retrieval {
     public static Retrieval getRetrieval(int id, String status) {
         Retrieval r = new Retrieval();
 
-        JSONArray resultObj = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalAPI.svc/getRetrieval/99877/%s/%s",
-                Setup.baseurl, status, Integer.toString(id)));
+        JSONArray resultObj = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalAPI.svc/getRetrieval/%s/%s/%s",
+                Setup.baseurl, Setup.user.getEmpID(), status, Integer.toString(id)));
         JSONArray resultItems = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalAPI.svc/getRetrievalDetail/%s",
                 Setup.baseurl, Integer.toString(id)));
         JSONArray resultReqForms = JSONParser.getJSONArrayFromUrl(String.format("%s/retrievalAPI.svc/getReqAllocation/%s",
@@ -154,6 +151,7 @@ public class Retrieval {
                     if(i.getString("ReqID") != r.getReqForms().get(form)) {
                         r.getReqForms().add(i.getString("ReqID").toString());
                         Log.i("r.getReqForms:", r.getReqForms().toString());
+                        break;
                     }
                 }
             }
@@ -166,6 +164,7 @@ public class Retrieval {
     }
 
     public static String saveRetrieval(Retrieval ret, List<RetrievalDetail> allItems) {
+        String result = null;
         JSONArray jsonArray = new JSONArray();
 
         for (int i = 0; i < allItems.size(); i++) {
@@ -187,7 +186,37 @@ public class Retrieval {
 
         //update retrieval form in server
         Setup s = new Setup();
-        String result = JSONParser.postStream(String.format("%s/retrievalAPI.svc/save", Setup.baseurl),
+        result = JSONParser.postStream(String.format("%s/retrievalAPI.svc/save", Setup.baseurl),
+                jsonArray.toString());
+        Log.i("json post result:", result);
+
+        return result;
+    }
+
+    public static String submitRetrieval(Retrieval ret, List<RetrievalDetail> allItems) {
+        String result = null;
+        JSONArray jsonArray = new JSONArray();
+
+        for (int i = 0; i < allItems.size(); i++) {
+
+            try {
+                JSONObject obj = new JSONObject();
+                obj.put("RetID", Integer.toString(ret.getRetID()));
+                obj.put("ItemID", allItems.get(i).get("itemID").toString());
+                if(allItems.get(i).get("ActualQty") == null) {
+                    allItems.get(i).put("ActualQty","0");
+                }
+                obj.put("ActualQty", allItems.get(i).get("ActualQty").toString());
+                jsonArray.put(obj);
+                Log.i("json post array:", jsonArray.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        //update retrieval form in server
+        Setup s = new Setup();
+        result = JSONParser.postStream(String.format("%s/retrievalAPI.svc/submit", Setup.baseurl),
                 jsonArray.toString());
         Log.i("json post result:", result);
 

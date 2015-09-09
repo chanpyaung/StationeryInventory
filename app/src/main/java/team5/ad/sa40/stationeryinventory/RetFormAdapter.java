@@ -1,7 +1,10 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,8 +93,8 @@ public class RetFormAdapter extends RecyclerView.Adapter<RetFormAdapter.ViewHold
         viewHolder.itemName.setText(ret.get("itemName").toString());
         viewHolder.requestQty.setText(ret.get("RequestQty").toString());
         viewHolder.bin.setText(ret.get("Bin").toString());
+        viewHolder.actualQty.setText(ret.get("ActualQty").toString());
         if(mStatus.equals("RETRIEVED")) {
-            viewHolder.actualQty.setText(ret.get("ActualQty").toString());
             viewHolder.actualQty.setEnabled(false);
         }
     }
@@ -173,32 +176,71 @@ public class RetFormAdapter extends RecyclerView.Adapter<RetFormAdapter.ViewHold
             actualQty.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
+                    if (!(actualQty.hasFocus())) {
+                        String in = actualQty.getText().toString();
+                        Log.i("actual qty:", in);
+                        if (in == null || in == "") {
+                            in = "0";
+                        }
+                        int input;
+                        try {
+                            input = Integer.parseInt(in);
+                        } catch (Exception e) {
+                            input = 0;
+                        }
+
+                        if (input > Integer.parseInt(requestQty.getText().toString())) {
+                            actualQty.setError("Value cannot be greater than qty needed");
+                            Log.e("error:", "actualQty > Request Qty");
+                            View focusView = null;
+                            focusView = actualQty;
+                        } else {
+                            for (int i = 0; i < mRetrievalDetails.size(); i++) {
+                                if (mRetrievalDetails.get(i).get("itemID").toString() == itemId.getText().toString()) {
+                                    mRetrievalDetails.get(i).put("ActualQty", input);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            actualQty.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
                     String in = actualQty.getText().toString();
                     Log.i("actual qty:", in);
-                    if(in == null || in == "") {
+                    if (in == null || in == "") {
                         in = "0";
                     }
                     int input;
                     try {
                         input = Integer.parseInt(in);
-                    }catch (Exception e) {
+                    } catch (Exception e) {
                         input = 0;
                     }
 
-                    if(input > Integer.parseInt(requestQty.getText().toString())){
+                    if (input > Integer.parseInt(requestQty.getText().toString())) {
                         actualQty.setError("Value cannot be greater than qty needed");
                         Log.e("error:", "actualQty > Request Qty");
                         View focusView = null;
                         focusView = actualQty;
-                    }
-                    else {
-                        for(int i=0; i<mRetrievalDetails.size(); i++) {
-                            if(mRetrievalDetails.get(i).get("itemID").toString() == itemId.getText().toString()) {
+                    } else {
+                        for (int i = 0; i < mRetrievalDetails.size(); i++) {
+                            if (mRetrievalDetails.get(i).get("itemID").toString() == itemId.getText().toString()) {
                                 mRetrievalDetails.get(i).put("ActualQty", input);
                             }
                         }
                     }
-
                 }
             });
         }

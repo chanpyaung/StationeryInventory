@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +62,6 @@ public class RetrievalList extends android.support.v4.app.Fragment {
         spinnerRetStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(RetrievalList.this.getActivity(), "Selected: " + position, Toast.LENGTH_SHORT).show();
                 Log.i("spinner's:", filters[position]);
                 switch (position) {
                     case (0):
@@ -131,7 +129,7 @@ public class RetrievalList extends android.support.v4.app.Fragment {
         List<Retrieval> pendingRetrievals = new ArrayList<Retrieval>();
         for(int i=0; i<allRetrievals.size(); i++) {
             Retrieval r = allRetrievals.get(i);
-            if(r.getStatus()=="PENDING") {
+            if(r.getStatus().equals("PENDING")) {
                 pendingRetrievals.add(r);
             }
         }
@@ -143,7 +141,7 @@ public class RetrievalList extends android.support.v4.app.Fragment {
         List<Retrieval> retrievedRetrievals = new ArrayList<Retrieval>();
         for(int i=0; i<allRetrievals.size(); i++) {
             Retrieval r = allRetrievals.get(i);
-            if(r.getStatus()=="RETRIEVED") {
+            if(r.getStatus().equals("RETRIEVED")) {
                 retrievedRetrievals.add(r);
             }
         }

@@ -101,12 +101,27 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:textSize="25dp"
-        android:background="#08AE9E"
+        android:background="@color/PrimaryDarkInvertedColor"
         android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="2dp"
         android:layout_marginBottom="5dp"
         android:textColor="#ffffffff"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:layout_alignStart="@+id/ret_detail_retID" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="SAVE"
+        android:id="@+id/ret_detail_save"
+        android:textSize="25dp"
+        android:background="#08AE9E"
+        android:layout_marginLeft="5dp"
+        android:textColor="#ffffffff"
+        android:layout_marginRight="2dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/textView2"
+        android:layout_marginBottom="5dp" />
 
     <View style="@style/Divider"
         android:layout_width="fill_parent"
