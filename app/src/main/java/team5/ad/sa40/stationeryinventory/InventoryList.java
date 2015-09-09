@@ -1,6 +1,7 @@
 package team5.ad.sa40.stationeryinventory;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -25,8 +26,14 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
 import team5.ad.sa40.stationeryinventory.Model.Item;
-import team5.ad.sa40.stationeryinventory.Model.Retrieval;
+import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 
 public class InventoryList extends android.support.v4.app.Fragment {
@@ -208,25 +215,59 @@ public class InventoryList extends android.support.v4.app.Fragment {
     }
 
     public void showAllInventory() {
-        adapter = new InvListAdapter();
         allInv= new ArrayList<Item>();
-        allInv = adapter.mItems;
-        categoryItems = allInv;
-        Collections.sort(allInv);
-        mRecyclerView.setAdapter(adapter);
-        adapter.SetOnItemClickListener(new InvListAdapter.OnItemClickListener() {
+
+        //create an adapter for retrofit with base url
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+
+        //creating a service for adapter with our POST class
+        InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+
+        //call for response
+        //retrofit will convert gson for JSON-POJO (JSONEmployee)
+        invAPI.getList(new Callback<List<JSONItem>>() {
             @Override
-            public void onItemClick(View view, int position) {
-                Item selected = allInv.get(position);
-                Bundle args = new Bundle();
-                args.putString("ItemID", selected.getItemID());
-                Log.i("selected itemID: ", selected.getItemID());
+            public void success(List<JSONItem> jsonItems, Response response) {
 
-                InventoryDetails fragment2 = new InventoryDetails();
-                fragment2.setArguments(args);
-                android.support.v4.app.FragmentTransaction fragmentTransaction2 = getFragmentManager().beginTransaction();
-                fragmentTransaction2.replace(R.id.frame, fragment2).addToBackStack("INVENTORYLIST TAG").commit();
+            }
 
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+
+        invAPI.getList(new Callback<List<JSONItem>>() {
+            @Override
+            public void success(List<JSONItem> itemList, Response response) {
+                Log.i("Return :", item.getEmpID().toString() + " " + item.getEmpName().toString());
+                Log.i("User ROle: ", item.getRoleID().toString());
+                Log.i("Response: ", response.getBody().toString());
+                System.out.println("Response Status " + response.getStatus());
+                adapter = new InvListAdapter(itemList);
+                allInv = adapter.mItems;
+                categoryItems = allInv;
+                Collections.sort(allInv);
+                mRecyclerView.setAdapter(adapter);
+                adapter.SetOnItemClickListener(new InvListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Item selected = allInv.get(position);
+                        Bundle args = new Bundle();
+                        args.putString("ItemID", selected.getItemID());
+                        Log.i("selected itemID: ", selected.getItemID());
+
+                        InventoryDetails fragment2 = new InventoryDetails();
+                        fragment2.setArguments(args);
+                        android.support.v4.app.FragmentTransaction fragmentTransaction2 = getFragmentManager().beginTransaction();
+                        fragmentTransaction2.replace(R.id.frame, fragment2).addToBackStack("INVENTORYLIST TAG").commit();
+                    }
+                });
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("Error: ", error.toString());
             }
         });
     }

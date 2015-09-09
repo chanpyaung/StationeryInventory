@@ -6,7 +6,7 @@ package team5.ad.sa40.stationeryinventory.Model;
 
 import com.google.gson.annotations.Expose;
 
-public class JSONItem {
+public class JSONItem implements Comparable {
     @Expose
     private String Bin;
     @Expose
@@ -168,6 +168,23 @@ public class JSONItem {
      */
     public void setUOM(String UOM) {
         this.UOM = UOM;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+
+        Item f = (Item) o;
+
+        if (getItemID().compareTo(f.getItemID()) > 0) {
+            return 1;
+        }
+        else if (getItemID().compareTo(f.getItemID()) < 0) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+
     }
 
 }

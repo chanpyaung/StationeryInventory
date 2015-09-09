@@ -52,13 +52,12 @@
                 android:textStyle="bold"
                 android:id="@+id/ret_detail_reqId"
                 android:textSize="18dp"
-                android:layout_alignParentTop="true"
                 android:layout_toStartOf="@+id/ret_detail_actualQty"
                 android:minHeight="45dp"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_alignParentBottom="true"
                 android:layout_marginRight="3dp"
-                android:textColor="#ffff4a53" />
+                android:textColor="#ffff4a53"
+                android:layout_alignParentTop="true" />
 
             <EditText
                 android:layout_width="60dp"
