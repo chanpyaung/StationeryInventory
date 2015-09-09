@@ -19,12 +19,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import team5.ad.sa40.stationeryinventory.Model.JSONNotification;
+
 
 public class NotificationFragment extends android.support.v4.app.ListFragment {
 
-    private String empID;
-    private String notifID;
-    private List<Map<String,String>> notificationList;
+    private int empID;
+    private int notifID;
+    private List<JSONNotification> notificationList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,20 +34,28 @@ public class NotificationFragment extends android.support.v4.app.ListFragment {
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
 
-        if(savedInstanceState != null) {
-            empID = savedInstanceState.getString("EmpID");
-        }
-
         Setup s = new Setup();
+        empID = Setup.user.getEmpID();
 
-        new AsyncTask<Void, Void, List<Map<String,String>>>() {
+
+        new AsyncTask<Void, Void, List<JSONNotification>>() {
             @Override
-            protected List<Map<String,String>> doInBackground(Void... params) {
+            protected List<JSONNotification> doInBackground(Void... params) {
                 return listNotification();
             }
             @Override
-            protected void onPostExecute(List<Map<String,String>> result) {
-                SimpleAdapter adapter = new SimpleAdapter(getActivity(),result,
+            protected void onPostExecute(List<JSONNotification> result) {
+                List<Map<String,String>> notifList = new ArrayList<Map<String,String>>();
+                for(JSONNotification n : result) {
+                    Map<String,String> nmap = new HashMap<String,String>();
+                    nmap.put("NotifID",Integer.toString(n.getNotifID()));
+                    nmap.put("NotifName",n.getNotifName());
+                    nmap.put("NotifDesc",n.getNotifDesc());
+                    nmap.put("DateTime",n.getDateTime());
+                    nmap.put("Status",n.getStatus());
+                    notifList.add(nmap);
+                }
+                SimpleAdapter adapter = new SimpleAdapter(getActivity(),notifList,
                         android.R.layout.simple_list_item_2,
                         new String[]{"NotifName","NotifDesc"},
                         new int[]{android.R.id.text1, android.R.id.text2});
@@ -56,8 +66,8 @@ public class NotificationFragment extends android.support.v4.app.ListFragment {
         return view;
     }
 
-    List<Map<String,String>> listNotification() {
-        notificationList = new ArrayList<Map<String,String>>();
+    List<JSONNotification> listNotification() {
+        notificationList = new ArrayList<JSONNotification>();
         try {
 
             JSONArray a = JSONParser.getJSONArrayFromUrl
@@ -71,7 +81,7 @@ public class NotificationFragment extends android.support.v4.app.ListFragment {
                 nmap.put("DateTime",n.getString("DateTime"));
                 nmap.put("Status",n.getString("Status"));
 
-                notificationList.add(nmap);
+                notificationList.add(new JSONNotification());
             }
         } catch (Exception e) {
         }
@@ -81,11 +91,11 @@ public class NotificationFragment extends android.support.v4.app.ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Toast.makeText(getActivity(),notificationList.get(position).get("NotifName").toString(),
+        Toast.makeText(getActivity(),notificationList.get(position).getNotifName().toString(),
                 Toast.LENGTH_SHORT).show();
         Intent i;
-        notifID = notificationList.get(position).get("NotifID");
-        Log.i("Notifid selected:",notifID);
+        notifID = notificationList.get(position).getNotifID();
+        Log.i("Notifid selected:",Integer.toString(notifID));
         /*
         switch(notificationList.get(position).get("NotifName")) {
             case "Low stock inventory":
@@ -132,21 +142,6 @@ public class NotificationFragment extends android.support.v4.app.ListFragment {
         }
 
         return resultSuccess;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(String id);
     }
 
 }
