@@ -30,18 +30,4 @@ public class Setup {
         }
         return null;
     }
-
-    public static Date parseJSONDateToJavaDate(String JSONDate){
-        //  "/Date(1321867151710+0100)/"
-        int idx1 = JSONDate.indexOf("(");
-        int idx2 = JSONDate.indexOf(")") - 5;
-        String s = JSONDate.substring(idx1+1, idx2);
-        long l = Long.valueOf(s);
-        return new Date(l);
-    }
-
-    public static String parseJSONDateToString(String JSONDate){
-        Date d = parseJSONDateToJavaDate(d);
-        return parseDateToString(d);
-    }
 }
