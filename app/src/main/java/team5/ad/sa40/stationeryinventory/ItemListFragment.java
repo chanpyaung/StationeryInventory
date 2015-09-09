@@ -2,10 +2,12 @@ package team5.ad.sa40.stationeryinventory;
 
 
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -48,7 +50,27 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_item_list,container,false);
-        ButterKnife.bind(this,view);
+        mAdapter = new ItemListAdapter();
+        Bundle args = getArguments();
+        String catName = "";
+        if(args!=null){
+            catName = args.getString("CategoryName");
+        }
+        final String categoryName = catName;
+
+        new AsyncTask<Void, Void, List<Item>>() {
+            @Override
+            protected List<Item> doInBackground(Void... params) {
+                Log.i("From JSON", Item.getItemByCategory(categoryName).toString());
+                return Item.getItemByCategory(categoryName);
+            }
+            @Override
+            protected void onPostExecute(List<Item> result){
+                itemList = result;
+                mAdapter.myItemlist = itemList;
+            }
+        }.execute();
+        ButterKnife.bind(this, view);
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -73,15 +95,40 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
-        mItems = new ArrayList<>();
         mAdapter = new ItemListAdapter();
-        itemList = mAdapter.myItemlist;
+        Bundle args = getArguments();
+        String catName = "";
+        if(args !=null ){
+            catName = args.getString("CategoryName");
+            Log.i("CategoryName from ", catName);
+        }
+        final String categoryName = catName;
+        new AsyncTask<Void, Void, List<Item>>() {
+            @Override
+            protected List<Item> doInBackground(Void... params) {
+                Log.i("Result from JSON",Item.getItemByCategory(categoryName).toString());
+                return Item.getItemByCategory(categoryName);
+            }
+            @Override
+            protected void onPostExecute(List<Item> result){
+                itemList = new ArrayList<Item>();
+                itemList = result;
+                ItemListAdapter.myItemlist = itemList;
+                System.out.println("Out form onPostExecute "+itemList.toString());
+                System.out.println("I output"+ItemListAdapter.myItemlist.toString());
+                for(int i=0; i<itemList.size(); i++){
+                    Item item = itemList.get(i);
+                    System.out.println("we are from onPostExecute "+ item.getItemName());
+                }
+            }
+        }.execute();
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
+//        mItems = new ArrayList<>();
         ScaleInAnimationAdapter animatedAdapter = new ScaleInAnimationAdapter(mAdapter);
         mRecyclerView.setAdapter(animatedAdapter);
-        for(Item it: itemList){
-            mItems.add(it);
-        }
+//        for(Item it: itemList){
+//            mItems.add(it);
+//        }
         mAdapter.SetOnItemClickListener(new ItemListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

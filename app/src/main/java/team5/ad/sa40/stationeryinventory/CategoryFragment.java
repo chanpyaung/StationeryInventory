@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,9 +59,13 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
                 //need to load item list based on category id
                 //call api here
                 ItemListFragment iLFrag = new ItemListFragment();
+                Bundle args = new Bundle();
+                args.putString("CategoryName", mAdapter.categoryNames[position]);
+                Log.i("CategoryName", mAdapter.categoryNames[position]);
                 FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                fragTran.replace(R.id.frame, iLFrag).commit();
-                Toast.makeText(CategoryFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
+                iLFrag.setArguments(args);
+                fragTran.replace(R.id.frame, iLFrag).addToBackStack("TAG").commit();
+                //Toast.makeText(CategoryFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -102,9 +106,13 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 ItemListFragment iLFrag = new ItemListFragment();
+                Bundle args = new Bundle();
+                args.putString("CategoryName", mAdapter.categoryNames[position]);
+                Log.i("CategoryName", mAdapter.categoryNames[position]);
                 FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                iLFrag.setArguments(args);
                 fragTran.replace(R.id.frame, iLFrag).addToBackStack("TAG").commit();
-                Toast.makeText(CategoryFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(CategoryFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
             }
         });
     }

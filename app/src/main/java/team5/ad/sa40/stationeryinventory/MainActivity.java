@@ -1,7 +1,6 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -25,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     android.support.v4.app.FragmentTransaction fragmentTran;
 
     public static List<Item> requestCart = new ArrayList<Item>();
+    public static String user;
 
     //Call UI element with butter knife
     @Bind(R.id.toolbar) android.support.v7.widget.Toolbar toolbar;
@@ -36,12 +36,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX);
         //Check user role and redirect to respective layout
         Bundle extras = getIntent().getExtras();
         Log.i("Extra get: ", extras.toString());
         if ( extras != null){
-            String user = extras.getString("User");
+            user = extras.getString("User");
             Log.i("User value", user);
                 switch (user) {
                     case "hello":
@@ -98,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.requisition:
                         RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                        Bundle args = new Bundle();
+                        args.putString("User",user );
+                        reqListFrag.setArguments(args);
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.frame,reqListFrag).commit();
                         Toast.makeText(MainActivity.this, "Requisition is selected", Toast.LENGTH_SHORT).show();

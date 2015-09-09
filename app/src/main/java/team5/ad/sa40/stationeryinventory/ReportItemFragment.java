@@ -3,6 +3,7 @@ package team5.ad.sa40.stationeryinventory;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class ReportItemFragment extends android.support.v4.app.Fragment {
 
     @Bind(R.id.itemCode) TextView itemCode;
     @Bind(R.id.itemName) TextView itemName;
-    @Bind(R.id.qty) TextView availableQty;
+    @Bind(R.id.aqty) TextView availableQty;
     @Bind(R.id.reOrderLvl) TextView reOrderLvl;
     @Bind(R.id.reported_qty) EditText reportedQty;
     @Bind(R.id.reasonSpinner) Spinner reasonSpinner;
@@ -59,12 +60,14 @@ public class ReportItemFragment extends android.support.v4.app.Fragment {
 
         if(args != null){
             String itemID = args.getString("ITEMCODE");
+            Log.i("ITEMCODE", itemID);
             for(Item i : mitemList){
-                if(i.getItemID() == itemID){
+                if(i.getItemID().equals(itemID) || i.getItemID().contains(itemID)){
+                    Log.i("from mitemList ", i.getItemID());
                     itemCode.setText(i.getItemID());
                     itemName.setText(i.getItemName());
-                    availableQty.setText(i.getStock());
-                    reOrderLvl.setText(i.getRoLvl());
+                    availableQty.setText(String.valueOf(i.getStock()));
+                    reOrderLvl.setText(String.valueOf(i.getRoLvl()));
                 }
             }
         }
@@ -81,6 +84,7 @@ public class ReportItemFragment extends android.support.v4.app.Fragment {
     }
 
     @OnClick(R.id.add2Adj) void addtoAdjustment(){
+
         Toast.makeText(ReportItemFragment.this.getActivity(), "ADDED to ADJUSTMENT VOUCHER", Toast.LENGTH_SHORT).show();
     }
 

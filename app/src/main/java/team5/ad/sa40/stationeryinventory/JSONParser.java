@@ -104,6 +104,7 @@ public class JSONParser {
     }
 
     public static JSONArray getJSONArrayFromUrl(String url) {
+        Log.i("URL", url);
         JSONArray jArray = null;
         try {
             jArray = new JSONArray(getStream(url));

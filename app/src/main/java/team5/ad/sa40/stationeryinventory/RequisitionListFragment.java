@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ import team5.ad.sa40.stationeryinventory.Model.Requisition;
 public class RequisitionListFragment extends android.support.v4.app.Fragment {
 
 
-    private String empID;
+    private String User;
 
 
     private String[] filters = {"View All","Approved","Rejected", "Processed", "Collected"};
@@ -36,6 +38,9 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
     private RequisitionListAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
     @Bind(R.id.spinnerRet) Spinner spinnerRetStatus;
+    @Bind(R.id.req_search) SearchView requisitionSearch;
+    @Bind(R.id.spinnerStatus) Spinner spinnerStatus;
+    @Bind(R.id.filter) TextView filterBy;
 
     public RequisitionListFragment() {
         // Required empty public constructor
@@ -45,7 +50,8 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            empID = getArguments().getString("EmpID");
+            User = getArguments().getString("User");
+            Log.i("User value", User);
         }
     }
 
@@ -61,15 +67,69 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         showAllRequisition();
-
         ArrayAdapter<String> FiltersAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,filters);
         FiltersAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerRetStatus.setAdapter(FiltersAdapter);
+        if(User.equals("hello") || User.equals("head") || User.equals("delegate")){
+            spinnerRetStatus.getLayoutParams().width += 200;
+            requisitionSearch.setVisibility(View.VISIBLE);
+            requisitionSearch.setQueryHint("Search Requisition ID");
+            requisitionSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    final List<Requisition> filteredModelList = filter(allRequisitions, newText);
+                    adapter.animateTo(filteredModelList);
+                    mRecyclerView.scrollToPosition(0);
+                    return true;
+                }
+            });
+        }
+        else if (User.equals("clerk")){
+            filterBy.setVisibility(View.GONE);
+
+            spinnerRetStatus.getLayoutParams().width = 340;
+            spinnerStatus.getLayoutParams().width = 340;
+            spinnerStatus.setVisibility(View.VISIBLE);
+            spinnerStatus.setAdapter(FiltersAdapter);
+        }
+        spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case (0):
+                        showAllRequisition();
+                        break;
+                    case (1):
+                        showApprovedRequisition();
+                        break;
+                    case (2):
+                        showRejectedRequisition();
+                        break;
+                    case (3):
+                        showProcessedRequistion();
+                        break;
+                    case (4):
+                        showCollectedRequisition();
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         spinnerRetStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(RequisitionListFragment.this.getActivity(), "Selected: " + position, Toast.LENGTH_SHORT).show();
-                Log.i("spinner's:", filters[position]);
+                Log.i("spinner's :", filters[position]);
                 switch (position) {
                     case (0):
                         showAllRequisition();
@@ -112,26 +172,21 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
                 args.putString("ReqDate", selected.getDate().toString());
                 String status = "";
                 String priority = "";
-                if (selected.getStatusID()==1){
+                if (selected.getStatusID() == 1) {
                     status = "Approved";
-                }
-                else if (selected.getStatusID()==2){
-                    status= "Rejected";
-                }
-                else if (selected.getStatusID()==3){
-                    status= "Processed";
-                }
-                else if (selected.getStatusID()==4){
-                    status= "Collected";
+                } else if (selected.getStatusID() == 2) {
+                    status = "Rejected";
+                } else if (selected.getStatusID() == 3) {
+                    status = "Processed";
+                } else if (selected.getStatusID() == 4) {
+                    status = "Collected";
                 }
 
-                if(selected.getPriorityID()==1){
+                if (selected.getPriorityID() == 1) {
                     priority = "High";
-                }
-                else if (selected.getPriorityID()==2){
+                } else if (selected.getPriorityID() == 2) {
                     priority = "Normal";
-                }
-                else if (selected.getPriorityID()==3){
+                } else if (selected.getPriorityID() == 3) {
                     priority = "Low";
                 }
                 //get Dept ID first, then based on DeptID > get DeptHead Name
@@ -200,6 +255,19 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
         mRecyclerView.setAdapter(adapter);
     }
 
+
+    private List<Requisition> filter(List<Requisition> requests, String query) {
+        query = query.toLowerCase();
+
+        final List<Requisition> filteredRequestList = new ArrayList<>();
+        for (Requisition req : requests) {
+            final String reqID = new StringBuilder().append(req.getReqID()).toString();
+            if (reqID.contains(query)) {
+                filteredRequestList.add(req);
+            }
+        }
+        return filteredRequestList;
+    }
 
 
 }

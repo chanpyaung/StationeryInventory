@@ -8,7 +8,7 @@ import java.util.Date;
 import team5.ad.sa40.stationeryinventory.Model.Employee;
 
 public class Setup {
-    public static String baseurl = "http://www.team5.com/api";
+    public static String baseurl = "http://192.168.31.202/api";
     public static String GTokenForNotification = "";
     public static Employee user;
 
