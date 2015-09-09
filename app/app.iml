@@ -132,6 +132,16 @@
     <orderEntry type="library" exported="" name="play-services-appindexing-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-wearable-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-safetynet-7.5.0" level="project" />
+    <orderEntry type="library" exported="" name="camview-1.0.3" level="project" />
+    <orderEntry type="library" exported="" name="play-services-games-7.5.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-plus-7.5.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-maps-7.5.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-fitness-7.5.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-7.5.0" level="project" />
+    <orderEntry type="library" exported="" name="butterknife-7.0.1" level="project" />
+    <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-wearable-7.5.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-safetynet-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-games-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="camview-1.0.3" level="project" />
     <orderEntry type="library" exported="" name="play-services-plus-7.5.0" level="project" />
@@ -151,6 +161,13 @@
     <orderEntry type="library" exported="" name="play-services-appstate-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="fab-1.6.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-nearby-7.5.0" level="project" />
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    <orderEntry type="library" exported="" name="okhttp-2.5.0" level="project" />
+>>>>>>> origin/master
+>>>>>>> origin/master
     <orderEntry type="library" exported="" name="support-v4-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-cast-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.2.1" level="project" />
