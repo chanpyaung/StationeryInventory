@@ -9,31 +9,37 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
-import team5.ad.sa40.stationeryinventory.Model.JSONJSONItem;
 
 public class InvListAdapter extends RecyclerView.Adapter<InvListAdapter.ViewHolder> {
 
-    List<JSONJSONItem> mJSONItems;
+    public static List<JSONItem> mJSONItems;
     String[] retId;
-    InvListAdapter.OnJSONItemClickListener mJSONItemClickListener;
+    InvListAdapter.OnItemClickListener mItemClickListener;
 
-    public InvListAdapter(List<JSONJSONItem> JSONItemList){
+    public InvListAdapter(List<JSONItem> JSONItemList){
         super();
-        mJSONItems = JSONItemList;
-        //mJSONItems = CategoryJSONItem.getAllCategoryJSONItems();
-        Collections.sort(mJSONItems);
-        retId = new String[mJSONItems.size()];
-        Log.i("Size of list", String.valueOf(mJSONItems.size()));
-        Setup s = new Setup();
-        for(int i = 0; i < mJSONItems.size(); i++){
-            String temp = String.valueOf(mJSONItems.get(i).getJSONItemID());
-            retId[i] = temp;
+        if(JSONItemList.size() >0) {
+            mJSONItems = JSONItemList;
+            Collections.sort(mJSONItems);
         }
-        Log.i("First of string ", retId[0]);
+        else {
+            mJSONItems = new ArrayList<JSONItem>();
+        }
+        retId = new String[mJSONItems.size()];
+        if(mJSONItems.size() >0) {
+            Log.i("Size of list", String.valueOf(mJSONItems.size()));
+            Setup s = new Setup();
+            for (int i = 0; i < mJSONItems.size(); i++) {
+                String temp = String.valueOf(mJSONItems.get(i).getItemID());
+                retId[i] = temp;
+            }
+            Log.i("First of string ", retId[0]);
+        }
     }
 
     @Override
@@ -58,7 +64,7 @@ public class InvListAdapter extends RecyclerView.Adapter<InvListAdapter.ViewHold
         }
 
         //format category icon:
-        int categoryID = JSONItem.getJSONItemCatID();
+        int categoryID = JSONItem.getItemCatID();
         switch(categoryID) {
             case 1:
                 viewHolder.JSONItemCatIcon.setImageResource(R.drawable.icon_inv1);
@@ -119,26 +125,26 @@ public class InvListAdapter extends RecyclerView.Adapter<InvListAdapter.ViewHold
     }
 
     @Override
-    public int getJSONItemCount() {
+    public int getItemCount() {
 
         return mJSONItems.size();
     }
 
     public JSONItem removeJSONItem(int position) {
         final JSONItem JSONItem = mJSONItems.remove(position);
-        notifyJSONItemRemoved(position);
+        notifyItemRemoved(position);
         return JSONItem;
     }
 
     public void addJSONItem(int position, JSONItem JSONItem) {
         mJSONItems.add(position, JSONItem);
-        notifyJSONItemInserted(position);
+        notifyItemInserted(position);
     }
 
     public void moveJSONItem(int fromPosition, int toPosition) {
         final JSONItem model = mJSONItems.remove(fromPosition);
         mJSONItems.add(toPosition, model);
-        notifyJSONItemMoved(fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
     }
 
     public void animateTo(List<JSONItem> JSONItems) {
@@ -182,29 +188,29 @@ public class InvListAdapter extends RecyclerView.Adapter<InvListAdapter.ViewHold
         public TextView JSONItemStatus;
         public ImageView JSONItemCatIcon;
 
-        public ViewHolder(View JSONItemView){
-            super(JSONItemView);
-            JSONItemID = (TextView) JSONItemView.findViewById(R.id.inv_JSONItemCode);
-            JSONItemName = (TextView) JSONItemView.findViewById(R.id.inv_JSONItemName);
-            JSONItemStatus = (TextView) JSONItemView.findViewById(R.id.inv_status);
-            JSONItemCatIcon = (ImageView) JSONItemView.findViewById(R.id.inv_icon);
+        public ViewHolder(View ItemView){
+            super(ItemView);
+            JSONItemID = (TextView) ItemView.findViewById(R.id.inv_itemCode);
+            JSONItemName = (TextView) ItemView.findViewById(R.id.inv_itemName);
+            JSONItemStatus = (TextView) ItemView.findViewById(R.id.inv_status);
+            JSONItemCatIcon = (ImageView) ItemView.findViewById(R.id.inv_icon);
 
-            JSONItemView.setOnClickListener(this);
+            ItemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            if(mJSONItemClickListener!=null){
-                mJSONItemClickListener.onJSONItemClick(v, getAdapterPosition());
+            if(mItemClickListener!=null){
+                mItemClickListener.onItemClick(v, getAdapterPosition());
 
             }
         }
     }
-    public interface OnJSONItemClickListener {
-        public void onJSONItemClick(View view, int position);
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int position);
     }
 
-    public void SetOnJSONItemClickListener (final OnJSONItemClickListener mJSONItemClickListener){
-        this.mJSONItemClickListener = mJSONItemClickListener;
+    public void SetOnItemClickListener (final OnItemClickListener mItemClickListener){
+        this.mItemClickListener = mItemClickListener;
     }
 }

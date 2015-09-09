@@ -17,12 +17,17 @@ import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 
+import java.util.Collections;
+import java.util.List;
+
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.EmployeeAPI;
+import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 public class LoginActivity extends Activity implements AdapterView.OnClickListener {
 
@@ -125,11 +130,31 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                         Log.i("Response: ", response.getBody().toString());
                         System.out.println("Response Status " + response.getStatus());
                         Setup.user = employee;
-                        Intent i = new Intent(LoginActivity.this,MainActivity.class);
-                        startActivity(i);
-                        mUseridView.setError(null);
-                        mPasswordView.setError(null);
-                        mStatus.setText("Logged in successfully.");
+                        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                        InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+
+                        invAPI.getList(new Callback<List<JSONItem>>() {
+                            @Override
+                            public void success(List<JSONItem> jsonItems, Response response) {
+                                Log.i("Result :", jsonItems.toString());
+                                Log.i("First item: ", jsonItems.get(0).getItemID().toString());
+                                Log.i("Response: ", response.getBody().toString());
+                                System.out.println("Response Status " + response.getStatus());
+                                InvListAdapter.mJSONItems = jsonItems;
+                                System.out.println("SIZE:::::"+InvListAdapter.mJSONItems.size());
+                                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(i);
+                                mUseridView.setError(null);
+                                mPasswordView.setError(null);
+                                mStatus.setText("Logged in successfully.");
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.i("Error: ", error.toString());
+                            }
+                        });
+
                     }
 
                     @Override

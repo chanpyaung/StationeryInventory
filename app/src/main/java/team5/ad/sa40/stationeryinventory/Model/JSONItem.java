@@ -173,7 +173,7 @@ public class JSONItem implements Comparable {
     @Override
     public int compareTo(Object o) {
 
-        Item f = (Item) o;
+        JSONItem f = (JSONItem) o;
 
         if (getItemID().compareTo(f.getItemID()) > 0) {
             return 1;

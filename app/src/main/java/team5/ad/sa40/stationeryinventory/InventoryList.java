@@ -1,6 +1,8 @@
 package team5.ad.sa40.stationeryinventory;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -41,14 +43,14 @@ public class InventoryList extends android.support.v4.app.Fragment {
 
     public String[] categories;
     private String[] filters = {"View All","Low Stock","Available"};
-    public List<Item> allInv;
+    public List<JSONItem> allInv;
     private RecyclerView mRecyclerView;
     private InvListAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private List<Item> availableItems;
-    private List<Item> lowStockItems;
-    private List<Item> categoryItems;
+    private List<JSONItem> availableItems;
+    private List<JSONItem> lowStockItems;
+    private List<JSONItem> categoryItems;
     private int spinnerStatusPosition = 0;
     private int spinnerCatPosition = 0;
 
@@ -57,6 +59,7 @@ public class InventoryList extends android.support.v4.app.Fragment {
     @Bind(R.id.scanBtn) Button scanBarcodeBtn;
 
     public InventoryList() {
+
     }
 
     @Override
@@ -215,59 +218,22 @@ public class InventoryList extends android.support.v4.app.Fragment {
     }
 
     public void showAllInventory() {
-        allInv= new ArrayList<Item>();
-
-        //create an adapter for retrofit with base url
-        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-
-        //creating a service for adapter with our POST class
-        InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
-
-        //call for response
-        //retrofit will convert gson for JSON-POJO (JSONEmployee)
-        invAPI.getList(new Callback<List<JSONItem>>() {
+        allInv = InvListAdapter.mJSONItems;
+        adapter = new InvListAdapter(InvListAdapter.mJSONItems);
+        categoryItems = allInv;
+        mRecyclerView.setAdapter(adapter);
+        adapter.SetOnItemClickListener(new InvListAdapter.OnItemClickListener() {
             @Override
-            public void success(List<JSONItem> jsonItems, Response response) {
+            public void onItemClick(View view, int position) {
+                JSONItem selected = allInv.get(position);
+                Bundle args = new Bundle();
+                args.putString("ItemID", selected.getItemID());
+                Log.i("selected itemID: ", selected.getItemID());
 
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-
-        invAPI.getList(new Callback<List<JSONItem>>() {
-            @Override
-            public void success(List<JSONItem> itemList, Response response) {
-                Log.i("Return :", item.getEmpID().toString() + " " + item.getEmpName().toString());
-                Log.i("User ROle: ", item.getRoleID().toString());
-                Log.i("Response: ", response.getBody().toString());
-                System.out.println("Response Status " + response.getStatus());
-                adapter = new InvListAdapter(itemList);
-                allInv = adapter.mItems;
-                categoryItems = allInv;
-                Collections.sort(allInv);
-                mRecyclerView.setAdapter(adapter);
-                adapter.SetOnItemClickListener(new InvListAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Item selected = allInv.get(position);
-                        Bundle args = new Bundle();
-                        args.putString("ItemID", selected.getItemID());
-                        Log.i("selected itemID: ", selected.getItemID());
-
-                        InventoryDetails fragment2 = new InventoryDetails();
-                        fragment2.setArguments(args);
-                        android.support.v4.app.FragmentTransaction fragmentTransaction2 = getFragmentManager().beginTransaction();
-                        fragmentTransaction2.replace(R.id.frame, fragment2).addToBackStack("INVENTORYLIST TAG").commit();
-                    }
-                });
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.i("Error: ", error.toString());
+                InventoryDetails fragment2 = new InventoryDetails();
+                fragment2.setArguments(args);
+                android.support.v4.app.FragmentTransaction fragmentTransaction2 = getFragmentManager().beginTransaction();
+                fragmentTransaction2.replace(R.id.frame, fragment2).addToBackStack("INVENTORYLIST TAG").commit();
             }
         });
     }
@@ -277,14 +243,14 @@ public class InventoryList extends android.support.v4.app.Fragment {
             showCategoryItems(0);
         }
         else {
-            lowStockItems = new ArrayList<Item>();
+            lowStockItems = new ArrayList<JSONItem>();
             for (int i = 0; i < categoryItems.size(); i++) {
-                Item item = categoryItems.get(i);
+                JSONItem item = categoryItems.get(i);
                 if (item.getStock() < item.getRoLvl()) {
                     lowStockItems.add(item);
                 }
             }
-            adapter.mItems = lowStockItems;
+            adapter.mJSONItems = lowStockItems;
             mRecyclerView.setAdapter(adapter);
         }
     }
@@ -294,26 +260,26 @@ public class InventoryList extends android.support.v4.app.Fragment {
             showCategoryItems(0);
         }
         else {
-            availableItems = new ArrayList<Item>();
+            availableItems = new ArrayList<JSONItem>();
             for (int i = 0; i < categoryItems.size(); i++) {
-                Item item = categoryItems.get(i);
+                JSONItem item = categoryItems.get(i);
                 if (!(item.getStock() < item.getRoLvl())) {
                     availableItems.add(item);
                 }
             }
-            adapter.mItems = availableItems;
+            adapter.mJSONItems = availableItems;
             mRecyclerView.setAdapter(adapter);
         }
     }
 
     public void showCategoryItems(int catID) {
-        categoryItems = new ArrayList<Item>();
+        categoryItems = new ArrayList<JSONItem>();
         if(catID == 0) {
             categoryItems = allInv;
         }
         else {
             for (int i = 0; i < allInv.size(); i++) {
-                Item item = allInv.get(i);
+                JSONItem item = allInv.get(i);
                 if (item.getItemCatID() == catID) {
                     categoryItems.add(item);
                 }
@@ -337,7 +303,7 @@ public class InventoryList extends android.support.v4.app.Fragment {
             showCategoryItems(0);
         }
         Collections.sort(categoryItems);
-        adapter.mItems = categoryItems;
+        adapter.mJSONItems = categoryItems;
         mRecyclerView.setAdapter(adapter);
     }
 
