@@ -22,13 +22,14 @@ import team5.ad.sa40.stationeryinventory.Model.Item;
 public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHolder> {
 
     Item myItem, myItem1, myItem2, myItem3, myItem4, myItem5, myItem6, myItem7, myItem8, myItem9;
-    List<Item> myItemlist;
+    public static List<Item> myItemlist = new ArrayList<Item>();
     List<Item> cartItemList;
 
     OnItemClickListener mItemClickListener;
 
     public ItemListAdapter() {
         super();
+
         //StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX);
         myItem = new Item("002211144433EE","Clip A", 1, 30, 50, "pcs", 400, "SHELF3L3");
         myItem1 = new Item("EE123489393","Clip B", 1, 20, 50, "pcs", 200, "SHELF3L3");
@@ -40,14 +41,13 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         myItem7 = new Item("YHN9876543","Clip H", 1, 59, 100, "pcs", 98, "SHELF3L3");
         myItem8 = new Item("CVH78323456789","Clip I", 1, 33, 50, "pcs", 84, "SHELF3L3");
         myItem9 = new Item("MMM987654234","Clip J", 1, 44, 50, "pcs", 43, "SHELF3L3");
-        myItemlist = new ArrayList<Item>();
         //myItemlist = CategoryItem.getAllCategoryItems();
-        Log.i("My Item list", myItemlist.toString());
+//        Log.i("My Item list", myItemlist.toString());
         cartItemList = new ArrayList<Item>();
-        Item[] itemList = new Item[]{myItem, myItem1, myItem2,myItem3,myItem4,myItem5,myItem6,myItem7,myItem8,myItem9};
-        for (Item i: itemList){
-            myItemlist.add(i);
-        }
+//        Item[] itemList = new Item[]{myItem, myItem1, myItem2,myItem3,myItem4,myItem5,myItem6,myItem7,myItem8,myItem9};
+//        for (Item i: itemList){
+//            myItemlist.add(i);
+//        }
 
     }
 
@@ -63,6 +63,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
         Item mitem = myItemlist.get(i);
+        System.out.println("OnBindViewHolder" + myItemlist.get(i));
         viewHolder.itemName.setText(mitem.getItemName());
         viewHolder.uom.setText(mitem.getUOM());
 
@@ -70,6 +71,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
 
     @Override
     public int getItemCount() {
+        System.out.println("Size "+myItemlist.size());
         return myItemlist.size();
     }
 

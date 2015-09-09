@@ -1,12 +1,16 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,11 +34,13 @@ public class ReportItemAdapter extends BaseAdapter implements View.OnClickListen
 
     public ArrayList<HashMap<String, String>> list;
     Activity activity;
+    FragmentActivity fragActivity;
 
 
-    public ReportItemAdapter(Activity activity, ArrayList<HashMap<String, String>> list){
+    public ReportItemAdapter(FragmentActivity activity, ArrayList<HashMap<String, String>> list){
         super();
         this.activity = activity;
+        fragActivity = activity;
         this.list = list;
     }
 
@@ -56,20 +62,31 @@ public class ReportItemAdapter extends BaseAdapter implements View.OnClickListen
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        LayoutInflater inflater = activity.getLayoutInflater();
+        LayoutInflater inflater = fragActivity.getLayoutInflater();
         if(convertView == null){
             convertView = inflater.inflate(R.layout.reportitem_search_result, null);
             ButterKnife.bind(this, convertView);
         }
         HashMap<String, String> map = list.get(position);
         itemCode.setText(map.get(ITEM_CODE));
-        itemCode.setText(map.get(ITEM_NAME));
-        convertView.setOnClickListener(this);
+        itemName.setText(map.get(ITEM_NAME));
+        btnReport.setOnClickListener(this);
         return  convertView;
     }
 
     @Override
     public void onClick(View v) {
+        int i = 1;
+
+        Log.i("Click "+i, "times");
+        i++;
+        Toast.makeText(ReportItemAdapter.this.activity, "Hello from btnReport", Toast.LENGTH_SHORT).show();
+        ReportItemFragment rpItemFrag = new ReportItemFragment();
+        Bundle args = new Bundle();
+        args.putString("ITEMCODE", itemCode.getText().toString());
+        rpItemFrag.setArguments(args);
+        android.support.v4.app.FragmentTransaction fragTran = fragActivity.getSupportFragmentManager().beginTransaction();
+        fragTran.replace(R.id.frame, rpItemFrag).commit();
 
     }
 

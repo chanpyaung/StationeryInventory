@@ -8,7 +8,6 @@ repositories {
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
-
     defaultConfig {
         applicationId "team5.ad.sa40.stationeryinventory"
         minSdkVersion 22
@@ -21,6 +20,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 
@@ -41,4 +42,5 @@ dependencies {
     compile('eu.livotov.labs:zxscanlib:2.0.1@aar') { transitive = true }
     compile 'com.github.clans:fab:1.6.0'
     compile 'jp.wasabeef:recyclerview-animators:1.2.2'
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta1'
 }

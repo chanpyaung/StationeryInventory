@@ -1,9 +1,16 @@
 package team5.ad.sa40.stationeryinventory.Model;
 
 import android.media.Image;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import team5.ad.sa40.stationeryinventory.JSONParser;
+import team5.ad.sa40.stationeryinventory.Setup;
 
 /**
  * Created by johnmajor on 9/3/15.
@@ -135,7 +142,6 @@ public class Item implements Comparable {
 
     }
 
-
     public static List<Item> initializeData(){
         List<Item> itemList = new ArrayList<Item>();
         int i = 0;
@@ -156,4 +162,31 @@ public class Item implements Comparable {
 
         return itemList;
     }
+
+    public static List<Item> getItemByCategory(String CategoryName){
+        List<Item> itemlist = new ArrayList<Item>();
+        String URL = String.format("/CatalogAPI.svc/getitemcategory/"+CategoryName);
+        URL = Setup.baseurl+URL;
+        Log.i("URL", URL);
+        System.out.println(URL);
+        JSONArray result = JSONParser.getJSONArrayFromUrl(URL);
+        try {
+            for (int i = 0; i < result.length(); i++) {
+                JSONObject cat = new JSONObject(result.getString(i));
+                Item item = new Item();
+                item.setBin(cat.getString("Bin"));
+                item.setItemCatID(Integer.parseInt(cat.getString("ItemCatID")));
+                item.setItemName(cat.getString("ItemName"));
+                item.setRoLvl(cat.getInt("RoLvl"));
+                item.setRoQty(cat.getInt("RoQty"));
+                item.setStock(cat.getInt("Stock"));
+                item.setUOM(cat.getString("UOM"));
+                itemlist.add(item);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return itemlist;
+    }
+
 }
