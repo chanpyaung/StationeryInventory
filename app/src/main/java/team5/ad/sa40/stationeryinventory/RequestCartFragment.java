@@ -20,7 +20,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.adapters.ScaleInAnimationAdapter;
-import team5.ad.sa40.stationeryinventory.Model.Item;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,8 +34,8 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
     ItemListAdapter mAdapter;
     @Bind(R.id.searchItem)
     SearchView search;
-    private List<Item> mItems;
-    private List<Item> itemList;
+    private List<JSONItem> mItems;
+    private List<JSONItem> itemList;
 
     public RequestCartFragment() {
         // Required empty public constructor
@@ -57,7 +57,7 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                final List<Item> filteredModelList = filter(mItems, newText);
+                final List<JSONItem> filteredModelList = filter(mItems, newText);
                 mAdapter.animateTo(filteredModelList);
                 mRecyclerView.scrollToPosition(0);
                 return true;
@@ -73,11 +73,11 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
         setHasOptionsMenu(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
         mAdapter = new ItemListAdapter();
-        mAdapter.myItemlist = MainActivity.requestCart;
+        ItemListAdapter.myItemlist = MainActivity.requestCart;
         mItems = new ArrayList<>();
         ScaleInAnimationAdapter animatedAdapter = new ScaleInAnimationAdapter(mAdapter);
         mRecyclerView.setAdapter(animatedAdapter);
-        for(Item it: mAdapter.cartItemList){
+        for(JSONItem it: mAdapter.cartItemList){
             mItems.add(it);
         }
         mAdapter.SetOnItemClickListener(new ItemListAdapter.OnItemClickListener() {
@@ -89,11 +89,11 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
 
     }
 
-    private List<Item> filter(List<Item> items, String query) {
+    private List<JSONItem> filter(List<JSONItem> items, String query) {
         query = query.toLowerCase();
 
-        final List<Item> filteredItemList = new ArrayList<>();
-        for (Item itemm : items) {
+        final List<JSONItem> filteredItemList = new ArrayList<>();
+        for (JSONItem itemm : items) {
             final String text = itemm.getItemName().toLowerCase();
             if (text.contains(query)) {
                 filteredItemList.add(itemm);

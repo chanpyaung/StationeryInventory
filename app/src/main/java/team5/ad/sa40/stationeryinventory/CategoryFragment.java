@@ -19,7 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.ItemAPI;
 import team5.ad.sa40.stationeryinventory.GridAdapter.OnItemClickListener;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 
 /**
@@ -27,6 +33,7 @@ import team5.ad.sa40.stationeryinventory.GridAdapter.OnItemClickListener;
  */
 public class CategoryFragment extends android.support.v4.app.Fragment {
 
+    public static List<JSONItem> itemsbyCategory;
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     GridAdapter mAdapter;
@@ -105,6 +112,28 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
         mAdapter.SetOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+
+                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                ItemAPI itemAPI = restAdapter.create(ItemAPI.class);
+
+                itemAPI.getItemsByCategory(mAdapter.categoryNames[position], new Callback<List<JSONItem>>() {
+                    @Override
+                    public void success(List<JSONItem> jsonItems, Response response) {
+                        itemsbyCategory = jsonItems;
+                        System.out.println("JSON Result : "+jsonItems);
+                        System.out.println("Response "+ response.getStatus());
+                        for(JSONItem jitem : jsonItems){
+                            System.out.println("ITem "+ jitem.getItemID()+" "+jitem.getItemName());
+                            //itemsbyCategory.add(jitem);
+                        }
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        System.out.println("Failure: "+ error.toString());
+                    }
+                });
+
                 ItemListFragment iLFrag = new ItemListFragment();
                 Bundle args = new Bundle();
                 args.putString("CategoryName", mAdapter.categoryNames[position]);

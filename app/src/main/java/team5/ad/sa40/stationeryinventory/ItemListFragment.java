@@ -2,7 +2,6 @@ package team5.ad.sa40.stationeryinventory;
 
 
 import android.app.Fragment;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,6 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.adapters.ScaleInAnimationAdapter;
 import team5.ad.sa40.stationeryinventory.Model.Item;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 
 /**
@@ -31,11 +31,12 @@ import team5.ad.sa40.stationeryinventory.Model.Item;
  */
 public class ItemListFragment extends android.support.v4.app.Fragment {
 
+
     @Bind(R.id.item_recycler_view) RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     ItemListAdapter mAdapter;
     @Bind(R.id.searchItem) SearchView search;
-    private List<Item> mItems;
+    private List<JSONItem> mItems;
     private List<Item> itemList;
 
 
@@ -50,7 +51,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_item_list,container,false);
-        mAdapter = new ItemListAdapter();
+
         Bundle args = getArguments();
         String catName = "";
         if(args!=null){
@@ -58,7 +59,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
         }
         final String categoryName = catName;
 
-        new AsyncTask<Void, Void, List<Item>>() {
+        /* new AsyncTask<Void, Void, List<Item>>() {
             @Override
             protected List<Item> doInBackground(Void... params) {
                 Log.i("From JSON", Item.getItemByCategory(categoryName).toString());
@@ -69,7 +70,8 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
                 itemList = result;
                 ItemListAdapter.myItemlist = itemList;
             }
-        }.execute();
+        }.execute(); */
+
         ButterKnife.bind(this, view);
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -80,7 +82,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                final List<Item> filteredModelList = filter(mItems, newText);
+                final List<JSONItem> filteredModelList = filter(mItems, newText);
                 mAdapter.animateTo(filteredModelList);
                 mRecyclerView.scrollToPosition(0);
                 return true;
@@ -95,7 +97,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        mAdapter = new ItemListAdapter();
+
         Bundle args = getArguments();
         String catName = "";
         if(args !=null ){
@@ -103,6 +105,12 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
             Log.i("CategoryName from ", catName);
         }
         final String categoryName = catName;
+
+        //Retrofit
+
+
+        //JSONParser Way
+        /*
         new AsyncTask<Void, Void, List<Item>>() {
             @Override
             protected List<Item> doInBackground(Void... params) {
@@ -113,7 +121,6 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
             protected void onPostExecute(List<Item> result){
                 itemList = new ArrayList<Item>();
                 itemList = result;
-                ItemListAdapter.myItemlist = itemList;
                 System.out.println("Out form onPostExecute "+itemList.toString());
                 System.out.println("I output"+ItemListAdapter.myItemlist.toString());
                 for(int i=0; i<itemList.size(); i++){
@@ -122,6 +129,9 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
                 }
             }
         }.execute();
+        */
+
+        mAdapter = new ItemListAdapter();
         mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
 //        mItems = new ArrayList<>();
         ScaleInAnimationAdapter animatedAdapter = new ScaleInAnimationAdapter(mAdapter);
@@ -138,11 +148,11 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
 
     }
 
-    private List<Item> filter(List<Item> items, String query) {
+    private List<JSONItem> filter(List<JSONItem> items, String query) {
         query = query.toLowerCase();
 
-        final List<Item> filteredItemList = new ArrayList<>();
-        for (Item itemm : items) {
+        final List<JSONItem> filteredItemList = new ArrayList<>();
+        for (JSONItem itemm : items) {
             final String text = itemm.getItemName().toLowerCase();
             if (text.contains(query)) {
                 filteredItemList.add(itemm);

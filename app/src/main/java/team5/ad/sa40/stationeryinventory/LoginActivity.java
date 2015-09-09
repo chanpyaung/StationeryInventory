@@ -123,15 +123,21 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                         Log.i("Return :", employee.getEmpID().toString()+" "+ employee.getEmpName().toString());
                         Log.i("User ROle: ", employee.getRoleID().toString());
                         Log.i("Response: ", response.getBody().toString());
-                        System.out.println("Response Status "+response.getStatus());
+                        System.out.println("Response Status " + response.getStatus());
                         Setup.user = employee;
                         Intent i = new Intent(LoginActivity.this,MainActivity.class);
                         startActivity(i);
+                        mUseridView.setError(null);
+                        mPasswordView.setError(null);
+                        mStatus.setText("Logged in successfully.");
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
                         Log.i("Error: ", error.toString());
+                        mStatus.setText(getString(R.string.error_login_failed));
+                        mUseridView.setError("");
+                        mPasswordView.setError("");
                     }
                 });
 
@@ -157,7 +163,7 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                                 result.get("EmpID"), result.get("EmpName"),
                                 result.get("RoleID"));
                         t.setText(p);
-                        mStatus.setText("Logged in successfully.");
+
                     }
                 }.execute(json);
 
@@ -193,13 +199,10 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
 
 
                 if (result == null || result != "HttpResponse_OK") {
-                    mStatus.setText(getString(R.string.error_login_failed));
-                    mUseridView.setError("");
-                    mPasswordView.setError("");
+
                 } else {
                     mStatus.setText("Logged in successfully.");
-                    mUseridView.setError(null);
-                    mPasswordView.setError(null);
+
                     Intent i = new Intent(this, MainActivity.class);
                     String userRole = mPasswordView.getText().toString();
                     Log.i("Extra", userRole);

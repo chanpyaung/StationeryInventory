@@ -14,14 +14,14 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import team5.ad.sa40.stationeryinventory.Model.Item;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 public class MainActivity extends AppCompatActivity {
 
     public static ActionBarDrawerToggle actionBarDrawerToggle;
     android.support.v4.app.FragmentTransaction fragmentTran;
 
-    public static List<Item> requestCart = new ArrayList<Item>();
+    public static List<JSONItem> requestCart = new ArrayList<JSONItem>();
     public static String user;
 
     //Call UI element with butter knife
