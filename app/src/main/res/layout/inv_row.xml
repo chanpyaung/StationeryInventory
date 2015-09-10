@@ -20,7 +20,7 @@
             android:layout_height="fill_parent">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="P040"
@@ -43,7 +43,7 @@
                 android:layout_alignParentTop="true" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Pencil"
@@ -51,7 +51,8 @@
                 android:textSize="14dp"
                 android:layout_below="@+id/inv_itemCode"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="50dp" />
+                android:layout_marginLeft="50dp"
+                android:maxLines="2" />
 
             <TextView
                 android:layout_width="wrap_content"

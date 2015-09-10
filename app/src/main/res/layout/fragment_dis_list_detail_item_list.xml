@@ -1,15 +1,222 @@
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:id="@+id/scrollView"
-    android:layout_marginTop="5dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:stretchColumns="0,1"
-        android:id="@+id/item_table"
-        android:layout_weight="1"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="team5.ad.sa40.stationeryinventory.DisListDetailItemList">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:id="@+id/inv_detail_itemID"
+        android:layout_margin="15dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:text="Requisition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/inv_detail_itemName"
+        android:text="00012"
+        android:layout_margin="15dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:layout_toRightOf="@+id/inv_detail_itemID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--<TextView-->
+    <!--android:id="@+id/approvedBy"-->
+    <!--android:text="Approved By"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:layout_marginRight="15dp"-->
+    <!--android:layout_below="@+id/headertext"-->
+    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/approvedPerson"-->
+    <!--android:text="Jordan"-->
+    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+    <!--android:layout_toRightOf="@+id/approvedBy"-->
+    <!--android:layout_below="@+id/id_text"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/processedBy"-->
+    <!--android:text="Processed By"-->
+    <!--android:layout_margin="15dp"-->
+    <!--android:layout_below="@+id/approvedBy"-->
+    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/processedPerson"-->
+    <!--android:layout_marginTop="15dp"-->
+    <!--android:layout_marginLeft="-5dp"-->
+    <!--android:text="Arya Stark"-->
+    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+    <!--android:layout_toRightOf="@+id/processedBy"-->
+    <!--android:layout_below="@+id/approvedPerson"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+
+
+    <TextView
+        android:id="@+id/priority"
+        android:text="Priority"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_below="@+id/inv_detail_itemID"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/priority_text"
+        android:layout_marginLeft="-5dp"
+        android:text="Low"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_toRightOf="@+id/priority"
+        android:layout_below="@+id/inv_detail_itemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/remark"
+        android:text="Remark"
+        android:layout_marginLeft="75dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/inv_detail_itemName"
+        android:layout_toRightOf="@+id/priority_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/remark_text"
+        android:text="N/A"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_toRightOf="@+id/remark"
+        android:layout_below="@+id/inv_detail_itemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/status"
+        android:text="Status"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/remark"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/status_text"
+        android:layout_marginTop="15dp"
+        android:text="Pending"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_toRightOf="@+id/status"
+        android:layout_below="@+id/remark_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/reason"
+        android:text="Reason"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/remark"
+        android:layout_toRightOf="@+id/status_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/reason_text"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="3dp"
+        android:text="N/A"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_toRightOf="@+id/reason"
+        android:layout_below="@+id/remark_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View style="@style/Divider"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="1dp"
+        android:layout_below="@id/status"
+        android:background="@color/background_floating_material_dark"/>
+
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_width="270dp">
-    </TableLayout>
-</ScrollView>
+        android:text="CANCEL"
+        android:id="@+id/requisition_cancel"
+        android:layout_below="@+id/requisition_detail_table"
+        android:layout_alignParentEnd="true"
+        android:background="@color/PrimaryInvertedColor"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:padding="2dp"
+        android:textColor="#ffffffff"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Approve"
+        android:id="@+id/requi_approve"
+        android:layout_below="@+id/requisition_detail_table"
+        android:layout_toLeftOf="@+id/requisition_cancel"
+        android:textSize="25dp"
+        android:background="@color/PrimaryColor"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:padding="5dp"
+        android:textColor="#ffffffff"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="ItemID   Name                                Needed   Actual"
+        android:id="@+id/textView6"
+        android:textSize="14sp"
+        android:layout_row="1"
+        android:layout_column="0"
+        android:layout_below="@+id/status"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:layout_marginLeft="15dp" />
+
+
+    <FrameLayout
+        android:layout_below="@+id/textView6"
+        android:id="@+id/requisition_detail_table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/ret_detail_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="3dp"
+            android:layout_alignParentBottom="true" />
+
+    </FrameLayout>
+
+
+</RelativeLayout>

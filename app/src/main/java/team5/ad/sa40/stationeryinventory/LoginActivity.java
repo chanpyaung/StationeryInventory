@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +19,6 @@ import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 
-import java.util.Collections;
 import java.util.List;
 
 import retrofit.Callback;
@@ -45,6 +46,17 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences pref =
+                PreferenceManager.getDefaultSharedPreferences
+                        (getApplicationContext());
+        String username = pref.getString("username", null);
+        String password = pref.getString("password", null);
+        if (username != null && password != null)
+        {
+            loginUser(username,password);
+        }
+
         setContentView(R.layout.activity_login);
 
         mUseridView = (AutoCompleteTextView) findViewById(R.id.userid);
@@ -104,139 +116,87 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                 //hash password:
                 MD5 md = new MD5();
                 String pwHashed = MD5.getMD5(mPasswordView.getText().toString());
-                //String pwHashed = "81dc9bdb52d04dc20036dbd8313ed055";
                 Log.i("pwhashed:", pwHashed);
 
 
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("EmpID", mUseridView.getText().toString());
-                jsonObject.addProperty("Password", pwHashed);
+                SharedPreferences pref =
+                        PreferenceManager.getDefaultSharedPreferences
+                                (getApplicationContext());
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("username", mUseridView.getText().toString());
+                editor.putString("password", pwHashed);
+                editor.commit();
 
-                //attempt employeeAPI.svc/login API usig retrofit
+                loginUser(mUseridView.getText().toString(),pwHashed);
 
-                //create an adapter for retrofit with base url
-                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(setup.baseurl).build();
+            }
+        }
+    }
 
-                //creating a service for adapter with our POST class
-                EmployeeAPI empAPI = restAdapter.create(EmployeeAPI.class);
+//                JsonObject jsonObject = new JsonObject();
+//                jsonObject.addProperty("EmpID", mUseridView.getText().toString());
+//                jsonObject.addProperty("Password", pwHashed);
 
-                //call for response
-                //retrofit will convert gson for JSON-POJO (JSONEmployee)
-                empAPI.login(jsonObject, new Callback<JSONEmployee>() {
+
+    private void loginUser(String empID, String password) {
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("EmpID", empID);
+        jsonObject.addProperty("Password", password);
+
+        //attempt employeeAPI.svc/login API usig retrofit
+
+        //create an adapter for retrofit with base url
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(setup.baseurl).build();
+
+        //creating a service for adapter with our POST class
+        EmployeeAPI empAPI = restAdapter.create(EmployeeAPI.class);
+
+        //call for response
+        //retrofit will convert gson for JSON-POJO (JSONEmployee)
+        empAPI.login(jsonObject, new Callback<JSONEmployee>() {
+            @Override
+            public void success(JSONEmployee employee, Response response) {
+                Log.i("Return :", employee.getEmpID().toString()+" "+ employee.getEmpName().toString());
+                Log.i("User ROle: ", employee.getRoleID().toString());
+                Log.i("Response: ", response.getBody().toString());
+                System.out.println("Response Status " + response.getStatus());
+                Setup.user = employee;
+
+                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+
+                invAPI.getList(new Callback<List<JSONItem>>() {
                     @Override
-                    public void success(JSONEmployee employee, Response response) {
-                        Log.i("Return :", employee.getEmpID().toString()+" "+ employee.getEmpName().toString());
-                        Log.i("User ROle: ", employee.getRoleID().toString());
+                    public void success(List<JSONItem> jsonItems, Response response) {
+                        Log.i("Result :", jsonItems.toString());
+                        Log.i("First item: ", jsonItems.get(0).getItemID().toString());
                         Log.i("Response: ", response.getBody().toString());
                         System.out.println("Response Status " + response.getStatus());
-                        Setup.user = employee;
-                        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-                        InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
-
-                        invAPI.getList(new Callback<List<JSONItem>>() {
-                            @Override
-                            public void success(List<JSONItem> jsonItems, Response response) {
-                                Log.i("Result :", jsonItems.toString());
-                                Log.i("First item: ", jsonItems.get(0).getItemID().toString());
-                                Log.i("Response: ", response.getBody().toString());
-                                System.out.println("Response Status " + response.getStatus());
-                                InvListAdapter.mJSONItems = jsonItems;
-                                System.out.println("SIZE:::::"+InvListAdapter.mJSONItems.size());
-                                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(i);
-                                mUseridView.setError(null);
-                                mPasswordView.setError(null);
-                                mStatus.setText("Logged in successfully.");
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-                                Log.i("Error: ", error.toString());
-                            }
-                        });
-
+                        InvListAdapter.mJSONItems = jsonItems;
+                        System.out.println("SIZE:::::"+InvListAdapter.mJSONItems.size());
+                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(i);
+                        mUseridView.setError(null);
+                        mPasswordView.setError(null);
+                        mStatus.setText("Logged in successfully.");
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
                         Log.i("Error: ", error.toString());
-                        mStatus.setText(getString(R.string.error_login_failed));
-                        mUseridView.setError("");
-                        mPasswordView.setError("");
                     }
                 });
-
-                //attempt login:
-            /*
-            try {
-                JSONObject user = new JSONObject();
-                user.put("EmpID", mUseridView.getText().toString());
-                user.put("Password",pwHashed);
-                String json = user.toString();
-                Toast.makeText(this,json,Toast.LENGTH_SHORT);
-
-                new AsyncTask<String, Void, Employee>() {
-                    @Override
-                    protected Employee doInBackground(String... params) {
-                        return getEmployee(params[0]);
-                    }
-
-                    @Override
-                    protected void onPostExecute(Employee result) {
-                        TextView t = (TextView) findViewById(R.id.textViewStatus);
-                        String p = String.format("Employee: %s\n%s\n%s\n%s",
-                                result.get("EmpID"), result.get("EmpName"),
-                                result.get("RoleID"));
-                        t.setText(p);
-
-                    }
-                }.execute(json);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e("login json error:", e.toString());
-                mStatus.setText(getString(R.string.error_connection_failed));
             }
 
-        }
-    }
-
-    Employee getEmployee (String data) {
-        Employee emp = null;
-        try {
-            JSONObject e = JSONParser.getJSONFromUrlPOST("http://www.team5.com:8425/employeeapi.svc/login", data);
-            emp = new Employee(e.getString("EmpID"), e.getString("EmpName"), e.getString("DeptID"), e.getString("RoleID"), e.getInt("Phone"), e.getString("Email"), e.getString("Password"));
-            mStatus.setText(emp.toString());
-        } catch (Exception e) {
-        }
-        return emp;
-    }
-}*/
-                /* by John
-                String result = null;
-
-                for (String credential : DUMMY_CREDENTIALS) {
-                    String[] pieces = credential.split(":");
-                    if (pieces[0].equals(mUseridView.getText().toString()) && (pieces[1].equals(mPasswordView.getText().toString()))) {
-                        result = "HttpResponse_OK";
-                    }
-                }
-
-
-                if (result == null || result != "HttpResponse_OK") {
-
-                } else {
-                    mStatus.setText("Logged in successfully.");
-
-                    Intent i = new Intent(this, MainActivity.class);
-                    String userRole = mPasswordView.getText().toString();
-                    Log.i("Extra", userRole);
-                    i.putExtra("User", userRole);
-                    startActivity(i);
-                }
-                */
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("Error: ", error.toString());
+                mStatus.setText(getString(R.string.error_login_failed));
+                mUseridView.setError("");
+                mPasswordView.setError("");
             }
-        }
+        });
     }
 }
 

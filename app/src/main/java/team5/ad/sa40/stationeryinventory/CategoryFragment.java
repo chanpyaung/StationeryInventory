@@ -60,42 +60,7 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new GridAdapter();
         mRecyclerView.setAdapter(mAdapter);
-        /*
-        mAdapter.SetOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                //need to load item list based on category id
-                //call api here
-                ItemListFragment iLFrag = new ItemListFragment();
-                Bundle args = new Bundle();
-                args.putString("CategoryName", mAdapter.categoryNames[position]);
-                Log.i("CategoryName", mAdapter.categoryNames[position]);
-                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                iLFrag.setArguments(args);
-                fragTran.replace(R.id.frame, iLFrag).addToBackStack("TAG").commit();
-                //Toast.makeText(CategoryFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
-
         search = (SearchView)view.findViewById(R.id.searchCat);
-
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                final List<CategoryItem> filteredModelList = filter(mItems, newText);
-                mAdapter.animateTo(filteredModelList);
-                mRecyclerView.scrollToPosition(0);
-                return true;
-            }
-        });
-
         return  view;
     }
 
@@ -143,7 +108,21 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
                     }
                 });
 
-//                Toast.makeText(CategoryFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                final List<CategoryItem> filteredModelList = filter(mItems, newText);
+                mAdapter.animateTo(filteredModelList);
+                mRecyclerView.scrollToPosition(0);
+                return true;
             }
         });
     }

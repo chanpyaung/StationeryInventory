@@ -1,11 +1,7 @@
 package team5.ad.sa40.stationeryinventory;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,13 +24,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
-import team5.ad.sa40.stationeryinventory.Model.Item;
-import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 
@@ -78,6 +67,7 @@ public class InventoryList extends android.support.v4.app.Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         showAllInventory();
 
+        //set spinner status filter details -
         ArrayAdapter<String> FiltersAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,filters);
         FiltersAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerInvStatus.setAdapter(FiltersAdapter);
@@ -110,6 +100,7 @@ public class InventoryList extends android.support.v4.app.Fragment {
             }
         });
 
+        //set spinner category filter details -
         ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,categories);
         FiltersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerInvCat.setAdapter(categoryAdapter);
@@ -205,6 +196,7 @@ public class InventoryList extends android.support.v4.app.Fragment {
             }
         });
 
+        //set scanner button transit
         scanBarcodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -324,4 +316,5 @@ public class InventoryList extends android.support.v4.app.Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

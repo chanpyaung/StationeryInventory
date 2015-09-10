@@ -1,5 +1,8 @@
 package team5.ad.sa40.stationeryinventory.Model;
 
+/**
+ * Created by johnmajor on 9/9/15.
+ */
 import com.google.gson.annotations.Expose;
 
 public class JSONCollectionPoint {
@@ -104,5 +107,5 @@ public class JSONCollectionPoint {
     public void setCPName(String CPName) {
         this.CPName = CPName;
     }
-
+}
 }
