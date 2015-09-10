@@ -53,7 +53,6 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                         (getApplicationContext());
         String username = pref.getString("username", null);
         String password = pref.getString("password", null);
-        Log.i("username get: ",username);
 
         if (username != null && password != null)
         {

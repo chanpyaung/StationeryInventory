@@ -49,10 +49,13 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
         notifAPI.getList(Integer.toString(empID), new Callback<List<JSONNotification>>() {
             @Override
             public void success(List<JSONNotification> jsonItems, Response response) {
-                Log.i("Result :", jsonItems.toString());
-                Log.i("First item: ", jsonItems.get(0).getNotifName());
+                if(jsonItems.size() > 0) {
+                    Log.i("Result :", jsonItems.toString());
+                    Log.i("First item: ", jsonItems.get(0).getNotifName());
+                }
                 Log.i("Response: ", response.getBody().toString());
                 System.out.println("Response Status " + response.getStatus());
+
                 adapter = new NotifListAdapter(jsonItems);
                 notificationList = NotifListAdapter.mJSONNotifications;
                 mRecyclerView.setAdapter(adapter);
