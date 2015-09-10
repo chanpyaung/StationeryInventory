@@ -221,7 +221,7 @@ public class DisbursementList extends android.support.v4.app.Fragment {
                 }
                 else{
                     SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-
+                    //java.sql.Date date1 = new
                 }
             }
         });
