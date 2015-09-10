@@ -13,4 +13,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
 public interface DisbursementAPI {
     @GET("/disbursementAPI.svc/getDisbursement/{DeptID}/null/null/null/null")
     void getDisbursementByDeptID(@Path("DeptID") String DeptID, Callback<List<JSONDisbursement>> disbursementList);
+
+    @GET("/disbursementAPI.svc/getDisbursement/{DeptID}/null/null/{StartDate}/{EndDate}")
+    void getDisbursementByDates(@Path("DeptID") String DeptID, @Path("StartDate") String StartDate, @Path("EndDate") String EndDate, Callback<List<JSONDisbursement>> disbursementList);
 }

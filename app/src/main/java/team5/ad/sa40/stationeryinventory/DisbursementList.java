@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SearchView;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -47,6 +49,7 @@ public class DisbursementList extends android.support.v4.app.Fragment {
     private SimpleDateFormat dateFormatter;
     @Bind(R.id.startDate) EditText text_start_date;
     @Bind(R.id.endDate) EditText text_end_date;
+    @Bind(R.id.button) Button btnSearch;
 
     public DisbursementList(){
 
@@ -189,6 +192,37 @@ public class DisbursementList extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 toDatePickerDialog.show();
+            }
+        });
+
+        text_end_date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    text_end_date.setError(null);
+                    Date start = Setup.parseStringToDate(text_start_date.getText().toString());
+                    Date end = Setup.parseStringToDate(text_end_date.getText().toString());
+
+                    if (end.before(start)) {
+                        text_end_date.setError("End Date should be after Start Date");
+                    }
+                }
+            }
+        });
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date start = Setup.parseStringToDate(text_start_date.getText().toString());
+                Date end = Setup.parseStringToDate(text_end_date.getText().toString());
+
+                if (end.before(start)) {
+                    text_end_date.setError("End Date should be after Start Date");
+                }
+                else{
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+
+                }
             }
         });
         //Date dialog code ends here

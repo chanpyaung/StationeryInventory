@@ -108,4 +108,3 @@ public class JSONCollectionPoint {
         this.CPName = CPName;
     }
 }
-}
