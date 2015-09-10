@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -221,7 +222,37 @@ public class DisbursementList extends android.support.v4.app.Fragment {
                 }
                 else{
                     SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+                    SimpleDateFormat original_format = new SimpleDateFormat("dd/MM/yyyy");
+                    try {
+                        Date uDate1 = original_format.parse(text_start_date.getText().toString());
+                        String str_date1 = format.format(uDate1);
+                        str_date1 = str_date1.replace('/', '-');
+                        Log.e("SQLDate 1", str_date1);
 
+                        Date uDate2 = original_format.parse(text_end_date.getText().toString());
+                        String str_date2 = format.format(uDate2);
+                        str_date2 = str_date2.replace('/', '-');
+                        Log.e("SQLDate 2", str_date2);
+
+                        DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
+                        disbursementAPI.getDisbursementByDates(Setup.user.getDeptID(), str_date1, str_date2, new Callback<List<JSONDisbursement>>() {
+                            @Override
+                            public void success(List<JSONDisbursement> jsonDisbursements, Response response) {
+                                mDisbursement = jsonDisbursements;
+                                Log.e("Success", String.valueOf(jsonDisbursements.size()));
+                                mAdapter.animateTo(mDisbursement);
+                                mRecyclerView.scrollToPosition(0);
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.e("getDisbursementByDates", error.toString());
+                            }
+                        });
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -243,60 +274,4 @@ public class DisbursementList extends android.support.v4.app.Fragment {
         }
         return filteredModelList;
     }
-
-  /*  @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
-
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
-
-        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-        DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
-        Log.e("Adapter:", "reach into constructor");
-        Log.e("Setup.user.getDeptID()", String.valueOf(Setup.user.getDeptID()));
-        disbursementAPI.getDisbursementByDeptID(Setup.user.getDeptID(), new Callback<List<JSONDisbursement>>() {
-            @Override
-            public void success(List<JSONDisbursement> jsonDisbursements, Response response) {
-                Log.e("Response:", response.toString());
-                Log.e("Size of json", String.valueOf(jsonDisbursements.size()));
-                mDisbursement = jsonDisbursements;
-                Log.e("Size of list", String.valueOf(mDisbursement.size()));
-                CollectionPointAPI collectionPointAPI = restAdapter.create(CollectionPointAPI.class);
-
-                collectionPointAPI.getAllCollectionPoints(new Callback<List<JSONCollectionPoint>>() {
-                    @Override
-                    public void success(List<JSONCollectionPoint> jsonCollectionPoints, Response response) {
-                        mCollectionPoint = jsonCollectionPoints;
-                        Log.e("Size of list", String.valueOf(mCollectionPoint.size()));
-                        mAdapter = new DisListGridAdapter("Dept", mDisbursement, mCollectionPoint);
-                        mRecyclerView.setAdapter(mAdapter);
-                        mAdapter.SetOnItemClickListener(new DisListGridAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                android.support.v4.app.Fragment frag = new DisbursementListDetail();
-                                Bundle bundle = new Bundle();
-                                JSONDisbursement temp = mDisbursement.get(position);
-                                bundle.putSerializable("disbursement", temp);
-                                frag.setArguments(bundle);
-                                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Dis")
-                                        .commit();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.e("getAllCollectionPoints", error.toString());
-                    }
-                });
-            }
-
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("getDisbursementByDeptID", error.toString());
-            }
-        });
-    }*/
 }

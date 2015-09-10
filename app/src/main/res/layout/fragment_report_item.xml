@@ -3,43 +3,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="team5.ad.sa40.stationeryinventory.ReportItemFragment">
+    tools:context="team5.ad.sa40.stationeryinventory.ReportItemFragment"
+    android:id="@+id/reportItemFrag">
 
     <!-- TODO: Update blank fragment layout -->
 
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/reasonSpinner"
+        android:layout_marginTop="40dp"
+        android:layout_alignEnd="@+id/reasonSpinner"
+        android:background="#ffffffff" />
 
     <TextView
         android:id="@+id/itemCodeLabel"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="80dp"
+        android:layout_marginLeft="0dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:layout_alignParentStart="true"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Item Code: " />
+        android:text="Item Code: "
+        android:layout_marginStart="43dp"
+        android:layout_above="@+id/itemName"
+        android:layout_alignStart="@+id/reported_qty" />
 
     <TextView
         android:id="@+id/itemCode"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:layout_toRightOf="@+id/itemCodeLabel"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="P042" />
+        android:text="P042"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_toEndOf="@+id/reOrderLvl" />
 
     <TextView
         android:id="@+id/itemNameLabel"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="80dp"
+        android:layout_marginLeft="0dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:layout_below="@+id/itemCodeLabel"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Item Name: " />
+        android:text="Item Name: "
+        android:layout_alignTop="@+id/itemName"
+        android:layout_alignStart="@+id/itemCodeLabel" />
 
     <TextView
         android:id="@+id/itemName"
@@ -51,18 +63,20 @@
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pencil B" />
+        android:text="Pencil B"
+        android:maxLines="2" />
 
     <TextView
         android:id="@+id/qtyLabel"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="80dp"
+        android:layout_marginLeft="0dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:layout_below="@+id/itemNameLabel"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Available Qty:" />
+        android:text="Available Qty:"
+        android:layout_below="@+id/itemNameLabel"
+        android:layout_alignStart="@+id/itemNameLabel"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/aqty"
@@ -78,15 +92,16 @@
 
     <TextView
         android:id="@+id/reOrderLabel"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="80dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginRight="20dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:layout_below="@+id/qtyLabel"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reorder Level: " />
+        android:text="Reorder Level: "
+        android:layout_below="@+id/qtyLabel"
+        android:layout_alignStart="@+id/qtyLabel"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/reOrderLvl"
@@ -97,34 +112,30 @@
         android:layout_height="wrap_content"
         android:text="" />
 
-    <View style="@style/Divider"
-        android:layout_width="fill_parent"
-        android:layout_marginTop="10dp"
-        android:layout_height="1dp"
-        android:layout_below="@id/reOrderLabel"
-        android:background="@color/background_floating_material_dark"/>
-
     <EditText
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="80dp"
         android:id="@+id/reported_qty"
         android:inputType="number"
-        android:layout_below="@+id/reOrderLabel"
-        android:layout_width="200dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:hint="Quantity to report"
-        android:gravity="center"/>
+        android:hint="0"
+        android:gravity="center"
+        android:textSize="23dp"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp" />
 
     <Spinner
-        android:layout_below="@+id/reported_qty"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
         android:id="@+id/reasonSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:spinnerMode="dropdown"
-        android:gravity="center_vertical"/>
+        android:gravity="center_vertical"
+        android:layout_below="@+id/reported_qty"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:id="@+id/remark_text"
@@ -132,7 +143,10 @@
         android:layout_below="@+id/reasonSpinner"
         android:hint="Remark"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:minLines="3"
+        android:gravity="top"
+        android:layout_marginTop="10dp" />
 
     <Button
         android:layout_marginLeft="15dp"
@@ -144,6 +158,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ADD TO ADJUSTMENT VOUCHER"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:textSize="20dp"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:id="@+id/availableQty"
+        android:layout_marginLeft="15dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10"
+        android:layout_alignTop="@+id/qtyLabel"
+        android:layout_toEndOf="@+id/qtyLabel" />
+
+    <TextView
+        android:id="@+id/roLvl"
+        android:layout_marginLeft="15dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20"
+        android:layout_alignTop="@+id/reOrderLabel"
+        android:layout_toEndOf="@+id/qtyLabel" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/itemImg"
+        android:layout_alignTop="@+id/itemCodeLabel"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/logo_200" />
 
 </RelativeLayout>

@@ -191,7 +191,7 @@ public class RetFormAdapter extends RecyclerView.Adapter<RetFormAdapter.ViewHold
                             input = 0;
                         }
 
-                        if (input > Integer.parseInt(requestQty.getText().toString())) {
+                        if (input > Integer.parseInt(requestQty.getText().toString()) || input < 0) {
                             actualQty.setError("Value cannot be greater than qty needed");
                             Log.e("error:", "actualQty > Request Qty");
                             View focusView = null;
@@ -231,7 +231,7 @@ public class RetFormAdapter extends RecyclerView.Adapter<RetFormAdapter.ViewHold
                         input = 0;
                     }
 
-                    if (input > Integer.parseInt(requestQty.getText().toString())) {
+                    if (input > Integer.parseInt(requestQty.getText().toString()) || input < 0) {
                         actualQty.setError("Value cannot be greater than qty needed");
                         Log.e("error:", "actualQty > Request Qty");
                         View focusView = null;

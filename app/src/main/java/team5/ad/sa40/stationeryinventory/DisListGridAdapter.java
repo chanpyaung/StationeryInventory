@@ -1,5 +1,6 @@
 package team5.ad.sa40.stationeryinventory;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -71,6 +72,9 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
             String string_date = Setup.parseJSONDateToString(disItem.getDate());
             viewHolder.disDate.setText(string_date);
             viewHolder.disStatus.setText(disItem.getStatus());
+            if(disItem.getStatus().toUpperCase().equals("PENDING")){
+                viewHolder.disStatus.setTextColor(Color.RED);
+            }
         }
         else{
             viewHolder.txtdisNo.setText(String.valueOf(disItem.getDisID()));

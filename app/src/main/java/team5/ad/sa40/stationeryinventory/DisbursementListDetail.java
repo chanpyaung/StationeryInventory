@@ -35,11 +35,16 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.CollectionPointAPI;
 import team5.ad.sa40.stationeryinventory.API.DisbursementAPI;
+import team5.ad.sa40.stationeryinventory.API.EmployeeAPI;
+import team5.ad.sa40.stationeryinventory.API.ItemAPI;
 import team5.ad.sa40.stationeryinventory.Model.CollectionPoint;
 import team5.ad.sa40.stationeryinventory.Model.Disbursement;
 import team5.ad.sa40.stationeryinventory.Model.Item;
 import team5.ad.sa40.stationeryinventory.Model.JSONCollectionPoint;
 import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
+import team5.ad.sa40.stationeryinventory.Model.JSONDisbursementDetail;
+import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 
 /**
@@ -52,11 +57,15 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
     GoogleMap map;
     List<JSONCollectionPoint> col_pts;
     JSONCollectionPoint selected_colPt;
+    JSONEmployee clerk, representative;
+    JSONDisbursement dis;
 
     @Bind(R.id.txtNo) TextView text_dis_no;
     @Bind(R.id.txtDisDate) TextView text_dis_date;
     @Bind(R.id.txtColPt) TextView text_col_pt;
     @Bind(R.id.txtStatus) TextView text_status;
+    @Bind(R.id.txtRep) TextView text_rep;
+    @Bind(R.id.txtClerk) TextView text_clerk;
     //@Bind(R.id.imgPhone) ImageView img_phCall;
     @Bind(R.id.btnView) Button btn_view;
 
@@ -74,7 +83,7 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
         setHasOptionsMenu(true);
         ButterKnife.bind(this, v);
         Bundle bundle = this.getArguments();
-        final JSONDisbursement dis = (JSONDisbursement) bundle.getSerializable("disbursement");
+        dis = (JSONDisbursement) bundle.getSerializable("disbursement");
         Log.i("Dis id is ", String.valueOf(dis.getDisID()));
 
         // Gets the MapView from the XML layout and creates it
@@ -108,16 +117,43 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
                     }
                 }
 
-                text_dis_no.setText(String.valueOf(dis.getDisID()));
-                String string_date = Setup.parseJSONDateToString(dis.getDate());
-                text_dis_date.setText(string_date);
-                text_col_pt.setText(selected_colPt.getCPName());
-                text_status.setText(dis.getStatus());
+                EmployeeAPI employeeAPI = restAdapter.create(EmployeeAPI.class);
+                employeeAPI.getEmployeeById(dis.getEmpID(), new Callback<JSONEmployee>() {
+                    @Override
+                    public void success(JSONEmployee jsonEmployee, Response response) {
+                        clerk = jsonEmployee;
 
-                // Updates the location and zoom of the MapView
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 10);
-                map.animateCamera(cameraUpdate);
+                        EmployeeAPI employeeAPI = restAdapter.create(EmployeeAPI.class);
+                        employeeAPI.getEmployeeById(dis.getReceivedBy(), new Callback<JSONEmployee>() {
+                            @Override
+                            public void success(JSONEmployee jsonEmployee, Response response) {
+                                representative = jsonEmployee;
 
+                                text_rep.setText(representative.getEmpName());
+                                text_clerk.setText(clerk.getEmpName());
+                                text_dis_no.setText(String.valueOf(dis.getDisID()));
+                                String string_date = Setup.parseJSONDateToString(dis.getDate());
+                                text_dis_date.setText(string_date);
+                                text_col_pt.setText(selected_colPt.getCPName());
+                                text_status.setText(dis.getStatus());
+
+                                // Updates the location and zoom of the MapView
+                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 10);
+                                map.animateCamera(cameraUpdate);
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
 //
 //                img_phCall.setOnClickListener(new View.OnClickListener() {
 //                    @Override
@@ -128,24 +164,52 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
 //                    }
 //                });
 
-                btn_view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        android.support.v4.app.Fragment frag = new DisListDetailItemList();
-                        Bundle bundle = new Bundle();
-                        ArrayList<Item> items = getAllItemList();
-                        bundle.putSerializable("items", items);
-                        frag.setArguments(bundle);
-                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Dis")
-                                .commit();
-                    }
-                });
-
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.e("getAllCollectionPoints", error.toString());
+            }
+        });
+
+        btn_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                ItemAPI itemAPI = restAdapter.create(ItemAPI.class);
+                itemAPI.getItems(new Callback<List<JSONItem>>() {
+                    @Override
+                    public void success(List<JSONItem> jsonItems, Response response) {
+                        final ArrayList<JSONItem> itemList = new ArrayList<JSONItem>(jsonItems);
+
+                        DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
+                        disbursementAPI.getDisbursementDetail(dis.getDisID(), new Callback<List<JSONDisbursementDetail>>() {
+                            @Override
+                            public void success(List<JSONDisbursementDetail> jsonDisbursementDetails, Response response) {
+                                ArrayList<JSONDisbursementDetail> disbursementDetails = new ArrayList<JSONDisbursementDetail>(jsonDisbursementDetails);
+                                Log.e("Size of items", String.valueOf(itemList.size()));
+                                Log.e("Size of disbursements", String.valueOf(disbursementDetails.size()));
+                                android.support.v4.app.Fragment frag = new DisListDetailItemList();
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("items", itemList);
+                                bundle.putSerializable("disbursement", disbursementDetails);
+                                frag.setArguments(bundle);
+                                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Dis")
+                                        .commit();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.e("getDisbursementDetail", error.toString());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("getItems", error.toString());
+                    }
+                });
             }
         });
 
@@ -166,16 +230,5 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
             text_status.setText("");
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public ArrayList<Item> getAllItemList(){
-
-        ArrayList<Item> items = new ArrayList<>();
-
-        for(int i=1; i < 11; i++){
-            Item item = new Item("I00"+ i, "Item " + i, i, i, i, "UOM", i, "Bin " + i);
-            items.add(item);
-        }
-        return items;
     }
 }

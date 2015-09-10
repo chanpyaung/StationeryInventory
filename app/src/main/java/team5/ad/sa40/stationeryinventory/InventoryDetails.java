@@ -1,8 +1,12 @@
 package team5.ad.sa40.stationeryinventory;
 
 
+import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,26 +17,38 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
+import team5.ad.sa40.stationeryinventory.API.SupplierAPI;
 import team5.ad.sa40.stationeryinventory.Model.Item;
 import team5.ad.sa40.stationeryinventory.Model.ItemPrice;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
+import team5.ad.sa40.stationeryinventory.Model.JSONItemPrice;
+import team5.ad.sa40.stationeryinventory.Model.JSONStockCard;
+import team5.ad.sa40.stationeryinventory.Model.JSONSupplier;
 import team5.ad.sa40.stationeryinventory.Model.Supplier;
 
 
 public class InventoryDetails extends android.support.v4.app.Fragment {
 
-    private Item item;
+    public JSONItem item;
     private String itemID = "";
-    private List<Supplier> supplierList;
-    private List<String> supplierNum = new ArrayList<String>();
+    public List<JSONItemPrice> itemPrices;
+    private HashMap<String,String> supplierNum = new HashMap<String,String>();
     public String[] categories;
-    private String[] filters = {"View All","Low Stock","Available"};
-    public List<Item> allInv;
+    private List<TextView> ItemPriceFields;
+    private List<TextView> SupplierFields;
 
     //item details
     @Bind(R.id.inv_detail_image) ImageView itemImage;
@@ -72,24 +88,16 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_inventory_details, container, false);
         ButterKnife.bind(this, view);
         Setup s = new Setup();
-        CategoryItem ci = new CategoryItem();
         categories = CategoryItem.categories;
-        allInv = new ArrayList<Item>();
-        item = new Item();
-        allInv = Item.initializeData();
-
-        if (getArguments() != null) {
-            Log.i("arguments: ", getArguments().toString());
-            itemID = getArguments().getString("ItemID");
-        }
-
-        for(int i=0; i<allInv.size(); i++) {
-            if(allInv.get(i).getItemID() == itemID) {
-                item = allInv.get(i);
-                Log.i("Item details of:",item.getItemID().toString());
-                Log.i("Item stock:",Integer.toString(item.getStock()));
-            }
-        }
+        itemID = item.getItemID();
+        ItemPriceFields = new ArrayList<TextView>();
+        ItemPriceFields.add(itemPrice1Field);
+        ItemPriceFields.add(itemPrice2Field);
+        ItemPriceFields.add(itemPrice3Field);
+        SupplierFields = new ArrayList<TextView>();
+        SupplierFields.add(supplier1Field);
+        SupplierFields.add(supplier2Field);
+        SupplierFields.add(supplier3Field);
 
         //populate item detail fields
         itemIDField.setText(item.getItemID());
@@ -101,67 +109,134 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
         itemStockQtyField.setText(Integer.toString(item.getStock()));
         itemROLvlField.setText(Integer.toString(item.getRoLvl()));
         itemROQtyField.setText(Integer.toString(item.getRoQty()));
-        itemImage.setImageResource(R.drawable.logo_200);
+        new DownloadImageTask(itemImage)
+                .execute(Setup.baseurl + "/img/Item_120/" + itemID + ".jpg");
 
         if(item.getStock()<item.getRoLvl()) {
             itemStatusField.setText("Low");
             itemStatusField.setTextColor(getResources().getColor(R.color.PrimaryInvertedColor));
         }
 
-        //populate supplier info
-        supplierList = Supplier.initializeData();
-        List<ItemPrice> itemPrices= item.getItemPriceList();
-        if(itemPrices.size() > 0) {
-            itemPrice1Field.setText(formatPrice(Double.parseDouble(itemPrices.get(0).get("Price").toString())));
-            supplier1Field.setText(itemPrices.get(0).get("SupplierID").toString());
-            itemPrice2Field.setText(formatPrice(Double.parseDouble(itemPrices.get(1).get("Price").toString())));
-            supplier2Field.setText(itemPrices.get(1).get("SupplierID").toString());
-            itemPrice3Field.setText(formatPrice(Double.parseDouble(itemPrices.get(2).get("Price").toString())));
-            supplier3Field.setText(itemPrices.get(2).get("SupplierID").toString());
-            for (int i = 0; i < supplierList.size(); i++) {
-                for (int j = 0; j < itemPrices.size(); j++) {
-                    if (supplierList.get(i).get("SupplierID") == itemPrices.get(j).get("SupplierID")) {
-                        supplierNum.add(supplierList.get(i).get("Phone").toString());
+        //get price & supplier info
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+        invAPI.getItemPrice(itemID, new Callback<List<JSONItemPrice>>() {
+            @Override
+            public void success(List<JSONItemPrice> jsonItems, Response response) {
+                Log.i("Response: ", response.getBody().toString());
+                System.out.println("Response Status " + response.getStatus());
+                if (jsonItems.size() > 0) {
+                    Log.i("Result :", jsonItems.toString());
+                    Log.i("First item: ", jsonItems.get(0).getItemID().toString());
+                    System.out.println("SIZE:::::" + InvListAdapter.mJSONItems.size());
+                }
+                itemPrices = jsonItems;
+
+                //populate price info
+                for(int i=0; i<itemPrices.size() && i<3; i++) {
+                    if(itemPrices.get(i) != null) {
+                        ItemPriceFields.get(i).setText(formatPrice(Double.parseDouble(String.valueOf(itemPrices.get(i).getPrice()))));
+                        SupplierFields.get(i).setText(itemPrices.get(i).getSupplierID());
+                    }
+                    else {
+                        ItemPriceFields.get(i).setText("$0.00");
+                        SupplierFields.get(i).setText("");
                     }
                 }
+
+                //populate supplier phone no.
+                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                SupplierAPI supAPI = restAdapter.create(SupplierAPI.class);
+
+                for(int j=0;j<itemPrices.size();j++) {
+                    supAPI.getSupplierDetails(itemPrices.get(j).getSupplierID(), new Callback<JSONSupplier>() {
+                        @Override
+                        public void success(JSONSupplier jsonItem, Response response) {
+                            if(jsonItem != null) {
+                                Log.i("Result :", jsonItem.toString());
+                                Log.i("supplier detail: ", jsonItem.getSupplierID().toString());
+                                Log.i("Response: ", response.getBody().toString());
+                                System.out.println("Response Status " + response.getStatus());
+                            }
+                            supplierNum.put(jsonItem.getSupplierID(), String.valueOf(jsonItem.getPhone()));
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Log.i("Error: ", error.toString());
+                        }
+                    });
+                }
             }
-        }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("Error: ", error.toString());
+            }
+        });
 
         //set buttons on click listener
         viewStockCardBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle args = new Bundle();
-                args.putString("ItemID", item.getItemID());
-                Log.i("selected itemID: ", item.getItemID());
-                args.putString("ItemName", item.getItemName());
-                args.putInt("StockQty",item.getStock());
-                args.putInt("ROLvl", item.getRoLvl());
 
-                InventoryStockCard fragment = new InventoryStockCard();
-                fragment.setArguments(args);
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment).addToBackStack("INVENTORYDETAILS1 TAG").commit();
+                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+                invAPI.getStockCard(itemID, new Callback<List<JSONStockCard>>() {
+                    @Override
+                    public void success(List<JSONStockCard> jsonItems, Response response) {
+                        Log.i("Response: ", response.getBody().toString());
+                        System.out.println("Response Status " + response.getStatus());
+                        if (jsonItems.size() > 0) {
+                            Log.i("Result :", jsonItems.toString());
+                            Log.i("First item: ", jsonItems.get(0).getItemID().toString());
+                            System.out.println("SIZE:::::" + InvListAdapter.mJSONItems.size());
+                        }
+
+                        SCListAdapter.mJSONStockCard = jsonItems;
+
+                        Bundle args = new Bundle();
+                        args.putString("ItemID", item.getItemID());
+                        Log.i("selected itemID: ", item.getItemID());
+                        args.putString("ItemName", item.getItemName());
+                        args.putInt("StockQty", item.getStock());
+                        args.putInt("ROLvl", item.getRoLvl());
+
+                        InventoryStockCard fragment = new InventoryStockCard();
+                        fragment.setArguments(args);
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.frame, fragment).addToBackStack("INVENTORYDETAILS1 TAG").commit();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.i("Error: ", error.toString());
+                    }
+                });
             }
         });
+
         reportItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle args = new Bundle();
-                args.putString("ItemID", item.getItemID());
+                args.putString("ITEMCODE", itemID);
                 Log.i("selected itemID: ", item.getItemID());
-                /*
-                ReportItemFragment fragment = new ReportItemFragment();
-                fragment.setArguments(args);
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment).addToBackStack("INVENTORYDETAILS2 TAG").commit();
-                */
+                args.putString("ITEMNAME", item.getItemName());
+                args.putInt("STOCK", item.getStock());
+                args.putInt("ROLVL", item.getRoLvl());
+                args.putString("ITEMPRICE", itemPrices.get(0).getPrice().toString());
+
+                ReportItemFragment rpItemFrag = new ReportItemFragment();
+                rpItemFrag.setArguments(args);
+                android.support.v4.app.FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragTran.replace(R.id.frame, rpItemFrag).addToBackStack("INVENTORYDETAILS1 TAG").commit();
             }
         });
         callSupplier1Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("tel:"+ supplierNum.get(0));
+                Uri uri = Uri.parse("tel:"+ supplierNum.get(supplier1Field.getText()));
                 Intent i = new Intent(Intent.ACTION_DIAL, uri);
                 startActivity(i);
             }
@@ -169,7 +244,7 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
         callSupplier2Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("tel:"+ supplierNum.get(1));
+                Uri uri = Uri.parse("tel:"+ supplierNum.get(supplier2Field.getText()));
                 Intent i = new Intent(Intent.ACTION_DIAL, uri);
                 startActivity(i);
             }
@@ -177,7 +252,7 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
         callSupplier3Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("tel:"+ supplierNum.get(2));
+                Uri uri = Uri.parse("tel:"+ supplierNum.get(supplier3Field.getText()));
                 Intent i = new Intent(Intent.ACTION_DIAL, uri);
                 startActivity(i);
             }
@@ -189,9 +264,33 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
 
     public String formatPrice(Double input) {
         String s = "";
-        DecimalFormat formatter = new DecimalFormat("###.00");
+        DecimalFormat formatter = new DecimalFormat("###0.00");
         s = "$" + formatter.format(input);
         return s;
     }
 
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
 }

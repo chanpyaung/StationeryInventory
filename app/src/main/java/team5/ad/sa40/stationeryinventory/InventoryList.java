@@ -24,15 +24,21 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
+import team5.ad.sa40.stationeryinventory.Model.JSONItemPrice;
 
 
 public class InventoryList extends android.support.v4.app.Fragment {
 
 
-    public String[] categories;
+    public static String[] categories;
     private String[] filters = {"View All","Low Stock","Available"};
-    public List<JSONItem> allInv;
+    public static List<JSONItem> allInv;
     private RecyclerView mRecyclerView;
     private InvListAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -217,15 +223,31 @@ public class InventoryList extends android.support.v4.app.Fragment {
         adapter.SetOnItemClickListener(new InvListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                JSONItem selected = allInv.get(position);
-                Bundle args = new Bundle();
-                args.putString("ItemID", selected.getItemID());
-                Log.i("selected itemID: ", selected.getItemID());
 
-                InventoryDetails fragment2 = new InventoryDetails();
-                fragment2.setArguments(args);
-                android.support.v4.app.FragmentTransaction fragmentTransaction2 = getFragmentManager().beginTransaction();
-                fragmentTransaction2.replace(R.id.frame, fragment2).addToBackStack("INVENTORYLIST TAG").commit();
+                String itemID = allInv.get(position).getItemID();
+
+                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+
+                invAPI.getItemDetails(itemID, new Callback<JSONItem>() {
+                    @Override
+                    public void success(JSONItem jsonItem, Response response) {
+                        Log.i("Result :", jsonItem.toString());
+                        Log.i("First item: ", jsonItem.getItemID().toString());
+                        Log.i("Response: ", response.getBody().toString());
+                        System.out.println("Response Status " + response.getStatus());
+
+                        InventoryDetails detailsFragment = new InventoryDetails();
+                        detailsFragment.item = jsonItem;
+                        android.support.v4.app.FragmentTransaction fragmentTransaction2 = getFragmentManager().beginTransaction();
+                        fragmentTransaction2.replace(R.id.frame, detailsFragment).addToBackStack("INVENTORYLIST TAG").commit();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.i("Error: ", error.toString());
+                    }
+                });
             }
         });
     }
