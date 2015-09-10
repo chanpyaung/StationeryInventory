@@ -256,7 +256,7 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
 
     public String formatPrice(Double input) {
         String s = "";
-        DecimalFormat formatter = new DecimalFormat("###.00");
+        DecimalFormat formatter = new DecimalFormat("###0.00");
         s = "$" + formatter.format(input);
         return s;
     }
