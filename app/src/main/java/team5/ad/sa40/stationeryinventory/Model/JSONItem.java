@@ -4,9 +4,13 @@ package team5.ad.sa40.stationeryinventory.Model;
  * Created by johnmajor on 9/9/15.
  */
 
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 
-public class JSONItem implements Comparable {
+import java.io.Serializable;
+
+public class JSONItem implements Comparable, Serializable {
     @Expose
     private String Bin;
     @Expose
