@@ -25,12 +25,21 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.CollectionPointAPI;
+import team5.ad.sa40.stationeryinventory.API.DisbursementAPI;
 import team5.ad.sa40.stationeryinventory.Model.CollectionPoint;
 import team5.ad.sa40.stationeryinventory.Model.Disbursement;
 import team5.ad.sa40.stationeryinventory.Model.Item;
+import team5.ad.sa40.stationeryinventory.Model.JSONCollectionPoint;
+import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
 
 
 /**
@@ -41,12 +50,14 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
 
     MapView mapView;
     GoogleMap map;
+    List<JSONCollectionPoint> col_pts;
+    JSONCollectionPoint selected_colPt;
 
     @Bind(R.id.txtNo) TextView text_dis_no;
     @Bind(R.id.txtDisDate) TextView text_dis_date;
     @Bind(R.id.txtColPt) TextView text_col_pt;
     @Bind(R.id.txtStatus) TextView text_status;
-    @Bind(R.id.imgPhone) ImageView img_phCall;
+    //@Bind(R.id.imgPhone) ImageView img_phCall;
     @Bind(R.id.btnView) Button btn_view;
 
 
@@ -63,29 +74,13 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
         setHasOptionsMenu(true);
         ButterKnife.bind(this, v);
         Bundle bundle = this.getArguments();
-        Disbursement dis = (Disbursement) bundle.getSerializable("disbursement");
-        Log.i("Dis id is ", String.valueOf(dis.getDisbursementId()));
-        ArrayList<CollectionPoint> col_pts = CollectionPoint.getAllCollectionPoints();
-        CollectionPoint selected_colPt = new CollectionPoint();
-
-        for (int i = 0; i< col_pts.size(); i++){
-            CollectionPoint col = col_pts.get(i);
-            if(dis.getDisbursement_colID() == col.getColPt_id()){
-                selected_colPt = col;
-                break;
-            }
-        }
-
-        text_dis_no.setText(String.valueOf(dis.getDisbursementId()));
-        String string_date = Setup.parseDateToString(dis.getDisbursementDate());
-        text_dis_date.setText(string_date);
-        text_col_pt.setText(selected_colPt.getColPt_name());
-        text_status.setText(dis.getDisbursementStatus());
+        final JSONDisbursement dis = (JSONDisbursement) bundle.getSerializable("disbursement");
+        Log.i("Dis id is ", String.valueOf(dis.getDisID()));
 
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
-
+        mapView.onResume();
         // Gets to GoogleMap from the MapView and does initialization stuff
         map = mapView.getMap();
         map.getUiSettings().setMyLocationButtonEnabled(false);
@@ -98,30 +93,59 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
             e.printStackTrace();
         }
 
-        // Updates the location and zoom of the MapView
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getColPt_lat(), selected_colPt.getColPt_long()), 10);
-        map.animateCamera(cameraUpdate);
+        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        CollectionPointAPI collectionPointAPI = restAdapter.create(CollectionPointAPI.class);
 
-
-        img_phCall.setOnClickListener(new View.OnClickListener() {
+        collectionPointAPI.getAllCollectionPoints(new Callback<List<JSONCollectionPoint>>() {
             @Override
-            public void onClick(View v) {
-                Uri uri = Uri.parse("tel:94725311");
-                Intent i = new Intent(Intent.ACTION_CALL, uri);
-                startActivity(i);
+            public void success(List<JSONCollectionPoint> jsonCollectionPoints, Response response) {
+                col_pts = jsonCollectionPoints;
+                Log.e("Size of list", String.valueOf(col_pts.size()));
+
+                for(int i = 0; i < col_pts.size(); i++){
+                    if(dis.getCPID() == col_pts.get(i).getCPID()){
+                        selected_colPt = col_pts.get(i);
+                    }
+                }
+
+                text_dis_no.setText(String.valueOf(dis.getDisID()));
+                String string_date = Setup.parseJSONDateToString(dis.getDate());
+                text_dis_date.setText(string_date);
+                text_col_pt.setText(selected_colPt.getCPName());
+                text_status.setText(dis.getStatus());
+
+                // Updates the location and zoom of the MapView
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 10);
+                map.animateCamera(cameraUpdate);
+
+//
+//                img_phCall.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Uri uri = Uri.parse("tel:94725311");
+//                        Intent i = new Intent(Intent.ACTION_CALL, uri);
+//                        startActivity(i);
+//                    }
+//                });
+
+                btn_view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        android.support.v4.app.Fragment frag = new DisListDetailItemList();
+                        Bundle bundle = new Bundle();
+                        ArrayList<Item> items = getAllItemList();
+                        bundle.putSerializable("items", items);
+                        frag.setArguments(bundle);
+                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Dis")
+                                .commit();
+                    }
+                });
+
             }
-        });
 
-        btn_view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                android.support.v4.app.Fragment frag = new DisListDetailItemList();
-                Bundle bundle = new Bundle();
-                ArrayList<Item> items = getAllItemList();
-                bundle.putSerializable("items", items);
-                frag.setArguments(bundle);
-                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Dis")
-                        .commit();
+            public void failure(RetrofitError error) {
+                Log.e("getAllCollectionPoints", error.toString());
             }
         });
 

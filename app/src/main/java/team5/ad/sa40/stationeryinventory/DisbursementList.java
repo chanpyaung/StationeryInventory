@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,15 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.CollectionPointAPI;
+import team5.ad.sa40.stationeryinventory.API.DisbursementAPI;
 import team5.ad.sa40.stationeryinventory.Model.Disbursement;
+import team5.ad.sa40.stationeryinventory.Model.JSONCollectionPoint;
+import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
 
 
 public class DisbursementList extends android.support.v4.app.Fragment {
@@ -29,7 +38,8 @@ public class DisbursementList extends android.support.v4.app.Fragment {
     RecyclerView.LayoutManager mLayoutManager;
     DisListGridAdapter mAdapter;
     SearchView search;
-    private List<Disbursement> mDisbursement;
+    private List<JSONDisbursement> mDisbursement;
+    private List<JSONCollectionPoint> mCollectionPoint;
 
     private DatePickerDialog fromDatePickerDialog;
     private DatePickerDialog toDatePickerDialog;
@@ -40,6 +50,8 @@ public class DisbursementList extends android.support.v4.app.Fragment {
 
     public DisbursementList(){
 
+        mDisbursement = new ArrayList<>();
+        mCollectionPoint = new ArrayList<>();
     }
 
     @Override
@@ -54,14 +66,55 @@ public class DisbursementList extends android.support.v4.app.Fragment {
 
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new DisListGridAdapter("Dept");
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.SetOnItemClickListener(new DisListGridAdapter.OnItemClickListener() {
+
+
+        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
+        Log.e("Adapter:", "reach into constructor");
+        Log.e("Setup.user.getDeptID()", String.valueOf(Setup.user.getDeptID()));
+        disbursementAPI.getDisbursementByDeptID(Setup.user.getDeptID(), new Callback<List<JSONDisbursement>>() {
             @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(DisbursementList.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
+            public void success(List<JSONDisbursement> jsonDisbursements, Response response) {
+                Log.e("Response:", response.toString());
+                Log.e("Size of json", String.valueOf(jsonDisbursements.size()));
+                mDisbursement = jsonDisbursements;
+                Log.e("Size of list", String.valueOf(mDisbursement.size()));
+                CollectionPointAPI collectionPointAPI = restAdapter.create(CollectionPointAPI.class);
+
+                collectionPointAPI.getAllCollectionPoints(new Callback<List<JSONCollectionPoint>>() {
+                    @Override
+                    public void success(List<JSONCollectionPoint> jsonCollectionPoints, Response response) {
+                        mCollectionPoint = jsonCollectionPoints;
+                        Log.e("Size of list", String.valueOf(mCollectionPoint.size()));
+                        mAdapter = new DisListGridAdapter("Dept", mDisbursement, mCollectionPoint);
+                        mRecyclerView.setAdapter(mAdapter);
+                        mAdapter.SetOnItemClickListener(new DisListGridAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                android.support.v4.app.Fragment frag = new DisbursementListDetail();
+                                Bundle bundle = new Bundle();
+                                JSONDisbursement temp = mDisbursement.get(position);
+                                bundle.putSerializable("disbursement", temp);
+                                frag.setArguments(bundle);
+                                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Dis")
+                                        .commit();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("getAllCollectionPoints", error.toString());
+                    }
+                });
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("getDisbursementByDeptID", error.toString());
             }
         });
+
         search = (SearchView)view.findViewById(R.id.disSearchCat);
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -73,7 +126,27 @@ public class DisbursementList extends android.support.v4.app.Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                final List<Disbursement> filteredModelList = filter(mDisbursement, newText);
+                Log.e("onQueryTextChange0", String.valueOf(mDisbursement.size()));
+                DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
+                disbursementAPI.getDisbursementByDeptID(Setup.user.getDeptID(), new Callback<List<JSONDisbursement>>() {
+                    @Override
+                    public void success(List<JSONDisbursement> jsonDisbursements, Response response) {
+                        mDisbursement = jsonDisbursements;
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("getDisbursementByDeptID", error.toString());
+                    }
+                });
+                ArrayList<JSONDisbursement> dis = new ArrayList<JSONDisbursement>();
+                for(int i = 0; i < mDisbursement.size(); i++){
+                    JSONDisbursement temp = mDisbursement.get(i);
+                    dis.add(temp);
+                }
+                final List<JSONDisbursement> filteredModelList = filter(dis, newText);
+                Log.e("onQueryTextChange1", String.valueOf(dis.size()));
+                Log.e("onQueryTextChange2", String.valueOf(mCollectionPoint.size()));
                 mAdapter.animateTo(filteredModelList);
                 mRecyclerView.scrollToPosition(0);
                 return true;
@@ -122,42 +195,74 @@ public class DisbursementList extends android.support.v4.app.Fragment {
         return  view;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
-
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
-        mDisbursement = new ArrayList<>();
-        for(Disbursement c: mAdapter.mdisbursements){
-            mDisbursement.add(c);
-        }
-        mAdapter = new DisListGridAdapter("Dept");
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.SetOnItemClickListener(new DisListGridAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                android.support.v4.app.Fragment frag = new DisbursementListDetail();
-                Bundle bundle = new Bundle();
-                Disbursement temp = mDisbursement.get(position);
-                bundle.putSerializable("disbursement", temp);
-                frag.setArguments(bundle);
-                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Dis")
-                        .commit();
-            }
-        });
-    }
-
-    private List<Disbursement> filter(List<Disbursement> models, String query) {
+    private List<JSONDisbursement> filter(List<JSONDisbursement> models, String query) {
         query = query.toLowerCase();
-
-        final List<Disbursement> filteredModelList = new ArrayList<>();
-        for (Disbursement model : models) {
-            final String text = String.valueOf(model.getDisbursementId()).toLowerCase();
+        Log.e("query.toLowerCase()", query);
+        Log.e("filter", String.valueOf(models.size()));
+        final List<JSONDisbursement> filteredModelList = new ArrayList<>();
+        for (JSONDisbursement model : models) {
+            final String text = String.valueOf(model.getDisID());
+            Log.e("model.getDisID()", String.valueOf(model.getDisID()));
             if (text.contains(query)) {
                 filteredModelList.add(model);
             }
         }
         return filteredModelList;
     }
+
+  /*  @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
+
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
+
+        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
+        Log.e("Adapter:", "reach into constructor");
+        Log.e("Setup.user.getDeptID()", String.valueOf(Setup.user.getDeptID()));
+        disbursementAPI.getDisbursementByDeptID(Setup.user.getDeptID(), new Callback<List<JSONDisbursement>>() {
+            @Override
+            public void success(List<JSONDisbursement> jsonDisbursements, Response response) {
+                Log.e("Response:", response.toString());
+                Log.e("Size of json", String.valueOf(jsonDisbursements.size()));
+                mDisbursement = jsonDisbursements;
+                Log.e("Size of list", String.valueOf(mDisbursement.size()));
+                CollectionPointAPI collectionPointAPI = restAdapter.create(CollectionPointAPI.class);
+
+                collectionPointAPI.getAllCollectionPoints(new Callback<List<JSONCollectionPoint>>() {
+                    @Override
+                    public void success(List<JSONCollectionPoint> jsonCollectionPoints, Response response) {
+                        mCollectionPoint = jsonCollectionPoints;
+                        Log.e("Size of list", String.valueOf(mCollectionPoint.size()));
+                        mAdapter = new DisListGridAdapter("Dept", mDisbursement, mCollectionPoint);
+                        mRecyclerView.setAdapter(mAdapter);
+                        mAdapter.SetOnItemClickListener(new DisListGridAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                android.support.v4.app.Fragment frag = new DisbursementListDetail();
+                                Bundle bundle = new Bundle();
+                                JSONDisbursement temp = mDisbursement.get(position);
+                                bundle.putSerializable("disbursement", temp);
+                                frag.setArguments(bundle);
+                                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Dis")
+                                        .commit();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("getAllCollectionPoints", error.toString());
+                    }
+                });
+            }
+
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("getDisbursementByDeptID", error.toString());
+            }
+        });
+    }*/
 }

@@ -1,6 +1,9 @@
 package team5.ad.sa40.stationeryinventory;
 
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,24 +12,36 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.CollectionPointAPI;
+import team5.ad.sa40.stationeryinventory.API.DisbursementAPI;
+import team5.ad.sa40.stationeryinventory.API.ItemAPI;
 import team5.ad.sa40.stationeryinventory.Model.Disbursement;
+import team5.ad.sa40.stationeryinventory.Model.JSONCollectionPoint;
+import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 /**
  * Created by student on 2/9/15.
  */
 public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.ViewHolder> {
 
-    List<Disbursement> mdisbursements;
+    List<JSONDisbursement> mdisbursements;
     DisListGridAdapter.OnItemClickListener mItemClickListener;
     String user_dept;
+    List<JSONCollectionPoint> mCollectionPoints;
 
-    public DisListGridAdapter(String part){
+    public DisListGridAdapter(String part, List<JSONDisbursement> dis, List<JSONCollectionPoint> col){
         super();
         user_dept = part;
-        mdisbursements = new ArrayList<>();
+        mdisbursements = dis;
+        mCollectionPoints = col;
         //Place for adding the JSON list if elseif else
         if (user_dept != "Search"){
-            mdisbursements = Disbursement.getAllDisbursement();
+
         }
     }
     @Override
@@ -46,23 +61,24 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Disbursement disItem = mdisbursements.get(i);
+        JSONDisbursement disItem = mdisbursements.get(i);
+        Log.e("size in bind", String.valueOf(mdisbursements.size()));
         if (user_dept == "Dept") {
             viewHolder.disNoLabel.setText("Disbursement #");
             viewHolder.noNeedLabel1.setText("");
             viewHolder.noNeedLable2.setText("");
-            viewHolder.disNo.setText(String.valueOf(disItem.getDisbursementId()));
-            String string_date = Setup.parseDateToString(disItem.getDisbursementDate());
+            viewHolder.disNo.setText(String.valueOf(disItem.getDisID()));
+            String string_date = Setup.parseJSONDateToString(disItem.getDate());
             viewHolder.disDate.setText(string_date);
-            viewHolder.disStatus.setText(disItem.getDisbursementStatus());
+            viewHolder.disStatus.setText(disItem.getStatus());
         }
         else{
-            viewHolder.txtdisNo.setText(String.valueOf(disItem.getDisbursementId()));
-            String string_date = Setup.parseDateToString(disItem.getDisbursementDate());
+            viewHolder.txtdisNo.setText(String.valueOf(disItem.getDisID()));
+            String string_date = Setup.parseJSONDateToString(disItem.getDate());
             viewHolder.txtdisDate.setText(string_date);
-            viewHolder.txtdisStatus.setText(disItem.getDisbursementStatus());
+            viewHolder.txtdisStatus.setText(disItem.getStatus());
             viewHolder.txtDept.setText(disItem.getDeptID());
-            viewHolder.txtCol.setText("Stationary");
+            viewHolder.txtCol.setText(getColPtNameFromDis(disItem.getCPID()));
         }
 
     }
@@ -72,50 +88,50 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
         return mdisbursements.size();
     }
 
-    public Disbursement removeItem(int position) {
-        final Disbursement item = mdisbursements.remove(position);
+    public JSONDisbursement removeItem(int position) {
+        final JSONDisbursement item = mdisbursements.remove(position);
         notifyItemRemoved(position);
         return item;
     }
 
-    public void addItem(int position, Disbursement item) {
+    public void addItem(int position, JSONDisbursement item) {
         mdisbursements.add(position, item);
         notifyItemInserted(position);
     }
 
     public void moveItem(int fromPosition, int toPosition) {
-        final Disbursement model = mdisbursements.remove(fromPosition);
+        final JSONDisbursement model = mdisbursements.remove(fromPosition);
         mdisbursements.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
 
-    public void animateTo(List<Disbursement> items) {
+    public void animateTo(List<JSONDisbursement> items) {
         applyAndAnimateRemovals(items);
         applyAndAnimateAdditions(items);
         applyAndAnimateMovedItems(items);
     }
 
-    private void applyAndAnimateRemovals(List<Disbursement> newItems) {
+    private void applyAndAnimateRemovals(List<JSONDisbursement> newItems) {
         for (int i = mdisbursements.size() - 1; i >= 0; i--) {
-            final Disbursement model = mdisbursements.get(i);
+            final JSONDisbursement model = mdisbursements.get(i);
             if (!newItems.contains(model)) {
                 removeItem(i);
             }
         }
     }
 
-    private void applyAndAnimateAdditions(List<Disbursement> newModels) {
+    private void applyAndAnimateAdditions(List<JSONDisbursement> newModels) {
         for (int i = 0, count = newModels.size(); i < count; i++) {
-            final Disbursement item = newModels.get(i);
+            final JSONDisbursement item = newModels.get(i);
             if (!mdisbursements.contains(item)) {
                 addItem(i, item);
             }
         }
     }
 
-    private void applyAndAnimateMovedItems(List<Disbursement> newModels) {
+    private void applyAndAnimateMovedItems(List<JSONDisbursement> newModels) {
         for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
-            final Disbursement model = newModels.get(toPosition);
+            final JSONDisbursement model = newModels.get(toPosition);
             final int fromPosition = mdisbursements.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
@@ -172,5 +188,15 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
 
     public void SetOnItemClickListener (final OnItemClickListener mItemClickListener){
         this.mItemClickListener = mItemClickListener;
+    }
+
+    public String getColPtNameFromDis(int colID){
+        String selected_colPt = "";
+        for (int i = 0; i < mCollectionPoints.size(); i++){
+            if (colID == mCollectionPoints.get(i).getCPID()){
+                selected_colPt = mCollectionPoints.get(i).getCPName();
+            }
+        }
+        return selected_colPt;
     }
 }
