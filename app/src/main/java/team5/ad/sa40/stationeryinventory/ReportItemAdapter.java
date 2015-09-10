@@ -84,6 +84,7 @@ public class ReportItemAdapter extends BaseAdapter implements View.OnClickListen
         ReportItemFragment rpItemFrag = new ReportItemFragment();
         Bundle args = new Bundle();
         args.putString("ITEMCODE", itemCode.getText().toString());
+        args.putString("ITEMPRICE","");
         rpItemFrag.setArguments(args);
         android.support.v4.app.FragmentTransaction fragTran = fragActivity.getSupportFragmentManager().beginTransaction();
         fragTran.replace(R.id.frame, rpItemFrag).commit();

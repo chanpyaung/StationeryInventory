@@ -16,7 +16,7 @@
         android:background="@color/SecondaryColor"
         android:text="@string/add_new_item"
         android:layout_width="170dp"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:drawableLeft="@drawable/ic_m_add_white_24dp"/>
 
 
@@ -31,7 +31,7 @@
         android:layout_alignParentEnd="true"
         android:text="@string/adjVouchers"
         android:layout_width="170dp"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:drawableLeft="@drawable/ic_folder_open_white_24dp"/>
 
     <View style="@style/Divider"
@@ -41,24 +41,28 @@
         android:layout_below="@id/add_new_item"
         android:background="@color/background_floating_material_dark"/>
 
-    <FrameLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/report_recycler_view"
         android:layout_marginTop="15dp"
         android:layout_below="@+id/add_new_item"
-        android:id="@+id/reportedItemPlaceHolder"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/genAdjVoucher" />
 
     <Button
         android:id="@+id/genAdjVoucher"
-        android:layout_margin="15dp"
         android:padding="10dp"
-        android:textSize="14sp"
+        android:textSize="20sp"
         android:textColor="@android:color/white"
         android:background="@color/PrimaryColor"
         android:layout_alignParentBottom="true"
         android:text="@string/genadjVoucher"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp" />
 
 
 </RelativeLayout>

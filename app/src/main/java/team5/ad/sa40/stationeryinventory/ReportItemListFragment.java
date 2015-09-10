@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.ButterKnife;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReportItemListFragment extends Fragment {
+public class ReportItemListFragment extends android.support.v4.app.Fragment {
 
 
     public ReportItemListFragment() {
@@ -22,8 +24,11 @@ public class ReportItemListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_report_item_list, container, false);
+        inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.fragment_report_item_list, container, false);
+        //ButterKnife.bind(this, view);
+
+        return view;
     }
 
 

@@ -215,16 +215,17 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 Bundle args = new Bundle();
-                args.putString("ItemID", item.getItemID());
+                args.putString("ITEMCODE", itemID);
                 Log.i("selected itemID: ", item.getItemID());
+                args.putString("ITEMNAME", item.getItemName());
+                args.putInt("STOCK", item.getStock());
+                args.putInt("ROLVL", item.getRoLvl());
+                args.putString("ITEMPRICE", itemPrices.get(0).getPrice().toString());
 
                 ReportItemFragment rpItemFrag = new ReportItemFragment();
-                Bundle args2 = new Bundle();
-                args2.putString("ITEMCODE", itemID);
-                rpItemFrag.setArguments(args2);
+                rpItemFrag.setArguments(args);
                 android.support.v4.app.FragmentTransaction fragTran = getFragmentManager().beginTransaction();
                 fragTran.replace(R.id.frame, rpItemFrag).addToBackStack("INVENTORYDETAILS1 TAG").commit();
-
             }
         });
         callSupplier1Btn.setOnClickListener(new View.OnClickListener() {
