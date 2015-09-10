@@ -217,12 +217,14 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
                 Bundle args = new Bundle();
                 args.putString("ItemID", item.getItemID());
                 Log.i("selected itemID: ", item.getItemID());
-                /*
-                ReportItemFragment fragment = new ReportItemFragment();
-                fragment.setArguments(args);
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment).addToBackStack("INVENTORYDETAILS2 TAG").commit();
-                */
+
+                ReportItemFragment rpItemFrag = new ReportItemFragment();
+                Bundle args2 = new Bundle();
+                args2.putString("ITEMCODE", itemID);
+                rpItemFrag.setArguments(args2);
+                android.support.v4.app.FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragTran.replace(R.id.frame, rpItemFrag).addToBackStack("INVENTORYDETAILS1 TAG").commit();
+
             }
         });
         callSupplier1Btn.setOnClickListener(new View.OnClickListener() {
