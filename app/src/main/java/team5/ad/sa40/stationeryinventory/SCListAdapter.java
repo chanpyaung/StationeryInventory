@@ -7,25 +7,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import team5.ad.sa40.stationeryinventory.Model.StockCard;
+import team5.ad.sa40.stationeryinventory.Model.JSONStockCard;
 
 public class SCListAdapter extends RecyclerView.Adapter<SCListAdapter.ViewHolder> {
 
-    List<StockCard> mStockCard;
+    public static List<JSONStockCard> mJSONStockCard;
     String[] mSCID;
     SCListAdapter.OnItemClickListener mItemClickListener;
 
     public SCListAdapter(String itemID){
         super();
-        mStockCard = StockCard.initializeData(itemID);
-
-        mSCID = new String[mStockCard.size()];
-        Log.i("Size of list", String.valueOf(mStockCard.size()));
+        if(mJSONStockCard.size() == 0) {
+            mJSONStockCard = new ArrayList<JSONStockCard>();
+        }
+        mSCID = new String[mJSONStockCard.size()];
+        Log.i("Size of list", String.valueOf(mJSONStockCard.size()));
         Setup s = new Setup();
-        for(int i = 0; i < mStockCard.size(); i++){
-            String temp = String.valueOf(mStockCard.get(i).getStockCardSN());
+        for(int i = 0; i < mJSONStockCard.size(); i++){
+            String temp = String.valueOf(mJSONStockCard.get(i).getStockCardSN());
             mSCID[i] = temp;
         }
         Log.i("First of string ", mSCID[0]);
@@ -41,8 +43,8 @@ public class SCListAdapter extends RecyclerView.Adapter<SCListAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        StockCard sc = mStockCard.get(i);
-        viewHolder.SCDate.setText(Setup.parseDateToString(sc.getDate()));
+        JSONStockCard sc = mJSONStockCard.get(i);
+        viewHolder.SCDate.setText(sc.getDate());
         viewHolder.SCDesc.setText(sc.getDescription().toString());
         viewHolder.SCChange.setText(String.format("%d", sc.getQty()));
         viewHolder.SCBalance.setText(Integer.toString(sc.getBalance()));
@@ -51,54 +53,54 @@ public class SCListAdapter extends RecyclerView.Adapter<SCListAdapter.ViewHolder
     @Override
     public int getItemCount() {
 
-        return mStockCard.size();
+        return mJSONStockCard.size();
     }
 
-    public StockCard removeItem(int position) {
-        final StockCard item = mStockCard.remove(position);
+    public JSONStockCard removeItem(int position) {
+        final JSONStockCard item = mJSONStockCard.remove(position);
         notifyItemRemoved(position);
         return item;
     }
 
-    public void addItem(int position, StockCard item) {
-        mStockCard.add(position, item);
+    public void addItem(int position, JSONStockCard item) {
+        mJSONStockCard.add(position, item);
         notifyItemInserted(position);
     }
 
     public void moveItem(int fromPosition, int toPosition) {
-        final StockCard model = mStockCard.remove(fromPosition);
-        mStockCard.add(toPosition, model);
+        final JSONStockCard model = mJSONStockCard.remove(fromPosition);
+        mJSONStockCard.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
 
-    public void animateTo(List<StockCard> items) {
+    public void animateTo(List<JSONStockCard> items) {
         applyAndAnimateRemovals(items);
         applyAndAnimateAdditions(items);
         applyAndAnimateMovedItems(items);
     }
 
-    private void applyAndAnimateRemovals(List<StockCard> newItems) {
-        for (int i = mStockCard.size() - 1; i >= 0; i--) {
-            final StockCard model = mStockCard.get(i);
+    private void applyAndAnimateRemovals(List<JSONStockCard> newItems) {
+        for (int i = mJSONStockCard.size() - 1; i >= 0; i--) {
+            final JSONStockCard model = mJSONStockCard.get(i);
             if (!newItems.contains(model)) {
                 removeItem(i);
             }
         }
     }
 
-    private void applyAndAnimateAdditions(List<StockCard> newModels) {
+    private void applyAndAnimateAdditions(List<JSONStockCard> newModels) {
         for (int i = 0, count = newModels.size(); i < count; i++) {
-            final StockCard item = newModels.get(i);
-            if (!mStockCard.contains(item)) {
+            final JSONStockCard item = newModels.get(i);
+            if (!mJSONStockCard.contains(item)) {
                 addItem(i, item);
             }
         }
     }
 
-    private void applyAndAnimateMovedItems(List<StockCard> newModels) {
+    private void applyAndAnimateMovedItems(List<JSONStockCard> newModels) {
         for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
-            final StockCard model = newModels.get(toPosition);
-            final int fromPosition = mStockCard.indexOf(model);
+            final JSONStockCard model = newModels.get(toPosition);
+            final int fromPosition = mJSONStockCard.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
             }
