@@ -10,6 +10,9 @@ import team5.ad.sa40.stationeryinventory.Model.JSONNotification;
 public interface NotificationAPI {
 
     @GET("/notificationAPI.svc/getNotification/{EmpID}")
-    void getItemsByCategory(@Path("EmpID") String EmpID, Callback<List<JSONNotification>> notification);
+    void getList(@Path("EmpID") String EmpID, Callback<List<JSONNotification>> notification);
+
+    @GET("/notificationAPI.svc/changeStatusToRead/{NotifID}")
+    void changeStatus(@Path("NotifID") String NotifID, Callback<String> result);
 
 }

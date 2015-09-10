@@ -3,6 +3,7 @@ package team5.ad.sa40.stationeryinventory;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.NotificationAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONNotification;
 
 
@@ -37,16 +43,19 @@ public class NotificationFragment extends android.support.v4.app.ListFragment {
         Setup s = new Setup();
         empID = Setup.user.getEmpID();
 
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        NotificationAPI notifAPI = restAdapter.create(NotificationAPI.class);
 
-        new AsyncTask<Void, Void, List<JSONNotification>>() {
+        notifAPI.getList(Integer.toString(empID),new Callback<List<JSONNotification>>(){
             @Override
-            protected List<JSONNotification> doInBackground(Void... params) {
-                return listNotification();
-            }
-            @Override
-            protected void onPostExecute(List<JSONNotification> result) {
+            public void success(List<JSONNotification> jsonItems, Response response) {
+                Log.i("Result :", jsonItems.toString());
+                Log.i("First item: ", jsonItems.get(0).getNotifName());
+                Log.i("Response: ", response.getBody().toString());
+                System.out.println("Response Status " + response.getStatus());
+                notificationList = jsonItems;
                 List<Map<String,String>> notifList = new ArrayList<Map<String,String>>();
-                for(JSONNotification n : result) {
+                for(JSONNotification n : jsonItems) {
                     Map<String,String> nmap = new HashMap<String,String>();
                     nmap.put("NotifID",Integer.toString(n.getNotifID()));
                     nmap.put("NotifName",n.getNotifName());
@@ -61,33 +70,15 @@ public class NotificationFragment extends android.support.v4.app.ListFragment {
                         new int[]{android.R.id.text1, android.R.id.text2});
                 setListAdapter(adapter);
             }
-        }.execute();
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("Error: ", error.toString());
+            }
+        });
 
         return view;
     }
-
-    List<JSONNotification> listNotification() {
-        notificationList = new ArrayList<JSONNotification>();
-        try {
-
-            JSONArray a = JSONParser.getJSONArrayFromUrl
-                    (String.format("%s/notificationapi.svc/%s",Setup.baseurl,empID));
-            for (int i=0; i<a.length(); i++) {
-                JSONObject n = a.getJSONObject(i);
-                Map<String,String> nmap = new HashMap<String,String>();
-                nmap.put("NotifID",n.getString("NotifID"));
-                nmap.put("NotifName",n.getString("NotifName"));
-                nmap.put("NotifDesc",n.getString("NotifDesc"));
-                nmap.put("DateTime",n.getString("DateTime"));
-                nmap.put("Status",n.getString("Status"));
-
-                notificationList.add(new JSONNotification());
-            }
-        } catch (Exception e) {
-        }
-        return notificationList;
-    }
-
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
@@ -96,52 +87,33 @@ public class NotificationFragment extends android.support.v4.app.ListFragment {
         Intent i;
         notifID = notificationList.get(position).getNotifID();
         Log.i("Notifid selected:",Integer.toString(notifID));
-        /*
-        switch(notificationList.get(position).get("NotifName")) {
-            case "Low stock inventory":
 
+        switch(notificationList.get(position).getNotifName()) {
+            case "Low stock inventory": {
                 //update status of notification
-                new AsyncTask<Void, Void, Boolean>() {
-                    @Override
-                    protected Boolean doInBackground(Void... params) {
-                        return updateNotificationStatus(notifID);
-                    }
-                    @Override
-                    protected void onPostExecute(Boolean result) {
-                        if(result == true)
-                            Log.i("Done updating status of:",notifID);
-                        else
-                            Log.i("Failed updating status of:",notifID);
-                    }
-                }.execute();
+                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                NotificationAPI notifAPI = restAdapter.create(NotificationAPI.class);
 
-                i = new Intent(this, InventoryActivity.class);
-                i.putExtra("NotifID",notificationList.get(position).get("NotifID"));
-                i.putExtra("EmpID",empID);
-                startActivityForResult(i);
+                notifAPI.changeStatus(Integer.toString(notifID), new Callback<String>() {
+                    @Override
+                    public void success(String result, Response response) {
+                        Log.i("Result :", result);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.i("Error: ", error.toString());
+                    }
+                });
+                InventoryList iLFrag = new InventoryList();
+                Bundle args = new Bundle();
+                args.putString("NotifID", Integer.toString(notifID));
+                Log.i("NotifID", Integer.toString(notifID));
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                iLFrag.setArguments(args);
+                fragTran.replace(R.id.frame, iLFrag).addToBackStack("TAG").commit();
                 break;
+            }
         }
-        */
     }
-
-    Boolean updateNotificationStatus() {
-        Boolean resultSuccess = false;
-
-        try {
-            JSONObject notif = new JSONObject();
-            notif.put("NotifID", notifID);
-            String json = notif.toString();
-            Toast.makeText(getActivity(), json, Toast.LENGTH_SHORT);
-
-            String result = JSONParser.postStream(
-                    String.format("%s/notificationapi.svc/updateStatus",Setup.baseurl),json);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("json error",e.toString());
-        }
-
-        return resultSuccess;
-    }
-
 }
