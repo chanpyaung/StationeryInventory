@@ -22,7 +22,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.adapters.ScaleInAnimationAdapter;
-import team5.ad.sa40.stationeryinventory.Model.Item;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 
@@ -36,8 +35,6 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
     ItemListAdapter mAdapter;
     @Bind(R.id.searchItem) SearchView search;
     private List<JSONItem> mItems;
-    private List<Item> itemList;
-
 
     public ItemListFragment() {
         // Required empty public constructor
@@ -51,32 +48,34 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_item_list,container,false);
-
-        Bundle args = getArguments();
-        String catName = "";
-        if(args!=null){
-            catName = args.getString("CategoryName");
-        }
-        final String categoryName = catName;
-
-        /* new AsyncTask<Void, Void, List<Item>>() {
-            @Override
-            protected List<Item> doInBackground(Void... params) {
-                Log.i("From JSON", Item.getItemByCategory(categoryName).toString());
-                return Item.getItemByCategory(categoryName);
-            }
-            @Override
-            protected void onPostExecute(List<Item> result){
-                itemList = result;
-                ItemListAdapter.myItemlist = itemList;
-            }
-        }.execute(); */
-
         ButterKnife.bind(this, view);
+        return view;
+    }
+
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
+        mAdapter = new ItemListAdapter();
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
+        mItems = new ArrayList<JSONItem>();
+        ScaleInAnimationAdapter animatedAdapter = new ScaleInAnimationAdapter(mAdapter);
+        mRecyclerView.setAdapter(animatedAdapter);
+        for(JSONItem it: mAdapter.myItemlist){
+            mItems.add(it);
+            Log.i("Add to mitems:", it.getItemName());
+        }
+        Log.i("Size of mItems: ", String.valueOf(mItems.size()));
+        mAdapter.SetOnItemClickListener(new ItemListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(ItemListFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 return false;
             }
 
@@ -89,75 +88,21 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        return view;
-    }
-
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
-
-        Bundle args = getArguments();
-        String catName = "";
-        if(args !=null ){
-            catName = args.getString("CategoryName");
-            Log.i("CategoryName from ", catName);
-        }
-        final String categoryName = catName;
-
-        //Retrofit
-
-
-        //JSONParser Way
-        /*
-        new AsyncTask<Void, Void, List<Item>>() {
-            @Override
-            protected List<Item> doInBackground(Void... params) {
-                Log.i("Result from JSON",Item.getItemByCategory(categoryName).toString());
-                return Item.getItemByCategory(categoryName);
-            }
-            @Override
-            protected void onPostExecute(List<Item> result){
-                itemList = new ArrayList<Item>();
-                itemList = result;
-                System.out.println("Out form onPostExecute "+itemList.toString());
-                System.out.println("I output"+ItemListAdapter.myItemlist.toString());
-                for(int i=0; i<itemList.size(); i++){
-                    Item item = itemList.get(i);
-                    System.out.println("we are from onPostExecute "+ item.getItemName());
-                }
-            }
-        }.execute();
-        */
-
-        mAdapter = new ItemListAdapter();
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
-//        mItems = new ArrayList<>();
-        ScaleInAnimationAdapter animatedAdapter = new ScaleInAnimationAdapter(mAdapter);
-        mRecyclerView.setAdapter(animatedAdapter);
-//        for(Item it: itemList){
-//            mItems.add(it);
-//        }
-        mAdapter.SetOnItemClickListener(new ItemListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(ItemListFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-
     }
 
     private List<JSONItem> filter(List<JSONItem> items, String query) {
         query = query.toLowerCase();
-
+        Log.i("Search: ", query);
         final List<JSONItem> filteredItemList = new ArrayList<>();
         for (JSONItem itemm : items) {
             final String text = itemm.getItemName().toLowerCase();
+            Log.i("Item Name", text);
             if (text.contains(query)) {
                 filteredItemList.add(itemm);
+                Log.i("Search Result", itemm.getItemName() + itemm.toString());
             }
         }
+        System.out.println("Result list: "+filteredItemList.get(filteredItemList.size()-1));
         return filteredItemList;
     }
 
@@ -180,4 +125,5 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 
-import java.util.Collections;
 import java.util.List;
 
 import retrofit.Callback;
@@ -53,7 +52,6 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                         (getApplicationContext());
         String username = pref.getString("username", null);
         String password = pref.getString("password", null);
-
         if (username != null && password != null)
         {
             loginUser(username,password);
@@ -118,7 +116,6 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                 //hash password:
                 MD5 md = new MD5();
                 String pwHashed = MD5.getMD5(mPasswordView.getText().toString());
-                //String pwHashed = "81dc9bdb52d04dc20036dbd8313ed055";
                 Log.i("pwhashed:", pwHashed);
 
 
@@ -135,6 +132,11 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
             }
         }
     }
+
+//                JsonObject jsonObject = new JsonObject();
+//                jsonObject.addProperty("EmpID", mUseridView.getText().toString());
+//                jsonObject.addProperty("Password", pwHashed);
+
 
     private void loginUser(String empID, String password) {
 
@@ -185,7 +187,6 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                         Log.i("Error: ", error.toString());
                     }
                 });
-
             }
 
             @Override

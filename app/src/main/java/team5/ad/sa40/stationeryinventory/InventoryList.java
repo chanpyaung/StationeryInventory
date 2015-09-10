@@ -1,11 +1,7 @@
 package team5.ad.sa40.stationeryinventory;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,13 +24,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
-import team5.ad.sa40.stationeryinventory.Model.Item;
-import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 
@@ -327,4 +316,5 @@ public class InventoryList extends android.support.v4.app.Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

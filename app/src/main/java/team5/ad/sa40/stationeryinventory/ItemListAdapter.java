@@ -21,7 +21,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONItem;
  */
 public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHolder> {
 
-    public static List<JSONItem> myItemlist = new ArrayList<JSONItem>();
+    public static List<JSONItem> myItemlist;
     List<JSONItem> cartItemList;
 
     OnItemClickListener mItemClickListener;
@@ -29,6 +29,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     public ItemListAdapter() {
         super();
         cartItemList = new ArrayList<JSONItem>();
+        myItemlist = CategoryFragment.itemsbyCategory;
     }
 
     @Override
@@ -42,8 +43,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
-        JSONItem mitem = CategoryFragment.itemsbyCategory.get(i);
-        System.out.println("OnBindViewHolder" + CategoryFragment.itemsbyCategory.get(i));
+        JSONItem mitem = myItemlist.get(i);
+        System.out.println("OnBindViewHolder" + myItemlist.get(i));
         viewHolder.itemName.setText(mitem.getItemName());
         viewHolder.uom.setText(mitem.getUOM());
 
@@ -51,8 +52,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        System.out.println("Size "+CategoryFragment.itemsbyCategory.size());
-        return CategoryFragment.itemsbyCategory.size();
+        System.out.println("Size "+myItemlist.size());
+        return myItemlist.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -72,9 +73,11 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    cartItemList.add(CategoryFragment.itemsbyCategory.get(getAdapterPosition()));
-                    MainActivity.requestCart.add(CategoryFragment.itemsbyCategory.get(getAdapterPosition()));
-                    Log.i("Cart Item: ", CategoryFragment.itemsbyCategory.get(getAdapterPosition()).getItemName());
+
+
+                    cartItemList.add(myItemlist.get(getAdapterPosition()));
+                    MainActivity.requestCart.add(myItemlist.get(getAdapterPosition()));
+                    Log.i("Cart Item: ", myItemlist.get(getAdapterPosition()).getItemName());
                     Toast.makeText(v.getContext(), "Added to cart", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -98,19 +101,19 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     }
 
     public JSONItem removeItem(int position) {
-        final JSONItem item = CategoryFragment.itemsbyCategory.remove(position);
+        final JSONItem item = myItemlist.remove(position);
         notifyItemRemoved(position);
         return item;
     }
 
     public void addItem(int position, JSONItem item) {
-        CategoryFragment.itemsbyCategory.add(position, item);
+        myItemlist.add(position, item);
         notifyItemInserted(position);
     }
 
     public void moveItem(int fromPosition, int toPosition) {
-        final JSONItem model = CategoryFragment.itemsbyCategory.remove(fromPosition);
-        CategoryFragment.itemsbyCategory.add(toPosition, model);
+        final JSONItem model = myItemlist.remove(fromPosition);
+        myItemlist.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
 
@@ -121,8 +124,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     }
 
     private void applyAndAnimateRemovals(List<JSONItem> newItems) {
-        for (int i = CategoryFragment.itemsbyCategory.size() - 1; i >= 0; i--) {
-            final JSONItem model = CategoryFragment.itemsbyCategory.get(i);
+        for (int i = myItemlist.size() - 1; i >= 0; i--) {
+            final JSONItem model = myItemlist.get(i);
             if (!newItems.contains(model)) {
                 removeItem(i);
             }
@@ -132,7 +135,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     private void applyAndAnimateAdditions(List<JSONItem> newModels) {
         for (int i = 0, count = newModels.size(); i < count; i++) {
             final JSONItem item = newModels.get(i);
-            if (!CategoryFragment.itemsbyCategory.contains(item)) {
+            if (!myItemlist.contains(item)) {
                 addItem(i, item);
             }
         }
@@ -141,7 +144,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     private void applyAndAnimateMovedItems(List<JSONItem> newModels) {
         for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
             final JSONItem model = newModels.get(toPosition);
-            final int fromPosition = CategoryFragment.itemsbyCategory.indexOf(model);
+            final int fromPosition = myItemlist.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
             }
