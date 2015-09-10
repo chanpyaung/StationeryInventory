@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.reportItem://change
-                        ReportItemSearchFragment reportItemFrag = new ReportItemSearchFragment();
+                        ReportItemListFragment reportItemFrag = new ReportItemListFragment();
                         fragmentTran = getSupportFragmentManager().beginTransaction();
                         fragmentTran.replace(R.id.frame, reportItemFrag);
                         fragmentTran.commit();

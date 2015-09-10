@@ -120,8 +120,8 @@ public class AdjListGridAdapter extends RecyclerView.Adapter<AdjListGridAdapter.
             super(itemView);
 
             noNeedLabel1 = (TextView) itemView.findViewById(R.id.ret_ifEmpIDNeeded);
-            noNeedLable2 = (TextView) itemView.findViewById(R.id.inv_itemName);
-            adjNoLabel = (TextView) itemView.findViewById(R.id.inv_itemCode);
+            noNeedLable2 = (TextView) itemView.findViewById(R.id.reportItemName);
+            adjNoLabel = (TextView) itemView.findViewById(R.id.reportItemCode);
             adjNo = (TextView) itemView.findViewById(R.id.ret_id);
             adjDate = (TextView) itemView.findViewById(R.id.ret_date);
             adjStatus = (TextView) itemView.findViewById(R.id.ret_status);

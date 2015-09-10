@@ -1,8 +1,6 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,20 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import team5.ad.sa40.stationeryinventory.API.CollectionPointAPI;
-import team5.ad.sa40.stationeryinventory.API.DisbursementAPI;
-import team5.ad.sa40.stationeryinventory.API.ItemAPI;
-import team5.ad.sa40.stationeryinventory.Model.Disbursement;
 import team5.ad.sa40.stationeryinventory.Model.JSONCollectionPoint;
 import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
-import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 /**
  * Created by student on 2/9/15.
@@ -163,8 +151,8 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
 
             if(user_dept == "Dept"){
                 noNeedLabel1 = (TextView) itemView.findViewById(R.id.ret_ifEmpIDNeeded);
-                noNeedLable2 = (TextView) itemView.findViewById(R.id.inv_itemName);
-                disNoLabel = (TextView) itemView.findViewById(R.id.inv_itemCode);
+                noNeedLable2 = (TextView) itemView.findViewById(R.id.reportItemName);
+                disNoLabel = (TextView) itemView.findViewById(R.id.reportItemCode);
                 disNo = (TextView) itemView.findViewById(R.id.ret_id);
                 disDate = (TextView) itemView.findViewById(R.id.ret_date);
                 disStatus = (TextView) itemView.findViewById(R.id.ret_status);

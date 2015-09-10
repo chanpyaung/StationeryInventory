@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AdjustmentItemListFragment extends Fragment {
+public class AdjustmentItemListFragment extends android.support.v4.app.Fragment {
 
 
     public AdjustmentItemListFragment() {

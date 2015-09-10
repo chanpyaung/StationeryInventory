@@ -115,7 +115,6 @@
     <EditText
         android:layout_marginLeft="80dp"
         android:id="@+id/reported_qty"
-        android:inputType="number"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:hint="0"
@@ -123,7 +122,8 @@
         android:textSize="23dp"
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:inputType="numberSigned" />
 
     <Spinner
         android:layout_marginLeft="15dp"
