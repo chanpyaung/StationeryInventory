@@ -5,7 +5,9 @@ package team5.ad.sa40.stationeryinventory.Model;
  */
 import com.google.gson.annotations.Expose;
 
-public class JSONCollectionPoint {
+import java.io.Serializable;
+
+public class JSONCollectionPoint implements Serializable{
 
     @Expose
     private String CPAddress;

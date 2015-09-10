@@ -27,8 +27,19 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.DepartmentAPI;
+import team5.ad.sa40.stationeryinventory.API.EmployeeAPI;
 import team5.ad.sa40.stationeryinventory.Model.CollectionPoint;
 import team5.ad.sa40.stationeryinventory.Model.Disbursement;
+import team5.ad.sa40.stationeryinventory.Model.Employee;
+import team5.ad.sa40.stationeryinventory.Model.JSONCollectionPoint;
+import team5.ad.sa40.stationeryinventory.Model.JSONDepartment;
+import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
+import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
 
 
 /**
@@ -59,25 +70,12 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
         View v = inflater.inflate(R.layout.fragment_clerk_dis_list_detail, container, false);
         setHasOptionsMenu(true);
         ButterKnife.bind(this, v);
+
         Bundle bundle = this.getArguments();
-        Disbursement dis = (Disbursement) bundle.getSerializable("disbursement");
-        Log.i("Dis id is ", String.valueOf(dis.getDisbursementId()));
-        ArrayList<CollectionPoint> col_pts = CollectionPoint.getAllCollectionPoints();
-        CollectionPoint selected_colPt = new CollectionPoint();
-
-        for (int i = 0; i< col_pts.size(); i++){
-            CollectionPoint col = col_pts.get(i);
-            if(dis.getDisbursement_colID() == col.getColPt_id()){
-                selected_colPt = col;
-                break;
-            }
-        }
-
-        text_dis_no.setText(String.valueOf(dis.getDisbursementId()));
-        String string_date = Setup.parseDateToString(dis.getDisbursementDate());
-        text_dis_date.setText(string_date);
-        text_col_pt.setText(selected_colPt.getColPt_name());
-        text_dept.setText(dis.getDeptID());
+        final JSONDisbursement dis = (JSONDisbursement) bundle.getSerializable("disbursement");
+        Log.i("Dis id is ", String.valueOf(dis.getDisID()));
+        final JSONCollectionPoint selected_colPt;
+        selected_colPt = (JSONCollectionPoint) bundle.getSerializable("collection");
 
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapview);
@@ -95,19 +93,53 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
             e.printStackTrace();
         }
 
-        // Updates the location and zoom of the MapView
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getColPt_lat(), selected_colPt.getColPt_long()), 10);
-        map.animateCamera(cameraUpdate);
 
-
-        img_phCall.setOnClickListener(new View.OnClickListener() {
+        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        DepartmentAPI departmentAPI = restAdapter.create(DepartmentAPI.class);
+        departmentAPI.getDepartmentByDeptID(dis.getDeptID(), new Callback<JSONDepartment>() {
             @Override
-            public void onClick(View v) {
-                Uri uri = Uri.parse("tel:94725311");
-                Intent i = new Intent(Intent.ACTION_CALL, uri);
-                startActivity(i);
+            public void success(JSONDepartment jsonDepartment, Response response) {
+                JSONDepartment sel_dept = jsonDepartment;
+
+                EmployeeAPI employeeAPI = restAdapter.create(EmployeeAPI.class);
+                employeeAPI.getEmployeeById(sel_dept.getDeptRep(), new Callback<JSONEmployee>() {
+                    @Override
+                    public void success(JSONEmployee jsonEmployee, Response response) {
+                        final JSONEmployee rep = jsonEmployee;
+
+                        text_dis_no.setText(String.valueOf(dis.getDisID()));
+                        String string_date = Setup.parseJSONDateToString(dis.getDate());
+                        text_dis_date.setText(string_date);
+                        text_col_pt.setText(selected_colPt.getCPName());
+                        text_dept.setText(dis.getDeptID());
+
+                        // Updates the location and zoom of the MapView
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 10);
+                        map.animateCamera(cameraUpdate);
+
+                        img_phCall.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Uri uri = Uri.parse("tel:" + String.valueOf(rep.getPhone()));
+                                Intent i = new Intent(Intent.ACTION_CALL, uri);
+                                startActivity(i);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("getEmployeeById", error.toString());
+                    }
+                });
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("getDepartmentByDeptID", error.toString());
             }
         });
+
         return v;
     }
 
