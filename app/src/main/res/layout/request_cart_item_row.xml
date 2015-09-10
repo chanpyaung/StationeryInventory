@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:andriod="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/item_cardView"
+        android:layout_gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        card_view:cardElevation="0.01dp"
+        card_view:cardCornerRadius="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/item_image"
+                android:layout_margin="10dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
+                android:src="@drawable/stapler"
+                app:border_color="#FF000000"
+                />
+
+            <TextView
+                android:id="@+id/item_Name_text"
+                android:text="Pencil"
+                android:textColor="@color/SecondaryColor"
+                android:layout_toRightOf="@id/item_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/UOM"
+                android:text="U.O.M Dozen"
+                android:layout_toRightOf="@id/item_image"
+                android:layout_below="@id/item_Name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/qtyLabel"
+                android:text="Qty"
+                android:layout_below="@+id/UOM"
+                android:layout_toRightOf="@id/item_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/qtyText"
+                android:layout_below="@+id/qtyLabel"
+                android:layout_toRightOf="@id/item_image"
+                android:textAlignment="center"
+                android:text="1"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:layout_margin="15dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:paddingTop="24dp"
+                android:id="@+id/add_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_save_white_24dp"
+                fab:fab_colorNormal="@color/PrimaryColor"
+                fab:fab_colorPressed="@color/PrimaryDarkColor"
+                fab:fab_colorRipple="@color/PrimaryInvertedColor"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

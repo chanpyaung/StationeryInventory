@@ -25,25 +25,24 @@ import team5.ad.sa40.stationeryinventory.API.RequestCartAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 /**
- * Created by johnmajor on 9/3/15.
+ * Created by johnmajor on 9/10/15.
  */
-public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHolder> {
+public class RequestCartAdapter extends RecyclerView.Adapter<RequestCartAdapter.ViewHolder> {
 
     public static List<JSONItem> myItemlist;
     List<JSONItem> cartItemList;
 
     OnItemClickListener mItemClickListener;
 
-    public ItemListAdapter() {
+    public RequestCartAdapter() {
         super();
         cartItemList = new ArrayList<JSONItem>();
-        myItemlist = CategoryFragment.itemsbyCategory;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_row, viewGroup, false);
+                .inflate(R.layout.request_cart_item_row, viewGroup, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -55,7 +54,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         System.out.println("OnBindViewHolder" + myItemlist.get(i));
         viewHolder.itemName.setText(mitem.getItemName());
         viewHolder.uom.setText(mitem.getUOM());
-
+        viewHolder.qty.setText(String.valueOf(mitem.getStock()), TextView.BufferType.EDITABLE);
     }
 
     @Override
@@ -107,31 +106,37 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
 
                     //Build JSON to pass
                     int empID = Setup.user.getEmpID();
-                    final int qty = qtyAmt;
+                    int qty = qtyAmt;
+                    myItemlist.get(getAdapterPosition()).setStock(qty);
                     String itemID = myItemlist.get(getAdapterPosition()).getItemID();
-                    final JsonObject reqItem = new JsonObject();
+                    JsonObject reqItem = new JsonObject();
                     reqItem.addProperty("EmpID", empID);
                     reqItem.addProperty("ItemID", itemID);
                     reqItem.addProperty("Qty", qty);
 
                     //retrofit
                     RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-                    final RequestCartAPI rqCartAPI = restAdapter.create(RequestCartAPI.class);
-                    rqCartAPI.addtoCart(reqItem, new Callback<Boolean>()  {
+                    RequestCartAPI rqCartAPI = restAdapter.create(RequestCartAPI.class);
+                    rqCartAPI.updatetoCart(reqItem, new Callback<Boolean>() {
                         @Override
                         public void success(Boolean aBoolean, Response response) {
-                            System.out.println("Retrofit Success " + aBoolean);
-                            if (response.getStatus() == 200) {
+                            System.out.println("Retrofit Success "+ aBoolean);
+                            if(response.getStatus()==200){
                                 MainActivity.requestCart.add(myItemlist.get(getAdapterPosition()));
-                                Toast.makeText(itemView.getContext(), "Added to cart", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(itemView.getContext(), "Changes successfully made.", Toast.LENGTH_SHORT).show();
                                 System.out.println(MainActivity.requestCart.toArray());
                             }
                         }
+
                         @Override
                         public void failure(RetrofitError error) {
-                            System.out.println("Retrofit failed " + error.toString());
+                            System.out.println("Retrofit failed "+ error.toString());
                         }
                     });
+//                    cartItemList.add(myItemlist.get(getAdapterPosition()));
+//                    MainActivity.requestCart.add(myItemlist.get(getAdapterPosition()));
+//                    Log.i("Cart Item: ", myItemlist.get(getAdapterPosition()).getItemName());
+//
                 }
             });
             itemView.setOnClickListener(this);

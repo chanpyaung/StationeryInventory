@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,7 +32,7 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
     @Bind(R.id.item_recycler_view)
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
-    ItemListAdapter mAdapter;
+    RequestCartAdapter mAdapter;
     @Bind(R.id.searchItem)
     SearchView search;
     private List<JSONItem> mItems;
@@ -48,6 +49,25 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_item_list,container,false);
         ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
+        mAdapter = new RequestCartAdapter();
+        mAdapter.myItemlist = MainActivity.requestCart;
+        Log.i("Request Cart Size: ", String.valueOf(MainActivity.requestCart.size()));
+        mItems = new ArrayList<>();
+        ScaleInAnimationAdapter animatedAdapter = new ScaleInAnimationAdapter(mAdapter);
+        mRecyclerView.setAdapter(animatedAdapter);
+        Log.i("mAdapterSize: ", String.valueOf(mAdapter.myItemlist.size()));
+        for(JSONItem it: mAdapter.myItemlist){
+            mItems.add(it);
+        }
+        mAdapter.SetOnItemClickListener( new RequestCartAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(RequestCartFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -70,22 +90,6 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
-        mAdapter = new ItemListAdapter();
-        ItemListAdapter.myItemlist = MainActivity.requestCart;
-        mItems = new ArrayList<>();
-        ScaleInAnimationAdapter animatedAdapter = new ScaleInAnimationAdapter(mAdapter);
-        mRecyclerView.setAdapter(animatedAdapter);
-        for(JSONItem it: mAdapter.cartItemList){
-            mItems.add(it);
-        }
-        mAdapter.SetOnItemClickListener(new ItemListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(RequestCartFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 

@@ -4,13 +4,16 @@ package team5.ad.sa40.stationeryinventory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 public class Setup {
     public static String baseurl = "http://192.168.31.202/api";
     public static String GTokenForNotification = "";
     public static JSONEmployee user;
+    public static List<JSONItem> allitems;
 
     public static String parseDateToString(Date d) {
         String output = "";
