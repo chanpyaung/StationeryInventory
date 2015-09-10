@@ -78,6 +78,7 @@ public class InventoryList extends android.support.v4.app.Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         showAllInventory();
 
+        //set spinner status filter details -
         ArrayAdapter<String> FiltersAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,filters);
         FiltersAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerInvStatus.setAdapter(FiltersAdapter);
@@ -110,6 +111,7 @@ public class InventoryList extends android.support.v4.app.Fragment {
             }
         });
 
+        //set spinner category filter details -
         ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,categories);
         FiltersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerInvCat.setAdapter(categoryAdapter);
@@ -205,6 +207,7 @@ public class InventoryList extends android.support.v4.app.Fragment {
             }
         });
 
+        //set scanner button transit
         scanBarcodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

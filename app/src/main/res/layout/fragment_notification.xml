@@ -4,10 +4,12 @@
     android:layout_height="match_parent"
     tools:context="team5.ad.sa40.stationeryinventory.NotificationFragment">
 
-    <ListView android:id="@android:id/list" android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <TextView android:id="@android:id/empty" android:layout_width="match_parent"
-        android:layout_height="match_parent" android:gravity="center" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/notif_recycler_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp" />
 
 </FrameLayout>

@@ -2,7 +2,7 @@ package team5.ad.sa40.stationeryinventory.Model;
 
 import com.google.gson.annotations.Expose;
 
-public class JSONNotification {
+public class JSONNotification implements Comparable  {
 
     @Expose
     private String DateTime;
@@ -123,6 +123,23 @@ public class JSONNotification {
      */
     public void setStatus(String Status) {
         this.Status = Status;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+
+        JSONNotification f = (JSONNotification) o;
+
+        if (getDateTime().compareTo(f.getDateTime()) < 0) {
+            return 1;
+        }
+        else if (getDateTime().compareTo(f.getDateTime()) > 0) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+
     }
 
 }
