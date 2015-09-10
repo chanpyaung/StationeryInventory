@@ -55,6 +55,7 @@ public class RequestCartAdapter extends RecyclerView.Adapter<RequestCartAdapter.
         viewHolder.itemName.setText(mitem.getItemName());
         viewHolder.uom.setText(mitem.getUOM());
         viewHolder.qty.setText(String.valueOf(mitem.getStock()), TextView.BufferType.EDITABLE);
+        new ItemListAdapter.DownloadImageTask(viewHolder.itemImage).execute("http://192.168.31.202/img/Item_120/" + mitem.getItemID() + ".jpg");
     }
 
     @Override

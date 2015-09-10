@@ -1,18 +1,24 @@
 package team5.ad.sa40.stationeryinventory;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.JsonObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +61,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         System.out.println("OnBindViewHolder" + myItemlist.get(i));
         viewHolder.itemName.setText(mitem.getItemName());
         viewHolder.uom.setText(mitem.getUOM());
+        new DownloadImageTask(viewHolder.itemImage).execute("http://192.168.31.202/img/Item_120/" + mitem.getItemID() + ".jpg");
 
     }
 
@@ -121,7 +128,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                         @Override
                         public void success(Boolean aBoolean, Response response) {
                             System.out.println("Retrofit Success " + aBoolean);
-                            if (response.getStatus() == 200) {
+                            if (aBoolean=true) {
                                 MainActivity.requestCart.add(myItemlist.get(getAdapterPosition()));
                                 Toast.makeText(itemView.getContext(), "Added to cart", Toast.LENGTH_SHORT).show();
                                 System.out.println(MainActivity.requestCart.toArray());
@@ -129,6 +136,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                         }
                         @Override
                         public void failure(RetrofitError error) {
+                            Toast.makeText(itemView.getContext(), "Failed to add to request cart.", Toast.LENGTH_SHORT).show();
                             System.out.println("Retrofit failed " + error.toString());
                         }
                     });
@@ -201,6 +209,31 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
             }
+        }
+    }
+
+    public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(CircleImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 }

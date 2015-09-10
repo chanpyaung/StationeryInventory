@@ -143,6 +143,13 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
                             public void success(List<JSONItem> jsonItems, Response response) {
                                 Setup.allitems = jsonItems;
                                 Log.i("GettingAllItem: ", String.valueOf(Setup.allitems.size()));
+                                for(JSONItem jItem : Setup.allitems){
+                                    for(JSONRequestCart jCartItem : jsonreqItems){
+                                        if(jCartItem.getItemID().equals(jItem.getItemID())){
+                                            
+                                        }
+                                    }
+                                }
 
                                 //
                                 if (jsonreqItems.size() > 0) {
