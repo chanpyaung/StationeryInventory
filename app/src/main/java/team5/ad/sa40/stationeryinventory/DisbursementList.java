@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -221,7 +222,37 @@ public class DisbursementList extends android.support.v4.app.Fragment {
                 }
                 else{
                     SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-                    //java.sql.Date date1 = new
+                    SimpleDateFormat original_format = new SimpleDateFormat("dd/MM/yyyy");
+                    try {
+                        Date uDate1 = original_format.parse(text_start_date.getText().toString());
+                        String str_date1 = format.format(uDate1);
+                        str_date1 = str_date1.replace('/', '-');
+                        Log.e("SQLDate 1", str_date1);
+
+                        Date uDate2 = original_format.parse(text_end_date.getText().toString());
+                        String str_date2 = format.format(uDate2);
+                        str_date2 = str_date2.replace('/', '-');
+                        Log.e("SQLDate 2", str_date2);
+
+                        DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
+                        disbursementAPI.getDisbursementByDates(Setup.user.getDeptID(), str_date1, str_date2, new Callback<List<JSONDisbursement>>() {
+                            @Override
+                            public void success(List<JSONDisbursement> jsonDisbursements, Response response) {
+                                mDisbursement = jsonDisbursements;
+                                Log.e("Success", String.valueOf(jsonDisbursements.size()));
+                                mAdapter.animateTo(mDisbursement);
+                                mRecyclerView.scrollToPosition(0);
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.e("getDisbursementByDates", error.toString());
+                            }
+                        });
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

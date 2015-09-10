@@ -15,4 +15,7 @@ public interface ItemAPI {
     @GET("/catalogAPI.svc/getItemCategory/{categoryName}")
     void getItemsByCategory(@Path("categoryName") String categoryName, Callback<List<JSONItem>> itemlist);
 
+    @GET("/catalogAPI.svc/getitem")
+    void getItems(Callback<List<JSONItem>> itemlist);
+
 }

@@ -115,7 +115,7 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
                 text_status.setText(dis.getStatus());
 
                 // Updates the location and zoom of the MapView
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 10);
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 100);
                 map.animateCamera(cameraUpdate);
 
 //
