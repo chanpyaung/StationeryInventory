@@ -100,7 +100,6 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
                 temp.put(ITEM_CODE, i.getItemID());
                 temp.put(ITEM_NAME, i.getItemName());
                 list.add(temp);
-
             }
         }
         Log.i("list", list.toString());
