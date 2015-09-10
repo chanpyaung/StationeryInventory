@@ -110,7 +110,7 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
         itemROLvlField.setText(Integer.toString(item.getRoLvl()));
         itemROQtyField.setText(Integer.toString(item.getRoQty()));
         new DownloadImageTask(itemImage)
-                .execute(Setup.baseurl + "/img/Item_120/" + itemID + ".jpg");
+                .execute("http://192.168.31.202/img/Item_120/" + itemID + ".jpg");
 
         if(item.getStock()<item.getRoLvl()) {
             itemStatusField.setText("Low");
@@ -269,7 +269,7 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
         return s;
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
         public DownloadImageTask(ImageView bmImage) {

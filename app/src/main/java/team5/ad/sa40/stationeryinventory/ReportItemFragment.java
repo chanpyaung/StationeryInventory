@@ -114,6 +114,10 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
             }
         }
 
+        //load image
+        new InventoryDetails.DownloadImageTask(itemImg)
+                .execute("http://192.168.31.202/img/Item_120/" + reportItem.getItemID() + ".jpg");
+
         //load spinner
         ArrayAdapter<String> FiltersAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,reasons);
         FiltersAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
