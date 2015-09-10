@@ -42,7 +42,7 @@
             android:title="Department" />
 
         <item
-            android:id="@+id/noti"
+            android:id="@+id/notification"
             android:checked="false"
             android:icon="@drawable/ic_new_releases_black_24dp"
             android:title="Notification" />
@@ -54,16 +54,16 @@
             android:title="Setting" />
 
         <item
-            android:id="@+id/help"
-            android:checked="false"
-            android:icon="@drawable/ic_help_black_24dp"
-            android:title="Help" />
-
-        <item
             android:id="@+id/logout"
             android:checked="false"
             android:icon="@drawable/ic_exit_to_app_black_24dp"
             android:title="Log Out" />
+
+        <item
+            android:id="@+id/help"
+            android:checked="false"
+            android:icon="@drawable/ic_help_black_24dp"
+            android:title="Help" />
 
     </group>
 

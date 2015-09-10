@@ -112,11 +112,6 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTransaction.replace(R.id.frame,deptFrag).commit();
                         return true;
 
-                    case R.id.noti:
-                        NotificationFragment notiFrag = new NotificationFragment();
-                        fragmentTran = getSupportFragmentManager().beginTransaction();
-                        fragmentTran.replace(R.id.frame, notiFrag).addToBackStack("NOTI TAG").commit();
-
                     case R.id.setting:
                         SettingListFragment settingFragment = new SettingListFragment();
                         fragmentTran = getSupportFragmentManager().beginTransaction();
@@ -164,6 +159,13 @@ public class MainActivity extends AppCompatActivity {
                         ReportItemSearchFragment reportItemFrag = new ReportItemSearchFragment();
                         fragmentTran = getSupportFragmentManager().beginTransaction();
                         fragmentTran.replace(R.id.frame, reportItemFrag);
+                        fragmentTran.commit();
+                        return true;
+
+                    case R.id.notification://change
+                        NotificationFragment notification = new NotificationFragment();
+                        fragmentTran = getSupportFragmentManager().beginTransaction();
+                        fragmentTran.replace(R.id.frame, notification);
                         fragmentTran.commit();
                         return true;
 

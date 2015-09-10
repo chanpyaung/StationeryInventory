@@ -56,7 +56,7 @@ public class NotifListAdapter extends RecyclerView.Adapter<NotifListAdapter.View
 
         viewHolder.JSONNotificationID.setText(JSONNotification.getNotifName());
         viewHolder.JSONNotificationName.setText(JSONNotification.getNotifDesc());
-        viewHolder.JSONNotificationStatus.setText("View More");
+        viewHolder.JSONNotificationStatus.setText("More");
 
         //format notification category icon:
         String categoryID = JSONNotification.getNotifName();

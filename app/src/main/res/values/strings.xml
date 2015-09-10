@@ -31,4 +31,7 @@
     <string name="Google_ServerAPI">AIzaSyCGH2xSvM0u03YYNUYCLRPlURYGBYvR9jU</string>
     <string name="Google_SenderID">257044323523</string>
     <string name="Google_MapAPI">AIzaSyDNmdhHRizPlbclcrLuu4-uRbZzG_rfO8k</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

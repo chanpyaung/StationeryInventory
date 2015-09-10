@@ -1,6 +1,5 @@
 package team5.ad.sa40.stationeryinventory;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
@@ -27,6 +26,9 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
     private RecyclerView mRecyclerView;
     private NotifListAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    public NotificationFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,7 +79,6 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
     }
 
     public void onClickGoTo(JSONNotification n) {
-        Intent i;
         notifID = n.getNotifID();
         Log.i("Notifid selected:",Integer.toString(notifID));
 
