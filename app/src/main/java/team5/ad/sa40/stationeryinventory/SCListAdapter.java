@@ -44,9 +44,9 @@ public class SCListAdapter extends RecyclerView.Adapter<SCListAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         JSONStockCard sc = mJSONStockCard.get(i);
-        viewHolder.SCDate.setText(sc.getDate());
+        viewHolder.SCDate.setText(Setup.parseJSONDateToString(sc.getDate()));
         viewHolder.SCDesc.setText(sc.getDescription().toString());
-        viewHolder.SCChange.setText(String.format("%d", sc.getQty()));
+        viewHolder.SCChange.setText(formatChangeInQty(sc.getQty()));
         viewHolder.SCBalance.setText(Integer.toString(sc.getBalance()));
     }
 
@@ -139,5 +139,16 @@ public class SCListAdapter extends RecyclerView.Adapter<SCListAdapter.ViewHolder
 
     public void SetOnItemClickListener (final OnItemClickListener mItemClickListener){
         this.mItemClickListener = mItemClickListener;
+    }
+
+    public String formatChangeInQty (int qty) {
+        String s = "";
+        if(qty < 0) {
+            s = String.valueOf(qty);
+        }
+        else {
+            s = "+" + String.valueOf(qty);
+        }
+        return s;
     }
 }
