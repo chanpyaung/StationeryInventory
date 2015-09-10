@@ -136,9 +136,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
                 public void success(final List<JSONRequestCart> jsonreqItems, Response response) {
                     if (response.getStatus() == 200) {
                         Log.i("RetrofitSuccess: ", String.valueOf(response.getStatus()));
-
                         //calling another API to get all items
-
                         ItemAPI itemAPI = restAdapter.create(ItemAPI.class);
                         itemAPI.getItems(new Callback<List<JSONItem>>() {
                             @Override
