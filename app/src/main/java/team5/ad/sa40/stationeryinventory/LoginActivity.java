@@ -53,8 +53,9 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                         (getApplicationContext());
         String username = pref.getString("username", null);
         String password = pref.getString("password", null);
+        Log.i("username get: ",username);
 
-        if (username != null && password != null )
+        if (username != null && password != null)
         {
             loginUser(username,password);
         }
@@ -122,6 +123,14 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                 Log.i("pwhashed:", pwHashed);
 
 
+                SharedPreferences pref =
+                        PreferenceManager.getDefaultSharedPreferences
+                                (getApplicationContext());
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("username", mUseridView.getText().toString());
+                editor.putString("password", pwHashed);
+                editor.commit();
+
                 loginUser(mUseridView.getText().toString(),pwHashed);
 
             }
@@ -129,6 +138,7 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
     }
 
     private void loginUser(String empID, String password) {
+
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("EmpID", empID);
         jsonObject.addProperty("Password", password);
@@ -151,6 +161,7 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                 Log.i("Response: ", response.getBody().toString());
                 System.out.println("Response Status " + response.getStatus());
                 Setup.user = employee;
+
                 RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
                 InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
 
