@@ -1,7 +1,10 @@
 package team5.ad.sa40.stationeryinventory;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.preference.PreferenceManager;
@@ -79,14 +82,53 @@ public class ReportItemListFragment extends android.support.v4.app.Fragment {
 
         adapter = new ReportItemListAdapter(reportItemList);
         mRecyclerView.setAdapter(adapter);
+        adapter.SetOnItemClickListener(new ReportItemListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                final JSONAdjustmentDetail selectedItem = reportItemList.get(position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Are you sure you want to delete item " + selectedItem.getItemID() + " from adjustment voucher list?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                SharedPreferences appSharedPrefs = PreferenceManager
+                                        .getDefaultSharedPreferences(getActivity().getApplicationContext());
+                                SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
+                                Set<String> jsonArray = new HashSet<String>();
+                                Log.i("SharedPref-json array:", jsonArray.toString());
+                                reportItemList.remove(selectedItem);
+                                if (reportItemList.size() > 0) {
+                                    for (int i = 0; i < reportItemList.size(); i++) {
+                                        Gson gson = new Gson();
+                                        String json = gson.toJson(reportItemList.get(i));
+                                        Log.i("in json:", reportItemList.get(i).getItemID());
+                                        jsonArray.add(json);
+                                    }
+                                }
+                                Log.i("NEW json array:", jsonArray.toString());
+                                prefsEditor.putStringSet("ReportItemList", jsonArray);
+                                prefsEditor.commit();
+
+                                ReportItemListFragment fragment3 = new ReportItemListFragment();
+                                android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.frame, fragment3).commit();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        }).create();
+                builder.show();
+            }
+        });
 
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 InventoryList fragment = new InventoryList();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
             }
         });
         adjVoucherList.setOnClickListener(new View.OnClickListener() {
@@ -94,8 +136,7 @@ public class ReportItemListFragment extends android.support.v4.app.Fragment {
             public void onClick(View v) {
                 AdjVouList fragment2 = new AdjVouList();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment2);
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.frame, fragment2).addToBackStack("TAG").commit();
             }
         });
         generateAdjVoucher.setOnClickListener(new View.OnClickListener() {
@@ -103,8 +144,7 @@ public class ReportItemListFragment extends android.support.v4.app.Fragment {
             public void onClick(View v) {
                 AdjustmentItemListFragment fragment3 = new AdjustmentItemListFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment3);
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.frame, fragment3).addToBackStack("TAG").commit();
             }
         });
 

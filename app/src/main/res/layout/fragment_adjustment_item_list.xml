@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="team5.ad.sa40.stationeryinventory.AdjustmentItemListFragment">
+    tools:context="team5.ad.sa40.stationeryinventory.AdjustmentItemListFragment"
+    android:id="@+id/adjList">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -20,33 +21,40 @@
         android:layout_marginRight="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reason"/>
+        android:text="REASON"/>
 
     <TextView
         android:id="@+id/qtyHeader"
         android:layout_toLeftOf="@+id/reasonHeader"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="QTY"/>
 
-    <ListView
-        android:id="@+id/reported_item_list"
-        android:layout_margin="10dp"
-        android:layout_below="@+id/itemCodeHeader"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/report_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="450dp" />
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/itemCodeHeader"
+        android:layout_above="@+id/btnSubmit"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp" />
 
     <Button
-        android:layout_below="@+id/reported_item_list"
-        android:layout_centerHorizontal="true"
         android:padding="5dp"
         android:id="@+id/btnSubmit"
-        android:layout_margin="15dp"
         android:background="@color/PrimaryInvertedColor"
         android:text="SUBMIT"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content" />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffffff"
+        android:textSize="22dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/reasonHeader"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
