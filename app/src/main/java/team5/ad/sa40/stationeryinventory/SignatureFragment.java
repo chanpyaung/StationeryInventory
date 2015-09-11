@@ -53,7 +53,7 @@ public class SignatureFragment extends android.support.v4.app.Fragment {
     View mView;
     public static String tempDir;
     signature mSignature;
-
+    String abc;
     public SignatureFragment() {
         // Required empty public constructor
     }
