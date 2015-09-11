@@ -8,49 +8,13 @@ import com.google.gson.annotations.Expose;
 public class JSONRequestCart {
 
     @Expose
-    private Integer CartItemID;
-    @Expose
-    private Integer EmpID;
-    @Expose
     private String ItemID;
     @Expose
+    private String ItemName;
+    @Expose
     private Integer Qty;
-
-    /**
-     *
-     * @return
-     * The CartItemID
-     */
-    public Integer getCartItemID() {
-        return CartItemID;
-    }
-
-    /**
-     *
-     * @param CartItemID
-     * The CartItemID
-     */
-    public void setCartItemID(Integer CartItemID) {
-        this.CartItemID = CartItemID;
-    }
-
-    /**
-     *
-     * @return
-     * The EmpID
-     */
-    public Integer getEmpID() {
-        return EmpID;
-    }
-
-    /**
-     *
-     * @param EmpID
-     * The EmpID
-     */
-    public void setEmpID(Integer EmpID) {
-        this.EmpID = EmpID;
-    }
+    @Expose
+    private String UOM;
 
     /**
      *
@@ -73,6 +37,24 @@ public class JSONRequestCart {
     /**
      *
      * @return
+     * The ItemName
+     */
+    public String getItemName() {
+        return ItemName;
+    }
+
+    /**
+     *
+     * @param ItemName
+     * The ItemName
+     */
+    public void setItemName(String ItemName) {
+        this.ItemName = ItemName;
+    }
+
+    /**
+     *
+     * @return
      * The Qty
      */
     public Integer getQty() {
@@ -86,6 +68,24 @@ public class JSONRequestCart {
      */
     public void setQty(Integer Qty) {
         this.Qty = Qty;
+    }
+
+    /**
+     *
+     * @return
+     * The UOM
+     */
+    public String getUOM() {
+        return UOM;
+    }
+
+    /**
+     *
+     * @param UOM
+     * The UOM
+     */
+    public void setUOM(String UOM) {
+        this.UOM = UOM;
     }
 
 }

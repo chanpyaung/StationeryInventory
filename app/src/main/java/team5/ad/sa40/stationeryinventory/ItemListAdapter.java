@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.InputStream;
@@ -29,6 +30,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.RequestCartAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
+import team5.ad.sa40.stationeryinventory.Model.JSONRequestCart;
 
 /**
  * Created by johnmajor on 9/3/15.
@@ -77,7 +79,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         TextView itemName;
         TextView uom;
         EditText qty;
-        int qtyAmt;
+        int qtyAmt = 1;
         public FloatingActionButton fab;
 
         public ViewHolder(final View itemView) {
@@ -86,6 +88,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
             itemName = (TextView)itemView.findViewById(R.id.item_Name_text);
             uom = (TextView)itemView.findViewById(R.id.UOM);
             qty = (EditText)itemView.findViewById(R.id.qtyText);
+            Log.i("EditText Value", String.valueOf(qty));
             qty.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -95,11 +98,9 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (s.length()>0){
-
                         qtyAmt = Integer.parseInt(s.toString());
                     }
                 }
-
                 @Override
                 public void afterTextChanged(Editable s) {
 
@@ -113,36 +114,86 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                 public void onClick(View v) {
 
                     //Build JSON to pass
-                    int empID = Setup.user.getEmpID();
+                    final int empID = Setup.user.getEmpID();
                     final int qty = qtyAmt;
-                    String itemID = myItemlist.get(getAdapterPosition()).getItemID();
+                    final String itemID = myItemlist.get(getAdapterPosition()).getItemID();
                     final JsonObject reqItem = new JsonObject();
                     reqItem.addProperty("EmpID", empID);
                     reqItem.addProperty("ItemID", itemID);
                     reqItem.addProperty("Qty", qty);
 
+
                     //retrofit
                     RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
                     final RequestCartAPI rqCartAPI = restAdapter.create(RequestCartAPI.class);
-                    rqCartAPI.addtoCart(reqItem, new Callback<Boolean>()  {
+                    rqCartAPI.getItemsbyEmpID(empID, new Callback<List<JSONRequestCart>>() {
                         @Override
-                        public void success(Boolean aBoolean, Response response) {
-                            System.out.println("Retrofit Success " + aBoolean);
-                            if (aBoolean=true) {
-                                MainActivity.requestCart.add(myItemlist.get(getAdapterPosition()));
-                                Toast.makeText(itemView.getContext(), "Added to cart", Toast.LENGTH_SHORT).show();
-                                System.out.println(MainActivity.requestCart.toArray());
+                        public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
+                            JsonElement jsonElement = reqItem;
+                            int qty = jsonElement.getAsJsonObject().get("Qty").getAsInt();
+                            String ItemID = jsonElement.getAsJsonObject().get("ItemID").getAsString();
+                            System.out.println(jsonElement.getAsJsonObject().get("ItemID").getAsString() + ItemID);
+
+                            if (jsonRequestCarts.size() > 0) {
+                                Setup.allRequestItems = jsonRequestCarts;
+                                for (JSONRequestCart jCart : jsonRequestCarts) {
+                                        if (itemID.equals(jCart.getItemID())) {
+                                            System.out.println("We are the same " + jCart.getItemID() + " " + ItemID);
+                                            System.out.println("JSON new" + jsonElement.getAsJsonObject());
+                                            reqItem.addProperty("Qty", jCart.getQty()+qty);
+                                            rqCartAPI.updatetoCart(jsonElement.getAsJsonObject(), new Callback<Boolean>() {
+                                                @Override
+                                                public void success(Boolean aBoolean, Response response) {
+                                                    Toast.makeText(itemView.getContext(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                @Override
+                                                public void failure(RetrofitError error) {
+                                                    Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            break;
+                                        }//end of if statement which item equal others inside cart
+                                        else {
+                                            reqItem.addProperty("EmpID", empID);
+                                            reqItem.addProperty("ItemID", itemID);
+                                            reqItem.addProperty("Qty", qty);
+                                            rqCartAPI.addtoCart(reqItem, new Callback<Boolean>() {
+                                            @Override
+                                            public void success(Boolean aBoolean, Response response) {
+                                                Toast.makeText(itemView.getContext(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
+                                            }
+                                            @Override
+                                            public void failure(RetrofitError error) {
+                                                Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });// end of add to cart method
+                                     }//end of else statement which is item not equal inside cart
+                                } //end of forloop
+                            }//end of checking return jsonarray size
+                                    //Log.i("Success", String.valueOf(Setup.allRequestItems.size()));
+                                    else {
+                                rqCartAPI.addtoCart(jsonElement.getAsJsonObject(), new Callback<Boolean>() {
+                                    @Override
+                                    public void success(Boolean aBoolean, Response response) {
+                                        Toast.makeText(itemView.getContext(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
+                                    }
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         }
                         @Override
                         public void failure(RetrofitError error) {
-                            Toast.makeText(itemView.getContext(), "Failed to add to request cart.", Toast.LENGTH_SHORT).show();
-                            System.out.println("Retrofit failed " + error.toString());
+                            Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
                         }
                     });
+
                 }
             });
-            itemView.setOnClickListener(this);
+            //itemView.setOnClickListener(this);
         }
 
         @Override

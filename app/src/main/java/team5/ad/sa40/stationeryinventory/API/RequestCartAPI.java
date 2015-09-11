@@ -28,4 +28,7 @@ public interface RequestCartAPI {
     @GET("/requestcartAPI.svc/getItems/{EmpID}")
     void getItemsbyEmpID(@Path("EmpID")int empID, Callback<List<JSONRequestCart>> cartItemlist);
 
+    @POST("/requisitionAPI.svc/createRequisition")
+    void submit(@Body List<JsonObject> requestCart, Callback<Integer> reqCount);
+
 }
