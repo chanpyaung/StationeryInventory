@@ -1,5 +1,7 @@
 package team5.ad.sa40.stationeryinventory;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
@@ -82,23 +84,158 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
         notifID = n.getNotifID();
         Log.i("Notifid selected:",Integer.toString(notifID));
 
+        //update status of notification
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        NotificationAPI notifAPI = restAdapter.create(NotificationAPI.class);
+
+        notifAPI.changeStatus(Integer.toString(notifID), new Callback<String>() {
+            @Override
+            public void success(String result, Response response) {
+                Log.i("Result :", result);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("Error: ", error.toString());
+            }
+        });
+
         switch(n.getNotifName()) {
+            case "New Pending Requisition":{
+                RequisitionListFragment fragment = new RequisitionListFragment();
+                Bundle args = new Bundle();
+                args.putString("NotifID", Integer.toString(notifID));
+                Log.i("NotifID", Integer.toString(notifID));
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragment.setArguments(args);
+                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                break;
+            }
+            case "Requisition Approved":{
+                RequisitionListFragment fragment = new RequisitionListFragment();
+                Bundle args = new Bundle();
+                args.putString("NotifID", Integer.toString(notifID));
+                Log.i("NotifID", Integer.toString(notifID));
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragment.setArguments(args);
+                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                break;
+            }
+            case "Requisition Rejected":{
+                RequisitionListFragment fragment = new RequisitionListFragment();
+                Bundle args = new Bundle();
+                args.putString("NotifID", Integer.toString(notifID));
+                Log.i("NotifID", Integer.toString(notifID));
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragment.setArguments(args);
+                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                break;
+            }
+            case "Processing Requisition":{
+                RequisitionListFragment fragment = new RequisitionListFragment();
+                Bundle args = new Bundle();
+                args.putString("NotifID", Integer.toString(notifID));
+                Log.i("NotifID", Integer.toString(notifID));
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragment.setArguments(args);
+                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                break;
+            }
+            case "Requisition Processed":{
+                RequisitionListFragment fragment = new RequisitionListFragment();
+                Bundle args = new Bundle();
+                args.putString("NotifID", Integer.toString(notifID));
+                Log.i("NotifID", Integer.toString(notifID));
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragment.setArguments(args);
+                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                break;
+            }
+            case "Requisition Disbursed":{
+                RequisitionListFragment fragment = new RequisitionListFragment();
+                Bundle args = new Bundle();
+                args.putString("NotifID", Integer.toString(notifID));
+                Log.i("NotifID", Integer.toString(notifID));
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragment.setArguments(args);
+                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                break;
+            }
+            case "New Pending Adjustment Voucher":{
+                AdjVouList fragment = new AdjVouList();
+                Bundle args = new Bundle();
+                args.putString("NotifID", Integer.toString(notifID));
+                Log.i("NotifID", Integer.toString(notifID));
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragment.setArguments(args);
+                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                break;
+            }
+            case "Adjustment Voucher Approved":{
+                AdjVouList fragment = new AdjVouList();
+                Bundle args = new Bundle();
+                args.putString("NotifID", Integer.toString(notifID));
+                Log.i("NotifID", Integer.toString(notifID));
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragment.setArguments(args);
+                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                break;
+            }
+            case "Adjustment Voucher Rejected":{
+                AdjVouList fragment = new AdjVouList();
+                Bundle args = new Bundle();
+                args.putString("NotifID", Integer.toString(notifID));
+                Log.i("NotifID", Integer.toString(notifID));
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragment.setArguments(args);
+                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                break;
+            }
+            case "Requisition Items Not Fulfilled": {
+                RequisitionListFragment fragment = new RequisitionListFragment();
+                Bundle args = new Bundle();
+                args.putString("NotifID", Integer.toString(notifID));
+                Log.i("NotifID", Integer.toString(notifID));
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragment.setArguments(args);
+                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                break;
+            }
+            case "New Collection Schedule": {
+                DisbursementList fragment = new DisbursementList();
+                Bundle args = new Bundle();
+                args.putString("NotifID", Integer.toString(notifID));
+                Log.i("NotifID", Integer.toString(notifID));
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragment.setArguments(args);
+                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                break;
+            }
+            case "Change in Department's Representative": {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("To view department info, please log into LUStationery website.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create();
+                builder.show();
+                break;
+            }
+            case "Change in Department's Collection Point": {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("To view department info, please log into LUStationery website.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create();
+                builder.show();
+                break;
+            }
             case "Low Stock Inventory": {
-                //update status of notification
-                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-                NotificationAPI notifAPI = restAdapter.create(NotificationAPI.class);
-
-                notifAPI.changeStatus(Integer.toString(notifID), new Callback<String>() {
-                    @Override
-                    public void success(String result, Response response) {
-                        Log.i("Result :", result);
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.i("Error: ", error.toString());
-                    }
-                });
                 InventoryList iLFrag = new InventoryList();
                 Bundle args = new Bundle();
                 args.putString("NotifID", Integer.toString(notifID));
@@ -108,6 +245,18 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
                 fragTran.replace(R.id.frame, iLFrag).addToBackStack("TAG").commit();
                 break;
             }
+            case "New Report Generated": {
+                /*
+                AnalyticsList fragment = new AnalyticsList();
+                Bundle args = new Bundle();
+                args.putString("NotifID", Integer.toString(notifID));
+                Log.i("NotifID", Integer.toString(notifID));
+                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                fragment.setArguments(args);
+                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                break;*/
+            }
+
         }
     }
 }
