@@ -2,8 +2,10 @@ package team5.ad.sa40.stationeryinventory;
 
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -195,10 +197,21 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
                     rqAPI.submit(myRequest, new Callback<Integer>() {
                         @Override
                         public void success(Integer integer, Response response) {
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Request Successful")
+                                    .setMessage("Your have been submitted successfuly.")
+                                    .setCancelable(false)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            RequisitionListFragment rqListFrag = new RequisitionListFragment();
+                                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                            fragmentTransaction.replace(R.id.frame, rqListFrag).addToBackStack("REQUEST_CART").commit();
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_info)
+                                    .show();
                             Log.i("Success", String.valueOf(integer));
-                            RequisitionListFragment rqListFrag = new RequisitionListFragment();
-                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.frame, rqListFrag).addToBackStack("REQUEST_CART").commit();
                         }
 
                         @Override

@@ -166,6 +166,9 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
         adapter.SetOnItemClickListener(new RequisitionListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                // retrieve requisition details from server and set to adapter here
+
+                /*DELETE START HERE */
                 Requisition selected = allRequisitions.get(position);
                 Bundle args = new Bundle();
                 args.putInt("ReqID", selected.getReqID());
@@ -198,11 +201,11 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
                 args.putString("Priority", priority);
                 args.putString("Remark", selected.getRemark());
                 args.putString("Reason", selected.getpRemark());
+                /*DELETE END HERE*/
                 RequisitionDetailFragment reqDetailFrag = new RequisitionDetailFragment();
                 reqDetailFrag.setArguments(args);
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, reqDetailFrag);
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.frame, reqDetailFrag).addToBackStack("REQUESITION_LIST").commit();
             }
         });
     }

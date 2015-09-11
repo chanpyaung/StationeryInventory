@@ -80,9 +80,92 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
     }
 
     @OnClick(R.id.fab) void actionAdd(){
+
+        /*
         //Add to request card methods to be implement here
+
+        final int empID = Setup.user.getEmpID();
+        final int qty = 1;
+        //need to get itemID from displayScannerResult()
+        //final String itemID = myItemlist.get(getAdapterPosition()).getItemID();
+        final JsonObject reqItem = new JsonObject();
+        reqItem.addProperty("EmpID", empID);
+
+
+        //reqItem.addProperty("ItemID", itemID);
+        reqItem.addProperty("Qty", qty);
+
+
+        //retrofit
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        final RequestCartAPI rqCartAPI = restAdapter.create(RequestCartAPI.class);
+        rqCartAPI.getItemsbyEmpID(empID, new Callback<List<JSONRequestCart>>() {
+            @Override
+            public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
+                JsonElement jsonElement = reqItem;
+                int qty = jsonElement.getAsJsonObject().get("Qty").getAsInt();
+                String ItemID = jsonElement.getAsJsonObject().get("ItemID").getAsString();
+                System.out.println(jsonElement.getAsJsonObject().get("ItemID").getAsString() + ItemID);
+
+                if (jsonRequestCarts.size() > 0) {
+                    Setup.allRequestItems = jsonRequestCarts;
+                    for (JSONRequestCart jCart : jsonRequestCarts) {
+                        if (itemID.equals(jCart.getItemID())) {
+                            System.out.println("We are the same " + jCart.getItemID() + " " + ItemID);
+                            System.out.println("JSON new" + jsonElement.getAsJsonObject());
+                            reqItem.addProperty("Qty", jCart.getQty()+qty);
+                            rqCartAPI.updatetoCart(jsonElement.getAsJsonObject(), new Callback<Boolean>() {
+                                @Override
+                                public void success(Boolean aBoolean, Response response) {
+                                    Toast.makeText(ScannerFragment.this.getActivity(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    Toast.makeText(ScannerFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            break;
+                        }//end of if statement which item equal others inside cart
+                        else {
+                            reqItem.addProperty("EmpID", empID);
+                            reqItem.addProperty("ItemID", itemID);
+                            reqItem.addProperty("Qty", qty);
+                            rqCartAPI.addtoCart(reqItem, new Callback<Boolean>() {
+                                @Override
+                                public void success(Boolean aBoolean, Response response) {
+                                    Toast.makeText(ScannerFragment.this.getActivity(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
+                                }
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    Toast.makeText(ScannerFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            });// end of add to cart method
+                        }//end of else statement which is item not equal inside cart
+                    } //end of forloop
+                }//end of checking return jsonarray size
+                //Log.i("Success", String.valueOf(Setup.allRequestItems.size()));
+                else {
+                    rqCartAPI.addtoCart(jsonElement.getAsJsonObject(), new Callback<Boolean>() {
+                        @Override
+                        public void success(Boolean aBoolean, Response response) {
+                            Toast.makeText(ScannerFragment.this.getActivity(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
+                        }
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Toast.makeText(ScannerFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(ScannerFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });*/
         Toast.makeText(ScannerFragment.this.getActivity(), "Fab clicked.", Toast.LENGTH_SHORT).show();
     }
+
 
     private void startEmbeddedScanner()
     {
@@ -101,8 +184,11 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
 
     private void displayScannedResult(final String data)
     {
+        //call api here
+
         textItemNumber.setText(data);
         Toast.makeText(getActivity(), "Data scanned: " + data, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

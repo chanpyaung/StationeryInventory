@@ -91,6 +91,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
             public boolean onQueryTextChange(String newText) {
                 final List<JSONItem> filteredModelList = filter(mItems, newText);
                 mAdapter.animateTo(filteredModelList);
+                mAdapter.myItemlist = filteredModelList;
                 mRecyclerView.scrollToPosition(0);
                 return true;
             }
