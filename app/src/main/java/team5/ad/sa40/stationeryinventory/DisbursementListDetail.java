@@ -68,6 +68,7 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
     @Bind(R.id.txtClerk) TextView text_clerk;
     //@Bind(R.id.imgPhone) ImageView img_phCall;
     @Bind(R.id.btnView) Button btn_view;
+    @Bind(R.id.img3) ImageView clerk_img;
 
 
     public DisbursementListDetail() {
@@ -140,6 +141,8 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
                                 // Updates the location and zoom of the MapView
                                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 10);
                                 map.animateCamera(cameraUpdate);
+
+                                new InventoryDetails.DownloadImageTask(clerk_img).execute("http://192.168.31.202/img/user/" + clerk.getEmpID() + ".jpg");
                             }
 
                             @Override
