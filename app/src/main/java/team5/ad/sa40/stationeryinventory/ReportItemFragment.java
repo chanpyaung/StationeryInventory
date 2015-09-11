@@ -60,7 +60,6 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
     private JSONItem reportItem;
     private String[] reasons = {"Damaged", "Oversight", "Adhoc"};
     private int reportedQty = 0;
-    private double itemPrice = 0;
     private String reasonSelected = "Damaged";
 
     public ReportItemFragment() {
@@ -81,8 +80,7 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
 
         if(args != null){
             reportItem.setItemID(args.getString("ITEMCODE"));
-            if(args.getString("ITEMPRICE") != "") {
-                itemPrice = Double.parseDouble(args.getString("ITEMPRICE"));
+            if(args.getString("ITEMNAME") != "" || args.getString("ITEMNAME") != null) {
                 itemCode.setText(args.getString("ITEMCODE"));
                 itemName.setText(args.getString("ITEMNAME"));
                 availableQty.setText(Integer.toString(args.getInt("STOCK")));
@@ -190,7 +188,6 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
         mReportItem.setQuantity(reportedQty);
         mReportItem.setReason(reasonSelected.toUpperCase());
         mReportItem.setRemark(remark.getText().toString());
-        mReportItem.setPrice(itemPrice);
 
         //save items temporarily to list of items to report together to generate adjustment voucher.
         SharedPreferences appSharedPrefs = PreferenceManager

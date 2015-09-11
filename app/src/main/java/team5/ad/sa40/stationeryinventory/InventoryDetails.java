@@ -225,7 +225,6 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
                 args.putString("ITEMNAME", item.getItemName());
                 args.putInt("STOCK", item.getStock());
                 args.putInt("ROLVL", item.getRoLvl());
-                args.putString("ITEMPRICE", itemPrices.get(0).getPrice().toString());
 
                 ReportItemFragment rpItemFrag = new ReportItemFragment();
                 rpItemFrag.setArguments(args);

@@ -1,6 +1,9 @@
 package team5.ad.sa40.stationeryinventory.API;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
 
 import java.util.List;
 
@@ -18,8 +21,8 @@ public interface AdjustmentAPI {
     void getAdjVoucher(@Body JsonObject adj, Callback<List<JSONAdjustment>> adjustments);
 
     @POST("/adjustvoucherAPI.svc/createVoucherAdj")
-    void createAdjVoucher(@Body JSONAdjustment adj, Callback<String> result);
+    void createAdjVoucher(@Body JsonObject adj, Callback<String> result);
 
     @POST("/adjustvoucherAPI.svc/createVoucherAdjDetail")
-    void createAdjVoucherDetail(@Body List<JSONAdjustmentDetail> adjDetail, Callback<String> result);
+    void createAdjVoucherDetail(@Body JsonArray adjDetail, Callback<String> result);
 }

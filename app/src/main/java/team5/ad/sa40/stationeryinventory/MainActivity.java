@@ -41,27 +41,67 @@ public class MainActivity extends AppCompatActivity {
         switch (Setup.user.getRoleID()) {
             case "EM":
                 setContentView(R.layout.activity_main);
+                //Set fragment
+                mCategoryFragment = new CategoryFragment();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame, mCategoryFragment);
+                fragmentTransaction.commit();
                 break;
             case "DD":
                 setContentView(R.layout.empdelegate_activity_main);
+                //Set fragment
+                mCategoryFragment = new CategoryFragment();
+                android.support.v4.app.FragmentTransaction fragmentTransactionDD = getSupportFragmentManager().beginTransaction();
+                fragmentTransactionDD.replace(R.id.frame, mCategoryFragment);
+                fragmentTransactionDD.commit();
                 break;
             case "DR":
                 setContentView(R.layout.emprep_activity_main);
+                //Set fragment
+                mCategoryFragment = new CategoryFragment();
+                android.support.v4.app.FragmentTransaction fragmentTransactionDR = getSupportFragmentManager().beginTransaction();
+                fragmentTransactionDR.replace(R.id.frame, mCategoryFragment);
+                fragmentTransactionDR.commit();
                 break;
             case "DH":
                 setContentView(R.layout.depthead_activity_main);
+                //Set fragment
+                mCategoryFragment = new CategoryFragment();
+                android.support.v4.app.FragmentTransaction fragmentTransactionDH = getSupportFragmentManager().beginTransaction();
+                fragmentTransactionDH.replace(R.id.frame, mCategoryFragment);
+                fragmentTransactionDH.commit();
                 break;
             case "SC":
                 setContentView(R.layout.storeclerk_activity_main);
+                //Set fragment
+                InventoryList fragment = new InventoryList();
+                fragmentTran = getSupportFragmentManager().beginTransaction();
+                fragmentTran.replace(R.id.frame, fragment);
+                fragmentTran.commit();
                 break;
             case "SS":
                 setContentView(R.layout.storesupervisor_activity_main);
+                //Set fragment
+                InventoryList fragmentSS = new InventoryList();
+                fragmentTran = getSupportFragmentManager().beginTransaction();
+                fragmentTran.replace(R.id.frame, fragmentSS);
+                fragmentTran.commit();
                 break;
             case "SM":
                 setContentView(R.layout.storesupervisor_activity_main);
+                //Set fragment
+                InventoryList fragmentSM = new InventoryList();
+                fragmentTran = getSupportFragmentManager().beginTransaction();
+                fragmentTran.replace(R.id.frame, fragmentSM);
+                fragmentTran.commit();
                 break;
             default:
                 setContentView(R.layout.activity_main);
+                //Set fragment
+                InventoryList fragmentDef = new InventoryList();
+                fragmentTran = getSupportFragmentManager().beginTransaction();
+                fragmentTran.replace(R.id.frame, fragmentDef);
+                fragmentTran.commit();
                 break;
         }
 
@@ -156,11 +196,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.reportItem://change
-<<<<<<< HEAD
-                        AdjVouList reportItemFrag = new AdjVouList();
-=======
                         ReportItemListFragment reportItemFrag = new ReportItemListFragment();
->>>>>>> origin/master
                         fragmentTran = getSupportFragmentManager().beginTransaction();
                         fragmentTran.replace(R.id.frame, reportItemFrag);
                         fragmentTran.commit();
@@ -205,19 +241,6 @@ public class MainActivity extends AppCompatActivity {
         };
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-        //Set Fragment
-
-        /*
-        mCategoryFragment = new CategoryFragment();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frame, mCategoryFragment);
-        fragmentTransaction.commit();
-        */
-
-        InventoryList fragment = new InventoryList();
-        fragmentTran = getSupportFragmentManager().beginTransaction();
-        fragmentTran.replace(R.id.frame, fragment);
-        fragmentTran.commit();
 
     }
 

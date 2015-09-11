@@ -17,14 +17,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.AdjustmentAPI;
+import team5.ad.sa40.stationeryinventory.Model.JSONAdjustment;
 import team5.ad.sa40.stationeryinventory.Model.JSONAdjustmentDetail;
 
 
@@ -62,7 +70,7 @@ public class AdjustmentItemListFragment extends android.support.v4.app.Fragment 
                 .getDefaultSharedPreferences(getActivity().getApplicationContext());
         SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
         Gson gson = new Gson();
-        Set<String> jsonArray = appSharedPrefs.getStringSet("ReportItemList", new HashSet<String>());
+        final Set<String> jsonArray = appSharedPrefs.getStringSet("ReportItemList", new HashSet<String>());
         Log.i("SharedPref-json array:", jsonArray.toString());
         reportItemList = new ArrayList<JSONAdjustmentDetail>();
         if(jsonArray.size() > 0) {
@@ -80,80 +88,115 @@ public class AdjustmentItemListFragment extends android.support.v4.app.Fragment 
 
         adapter = new ReportItemListAdapter(reportItemList);
         mRecyclerView.setAdapter(adapter);
-
+/*
+        //to generate new adjustment voucher
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Are you sure you want to submit this list and ?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setMessage("Are you sure you want to generate this adjustment voucher?")
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                JSONAdjustment adj = new JSONAdjustment();
+                                adj.setDate(new Date().toString());
+                                Log.i("adj created date: ", adj.getDate());
+                                adj.setReportedBy(Setup.user.getEmpID());
+                                adj.setStatus("PENDING");
 
+                                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                                AdjustmentAPI adjAPI = restAdapter.create(AdjustmentAPI.class);
 
+                                Gson gson = new Gson();
+                                String json = gson.toJson(adj);
+                                Log.i("adj json: ", json);
 
-
-
-
-
-
-
-/*
-
-
-                                new AsyncTask<Void, Void, String>() {
+                                adjAPI.createAdjVoucher(json, new Callback<String>() {
                                     @Override
-                                    protected String doInBackground(Void... params) {
-                                        String result = "";
-                                        if (vBtn.getId() == R.id.ret_detail_submit) {
-                                            result = Retrieval.submitRetrieval(ret, allItems);
-                                        } else {
-                                            result = Retrieval.saveRetrieval(ret, allItems);
+                                    public void success(String s, Response response) {
+                                        Log.i("Result :", s);
+                                        Log.i("Response: ", response.getBody().toString());
+                                        System.out.println("Response Status " + response.getStatus());
+                                        if (s.equals("true")) {
+                                            RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                                            AdjustmentAPI adjAPI = restAdapter.create(AdjustmentAPI.class);
+
+                                            JsonArray jArray = new JsonArray();
+                                            for(int i=0; i<reportItemList.size(); i++) {
+                                                Gson gson = new Gson();
+                                                String json = gson.toJson(reportItemList.get(i));
+                                                //jArray.put(json);
+                                            }
+
+                                            adjAPI.createAdjVoucherDetail(jArray, new Callback<String>() {
+                                                @Override
+                                                public void success(String s, Response response) {
+                                                    Log.i("Result :", "added adj voucher detail successfully!");
+                                                    Log.i("Response: ", response.getBody().toString());
+                                                    System.out.println("Response Status " + response.getStatus());
+
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                                    builder.setMessage("Adjustment Voucher has been successfully generated!")
+                                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int id) {
+                                                                    ReportItemListFragment fragment3 = new ReportItemListFragment();
+                                                                    android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                                                    fragmentTransaction.replace(R.id.frame, fragment3).commit();
+
+                                                                    SharedPreferences appSharedPrefs = PreferenceManager
+                                                                            .getDefaultSharedPreferences(getActivity().getApplicationContext());
+                                                                    SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
+                                                                    Log.i("Reset jsonArray: ", "in pref");
+                                                                    prefsEditor.putStringSet("ReportItemList", new HashSet<String>());
+                                                                    prefsEditor.commit();
+                                                                }
+                                                            }).create();
+                                                    builder.show();
+                                                }
+
+                                                @Override
+                                                public void failure(RetrofitError error) {
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                                    builder.setMessage("Unable to generate adjustment voucher. Please try again.")
+                                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int id) {
+                                                                    ReportItemListFragment fragment3 = new ReportItemListFragment();
+                                                                    android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                                                    fragmentTransaction.replace(R.id.frame, fragment3).commit();
+                                                                }
+                                                            }).create();
+                                                    builder.show();
+                                                }
+                                            });
                                         }
-                                        return result;
                                     }
 
                                     @Override
-                                    protected void onPostExecute(String result) {
-                                        Log.i("result->", result);
-                                        //process retrieval update status
-                                        if (result == null) {
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                            builder.setMessage("")
-                                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                            ReportItemListFragment fragment3 = new ReportItemListFragment();
-                                                            android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                                                            fragmentTransaction.replace(R.id.frame, fragment3).commit();
-                                                        }
-                                                    }).create();
-                                            builder.show();
-                                        } else {
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                            builder.setMessage("")
-                                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                            ReportItemListFragment fragment3 = new ReportItemListFragment();
-                                                            android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                                                            fragmentTransaction.replace(R.id.frame, fragment3).commit();
-                                                        }
-                                                    }).create();
-                                            builder.show();
-                                        }
-
+                                    public void failure(RetrofitError error) {
+                                        Log.i("error to create adjVoc:",error.toString());
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                        builder.setMessage("Unable to generate adjustment voucher. Please try again.")
+                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        ReportItemListFragment fragment3 = new ReportItemListFragment();
+                                                        android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                                        fragmentTransaction.replace(R.id.frame, fragment3).commit();
+                                                    }
+                                                }).create();
+                                        builder.show();
                                     }
-                                }.execute();*/
-
+                                });
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
-                            }}).create();
+                            }
+                        }).create();
                 builder.show();
             }
         });
-
+*/
         return view;
     }
 
