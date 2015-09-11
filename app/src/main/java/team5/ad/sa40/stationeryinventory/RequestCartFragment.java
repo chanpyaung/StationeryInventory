@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,13 +16,21 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.animators.adapters.ScaleInAnimationAdapter;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.RequestCartAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
+import team5.ad.sa40.stationeryinventory.Model.JSONRequestCart;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,7 +44,7 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
     RequestCartAdapter mAdapter;
     @Bind(R.id.searchItem)
     SearchView search;
-    private List<JSONItem> mItems;
+    private List<JSONRequestCart> mItems;
     private List<JSONItem> itemList;
 
     public RequestCartFragment() {
@@ -52,13 +61,12 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
         setHasOptionsMenu(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
         mAdapter = new RequestCartAdapter();
-        mAdapter.myItemlist = MainActivity.requestCart;
         Log.i("Request Cart Size: ", String.valueOf(MainActivity.requestCart.size()));
         mItems = new ArrayList<>();
         ScaleInAnimationAdapter animatedAdapter = new ScaleInAnimationAdapter(mAdapter);
         mRecyclerView.setAdapter(animatedAdapter);
         Log.i("mAdapterSize: ", String.valueOf(mAdapter.myItemlist.size()));
-        for(JSONItem it: mAdapter.myItemlist){
+        for(JSONRequestCart it: mAdapter.myItemlist){
             mItems.add(it);
         }
         mAdapter.SetOnItemClickListener( new RequestCartAdapter.OnItemClickListener() {
@@ -77,12 +85,48 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                final List<JSONItem> filteredModelList = filter(mItems, newText);
+                final List<JSONRequestCart> filteredModelList = filter(mItems, newText);
                 mAdapter.animateTo(filteredModelList);
                 mRecyclerView.scrollToPosition(0);
                 return true;
             }
         });
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("EmpID", Setup.user.getEmpID());
+                jsonObject.addProperty("ItemID", Setup.allRequestItems.get(viewHolder.getAdapterPosition()).getItemID());
+                jsonObject.addProperty("Qty", Setup.allRequestItems.get(viewHolder.getAdapterPosition()).getQty());
+                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
+                rqAPI.deletefromCart(jsonObject, new Callback<Boolean>() {
+                    @Override
+                    public void success(Boolean aBoolean, Response response) {
+                        Setup.allRequestItems.remove(viewHolder.getAdapterPosition());
+                        mAdapter.myItemlist = Setup.allRequestItems;
+                        mRecyclerView.setAdapter(mAdapter);
+                        Toast.makeText(RequestCartFragment.this.getActivity(), "Item removed from Cart.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
+
+
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         return view;
     }
@@ -93,11 +137,11 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
 
     }
 
-    private List<JSONItem> filter(List<JSONItem> items, String query) {
+    private List<JSONRequestCart> filter(List<JSONRequestCart> items, String query) {
         query = query.toLowerCase();
 
-        final List<JSONItem> filteredItemList = new ArrayList<>();
-        for (JSONItem itemm : items) {
+        final List<JSONRequestCart> filteredItemList = new ArrayList<>();
+        for (JSONRequestCart itemm : items) {
             final String text = itemm.getItemName().toLowerCase();
             if (text.contains(query)) {
                 filteredItemList.add(itemm);
@@ -115,10 +159,57 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_requestCart){
+        if(id == R.id.action_request_done){
             //to load request cart list inside here
 
-            Toast.makeText(this.getActivity(), "View Request Cart is clicked", Toast.LENGTH_SHORT).show();
+            RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+            final RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
+            rqAPI.getItemsbyEmpID(Setup.user.getEmpID(), new Callback<List<JSONRequestCart>>() {
+                @Override
+                public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
+                    List<JsonObject> myRequest = new ArrayList<JsonObject>();
+                    for(JSONRequestCart jitem : jsonRequestCarts){
+                        JsonObject myItem = new JsonObject();
+                        myItem.addProperty("EmpID", Setup.user.getEmpID());
+                        myItem.addProperty("ItemID", jitem.getItemID());
+                        myItem.addProperty("Qty", jitem.getQty());
+                        myItem.addProperty("UOM", jitem.getUOM());
+                        myRequest.add(myItem);
+                        JsonObject delItem = new JsonObject();
+                        delItem.addProperty("EmpID", Setup.user.getEmpID());
+                        delItem.addProperty("ItemID", jitem.getItemID());
+                        delItem.addProperty("Qty", jitem.getQty());
+                        rqAPI.deletefromCart(delItem, new Callback<Boolean>() {
+                            @Override
+                            public void success(Boolean aBoolean, Response response) {
+                                Log.i("Delete ", aBoolean.toString());
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.i("Delete Fail ", error.toString());
+                            }
+                        });
+                    }
+                    rqAPI.submit(myRequest, new Callback<Integer>() {
+                        @Override
+                        public void success(Integer integer, Response response) {
+                            Log.i("Success", String.valueOf(integer));
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Log.i("fail submit", error.toString());
+                        }
+                    });
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.i("Failed calling rqCart", error.toString());
+                }
+            });
+
         }
         return super.onOptionsItemSelected(item);
     }

@@ -28,7 +28,6 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import team5.ad.sa40.stationeryinventory.API.ItemAPI;
 import team5.ad.sa40.stationeryinventory.API.RequestCartAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 import team5.ad.sa40.stationeryinventory.Model.JSONRequestCart;
@@ -133,77 +132,35 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
             RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
             rqAPI.getItemsbyEmpID(Setup.user.getEmpID(), new Callback<List<JSONRequestCart>>() {
                 @Override
-                public void success(final List<JSONRequestCart> jsonreqItems, Response response) {
-                    if (response.getStatus() == 200) {
-                        Log.i("RetrofitSuccess: ", String.valueOf(response.getStatus()));
-                        //calling another API to get all items
-                        ItemAPI itemAPI = restAdapter.create(ItemAPI.class);
-                        itemAPI.getItems(new Callback<List<JSONItem>>() {
-                            @Override
-                            public void success(List<JSONItem> jsonItems, Response response) {
-                                Setup.allitems = jsonItems;
-                                Log.i("GettingAllItem: ", String.valueOf(Setup.allitems.size()));
-                                for(JSONItem jItem : Setup.allitems){
-                                    for(JSONRequestCart jCartItem : jsonreqItems){
-                                        if(jCartItem.getItemID().equals(jItem.getItemID())){
-                                            
-                                        }
-                                    }
-                                }
-
-                                //
-                                if (jsonreqItems.size() > 0) {
-                                    for (int i = 0; i < jsonreqItems.size(); i++) {
-                                        String itemID = jsonreqItems.get(i).getItemID();
-                                        int qty = jsonreqItems.get(i).getQty();
-                                        for (JSONItem jitem : Setup.allitems) {
-                                            if (itemID.equals(jitem.getItemID())) {
-                                                jitem.setStock(qty);
-                                                MainActivity.requestCart.add(jitem);
-                                                Log.i("ITEM in reqCart: ", jitem.getItemID());
-                                                RequestCartFragment reqCartFrag = new RequestCartFragment();
-                                                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                                                fragTran.replace(R.id.frame, reqCartFrag).addToBackStack("REQUEST_CART TAG").commit();
-                                            }
-                                        }
-                                    }
-                                }
-                                else {
-                                    new AlertDialog.Builder(getActivity())
-                                            .setTitle("Request Cart Empty")
-                                            .setMessage("We acknowledge you that you haven't add any item yet. Please add some item before you proceed.")
-                                            .setCancelable(false)
-                                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    mRecyclerView.setAdapter(mAdapter);
-                                                }
-                                            })
-                                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    mRecyclerView.setAdapter(mAdapter);
-                                                }
-                                            })
-                                            .setIcon(android.R.drawable.ic_dialog_alert)
-                                            .show();
-                                }
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-                                Log.i("Fail", error.toString());
-                            }
-                        });
-                        //Call to another Fragment
+                public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
+                    Setup.allRequestItems = jsonRequestCarts;
+                    if(Setup.allRequestItems.size()>0){
+                        RequestCartFragment rqFrag = new RequestCartFragment();
+                        FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+                        fragTran.replace(R.id.frame, rqFrag).addToBackStack("REQUEST_CART_FRAG").commit();
                     }
+                    else {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Request Cart Empty")
+                                .setMessage("We acknoledge you that you haven't add any item yet.Please add some items before you proceed.")
+                                .setCancelable(false)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        mRecyclerView.setAdapter(mAdapter);
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
+
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    System.out.println("Retrofit Failed : " + error.toString());
+
                 }
             });
-
-
 //            Toast.makeText(this.getActivity(), "View Request Cart is clicked", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);

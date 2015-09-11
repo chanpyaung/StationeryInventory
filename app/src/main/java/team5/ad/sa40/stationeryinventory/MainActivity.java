@@ -17,7 +17,13 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.RequestCartAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
+import team5.ad.sa40.stationeryinventory.Model.JSONRequestCart;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -127,29 +133,45 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.catalog:
                         mCategoryFragment = new CategoryFragment();
-                        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        final android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.frame, mCategoryFragment);
                         fragmentTransaction.commit();
                         return true;
 
                     case R.id.requisition:
                         RequisitionListFragment reqListFrag = new RequisitionListFragment();
-                        Bundle args = new Bundle();
-                        args.putString("User",user );
-                        reqListFrag.setArguments(args);
-                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.frame,reqListFrag).commit();
-                        Toast.makeText(MainActivity.this, "Requisition is selected", Toast.LENGTH_SHORT).show();
+                        fragmentTran = getSupportFragmentManager().beginTransaction();
+                        fragmentTran.replace(R.id.frame,reqListFrag).commit();
                         return true;
 
                     case R.id.cart:
-                        Toast.makeText(MainActivity.this, "Request cart is selected", Toast.LENGTH_SHORT).show();
+                        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                        RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
+                        rqAPI.getItemsbyEmpID(Setup.user.getEmpID(), new Callback<List<JSONRequestCart>>() {
+                            @Override
+                            public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
+                                Setup.allRequestItems = jsonRequestCarts;
+                                if (Setup.allRequestItems.size() > 0) {
+                                    RequestCartFragment rqFrag = new RequestCartFragment();
+                                    fragmentTran = getSupportFragmentManager().beginTransaction();
+                                    fragmentTran.replace(R.id.frame, rqFrag).addToBackStack("REQUEST_CART_FRAG").commit();
+                                } else {
+                                    Toast.makeText(MainActivity.this, "We acknoledge you that you haven't add any item yet.Please add some items before you proceed.", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+
+                            }
+                        });
                         return true;
 
                     case R.id.Dept:
                         DepartmentInfoFragment deptFrag = new DepartmentInfoFragment();
-                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.frame,deptFrag).commit();
+                        fragmentTran = getSupportFragmentManager().beginTransaction();
+                        fragmentTran.replace(R.id.frame,deptFrag).commit();
                         return true;
 
                     case R.id.setting:

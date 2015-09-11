@@ -23,13 +23,14 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.RequestCartAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
+import team5.ad.sa40.stationeryinventory.Model.JSONRequestCart;
 
 /**
  * Created by johnmajor on 9/10/15.
  */
 public class RequestCartAdapter extends RecyclerView.Adapter<RequestCartAdapter.ViewHolder> {
 
-    public static List<JSONItem> myItemlist;
+    public static List<JSONRequestCart> myItemlist;
     List<JSONItem> cartItemList;
 
     OnItemClickListener mItemClickListener;
@@ -37,6 +38,7 @@ public class RequestCartAdapter extends RecyclerView.Adapter<RequestCartAdapter.
     public RequestCartAdapter() {
         super();
         cartItemList = new ArrayList<JSONItem>();
+        myItemlist = Setup.allRequestItems;
     }
 
     @Override
@@ -50,11 +52,11 @@ public class RequestCartAdapter extends RecyclerView.Adapter<RequestCartAdapter.
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
-        JSONItem mitem = myItemlist.get(i);
+        JSONRequestCart mitem = myItemlist.get(i);
         System.out.println("OnBindViewHolder" + myItemlist.get(i));
         viewHolder.itemName.setText(mitem.getItemName());
         viewHolder.uom.setText(mitem.getUOM());
-        viewHolder.qty.setText(String.valueOf(mitem.getStock()), TextView.BufferType.EDITABLE);
+        viewHolder.qty.setText(String.valueOf(mitem.getQty()), TextView.BufferType.EDITABLE);
         new ItemListAdapter.DownloadImageTask(viewHolder.itemImage).execute("http://192.168.31.202/img/Item_120/" + mitem.getItemID() + ".jpg");
     }
 
@@ -108,7 +110,7 @@ public class RequestCartAdapter extends RecyclerView.Adapter<RequestCartAdapter.
                     //Build JSON to pass
                     int empID = Setup.user.getEmpID();
                     int qty = qtyAmt;
-                    myItemlist.get(getAdapterPosition()).setStock(qty);
+                    myItemlist.get(getAdapterPosition()).setQty(qty);
                     String itemID = myItemlist.get(getAdapterPosition()).getItemID();
                     JsonObject reqItem = new JsonObject();
                     reqItem.addProperty("EmpID", empID);
@@ -123,7 +125,6 @@ public class RequestCartAdapter extends RecyclerView.Adapter<RequestCartAdapter.
                         public void success(Boolean aBoolean, Response response) {
                             System.out.println("Retrofit Success "+ aBoolean);
                             if(response.getStatus()==200){
-                                MainActivity.requestCart.add(myItemlist.get(getAdapterPosition()));
                                 Toast.makeText(itemView.getContext(), "Changes successfully made.", Toast.LENGTH_SHORT).show();
                                 System.out.println(MainActivity.requestCart.toArray());
                             }
@@ -159,50 +160,50 @@ public class RequestCartAdapter extends RecyclerView.Adapter<RequestCartAdapter.
         this.mItemClickListener = mItemClickListener;
     }
 
-    public JSONItem removeItem(int position) {
-        final JSONItem item = myItemlist.remove(position);
+    public JSONRequestCart removeItem(int position) {
+        final JSONRequestCart item = myItemlist.remove(position);
         notifyItemRemoved(position);
         return item;
     }
 
-    public void addItem(int position, JSONItem item) {
+    public void addItem(int position, JSONRequestCart item) {
         myItemlist.add(position, item);
         notifyItemInserted(position);
     }
 
     public void moveItem(int fromPosition, int toPosition) {
-        final JSONItem model = myItemlist.remove(fromPosition);
+        final JSONRequestCart model = myItemlist.remove(fromPosition);
         myItemlist.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
 
-    public void animateTo(List<JSONItem> items) {
+    public void animateTo(List<JSONRequestCart> items) {
         applyAndAnimateRemovals(items);
         applyAndAnimateAdditions(items);
         applyAndAnimateMovedItems(items);
     }
 
-    private void applyAndAnimateRemovals(List<JSONItem> newItems) {
+    private void applyAndAnimateRemovals(List<JSONRequestCart> newItems) {
         for (int i = myItemlist.size() - 1; i >= 0; i--) {
-            final JSONItem model = myItemlist.get(i);
+            final JSONRequestCart model = myItemlist.get(i);
             if (!newItems.contains(model)) {
                 removeItem(i);
             }
         }
     }
 
-    private void applyAndAnimateAdditions(List<JSONItem> newModels) {
+    private void applyAndAnimateAdditions(List<JSONRequestCart> newModels) {
         for (int i = 0, count = newModels.size(); i < count; i++) {
-            final JSONItem item = newModels.get(i);
+            final JSONRequestCart item = newModels.get(i);
             if (!myItemlist.contains(item)) {
                 addItem(i, item);
             }
         }
     }
 
-    private void applyAndAnimateMovedItems(List<JSONItem> newModels) {
+    private void applyAndAnimateMovedItems(List<JSONRequestCart> newModels) {
         for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
-            final JSONItem model = newModels.get(toPosition);
+            final JSONRequestCart model = newModels.get(toPosition);
             final int fromPosition = myItemlist.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
