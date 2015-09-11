@@ -58,6 +58,7 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
     @Bind(R.id.imgPhone) ImageView img_phCall;
     @Bind(R.id.txtRepID) TextView txtRepID;
     @Bind(R.id.txtRepName) TextView txtRepName;
+    @Bind(R.id.img2) ImageView rep_img;
 
     public ClerkDisListDetail() {
         // Required empty public constructor
@@ -99,7 +100,6 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 10);
         map.animateCamera(cameraUpdate);
 
-
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
         DepartmentAPI departmentAPI = restAdapter.create(DepartmentAPI.class);
         departmentAPI.getDepartmentByDeptID(dis.getDeptID(), new Callback<JSONDepartment>() {
@@ -129,6 +129,7 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
                                 startActivity(i);
                             }
                         });
+                        new InventoryDetails.DownloadImageTask(rep_img).execute("http://192.168.31.202/img/user/" + rep.getEmpID() + ".jpg");
                     }
 
                     @Override

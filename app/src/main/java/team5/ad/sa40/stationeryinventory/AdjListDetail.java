@@ -54,7 +54,7 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
         Button btnReject;
         Button btnApprove;
 
-        if(dis.getStatus() != "Pending"){
+        if(dis.getStatus() != "PENDING"){
             v = inflater.inflate(R.layout.fragment_adj_list_detail, container, false);
             ButterKnife.bind(this, v);
             txtAppID = (TextView) v.findViewById(R.id.txtAppID);

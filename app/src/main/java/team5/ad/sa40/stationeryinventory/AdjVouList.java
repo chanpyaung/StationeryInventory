@@ -67,43 +67,17 @@ public class AdjVouList extends android.support.v4.app.Fragment {
 
         ShowAllAdjustments();
 
-        ArrayAdapter<String> col_collect = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item, stat_ary);
-        col_collect.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        spn_status.setAdapter(col_collect);
-
-        spn_status.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (spn_status.getSelectedItemPosition() > 0) {
-                    FilterAdjustments(spn_status.getSelectedItem().toString());
-                } else {
-                    ShowAllAdjustments();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         return view;
     }
 
     public void ShowAllAdjustments(){
+
         JsonObject jobj = new JsonObject();
         jobj.addProperty("adjId", "null");
         jobj.addProperty("startDate", "null");
         jobj.addProperty("endDate", "null");
 
-        com.google.gson.JsonObject object = new com.google.gson.JsonObject();
-        try {
-            object.addProperty("adjId", "");
-            object.addProperty("startDate", "null");
-            object.addProperty("endDate", "null");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
         AdjustmentAPI adjustmentAPI = restAdapter.create(AdjustmentAPI.class);
         adjustmentAPI.getAdjVoucher(jobj, new Callback<List<JSONAdjustment>>() {
@@ -124,6 +98,27 @@ public class AdjVouList extends android.support.v4.app.Fragment {
                                 .commit();
                     }
                 });
+
+                ArrayAdapter<String> col_collect = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, stat_ary);
+                col_collect.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                spn_status.setAdapter(col_collect);
+
+                spn_status.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        if (spn_status.getSelectedItemPosition() > 0) {
+                            FilterAdjustments(spn_status.getSelectedItem().toString());
+                        } else {
+                            mAdapter.mAdjustments = mAdjustment;
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
             }
 
             @Override
@@ -137,7 +132,7 @@ public class AdjVouList extends android.support.v4.app.Fragment {
 
         ArrayList<JSONAdjustment> temp = new ArrayList<>();
         for(int i=0; i<mAdjustment.size(); i++){
-            if (status == mAdjustment.get(i).getStatus()){
+            if (status.equals(mAdjustment.get(i).getStatus())){
                 temp.add(mAdjustment.get(i));
             }
         }
