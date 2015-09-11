@@ -156,7 +156,11 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.reportItem://change
+<<<<<<< HEAD
                         AdjVouList reportItemFrag = new AdjVouList();
+=======
+                        ReportItemListFragment reportItemFrag = new ReportItemListFragment();
+>>>>>>> origin/master
                         fragmentTran = getSupportFragmentManager().beginTransaction();
                         fragmentTran.replace(R.id.frame, reportItemFrag);
                         fragmentTran.commit();

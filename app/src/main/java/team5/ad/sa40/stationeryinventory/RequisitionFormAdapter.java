@@ -150,7 +150,7 @@ public class RequisitionFormAdapter extends RecyclerView.Adapter<RequisitionForm
 
         public ViewHolder(final View itemView){
             super(itemView);
-            itemId = (TextView) itemView.findViewById(R.id.inv_itemCode);
+            itemId = (TextView) itemView.findViewById(R.id.reportItemCode);
             itemName = (TextView) itemView.findViewById(R.id.itemName);
             requestQty = (TextView) itemView.findViewById(R.id.qty_needed);
             actualQty = (TextView) itemView.findViewById(R.id.qty_actual);

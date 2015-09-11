@@ -1,7 +1,6 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,12 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import team5.ad.sa40.stationeryinventory.Model.CollectionPoint;
-import team5.ad.sa40.stationeryinventory.Model.Department;
-import team5.ad.sa40.stationeryinventory.Model.Employee;
 import team5.ad.sa40.stationeryinventory.Model.Retrieval;
 
 public class RetListAdapter extends RecyclerView.Adapter<RetListAdapter.ViewHolder> {
@@ -153,7 +148,7 @@ public class RetListAdapter extends RecyclerView.Adapter<RetListAdapter.ViewHold
             retDate = (TextView) itemView.findViewById(R.id.ret_date);
             retStatus = (TextView) itemView.findViewById(R.id.ret_status);
             retIfEmpIDNeeded = (TextView) itemView.findViewById(R.id.ret_ifEmpIDNeeded);
-            retEmpID = (TextView) itemView.findViewById(R.id.inv_itemName);
+            retEmpID = (TextView) itemView.findViewById(R.id.reportItemName);
 
             itemView.setOnClickListener(this);
         }

@@ -164,41 +164,13 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
                     input = 0;
                 }
 
-                if (input > Integer.parseInt(availableQty.getText().toString()) || input < 0) {
-                    reportedQtyField.setError("Value cannot be greater than qty needed");
-                    Log.e("error:", "actualQty > Request Qty");
+                if (Math.abs(input) > Integer.parseInt(availableQty.getText().toString())) {
+                    reportedQtyField.setError("Value cannot be greater than available qty");
+                    Log.e("error:", "report qty > available Qty");
                     View focusView = null;
                     focusView = reportedQtyField;
                 } else {
                     reportedQty = input;
-                }
-            }
-        });
-
-        reportedQtyField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!(reportedQtyField.hasFocus())) {
-                    String in = reportedQtyField.getText().toString();
-                    Log.i("actual qty:", in);
-                    if (in == null || in == "") {
-                        in = "0";
-                    }
-                    int input;
-                    try {
-                        input = Integer.parseInt(in);
-                    } catch (Exception e) {
-                        input = 0;
-                    }
-
-                    if (input > Integer.parseInt(availableQty.getText().toString()) || input < 0) {
-                        reportedQtyField.setError("Value cannot be greater than qty needed");
-                        Log.e("error:", "actualQty > Request Qty");
-                        View focusView = null;
-                        focusView = reportedQtyField;
-                    } else {
-                        reportedQty = input;
-                    }
                 }
             }
         });
@@ -216,7 +188,7 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
         JSONAdjustmentDetail mReportItem = new JSONAdjustmentDetail();
         mReportItem.setItemID(itemCode.getText().toString());
         mReportItem.setQuantity(reportedQty);
-        mReportItem.setReason(reasonSelected);
+        mReportItem.setReason(reasonSelected.toUpperCase());
         mReportItem.setRemark(remark.getText().toString());
         mReportItem.setPrice(itemPrice);
 
@@ -228,18 +200,7 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
         String json = gson.toJson(mReportItem);
         Set<String> jsonArray = appSharedPrefs.getStringSet("ReportItemList", new HashSet<String>());
         Log.i("SharedPref-json array:", jsonArray.toString());
-        if(jsonArray.size() > 0) {
-            String[] reportItems = jsonArray.toArray(new String[jsonArray.size()]);
-            List<JSONAdjustmentDetail> reportItemList = new ArrayList<JSONAdjustmentDetail>();
-            for(int i=0; i<reportItems.length; i++) {
-                JSONAdjustmentDetail obj = gson.fromJson(reportItems[i], JSONAdjustmentDetail.class);
-                reportItemList.add(obj);
-            }
-            reportItems[reportItems.length] = json;
-        }
-        else {
-            jsonArray.add(json);
-        }
+        jsonArray.add(json);
         Log.i("NEW json array:", jsonArray.toString());
         prefsEditor.putStringSet("ReportItemList", jsonArray);
         prefsEditor.commit();
@@ -248,8 +209,7 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
         android.support.v4.app.FragmentTransaction fragTran = getFragmentManager().beginTransaction();
         fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
 
-        Toast.makeText(ReportItemFragment.this.getActivity(), "Added to adjustment voucher list", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ReportItemFragment.this.getActivity(), "Added to report item list", Toast.LENGTH_SHORT).show();
     }
-
 
 }

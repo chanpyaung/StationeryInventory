@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="C003"
-                android:id="@+id/inv_itemCode"
+                android:id="@+id/reportItemCode"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentBottom="true"
@@ -39,7 +39,7 @@
                 android:id="@+id/ret_detail_itemName"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@+id/inv_itemCode"
+                android:layout_toEndOf="@+id/reportItemCode"
                 android:maxLines="2"
                 android:gravity="center_vertical"
                 android:textSize="18dp" />

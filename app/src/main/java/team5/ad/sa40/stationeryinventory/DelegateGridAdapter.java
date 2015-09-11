@@ -129,7 +129,7 @@ public class DelegateGridAdapter extends RecyclerView.Adapter<DelegateGridAdapte
         public ViewHolder(View itemView){
             super(itemView);
 
-            txtNoNeedLabel3 = (TextView) itemView.findViewById(R.id.textView);
+            txtNoNeedLabel3 = (TextView) itemView.findViewById(R.id.reportQty);
             txtNoNeedLabel2 = (TextView) itemView.findViewById(R.id.txtDisNo);
             txtEmpLabel = (TextView) itemView.findViewById(R.id.txtDisDate);
             txtEndDate = (TextView) itemView.findViewById(R.id.txtDept);

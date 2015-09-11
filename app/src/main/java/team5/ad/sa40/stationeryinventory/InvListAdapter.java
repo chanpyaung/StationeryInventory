@@ -190,9 +190,9 @@ public class InvListAdapter extends RecyclerView.Adapter<InvListAdapter.ViewHold
 
         public ViewHolder(View ItemView){
             super(ItemView);
-            JSONItemID = (TextView) ItemView.findViewById(R.id.inv_itemCode);
-            JSONItemName = (TextView) ItemView.findViewById(R.id.inv_itemName);
-            JSONItemStatus = (TextView) ItemView.findViewById(R.id.inv_status);
+            JSONItemID = (TextView) ItemView.findViewById(R.id.reportItemCode);
+            JSONItemName = (TextView) ItemView.findViewById(R.id.reportItemName);
+            JSONItemStatus = (TextView) ItemView.findViewById(R.id.reportReason);
             JSONItemCatIcon = (ImageView) ItemView.findViewById(R.id.inv_icon);
 
             ItemView.setOnClickListener(this);

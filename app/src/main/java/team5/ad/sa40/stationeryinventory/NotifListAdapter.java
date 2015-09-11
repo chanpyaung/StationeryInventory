@@ -1,6 +1,5 @@
 package team5.ad.sa40.stationeryinventory;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -175,9 +174,9 @@ public class NotifListAdapter extends RecyclerView.Adapter<NotifListAdapter.View
 
         public ViewHolder(View ItemView){
             super(ItemView);
-            JSONNotificationID = (TextView) ItemView.findViewById(R.id.inv_itemCode);
-            JSONNotificationName = (TextView) ItemView.findViewById(R.id.inv_itemName);
-            JSONNotificationStatus = (TextView) ItemView.findViewById(R.id.inv_status);
+            JSONNotificationID = (TextView) ItemView.findViewById(R.id.reportItemCode);
+            JSONNotificationName = (TextView) ItemView.findViewById(R.id.reportItemName);
+            JSONNotificationStatus = (TextView) ItemView.findViewById(R.id.reportReason);
             JSONNotificationCatIcon = (ImageView) ItemView.findViewById(R.id.inv_icon);
 
             ItemView.setOnClickListener(this);
