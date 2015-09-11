@@ -42,9 +42,10 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
+        int count = i+1;
         CategoryItem catItem = mItems.get(i);
         viewHolder.catName.setText(catItem.getCatName());
-        viewHolder.imgThumbnail.setImageResource(catItem.getCatThumbnail());
+        new InventoryDetails.DownloadImageTask(viewHolder.imgThumbnail).execute("http://192.168.31.202/img/item_cat/" + count + ".jpg");
     }
 
     @Override

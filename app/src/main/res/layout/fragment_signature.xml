@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="team5.ad.sa40.stationeryinventory.SignatureFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/signtitle"
+        android:layout_margin="15dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign Here please"
+        android:textAppearance="@android:style/TextAppearance.Material"/>
+
+    <LinearLayout
+        android:layout_below="@id/signtitle"
+        android:id="@+id/signArea"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="@android:color/white"/>
+
+
+</RelativeLayout>

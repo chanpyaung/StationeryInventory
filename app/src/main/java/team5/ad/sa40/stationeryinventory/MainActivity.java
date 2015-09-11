@@ -179,13 +179,13 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTran.replace(R.id.frame,deptFrag).commit();
                         return true;
 
-                    case R.id.setting:
-                        SettingListFragment settingFragment = new SettingListFragment();
-                        fragmentTran = getSupportFragmentManager().beginTransaction();
-                        //FragmentTransaction fragmentTran = getSupportFragmentManager().beginTransaction();
-                        fragmentTran.replace(R.id.frame, settingFragment);
-                        fragmentTran.commit();
-                        return true;
+//                    case R.id.setting:
+//                        SettingListFragment settingFragment = new SettingListFragment();
+//                        fragmentTran = getSupportFragmentManager().beginTransaction();
+//                        //FragmentTransaction fragmentTran = getSupportFragmentManager().beginTransaction();
+//                        fragmentTran.replace(R.id.frame, settingFragment);
+//                        fragmentTran.commit();
+//                        return true;
 
                     case R.id.disburse://change
                         DisbursementList disbursementList = new DisbursementList();
@@ -253,6 +253,12 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTran = getSupportFragmentManager().beginTransaction();
                         fragmentTran.replace(R.id.frame, notification);
                         fragmentTran.commit();
+                        return true;
+
+                    case R.id.Setting:
+                        SignatureFragment signFrag = new SignatureFragment();
+                        fragmentTran = getSupportFragmentManager().beginTransaction();
+                        fragmentTran.replace(R.id.frame, signFrag).commit();
                         return true;
 
                     case R.id.logout:

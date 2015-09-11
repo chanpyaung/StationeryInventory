@@ -52,7 +52,7 @@
             android:title="Notification" />
 
         <item
-            android:id="@+id/setting"
+            android:id="@+id/Setting"
             android:checked="false"
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="Setting" />

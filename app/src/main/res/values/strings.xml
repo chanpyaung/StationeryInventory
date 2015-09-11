@@ -15,7 +15,7 @@
     <string name="name">Name</string>
     <string name="category">Category</string>
     <string name="camera_error">Camera initialization error: %s</string>
-
+    <string name="external_dir">GetSignature</string>
     <string name="title_activity_login">Sign in</string>
     <string name="action_sign_in">Sign in</string>
     <string name="username">User ID</string>
