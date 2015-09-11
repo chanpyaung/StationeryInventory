@@ -23,6 +23,7 @@ public class InvListAdapter extends RecyclerView.Adapter<InvListAdapter.ViewHold
 
     public InvListAdapter(List<JSONItem> JSONItemList){
         super();
+        mJSONItems = new ArrayList<JSONItem>();
         if(JSONItemList.size() >0) {
             mJSONItems = JSONItemList;
             Collections.sort(mJSONItems);

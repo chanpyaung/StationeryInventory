@@ -163,36 +163,44 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                 System.out.println("Response Status " + response.getStatus());
                 Setup.user = employee;
 
-                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-                InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+                if(response.getBody().toString().contains("200")) {
 
-                invAPI.getList(new Callback<List<JSONItem>>() {
-                    @Override
-                    public void success(List<JSONItem> jsonItems, Response response) {
-                        Log.i("Result :", jsonItems.toString());
-                        Log.i("First item: ", jsonItems.get(0).getItemID().toString());
-                        Log.i("Response: ", response.getBody().toString());
-                        System.out.println("Response Status " + response.getStatus());
-                        InvListAdapter.mJSONItems = jsonItems;
-                        System.out.println("SIZE:::::"+InvListAdapter.mJSONItems.size());
-                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(i);
-                        mUseridView.setError(null);
-                        mPasswordView.setError(null);
-                        mStatus.setText("Logged in successfully.");
-                    }
+                    RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                    InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.i("Error: ", error.toString());
-                    }
-                });
+                    invAPI.getList(new Callback<List<JSONItem>>() {
+                        @Override
+                        public void success(List<JSONItem> jsonItems, Response response) {
+                            Log.i("Result :", jsonItems.toString());
+                            Log.i("First item: ", jsonItems.get(0).getItemID().toString());
+                            Log.i("Response: ", response.getBody().toString());
+                            System.out.println("Response Status " + response.getStatus());
+                            InvListAdapter.mJSONItems = jsonItems;
+                            System.out.println("SIZE:::::" + InvListAdapter.mJSONItems.size());
+                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(i);
+                            mUseridView.setError(null);
+                            mPasswordView.setError(null);
+                            mStatus.setText("Logged in successfully.");
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Log.i("Error: ", error.toString());
+                        }
+                    });
+                }
+                else {
+                    mStatus.setText(getString(R.string.error_login_failed));
+                    mUseridView.setError("");
+                    mPasswordView.setError("");
+                }
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.i("Error: ", error.toString());
-                mStatus.setText(getString(R.string.error_login_failed));
+                mStatus.setText("Oops! Unable to connect to WIFI network.");
                 mUseridView.setError("");
                 mPasswordView.setError("");
             }

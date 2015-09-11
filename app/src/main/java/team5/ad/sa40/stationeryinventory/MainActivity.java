@@ -8,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -17,6 +18,11 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 public class MainActivity extends AppCompatActivity {
@@ -182,6 +188,25 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.inventory://change
+                        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                        InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+
+                        invAPI.getList(new Callback<List<JSONItem>>() {
+                            @Override
+                            public void success(List<JSONItem> jsonItems, Response response) {
+                                Log.i("Result :", jsonItems.toString());
+                                Log.i("First item: ", jsonItems.get(0).getItemID().toString());
+                                Log.i("Response: ", response.getBody().toString());
+                                System.out.println("Response Status " + response.getStatus());
+                                InvListAdapter.mJSONItems = jsonItems;
+                                System.out.println("SIZE:::::" + InvListAdapter.mJSONItems.size());
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.i("Error: ", error.toString());
+                            }
+                        });
                         InventoryList fragment = new InventoryList();
                         fragmentTran = getSupportFragmentManager().beginTransaction();
                         fragmentTran.replace(R.id.frame, fragment);

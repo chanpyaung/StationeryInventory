@@ -188,8 +188,6 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
         mReportItem.setQuantity(reportedQty);
         mReportItem.setReason(reasonSelected.toUpperCase());
         mReportItem.setRemark(remark.getText().toString());
-        mReportItem.setPrice(0.0);
-        mReportItem.setAdjSN(0);
 
         //save items temporarily to list of items to report together to generate adjustment voucher.
         SharedPreferences appSharedPrefs = PreferenceManager
@@ -197,11 +195,11 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
         SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(mReportItem);
-        Set<String> jsonArray = appSharedPrefs.getStringSet("ReportItemList", new HashSet<String>());
+        Set<String> jsonArray = appSharedPrefs.getStringSet("ReportItemsList", new HashSet<String>());
         Log.i("SharedPref-json array:", jsonArray.toString());
         jsonArray.add(json);
         Log.i("NEW json array:", jsonArray.toString());
-        prefsEditor.putStringSet("ReportItemList", jsonArray);
+        prefsEditor.putStringSet("ReportItemsList", jsonArray);
         prefsEditor.commit();
 
         ReportItemListFragment fragment = new ReportItemListFragment();

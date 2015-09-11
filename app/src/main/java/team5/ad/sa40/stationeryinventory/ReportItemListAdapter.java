@@ -20,17 +20,20 @@ public class ReportItemListAdapter extends RecyclerView.Adapter<ReportItemListAd
 
     public ReportItemListAdapter(List<JSONAdjustmentDetail> items){
         super();
+        mJSONAdjustmentDetail = new ArrayList<JSONAdjustmentDetail>();
         if(items.size() > 0) {
             mJSONAdjustmentDetail = items;
         }
         mSCID = new String[mJSONAdjustmentDetail.size()];
         Log.i("Size of list", String.valueOf(mJSONAdjustmentDetail.size()));
         Setup s = new Setup();
-        for(int i = 0; i < mJSONAdjustmentDetail.size(); i++){
-            String temp = String.valueOf(mJSONAdjustmentDetail.get(i).getAdjSN());
-            mSCID[i] = temp;
+        if(mJSONAdjustmentDetail.size() > 0) {
+            for (int i = 0; i < mJSONAdjustmentDetail.size(); i++) {
+                String temp = String.valueOf(mJSONAdjustmentDetail.get(i).getAdjSN());
+                mSCID[i] = temp;
+            }
+            Log.i("First of string ", mSCID[0]);
         }
-        Log.i("First of string ", mSCID[0]);
     }
 
     @Override

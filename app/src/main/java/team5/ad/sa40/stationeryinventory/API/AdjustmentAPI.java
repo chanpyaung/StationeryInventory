@@ -24,7 +24,7 @@ public interface AdjustmentAPI {
     void createAdjVoucher(@Body JsonObject adj, Callback<String> result);
 
     @POST("/adjustvoucherAPI.svc/createVoucherAdjDetail")
-    void createAdjVoucherDetail(@Body JsonObject adjDetail, Callback<String> result);
+    void createAdjVoucherDetail(@Body JsonArray adjDetail, Callback<String> result);
 
     @POST("/adjustvoucherAPI.svc/getAdjVoucherDetail")
     void getAdjVoucherDetail(@Body JsonObject adj, Callback<List<JSONAdjustmentDetail>> adjustments);

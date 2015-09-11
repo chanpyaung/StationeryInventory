@@ -378,7 +378,6 @@ public class InventoryList extends android.support.v4.app.Fragment {
             ReportItemSearchFragment fragment3 = new ReportItemSearchFragment();
             FragmentTransaction fragTran3 = getFragmentManager().beginTransaction();
             fragTran3.replace(R.id.frame, fragment3).addToBackStack("INVENTORYLIST3 TAG").commit();
-            Toast.makeText(this.getActivity(), "Search is clicked", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }

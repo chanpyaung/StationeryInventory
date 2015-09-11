@@ -71,7 +71,7 @@ public class ReportItemListFragment extends android.support.v4.app.Fragment {
                 .getDefaultSharedPreferences(getActivity().getApplicationContext());
         SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
         Gson gson = new Gson();
-        Set<String> jsonArray = appSharedPrefs.getStringSet("ReportItemList", new HashSet<String>());
+        Set<String> jsonArray = appSharedPrefs.getStringSet("ReportItemsList", new HashSet<String>());
         Log.i("SharedPref-json array:", jsonArray.toString());
         reportItemList = new ArrayList<JSONAdjustmentDetail>();
         if(jsonArray.size() > 0) {
@@ -84,7 +84,7 @@ public class ReportItemListFragment extends android.support.v4.app.Fragment {
             }
         }
         Log.i("NEW json array:", jsonArray.toString());
-        prefsEditor.putStringSet("ReportItemList", jsonArray);
+        prefsEditor.putStringSet("ReportItemsList", jsonArray);
         prefsEditor.commit();
 
         adapter = new ReportItemListAdapter(reportItemList);
@@ -113,7 +113,7 @@ public class ReportItemListFragment extends android.support.v4.app.Fragment {
                                     }
                                 }
                                 Log.i("NEW json array:", jsonArray.toString());
-                                prefsEditor.putStringSet("ReportItemList", jsonArray);
+                                prefsEditor.putStringSet("ReportItemsList", jsonArray);
                                 prefsEditor.commit();
 
                                 ReportItemListFragment fragment3 = new ReportItemListFragment();
