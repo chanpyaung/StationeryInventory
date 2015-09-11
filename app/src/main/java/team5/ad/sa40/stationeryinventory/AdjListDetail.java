@@ -14,12 +14,23 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.AdjustmentAPI;
 import team5.ad.sa40.stationeryinventory.Model.Adjustment;
 import team5.ad.sa40.stationeryinventory.Model.AdjustmentDetail;
+import team5.ad.sa40.stationeryinventory.Model.JSONAdjustment;
+import team5.ad.sa40.stationeryinventory.Model.JSONAdjustmentDetail;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 
 /**
@@ -27,6 +38,7 @@ import team5.ad.sa40.stationeryinventory.Model.AdjustmentDetail;
  */
 public class AdjListDetail extends android.support.v4.app.Fragment {
 
+    List<JSONAdjustmentDetail> adjustmentDetails;
 
     @Bind(R.id.txtAdjID) TextView txtAdjID;
     @Bind(R.id.txtAdjDate) TextView txtAdjDate;
@@ -46,7 +58,7 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Bundle bundle = this.getArguments();
-        Adjustment dis = (Adjustment) bundle.getSerializable("adjustment");
+        JSONAdjustment dis = (JSONAdjustment) bundle.getSerializable("adjustment");
         View v;
         TextView txtStatusLabel;
         TextView txtAppName;
@@ -83,15 +95,29 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
             });
         }
 
-        Log.i("Dis id is ", String.valueOf(dis.getAdjustmentID()));
-        txtAdjID.setText(dis.getAdjustmentID());
-        String string_date = Setup.parseDateToString(dis.getDate());
+        Log.i("Dis id is ", String.valueOf(dis.getAdjID()));
+        txtAdjID.setText(dis.getAdjID());
+        String string_date = Setup.parseJSONDateToString(dis.getDate());
         txtStatus.setText(dis.getStatus());
         txtAdjDate.setText(string_date);
         txtEmpID.setText(String.valueOf(dis.getReportedBy()));
-        txtTotalCost.setText(String.valueOf(dis.getTotalAmount()));
+        txtTotalCost.setText(String.valueOf(dis.getTotalAmt()));
 
-        ArrayList<AdjustmentDetail> items = getAllAdjustmentDetail();
+        JsonObject object = new JsonObject();
+        object.addProperty("adjId", String.valueOf(dis.getAdjID()));
+        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        AdjustmentAPI adjustmentAPI = restAdapter.create(AdjustmentAPI.class);
+        adjustmentAPI.getAdjVoucherDetail(object, new Callback<List<JSONAdjustmentDetail>>() {
+            @Override
+            public void success(List<JSONAdjustmentDetail> jsonAdjustmentDetails, Response response) {
+                adjustmentDetails = jsonAdjustmentDetails;
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
         //table codes
         TableRow tr_head = new TableRow(this.getActivity());
         tr_head.setId(+10);
@@ -141,7 +167,7 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
                 TableLayout.LayoutParams.WRAP_CONTENT));
 
 
-        for (int z=1; z<items.size()+1; z++){
+        for (int z=1; z<adjustmentDetails.size()+1; z++){
 
             TableRow tr = new TableRow(this.getActivity());
             tr.setId(+(100+z));
@@ -155,7 +181,7 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
             TextView ladelName = new TextView(this.getActivity());
             ladelName.setId(+(200 + z));
             //ladelName.setTextColor(Color.WHITE);
-            ladelName.setText(items.get(z - 1).getItemID());
+            ladelName.setText(adjustmentDetails.get(z - 1).getItemID());
             //ladelName.setPadding(2, 0, 5, 0);
             tr.addView(ladelName);
 
@@ -163,25 +189,25 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
             labelQty.setId(+(300 + z));
             labelQty.setGravity(Gravity.CENTER);
             //labelQty.setTextColor(Color.WHITE);
-            labelQty.setText(String.valueOf(items.get(z - 1).getQuantity()));
+            labelQty.setText(String.valueOf(adjustmentDetails.get(z - 1).getQuantity()));
             tr.addView(labelQty);
 
             TextView labelPrice = new TextView(this.getActivity());
             labelPrice.setId(+(400 + z));
             //labelQty.setTextColor(Color.WHITE);
-            labelPrice.setText(String.valueOf(items.get(z - 1).getPrice()));
+            labelPrice.setText(String.valueOf(adjustmentDetails.get(z - 1).getPrice()));
             tr.addView(labelPrice);
 
             TextView labelReason = new TextView(this.getActivity());
             labelReason.setId(+(500 + z));
             //labelQty.setTextColor(Color.WHITE);
-            labelReason.setText(String.valueOf(items.get(z - 1).getReason()));
+            labelReason.setText(String.valueOf(adjustmentDetails.get(z - 1).getReason()));
             tr.addView(labelReason);
 
             TextView labelRemark = new TextView(this.getActivity());
             labelRemark.setId(+(500 + z));
             //labelQty.setTextColor(Color.WHITE);
-            labelRemark.setText(String.valueOf(items.get(z - 1).getRemark()));
+            labelRemark.setText(String.valueOf(adjustmentDetails.get(z - 1).getRemark()));
             tr.addView(labelRemark);
 
             // finally add this to the table row
