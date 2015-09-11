@@ -124,7 +124,6 @@ public class Retrieval {
             Log.i("resultReqForms:", resultReqForms.toString());
         }
 
-
         try {
             JSONObject result = resultObj.getJSONObject(0);
             r.setRetID(Integer.parseInt(result.getString("RetID")));
