@@ -142,9 +142,21 @@ public class ReportItemListFragment extends android.support.v4.app.Fragment {
         generateAdjVoucher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AdjustmentItemListFragment fragment3 = new AdjustmentItemListFragment();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame, fragment3).addToBackStack("TAG").commit();
+                if(reportItemList.size() == 0){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Unable to generate an empty list.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            }).create();
+                    builder.show();
+                }
+                else {
+                    AdjustmentItemListFragment fragment3 = new AdjustmentItemListFragment();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.frame, fragment3).addToBackStack("TAG").commit();
+                }
             }
         });
 
