@@ -16,12 +16,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import org.json.JSONException;
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.AdjustmentAPI;
 import team5.ad.sa40.stationeryinventory.Model.Adjustment;
+import team5.ad.sa40.stationeryinventory.Model.JSONAdjustment;
 
 
 /**
@@ -32,8 +41,8 @@ public class AdjVouList extends android.support.v4.app.Fragment {
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     AdjListGridAdapter mAdapter;
-    private List<Adjustment> mAdjustment;
-    String[] stat_ary = {"View All","Pending", "Approved", "Rejected"};
+    private List<JSONAdjustment> mAdjustment;
+    String[] stat_ary = {"View All","PENDING", "APPROVED", "REJECTED"};
 
     @Bind(R.id.spnStat) Spinner spn_status;
     public AdjVouList() {
@@ -65,10 +74,9 @@ public class AdjVouList extends android.support.v4.app.Fragment {
         spn_status.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(spn_status.getSelectedItemPosition() > 0){
+                if (spn_status.getSelectedItemPosition() > 0) {
                     FilterAdjustments(spn_status.getSelectedItem().toString());
-                }
-                else{
+                } else {
                     ShowAllAdjustments();
                 }
             }
@@ -83,69 +91,60 @@ public class AdjVouList extends android.support.v4.app.Fragment {
     }
 
     public void ShowAllAdjustments(){
-        mAdapter = new AdjListGridAdapter("Adj");
-        mRecyclerView.setAdapter(mAdapter);
-        mAdjustment = mAdapter.mAdjustments;
-        mAdapter.SetOnItemClickListener(new AdjListGridAdapter.OnItemClickListener() {
+        JsonObject jobj = new JsonObject();
+        jobj.addProperty("adjId", "null");
+        jobj.addProperty("startDate", "null");
+        jobj.addProperty("endDate", "null");
+
+        com.google.gson.JsonObject object = new com.google.gson.JsonObject();
+        try {
+            object.addProperty("adjId", "");
+            object.addProperty("startDate", "null");
+            object.addProperty("endDate", "null");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        AdjustmentAPI adjustmentAPI = restAdapter.create(AdjustmentAPI.class);
+        adjustmentAPI.getAdjVoucher(jobj, new Callback<List<JSONAdjustment>>() {
             @Override
-            public void onItemClick(View view, int position) {
-                android.support.v4.app.Fragment frag = new AdjListDetail();
-                Bundle bundle = new Bundle();
-                Adjustment temp = mAdjustment.get(position);
-                bundle.putSerializable("adjustment", temp);
-                frag.setArguments(bundle);
-                Log.i("Reached into method", "Hello");
-                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
-                        .commit();
+            public void success(List<JSONAdjustment> adjustments, Response response) {
+                mAdjustment = adjustments;
+                mAdapter = new AdjListGridAdapter("Adj", mAdjustment);
+                mRecyclerView.setAdapter(mAdapter);
+                mAdapter.SetOnItemClickListener(new AdjListGridAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        android.support.v4.app.Fragment frag = new AdjListDetail();
+                        Bundle bundle = new Bundle();
+                        JSONAdjustment temp = mAdjustment.get(position);
+                        bundle.putSerializable("adjustment", temp);
+                        frag.setArguments(bundle);
+                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
+                                .commit();
+                    }
+                });
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("getAdjVoucher", error.toString());
             }
         });
     }
 
     public void FilterAdjustments(String status){
 
-        ArrayList<Adjustment> temp = new ArrayList<>();
+        ArrayList<JSONAdjustment> temp = new ArrayList<>();
         for(int i=0; i<mAdjustment.size(); i++){
             if (status == mAdjustment.get(i).getStatus()){
                 temp.add(mAdjustment.get(i));
             }
         }
         mAdapter.mAdjustments = temp;
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.SetOnItemClickListener(new AdjListGridAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                android.support.v4.app.Fragment frag = new AdjListDetail();
-                Bundle bundle = new Bundle();
-                Adjustment temp = mAdjustment.get(position);
-                bundle.putSerializable("adjustment", temp);
-                frag.setArguments(bundle);
-                Log.i("Reached into method", "Hello");
-                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
-                        .commit();
-            }
-        });
+        mAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
-
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
-        mAdjustment = new ArrayList<>();
-        for(Adjustment c: mAdapter.mAdjustments){
-            mAdjustment.add(c);
-        }
-        mAdapter = new AdjListGridAdapter("Adj");
-        mRecyclerView.setAdapter(mAdapter);
-        Log.i("Size of created list", String.valueOf(mAdjustment.size()));
-        mAdapter.SetOnItemClickListener(new AdjListGridAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-
-            }
-        });
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -157,8 +156,8 @@ public class AdjVouList extends android.support.v4.app.Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_details){
-            android.support.v4.app.Fragment frag = new AdjListSearch();
-            getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Adj").commit();
+            //android.support.v4.app.Fragment frag = new AdjListSearch();
+            //getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Adj").commit();
         }
         return super.onOptionsItemSelected(item);
     }

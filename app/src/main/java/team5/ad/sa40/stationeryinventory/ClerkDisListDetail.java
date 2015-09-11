@@ -56,6 +56,8 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
     @Bind(R.id.txtColPt) TextView text_col_pt;
     @Bind(R.id.txtDept) TextView text_dept;
     @Bind(R.id.imgPhone) ImageView img_phCall;
+    @Bind(R.id.txtRepID) TextView txtRepID;
+    @Bind(R.id.txtRepName) TextView txtRepName;
 
     public ClerkDisListDetail() {
         // Required empty public constructor
@@ -80,7 +82,7 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
-
+        mapView.onResume();
         // Gets to GoogleMap from the MapView and does initialization stuff
         map = mapView.getMap();
         map.getUiSettings().setMyLocationButtonEnabled(false);
@@ -92,6 +94,10 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Updates the location and zoom of the MapView
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 10);
+        map.animateCamera(cameraUpdate);
 
 
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
@@ -112,10 +118,8 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
                         text_dis_date.setText(string_date);
                         text_col_pt.setText(selected_colPt.getCPName());
                         text_dept.setText(dis.getDeptID());
-
-                        // Updates the location and zoom of the MapView
-                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 10);
-                        map.animateCamera(cameraUpdate);
+                        txtRepID.setText(String.valueOf(rep.getEmpID()));
+                        txtRepName.setText(rep.getEmpName());
 
                         img_phCall.setOnClickListener(new View.OnClickListener() {
                             @Override

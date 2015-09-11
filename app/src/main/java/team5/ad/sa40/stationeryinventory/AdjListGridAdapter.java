@@ -1,5 +1,6 @@
 package team5.ad.sa40.stationeryinventory;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,21 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import team5.ad.sa40.stationeryinventory.Model.Adjustment;
+import team5.ad.sa40.stationeryinventory.Model.JSONAdjustment;
 
 /**
  * Created by student on 6/9/15.
  */
 public class AdjListGridAdapter extends RecyclerView.Adapter<AdjListGridAdapter.ViewHolder>{
-    List<Adjustment> mAdjustments;
+    List<JSONAdjustment> mAdjustments;
     AdjListGridAdapter.OnItemClickListener mItemClickListener;
 
-    public AdjListGridAdapter(String type){
+    public AdjListGridAdapter(String type, List<JSONAdjustment> adjustments){
         super();
-        mAdjustments = new ArrayList<>();
-        //Place for adding the JSON list if elseif else
-        if (type != "Search") {
-            mAdjustments = Adjustment.getAllAdjustments();
-        }
+        mAdjustments = adjustments;
 
     }
     @Override
@@ -40,14 +38,17 @@ public class AdjListGridAdapter extends RecyclerView.Adapter<AdjListGridAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Adjustment disItem = mAdjustments.get(i);
+        JSONAdjustment disItem = mAdjustments.get(i);
         viewHolder.adjNoLabel.setText("Voucher #");
         viewHolder.noNeedLabel1.setText("");
         viewHolder.noNeedLable2.setText("");
-        viewHolder.adjNo.setText(String.valueOf(disItem.getAdjustmentID()));
-        String string_date = Setup.parseDateToString(disItem.getDate());
+        viewHolder.adjNo.setText(disItem.getAdjID());
+        String string_date = Setup.parseJSONDateToString(disItem.getDate());
         viewHolder.adjDate.setText(string_date);
         viewHolder.adjStatus.setText(disItem.getStatus());
+        if(!disItem.getStatus().equals("APPROVED")){
+            viewHolder.adjStatus.setTextColor(Color.RED);
+        }
 
     }
     @Override
@@ -56,50 +57,50 @@ public class AdjListGridAdapter extends RecyclerView.Adapter<AdjListGridAdapter.
         return mAdjustments.size();
     }
 
-    public Adjustment removeItem(int position) {
-        final Adjustment item = mAdjustments.remove(position);
+    public JSONAdjustment removeItem(int position) {
+        final JSONAdjustment item = mAdjustments.remove(position);
         notifyItemRemoved(position);
         return item;
     }
 
-    public void addItem(int position, Adjustment item) {
+    public void addItem(int position, JSONAdjustment item) {
         mAdjustments.add(position, item);
         notifyItemInserted(position);
     }
 
     public void moveItem(int fromPosition, int toPosition) {
-        final Adjustment model = mAdjustments.remove(fromPosition);
+        final JSONAdjustment model = mAdjustments.remove(fromPosition);
         mAdjustments.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
 
-    public void animateTo(List<Adjustment> items) {
+    public void animateTo(List<JSONAdjustment> items) {
         applyAndAnimateRemovals(items);
         applyAndAnimateAdditions(items);
         applyAndAnimateMovedItems(items);
     }
 
-    private void applyAndAnimateRemovals(List<Adjustment> newItems) {
+    private void applyAndAnimateRemovals(List<JSONAdjustment> newItems) {
         for (int i = mAdjustments.size() - 1; i >= 0; i--) {
-            final Adjustment model = mAdjustments.get(i);
+            final JSONAdjustment model = mAdjustments.get(i);
             if (!newItems.contains(model)) {
                 removeItem(i);
             }
         }
     }
 
-    private void applyAndAnimateAdditions(List<Adjustment> newModels) {
+    private void applyAndAnimateAdditions(List<JSONAdjustment> newModels) {
         for (int i = 0, count = newModels.size(); i < count; i++) {
-            final Adjustment item = newModels.get(i);
+            final JSONAdjustment item = newModels.get(i);
             if (!mAdjustments.contains(item)) {
                 addItem(i, item);
             }
         }
     }
 
-    private void applyAndAnimateMovedItems(List<Adjustment> newModels) {
+    private void applyAndAnimateMovedItems(List<JSONAdjustment> newModels) {
         for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
-            final Adjustment model = newModels.get(toPosition);
+            final JSONAdjustment model = newModels.get(toPosition);
             final int fromPosition = mAdjustments.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);

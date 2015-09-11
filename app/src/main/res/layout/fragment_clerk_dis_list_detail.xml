@@ -1,152 +1,136 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="team5.ad.sa40.stationeryinventory.DisbursementListDetail">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No:"
-                android:paddingLeft="30dp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtNo"
-                android:text="disbursement_no"
-                android:paddingLeft="5dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No:"
+        android:textStyle="bold"
+        android:id="@+id/textView3"
+        android:layout_alignTop="@+id/txtNo"
+        android:layout_alignStart="@+id/mapview" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNo"
+        android:text="disbursement_no"
+        android:layout_above="@+id/textView9"
+        android:layout_toEndOf="@+id/textView3"
+        android:layout_marginBottom="15dp" />
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date:"
-                android:paddingLeft="30dp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtDisDate"
-                android:text="disbursement_date"
-                android:paddingLeft="5dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="27dp"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Department:"
-                android:paddingLeft="30dp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtDept"
-                android:text="dept"
-                android:paddingLeft="5dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Collection Point:"
-                android:paddingLeft="30dp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtColPt"
-                android:text="collection_point"
-                android:paddingLeft="5dp"/>
-        </LinearLayout>
-    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date:"
+        android:textStyle="bold"
+        android:layout_marginBottom="17dp"
+        android:id="@+id/textView9"
+        android:layout_above="@+id/textView8"
+        android:layout_alignStart="@+id/textView3" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtDisDate"
+        android:text="disbursement_date"
+        android:layout_alignTop="@+id/textView9"
+        android:layout_toEndOf="@+id/textView9" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Department:"
+        android:textStyle="bold"
+        android:layout_marginBottom="15dp"
+        android:id="@+id/textView8"
+        android:layout_above="@+id/textView7"
+        android:layout_alignStart="@+id/textView9" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtDept"
+        android:text="dept"
+        android:layout_alignTop="@+id/textView8"
+        android:layout_toEndOf="@+id/textView8" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Collection Point:"
+        android:textStyle="bold"
+        android:layout_marginBottom="25dp"
+        android:id="@+id/textView7"
+        android:layout_above="@+id/mapview"
+        android:layout_alignStart="@+id/textView8" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtColPt"
+        android:text="collection_point"
+        android:layout_alignTop="@+id/textView7"
+        android:layout_toEndOf="@+id/textView7" />
+
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapview"
         android:paddingLeft="30dp"
         android:paddingTop="3dp"
         android:layout_width="300dp"
-        android:layout_height="200dp" />
+        android:layout_height="200dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/img2"
+        android:src="@drawable/jmj"
+        android:layout_below="@+id/mapview"
+        android:layout_alignStart="@+id/mapview"
+        android:layout_marginTop="14dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:text="Representative:"
+        android:textStyle="bold"
+        android:layout_above="@+id/txtRepName"
+        android:layout_alignStart="@+id/txtRepName" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtRepName"
+        android:text="Peter Jones"
+        android:layout_alignTop="@+id/imgPhone"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_marginTop="8dp" />
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/img2"
-            android:layout_marginLeft="30dp"
-            android:src="@drawable/jmj"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Employee No:"
+        android:id="@+id/textView6"
+        android:layout_alignBottom="@+id/imgPhone"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtRepID"
+        android:text="11233:"
+        android:layout_alignTop="@+id/textView6"
+        android:layout_toEndOf="@+id/textView6" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:text="Representative:"
-                android:textStyle="bold" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:text="Peter Jones" />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Employee No:" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="3dp"
-                    android:text="11233:" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/imgPhone"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/phonecall"/>
-    </LinearLayout>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imgPhone"
+        android:src="@drawable/phonecall"
+        android:layout_alignBottom="@+id/img2"
+        android:layout_alignEnd="@+id/mapview"
+        android:layout_marginBottom="23dp" />
 
 
-</LinearLayout>
+</RelativeLayout>

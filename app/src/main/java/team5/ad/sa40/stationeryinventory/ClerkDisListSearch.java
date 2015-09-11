@@ -2,7 +2,9 @@ package team5.ad.sa40.stationeryinventory;
 
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -54,7 +56,9 @@ public class ClerkDisListSearch extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_clerk_dis_list_search, container, false);
         ButterKnife.bind(this, view);
 
-        mCollectionPoint = (ArrayList<JSONCollectionPoint>)this.getArguments().getSerializable("collection");
+        Bundle bundle = this.getArguments();
+        mCollectionPoint = (ArrayList<JSONCollectionPoint>)bundle.getSerializable("collection");
+        //mCollectionPoint = (ArrayList<JSONCollectionPoint>)this.getArguments().getSerializable("collection");
 
         mRecyclerView = (RecyclerView)view.findViewById(R.id.dis_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -75,6 +79,36 @@ public class ClerkDisListSearch extends android.support.v4.app.Fragment {
                         mDisbursement = jsonDisbursements;
                         mAdapter = new DisListGridAdapter("Search", mDisbursement, mCollectionPoint);
                         mRecyclerView.setAdapter(mAdapter);
+                        if (mDisbursement.size() < 1) {
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Information")
+                                    .setMessage("No disbursement is found!")
+                                    .setCancelable(false)
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        }
+                        mAdapter.SetOnItemClickListener(new DisListGridAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                android.support.v4.app.Fragment frag = new ClerkDisListDetail();
+                                Bundle bundle = new Bundle();
+                                JSONDisbursement temp = mDisbursement.get(position);
+                                bundle.putSerializable("disbursement", temp);
+                                for (int i = 0; i < mCollectionPoint.size(); i++) {
+                                    if (temp.getCPID() == mCollectionPoint.get(i).getCPID()) {
+                                        bundle.putSerializable("collection", mCollectionPoint.get(i));
+                                    }
+                                }
+                                frag.setArguments(bundle);
+                                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
+                                        .commit();
+                            }
+                        });
                     }
 
                     @Override
