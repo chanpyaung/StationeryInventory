@@ -22,11 +22,8 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-<<<<<<< HEAD
 import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
-=======
 import team5.ad.sa40.stationeryinventory.API.RequestCartAPI;
->>>>>>> origin/master
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 import team5.ad.sa40.stationeryinventory.Model.JSONRequestCart;
 
@@ -209,8 +206,8 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.inventory://change
-                        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-                        InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+                        RestAdapter restAdapter2 = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                        InventoryAPI invAPI = restAdapter2.create(InventoryAPI.class);
 
                         invAPI.getList(new Callback<List<JSONItem>>() {
                             @Override

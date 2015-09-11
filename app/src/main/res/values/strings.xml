@@ -18,8 +18,8 @@
     <string name="external_dir">GetSignature</string>
     <string name="title_activity_login">Sign in</string>
     <string name="action_sign_in">Sign in</string>
-    <string name="username">User ID</string>
-    <string name="password">Password</string>
+    <string name="username"> User ID</string>
+    <string name="password"> Password</string>
     <string name="error_login_failed">Invalid user id and password</string>
     <string name="error_field_required">This field is required</string>
     <string name="add_new_item">  ADD NEW ITEM</string>

@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:gravity="center_horizontal"
     android:orientation="vertical" android:paddingBottom="@dimen/activity_vertical_margin"
@@ -7,15 +7,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="team5.ad.sa40.stationeryinventory.LoginActivity"
     android:id="@+id/loginScreen"
-    android:background="@color/PrimaryColor"
+    android:background="@drawable/bkg2"
     android:weightSum="1">
 
     <!-- Login progress -->
-
-    <ProgressBar android:id="@+id/login_progress" style="?android:attr/progressBarStyleLarge"
-        android:layout_width="fill_parent" android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp" android:visibility="gone"
-        android:layout_weight="0.14" />
 
     <ImageView
         android:layout_width="123dp"
@@ -23,78 +18,107 @@
         android:id="@+id/imageLogo"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/logo_200"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="100dp" />
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp" />
 
-    <ScrollView android:id="@+id/login_form1" android:layout_width="match_parent"
-        android:layout_height="337dp"
-        android:fillViewport="false">
+    <AutoCompleteTextView android:id="@+id/userid" android:layout_width="match_parent"
+        android:layout_height="45dp" android:hint="@string/username"
+        android:inputType="phone" android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#ffffffff"
+        android:textColorHint="#ffffffff"
+        android:textColorLink="#ffffffff"
+        android:textColorHighlight="#ffffffff"
+        android:textIsSelectable="false"
+        android:textSize="20dp"
+        android:layout_below="@+id/imageLogo"
+        android:layout_marginTop="55dp"
+        android:background="#4cffffff" />
 
-        <LinearLayout android:id="@+id/login_form" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:orientation="vertical"
-            android:weightSum="1">
+    <EditText android:id="@+id/password" android:layout_width="match_parent"
+        android:layout_height="45dp" android:hint="@string/password"
+        android:imeActionId="@+id/login"
+        android:imeActionLabel="@string/action_sign_in"
+        android:imeOptions="actionUnspecified" android:inputType="textPassword"
+        android:maxLines="1" android:singleLine="true"
+        android:textColor="#ffffffff"
+        android:textColorHighlight="#ffffffff"
+        android:textColorHint="#ffffffff"
+        android:textColorLink="#ffffffff"
+        android:textSize="20dp"
+        android:layout_below="@+id/userid"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:background="#4cffffff" />
 
-            <AutoCompleteTextView android:id="@+id/userid" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:hint="@string/username"
-                android:inputType="phone" android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="#ffffffff"
-                android:textColorHint="#ffffffff"
-                android:textColorLink="#ffffffff"
-                android:textColorHighlight="#ffffffff"
-                android:textIsSelectable="false"
-                android:layout_marginTop="5dp"
-                android:textSize="20dp" />
+    <Button android:id="@+id/sign_in_button" style="?android:textAppearanceSmall"
+        android:layout_width="match_parent" android:layout_height="60dp"
+        android:text="@string/action_sign_in"
+        android:textStyle="bold"
+        android:layout_weight="1.59"
+        android:textColor="@color/PrimaryColor"
+        android:textSize="20dp"
+        android:background="#ffeaeaea"
+        android:layout_below="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp" />
 
-            <EditText android:id="@+id/password" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:hint="@string/password"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_in"
-                android:imeOptions="actionUnspecified" android:inputType="textPassword"
-                android:maxLines="1" android:singleLine="true"
-                android:textColor="#ffffffff"
-                android:textColorHighlight="#ffffffff"
-                android:textColorHint="#ffffffff"
-                android:textColorLink="#ffffffff"
-                android:layout_marginTop="5dp"
-                android:textSize="20dp" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/textViewStatus"
+        android:textColor="#fffff945"
+        android:textColorHighlight="#fffff945"
+        android:textColorHint="#fffff945"
+        android:textColorLink="#fffff945"
+        android:textSize="15dp"
+        android:textIsSelectable="false"
+        android:layout_weight="0.88"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/sign_in_button"
+        android:layout_centerHorizontal="true" />
 
-            <Button android:id="@+id/sign_in_button" style="?android:textAppearanceSmall"
-                android:layout_width="match_parent" android:layout_height="60dp"
-                android:layout_marginTop="15dp" android:text="@string/action_sign_in"
-                android:textStyle="bold"
-                android:layout_weight="1.59"
-                android:textColor="@color/PrimaryColor"
-                android:textSize="20dp"
-                android:background="#ffeaeaea" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forget Password?"
+        android:id="@+id/forgetPassword"
+        android:layout_gravity="center_horizontal"
+        android:background="#00ffffff"
+        android:textColor="#ffffff"
+        android:shadowColor="#00ffffff"
+        android:layout_below="@+id/textViewStatus"
+        android:layout_alignEnd="@+id/imageLogo" />
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="30dp"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/textViewStatus"
-                android:textColor="#fffff945"
-                android:textColorHighlight="#fffff945"
-                android:textColorHint="#fffff945"
-                android:textColorLink="#fffff945"
-                android:textSize="15dp"
-                android:textIsSelectable="false"
-                android:layout_weight="0.88"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logic University Stationery Store"
+        android:id="@+id/textView14"
+        android:layout_below="@+id/imageLogo"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ff312f31"
+        android:textSize="20dp"
+        android:autoText="false"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Forget Password?"
-                android:id="@+id/forgetPassword"
-                android:layout_gravity="center_horizontal"
-                android:background="#00ffffff"
-                android:textColor="#ffffff"
-                android:shadowColor="#00ffffff" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logic University Stationery Store"
+        android:id="@+id/textView15"
+        android:textColor="#fffff7ff"
+        android:textSize="20dp"
+        android:autoText="false"
+        android:textStyle="bold"
+        android:layout_marginLeft="0dp"
+        android:layout_below="@+id/imageLogo"
+        android:layout_alignStart="@+id/textView14"
+        android:layout_marginTop="2dp" />
 
-        </LinearLayout>
-    </ScrollView>
-
-</LinearLayout>
+</RelativeLayout>
 

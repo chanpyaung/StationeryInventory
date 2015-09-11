@@ -40,7 +40,7 @@ import static team5.ad.sa40.stationeryinventory.Model.Constants.ITEM_NAME;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReportItemSearchFragment extends android.support.v4.app.Fragment implements AdapterView.OnItemClickListener {
+public class ReportItemSearchFragment extends android.support.v4.app.Fragment implements View.OnClickListener {
 
     @Bind(R.id.search_itemCode) EditText searchItemCode;
     @Bind(R.id.search_itemName) EditText searchItemName;
@@ -78,21 +78,14 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
         ArrayAdapter<String> FiltersAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,categories);
         FiltersAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerCateogry.setAdapter(FiltersAdapter);
-        spinnerCateogry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-            }
+        btnSearchItem.setOnClickListener(this);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         return  view;
     }
 
-    @OnClick(R.id.btnSearchItem) void search(){
+    @Override
+    public void onClick (View v){
         //connect to server and handled JSON here
         Log.i("itemList:",String.valueOf(itemList.size()));
         if(itemList.size() == 0) {
@@ -120,12 +113,6 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
         searchItems();
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.i("Click at"," "+position);
-        Toast.makeText(ReportItemSearchFragment.this.getActivity(), "Click at "+ position, Toast.LENGTH_SHORT).show();
-    }
-
     private void searchItems() {
 
         searchResultsList = new ArrayList<JSONItem>();
@@ -133,15 +120,11 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
         String itemCode = searchItemCode.getText().toString();
         if (!(itemCode.isEmpty())) {
             itemCode.toUpperCase();
-        } else {
-            itemCode = "";
         }
         Log.i("itemCode search:", itemCode);
         String itemName = searchItemName.getText().toString();
         if (!(itemName.isEmpty())) {
             itemName.toUpperCase();
-        } else {
-            itemName = "";
         }
         Log.i("itemName search:", itemName);
         int itemCat = spinnerCateogry.getSelectedItemPosition();
@@ -151,15 +134,43 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
         for (int i = 0; i < itemList.size(); i++) {
             JSONItem item = itemList.get(i);
             if (itemCat == 0) {
-                if (item.getItemID().contains(itemCode) && item.getItemName().toUpperCase().contains(itemName)) {
-                    searchResultsList.add(item);
-                    Log.i("searchResult item:",item.getItemID());
-                }
-            } else {
-                if (item.getItemCatID().equals(itemCat)) {
+                if(!(itemCode.isEmpty()) && !(itemName.isEmpty())) {
                     if (item.getItemID().contains(itemCode) && item.getItemName().toUpperCase().contains(itemName)) {
                         searchResultsList.add(item);
                         Log.i("searchResult item:", item.getItemID());
+                    }
+                }
+                else if(itemCode.isEmpty() && !(itemName.isEmpty())){
+                    if (item.getItemName().toUpperCase().contains(itemName)) {
+                        searchResultsList.add(item);
+                        Log.i("searchResult item:", item.getItemID());
+                    }
+                }
+                else if(!(itemCode.isEmpty()) && itemName.isEmpty()){
+                    if (item.getItemID().contains(itemCode)) {
+                        searchResultsList.add(item);
+                        Log.i("searchResult item:", item.getItemID());
+                    }
+                }
+            } else {
+                if (item.getItemCatID().equals(itemCat)) {
+                    if(!(itemCode.isEmpty()) && !(itemName.isEmpty())) {
+                        if (item.getItemID().contains(itemCode) && item.getItemName().toUpperCase().contains(itemName)) {
+                            searchResultsList.add(item);
+                            Log.i("searchResult item:", item.getItemID());
+                        }
+                    }
+                    else if(itemCode.isEmpty() && !(itemName.isEmpty())){
+                        if (item.getItemName().toUpperCase().contains(itemName)) {
+                            searchResultsList.add(item);
+                            Log.i("searchResult item:", item.getItemID());
+                        }
+                    }
+                    else if(!(itemCode.isEmpty()) && itemName.isEmpty()){
+                        if (item.getItemID().contains(itemCode)) {
+                            searchResultsList.add(item);
+                            Log.i("searchResult item:", item.getItemID());
+                        }
                     }
                 }
             }
