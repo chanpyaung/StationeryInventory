@@ -8,6 +8,7 @@ import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.POST;
 import team5.ad.sa40.stationeryinventory.Model.JSONAdjustment;
+import team5.ad.sa40.stationeryinventory.Model.JSONAdjustmentDetail;
 
 /**
  * Created by student on 11/9/15.
@@ -15,4 +16,10 @@ import team5.ad.sa40.stationeryinventory.Model.JSONAdjustment;
 public interface AdjustmentAPI {
     @POST("/adjustvoucherAPI.svc/getAdjVoucher")
     void getAdjVoucher(@Body JsonObject adj, Callback<List<JSONAdjustment>> adjustments);
+
+    @POST("/adjustvoucherAPI.svc/createVoucherAdj")
+    void createAdjVoucher(@Body JSONAdjustment adj, Callback<String> result);
+
+    @POST("/adjustvoucherAPI.svc/createVoucherAdjDetail")
+    void createAdjVoucherDetail(@Body List<JSONAdjustmentDetail> adjDetail, Callback<String> result);
 }
