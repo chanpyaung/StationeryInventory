@@ -70,7 +70,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
         ArrayAdapter<String> FiltersAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,filters);
         FiltersAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerRetStatus.setAdapter(FiltersAdapter);
-        if(User.equals("hello") || User.equals("head") || User.equals("delegate")){
+        if(Setup.user.getRoleID().equals("EM") || Setup.user.getRoleID().equals("DR") || Setup.user.getRoleID().equals("DH") || Setup.user.getRoleID().equals("DD")){
             spinnerRetStatus.getLayoutParams().width += 200;
             requisitionSearch.setVisibility(View.VISIBLE);
             requisitionSearch.setQueryHint("Search Requisition ID");

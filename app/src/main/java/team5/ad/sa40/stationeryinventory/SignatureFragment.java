@@ -74,7 +74,6 @@ public class SignatureFragment extends android.support.v4.app.Fragment {
         tempDir = Environment.getExternalStorageDirectory() + "/" + getResources().getString(R.string.external_dir) + "/";
         ContextWrapper cw = new ContextWrapper(SignatureFragment.this.getActivity().getApplicationContext());
         File directory = cw.getDir(getResources().getString(R.string.external_dir), Context.MODE_PRIVATE);
-
         prepareDirectory();
         uniqueId = getTodaysDate() + Setup.user.getEmpID();
         current = uniqueId + ".png";
@@ -201,7 +200,7 @@ public class SignatureFragment extends android.support.v4.app.Fragment {
             Log.v("log_tag", "Width: " + v.getWidth());
             Log.v("log_tag", "Height: " + v.getHeight());
             if (mBitmap == null) {
-                mBitmap = Bitmap.createBitmap(signArea.getWidth(), signArea.getHeight(), Bitmap.Config.RGB_565);
+                mBitmap = Bitmap.createBitmap(200, 200, Bitmap.Config.RGB_565);
             }
             Canvas canvas = new Canvas(mBitmap);
             try {

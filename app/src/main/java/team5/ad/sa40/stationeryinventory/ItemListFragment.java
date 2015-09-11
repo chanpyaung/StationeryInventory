@@ -137,7 +137,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
                     if(Setup.allRequestItems.size()>0){
                         RequestCartFragment rqFrag = new RequestCartFragment();
                         FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                        fragTran.replace(R.id.frame, rqFrag).addToBackStack("REQUEST_CART_FRAG").commit();
+                        fragTran.replace(R.id.frame, rqFrag).addToBackStack("ITEM_LIST").commit();
                     }
                     else {
                         new AlertDialog.Builder(getActivity())

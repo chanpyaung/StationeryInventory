@@ -3,6 +3,7 @@ package team5.ad.sa40.stationeryinventory;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -195,6 +196,9 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
                         @Override
                         public void success(Integer integer, Response response) {
                             Log.i("Success", String.valueOf(integer));
+                            RequisitionListFragment rqListFrag = new RequisitionListFragment();
+                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.frame, rqListFrag).addToBackStack("REQUEST_CART").commit();
                         }
 
                         @Override

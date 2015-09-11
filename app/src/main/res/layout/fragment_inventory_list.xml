@@ -9,7 +9,6 @@
         android:layout_width="182dp"
         android:layout_height="45dp"
         android:id="@+id/spinnerInvCat"
-        android:background="@drawable/spinner_background"
         android:spinnerMode="dropdown"
         android:layout_marginLeft="5dp"
         android:gravity="center_vertical"
