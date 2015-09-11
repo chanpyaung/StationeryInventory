@@ -35,7 +35,6 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
     @Bind(R.id.search_itemCode) EditText searchItemCode;
     @Bind(R.id.search_itemName) EditText searchItemName;
     @Bind(R.id.spinner_item_category) Spinner spinnerCateogry;
-    @Bind(R.id.search_result_list) ListView searchResultList;
     @Bind(R.id.btnSearchItem) Button btnSearchItem;
 
     private ArrayList<HashMap<String, String>> list;
@@ -59,7 +58,6 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
         ButterKnife.bind(this,view);
 
         mitemList = Item.initializeData();
-        //mitemList = CategoryItem.getAllCategoryItems();
         list = new ArrayList<HashMap<String, String>>();
 
         for(Item i : mitemList){
@@ -103,15 +101,6 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
             }
         }
         Log.i("list", list.toString());
-        rpAdaper = new ReportItemAdapter(fragAcivity, list);
-        searchResultList.setAdapter(rpAdaper);
-        searchResultList.setClickable(true);
-        searchResultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ReportItemSearchFragment.this.getActivity().getBaseContext(), "Hello from position "+position, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override

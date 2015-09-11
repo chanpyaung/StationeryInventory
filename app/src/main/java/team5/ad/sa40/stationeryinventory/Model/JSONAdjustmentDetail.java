@@ -5,144 +5,144 @@ import com.google.gson.annotations.Expose;
 public class JSONAdjustmentDetail {
 
     @Expose
-    private Integer adjSN;
+    private Integer AdjSN;
     @Expose
-    private String adjustmentID;
+    private String AdjID;
     @Expose
-    private String itemID;
+    private String ItemID;
     @Expose
-    private Integer quantity;
+    private Integer Qty;
     @Expose
-    private Double price;
+    private Double Price;
     @Expose
-    private String reason;
+    private String Reason;
     @Expose
-    private String remark;
+    private String Remark;
 
     /**
      *
      * @return
-     * The adjSN
+     * The AdjSN
      */
     public Integer getAdjSN() {
-        return adjSN;
+        return AdjSN;
     }
 
     /**
      *
-     * @param adjSN
-     * The adjSN
+     * @param AdjSN
+     * The AdjSN
      */
-    public void setAdjSN(Integer adjSN) {
-        this.adjSN = adjSN;
+    public void setAdjSN(Integer AdjSN) {
+        this.AdjSN = AdjSN;
     }
 
     /**
      *
      * @return
-     * The adjustmentID
+     * The AdjID
      */
     public String getAdjustmentID() {
-        return adjustmentID;
+        return AdjID;
     }
 
     /**
      *
-     * @param adjustmentID
-     * The adjustmentID
+     * @param AdjID
+     * The AdjID
      */
-    public void setAdjustmentID(String adjustmentID) {
-        this.adjustmentID = adjustmentID;
+    public void setAdjustmentID(String AdjID) {
+        this.AdjID = AdjID;
     }
 
     /**
      *
      * @return
-     * The itemID
+     * The ItemID
      */
     public String getItemID() {
-        return itemID;
+        return ItemID;
     }
 
     /**
      *
-     * @param itemID
-     * The itemID
+     * @param ItemID
+     * The ItemID
      */
-    public void setItemID(String itemID) {
-        this.itemID = itemID;
+    public void setItemID(String ItemID) {
+        this.ItemID = ItemID;
     }
 
     /**
      *
      * @return
-     * The quantity
+     * The Qty
      */
     public Integer getQuantity() {
-        return quantity;
+        return Qty;
     }
 
     /**
      *
-     * @param quantity
-     * The quantity
+     * @param Qty
+     * The Qty
      */
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setQuantity(Integer Qty) {
+        this.Qty = Qty;
     }
 
     /**
      *
      * @return
-     * The price
+     * The Price
      */
     public Double getPrice() {
-        return price;
+        return Price;
     }
 
     /**
      *
-     * @param price
-     * The price
+     * @param Price
+     * The Price
      */
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setPrice(Double Price) {
+        this.Price = Price;
     }
 
     /**
      *
      * @return
-     * The reason
+     * The Reason
      */
     public String getReason() {
-        return reason;
+        return Reason;
     }
 
     /**
      *
-     * @param reason
-     * The reason
+     * @param Reason
+     * The Reason
      */
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setReason(String Reason) {
+        this.Reason = Reason;
     }
 
     /**
      *
      * @return
-     * The remark
+     * The Remark
      */
     public String getRemark() {
-        return remark;
+        return Remark;
     }
 
     /**
      *
-     * @param remark
-     * The remark
+     * @param Remark
+     * The Remark
      */
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setRemark(String Remark) {
+        this.Remark = Remark;
     }
 
 }

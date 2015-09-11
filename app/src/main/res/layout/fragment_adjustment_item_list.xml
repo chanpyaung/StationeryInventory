@@ -45,7 +45,7 @@
         android:padding="5dp"
         android:id="@+id/btnSubmit"
         android:background="@color/PrimaryInvertedColor"
-        android:text="SUBMIT"
+        android:text="CONFIRM"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textColor="#ffffffff"

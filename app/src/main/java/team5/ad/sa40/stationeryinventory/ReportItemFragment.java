@@ -188,6 +188,8 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
         mReportItem.setQuantity(reportedQty);
         mReportItem.setReason(reasonSelected.toUpperCase());
         mReportItem.setRemark(remark.getText().toString());
+        mReportItem.setPrice(0.0);
+        mReportItem.setAdjSN(0);
 
         //save items temporarily to list of items to report together to generate adjustment voucher.
         SharedPreferences appSharedPrefs = PreferenceManager

@@ -3,6 +3,7 @@ package team5.ad.sa40.stationeryinventory;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +26,13 @@ import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONAdjustmentDetail;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 
 /**
@@ -69,7 +76,7 @@ public class ReportItemListFragment extends android.support.v4.app.Fragment {
         reportItemList = new ArrayList<JSONAdjustmentDetail>();
         if(jsonArray.size() > 0) {
             String[] reportItems = jsonArray.toArray(new String[jsonArray.size()]);
-            Log.i("string[] reportItems:", reportItems.toString());
+            Log.i("string[] reportItems:", String.valueOf(reportItems.length));
             for(int i=0; i<reportItems.length; i++) {
                 JSONAdjustmentDetail obj = gson.fromJson(reportItems[i], JSONAdjustmentDetail.class);
                 Log.i("in json:",obj.getItemID());
@@ -126,7 +133,12 @@ public class ReportItemListFragment extends android.support.v4.app.Fragment {
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle args = new Bundle();
+                args.putString("Add Report Item", "Add Report Item");
+                Log.i("goto inv: ", "Add Report Item");
+
                 InventoryList fragment = new InventoryList();
+                fragment.setArguments(args);
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
             }
@@ -142,7 +154,7 @@ public class ReportItemListFragment extends android.support.v4.app.Fragment {
         generateAdjVoucher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(reportItemList.size() == 0){
+                if (reportItemList.size() == 0) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setMessage("Unable to generate an empty list.")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -151,8 +163,7 @@ public class ReportItemListFragment extends android.support.v4.app.Fragment {
                                 }
                             }).create();
                     builder.show();
-                }
-                else {
+                } else {
                     AdjustmentItemListFragment fragment3 = new AdjustmentItemListFragment();
                     android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.frame, fragment3).addToBackStack("TAG").commit();

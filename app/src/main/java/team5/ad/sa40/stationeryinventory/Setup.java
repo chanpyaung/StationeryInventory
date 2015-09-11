@@ -34,6 +34,12 @@ public class Setup {
         return null;
     }
 
+    public static String parseDateToStringJSONDate(Date d){
+        String output = "";
+        SimpleDateFormat out = new SimpleDateFormat("yyyy-MM-dd");
+        output = out.format(d);
+        return output;
+    }
 
     public static Date parseJSONDateToJavaDate(String JSONDate){
         //  "/Date(1321867151710+0100)/"

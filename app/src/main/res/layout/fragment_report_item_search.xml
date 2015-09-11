@@ -28,7 +28,9 @@
         android:id="@+id/spinner_item_category"
         android:layout_below="@id/search_itemName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="45dp"
+        android:layout_alignStart="@+id/search_itemName"
+        android:layout_alignEnd="@+id/search_itemName" />
 
     <Button
         android:layout_below="@+id/spinner_item_category"
@@ -42,22 +44,24 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/inv_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/search_itemName"
+        android:layout_below="@+id/textView"
+        android:layout_alignEnd="@+id/search_itemName" />
+
     <TextView
         android:text="Search Results: "
         android:layout_marginLeft="15dp"
         android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title"
         android:layout_below="@+id/btnSearchItem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <ListView
-        android:id="@+id/search_result_list"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/btnSearchItem"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent" />
+        android:layout_height="wrap_content"
+        android:id="@+id/textView" />
 
 </RelativeLayout>

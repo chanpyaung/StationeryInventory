@@ -106,6 +106,28 @@ public class InventoryList extends android.support.v4.app.Fragment {
             }
         });
 
+        //load items:
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+
+        invAPI.getList(new Callback<List<JSONItem>>() {
+            @Override
+            public void success(List<JSONItem> jsonItems, Response response) {
+                Log.i("Result :", jsonItems.toString());
+                Log.i("First item: ", jsonItems.get(0).getItemID().toString());
+                Log.i("Response: ", response.getBody().toString());
+                System.out.println("Response Status " + response.getStatus());
+                InvListAdapter.mJSONItems = jsonItems;
+                System.out.println("SIZE:::::" + InvListAdapter.mJSONItems.size());
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("Error: ", error.toString());
+            }
+        });
+
         //set spinner category filter details -
         ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,categories);
         FiltersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -216,6 +238,28 @@ public class InventoryList extends android.support.v4.app.Fragment {
     }
 
     public void showAllInventory() {
+        Bundle args = getArguments();
+        if(args != null){
+            RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+            InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+
+            invAPI.getList(new Callback<List<JSONItem>>() {
+                @Override
+                public void success(List<JSONItem> jsonItems, Response response) {
+                    Log.i("Result :", jsonItems.toString());
+                    Log.i("First item: ", jsonItems.get(0).getItemID().toString());
+                    Log.i("Response: ", response.getBody().toString());
+                    System.out.println("Response Status " + response.getStatus());
+                    InvListAdapter.mJSONItems = jsonItems;
+                    System.out.println("SIZE:::::" + InvListAdapter.mJSONItems.size());
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.i("Error: ", error.toString());
+                }
+            });
+        }
         allInv = InvListAdapter.mJSONItems;
         adapter = new InvListAdapter(InvListAdapter.mJSONItems);
         categoryItems = allInv;
@@ -224,7 +268,7 @@ public class InventoryList extends android.support.v4.app.Fragment {
             @Override
             public void onItemClick(View view, int position) {
 
-                String itemID = allInv.get(position).getItemID();
+                String itemID = categoryItems.get(position).getItemID();
 
                 RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
                 InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
