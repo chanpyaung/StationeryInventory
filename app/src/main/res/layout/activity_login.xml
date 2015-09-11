@@ -34,7 +34,7 @@
         android:textIsSelectable="false"
         android:textSize="20dp"
         android:layout_below="@+id/imageLogo"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="60dp"
         android:background="#4cffffff"
         android:paddingLeft="5dp" />
 
