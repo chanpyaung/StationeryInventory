@@ -31,6 +31,8 @@ import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.AdjustmentAPI;
 import team5.ad.sa40.stationeryinventory.Model.Adjustment;
 import team5.ad.sa40.stationeryinventory.Model.JSONAdjustment;
+import team5.ad.sa40.stationeryinventory.Model.JSONAdjustmentDetail;
+import team5.ad.sa40.stationeryinventory.Model.JSONDisbursementDetail;
 
 
 /**
@@ -79,7 +81,7 @@ public class AdjVouList extends android.support.v4.app.Fragment {
         jobj.addProperty("endDate", "null");
 
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-        AdjustmentAPI adjustmentAPI = restAdapter.create(AdjustmentAPI.class);
+        final AdjustmentAPI adjustmentAPI = restAdapter.create(AdjustmentAPI.class);
         adjustmentAPI.getAdjVoucher(jobj, new Callback<List<JSONAdjustment>>() {
             @Override
             public void success(List<JSONAdjustment> adjustments, Response response) {
@@ -89,13 +91,36 @@ public class AdjVouList extends android.support.v4.app.Fragment {
                 mAdapter.SetOnItemClickListener(new AdjListGridAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        android.support.v4.app.Fragment frag = new AdjListDetail();
-                        Bundle bundle = new Bundle();
-                        JSONAdjustment temp = mAdjustment.get(position);
-                        bundle.putSerializable("adjustment", temp);
-                        frag.setArguments(bundle);
-                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
-                                .commit();
+                        JsonObject object = new JsonObject();
+                        object.addProperty("adjId", String.valueOf(mAdjustment.get(position).getAdjID()));
+                        final JSONAdjustment temp = mAdjustment.get(position);
+                        adjustmentAPI.getAdjVoucherDetail(object, new Callback<List<JSONAdjustmentDetail>>() {
+                            @Override
+                            public void success(List<JSONAdjustmentDetail> jsonAdjustmentDetails, Response response) {
+                                android.support.v4.app.Fragment frag;
+                                if(temp.getStatus().equals("PENDING")){
+                                    frag = new AdjListDetail2();
+                                }
+                                else{
+                                    frag = new AdjListDetail();
+                                }
+                                ArrayList<JSONAdjustmentDetail> tempList = new ArrayList<JSONAdjustmentDetail>(jsonAdjustmentDetails);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("adjustment", temp);
+                                bundle.putSerializable("adjustmentDetail", tempList);
+                                for(JSONAdjustmentDetail detail:tempList){
+                                    Log.e("detail id", String.valueOf(detail.getAdjustmentID()));
+                                }
+                                frag.setArguments(bundle);
+                                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
+                                        .commit();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+
+                            }
+                        });
                     }
                 });
 

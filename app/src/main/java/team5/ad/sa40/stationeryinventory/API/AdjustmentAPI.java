@@ -28,4 +28,10 @@ public interface AdjustmentAPI {
 
     @POST("/adjustvoucherAPI.svc/getAdjVoucherDetail")
     void getAdjVoucherDetail(@Body JsonObject adj, Callback<List<JSONAdjustmentDetail>> adjustments);
+
+    @POST("/adjustvoucherAPI.svc/approveAdj")
+    void approveAdjVoucher(@Body JsonObject adj, Callback<String> result);
+
+    @POST("/adjustvoucherAPI.svc/rejectAdj")
+    void rejectAdjVoucher(@Body JsonObject adj, Callback<String> result);
 }

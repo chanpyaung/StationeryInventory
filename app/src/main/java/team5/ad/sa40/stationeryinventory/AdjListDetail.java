@@ -4,12 +4,15 @@ package team5.ad.sa40.stationeryinventory;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -26,10 +29,12 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.AdjustmentAPI;
+import team5.ad.sa40.stationeryinventory.API.EmployeeAPI;
 import team5.ad.sa40.stationeryinventory.Model.Adjustment;
 import team5.ad.sa40.stationeryinventory.Model.AdjustmentDetail;
 import team5.ad.sa40.stationeryinventory.Model.JSONAdjustment;
 import team5.ad.sa40.stationeryinventory.Model.JSONAdjustmentDetail;
+import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 
@@ -38,7 +43,10 @@ import team5.ad.sa40.stationeryinventory.Model.JSONItem;
  */
 public class AdjListDetail extends android.support.v4.app.Fragment {
 
-    List<JSONAdjustmentDetail> adjustmentDetails;
+    RecyclerView mRecyclerView;
+    RecyclerView.LayoutManager mLayoutManager;
+    AdjListDetailAdapter mAdapter;
+    ArrayList<JSONAdjustmentDetail> adjustmentDetails;
 
     @Bind(R.id.txtAdjID) TextView txtAdjID;
     @Bind(R.id.txtAdjDate) TextView txtAdjDate;
@@ -46,7 +54,10 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
     @Bind(R.id.txtEmpID) TextView txtEmpID;
     @Bind(R.id.txtStatus) TextView txtStatus;
     @Bind(R.id.txtTotalCost) TextView txtTotalCost;
-    @Bind(R.id.item_table)TableLayout detail_table;
+    @Bind(R.id.txtAppID) TextView txtAppID;//
+    @Bind(R.id.txtAppName) TextView txtAppName;//
+    @Bind(R.id.txtStatusLabel) TextView txtStatusLabel;
+    @Bind(R.id.img2) ImageView app_img;//
 
     public AdjListDetail() {
         // Required empty public constructor
@@ -57,177 +68,128 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_adj_list_detail, container, false);
+
         Bundle bundle = this.getArguments();
-        JSONAdjustment dis = (JSONAdjustment) bundle.getSerializable("adjustment");
-        View v;
-        TextView txtStatusLabel;
-        TextView txtAppName;
-        TextView txtAppID;
-        Button btnReject;
-        Button btnApprove;
+        final JSONAdjustment dis = (JSONAdjustment) bundle.getSerializable("adjustment");
+        adjustmentDetails = (ArrayList<JSONAdjustmentDetail>)bundle.getSerializable("adjustmentDetail");
 
-        if(dis.getStatus() != "PENDING"){
-            v = inflater.inflate(R.layout.fragment_adj_list_detail, container, false);
-            ButterKnife.bind(this, v);
-            txtAppID = (TextView) v.findViewById(R.id.txtAppID);
-            txtAppName = (TextView) v.findViewById(R.id.txtAppName);
-            txtStatusLabel = (TextView) v.findViewById(R.id.txtStatusLabel);
-            txtAppID.setText(String.valueOf(dis.getApprovedBy()));
-        }
-        else{
-            v = inflater.inflate(R.layout.fragment_adj_list_detail2, container, false);
-            ButterKnife.bind(this, v);
-
-            btnApprove = (Button) v.findViewById(R.id.btnApprove);
-            btnReject = (Button) v.findViewById(R.id.btnReject);
-
-            btnApprove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-            btnReject.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
+        mRecyclerView = (RecyclerView)v.findViewById(R.id.my_dis_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        Log.e("adjustmentDetails size", String.valueOf(adjustmentDetails.size()));
+        for(JSONAdjustmentDetail detail:adjustmentDetails){
+            Log.e("detail id", String.valueOf(detail.getAdjustmentID()));
         }
 
-        Log.i("Dis id is ", String.valueOf(dis.getAdjID()));
-        txtAdjID.setText(dis.getAdjID());
-        String string_date = Setup.parseJSONDateToString(dis.getDate());
-        txtStatus.setText(dis.getStatus());
-        txtAdjDate.setText(string_date);
-        txtEmpID.setText(String.valueOf(dis.getReportedBy()));
-        txtTotalCost.setText(String.valueOf(dis.getTotalAmt()));
+        ButterKnife.bind(this, v);
 
-        JsonObject object = new JsonObject();
-        object.addProperty("adjId", String.valueOf(dis.getAdjID()));
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-        AdjustmentAPI adjustmentAPI = restAdapter.create(AdjustmentAPI.class);
-        adjustmentAPI.getAdjVoucherDetail(object, new Callback<List<JSONAdjustmentDetail>>() {
-            @Override
-            public void success(List<JSONAdjustmentDetail> jsonAdjustmentDetails, Response response) {
-                adjustmentDetails = jsonAdjustmentDetails;
-            }
+                Log.e("Reach into BuildTable", "Success");
+                EmployeeAPI employeeAPI = restAdapter.create(EmployeeAPI.class);
+                employeeAPI.getEmployeeById(dis.getReportedBy(), new Callback<JSONEmployee>() {
+                    @Override
+                    public void success(JSONEmployee jsonEmployee, Response response) {
+                        EmployeeAPI employeeAPI = restAdapter.create(EmployeeAPI.class);
+                        JSONEmployee employee = jsonEmployee;
+                        txtEmpName.setText(employee.getEmpName());
+                        employeeAPI.getEmployeeById(dis.getApprovedBy(), new Callback<JSONEmployee>() {
+                            @Override
+                            public void success(JSONEmployee jsonEmployee, Response response) {
+                                JSONEmployee employee = jsonEmployee;
+                                mAdapter = new AdjListDetailAdapter(adjustmentDetails);
+                                mRecyclerView.setAdapter(mAdapter);
+                                Log.e("adjustmentDetails size", String.valueOf(adjustmentDetails.size()));
+                                txtAppID.setText(String.valueOf(dis.getApprovedBy()));
+                                new InventoryDetails.DownloadImageTask(app_img).execute("http://192.168.31.202/img/user/" + dis.getApprovedBy() + ".jpg");
+                                Log.i("Dis id is ", String.valueOf(dis.getAdjID()));
+                                txtAdjID.setText(dis.getAdjID());
+                                String string_date = Setup.parseJSONDateToString(dis.getDate());
+                                txtStatus.setText(dis.getStatus());
+                                txtAdjDate.setText(string_date);
+                                txtEmpID.setText(String.valueOf(dis.getReportedBy()));
+                                txtTotalCost.setText("$" + String.valueOf(dis.getTotalAmt()));
+                                txtAppName.setText(employee.getEmpName());
+                                if (dis.getStatus().equals("REJECTED")) {
+                                    txtStatusLabel.setText("REJECTED BY");
+                                }
+                            }
 
-            @Override
-            public void failure(RetrofitError error) {
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.e("getEmployeeById Re", error.toString());
+                            }
+                        });
+                    }
 
-            }
-        });
-        //table codes
-        TableRow tr_head = new TableRow(this.getActivity());
-        tr_head.setId(+10);
-        tr_head.setBackgroundColor(Color.GRAY);
-        tr_head.setLayoutParams(new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.FILL_PARENT,
-                TableLayout.LayoutParams.WRAP_CONTENT));
-
-        TextView label_date = new TextView(this.getActivity());
-        label_date.setId(+20);
-        label_date.setText("ItemCode");
-        label_date.setTextColor(Color.WHITE);
-        label_date.setPadding(3, 3, 3, 3);
-        tr_head.addView(label_date);// add the column to the table row here
-
-        TextView label_weight_kg = new TextView(this.getActivity());
-        label_weight_kg.setId(+21);// define id that must be unique
-        label_weight_kg.setText("Adjustment"); // set the text for the header
-        label_weight_kg.setTextColor(Color.WHITE); // set the color
-        label_weight_kg.setPadding(3, 3, 3, 3); // set the padding (if required)
-        tr_head.addView(label_weight_kg); // add the column to the table row here
-
-        TextView label_price = new TextView(this.getActivity());
-        label_price.setId(+22);// define id that must be unique
-        label_price.setText("Price"); // set the text for the header
-        label_price.setTextColor(Color.WHITE); // set the color
-        label_price.setPadding(3, 3, 3, 3); // set the padding (if required)
-        tr_head.addView(label_price); // add the column to the table row here
-
-        TextView label_reason = new TextView(this.getActivity());
-        label_reason.setId(+23);// define id that must be unique
-        label_reason.setText("Reason"); // set the text for the header
-        label_reason.setTextColor(Color.WHITE); // set the color
-        label_reason.setPadding(3, 3, 3, 3); // set the padding (if required)
-        tr_head.addView(label_reason); // add the column to the table row here
-
-        TextView label_remark = new TextView(this.getActivity());
-        label_remark.setId(+24);// define id that must be unique
-        label_remark.setText("Details"); // set the text for the header
-        label_remark.setTextColor(Color.WHITE); // set the color
-        label_remark.setPadding(3, 3, 3, 3); // set the padding (if required)
-        tr_head.addView(label_remark); // add the column to the table row here
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("getEmployeeById Re", error.toString());
+                    }
+                });
 
 
-        detail_table.addView(tr_head, new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.FILL_PARENT,
-                TableLayout.LayoutParams.WRAP_CONTENT));
+//        final TextView txtStatusLabel;
+//        final TextView txtAppName;
+//        TextView txtAppID;
+//        Button btnReject;
+//        Button btnApprove;
+//
+//        if(!dis.getStatus().equals("PENDING")){
+//            Log.e("Status", dis.getStatus());
+//            v = inflater.inflate(R.layout.fragment_adj_list_detail, container, false);
+//            ButterKnife.bind(this, v);
 
+//
+//            txtAppID = (TextView) v.findViewById(R.id.txtAppID);
+//            txtAppName = (TextView) v.findViewById(R.id.txtAppName);
+//            txtStatusLabel = (TextView) v.findViewById(R.id.txtStatusLabel);
+//            txtAppID.setText(String.valueOf(dis.getApprovedBy()));
+//
+//        }
+//        else{
+//            Log.e("else", "here");
+//            v = inflater.inflate(R.layout.fragment_adj_list_detail2, container, false);
+//            ButterKnife.bind(this, v);
+//
+//            mRecyclerView = (RecyclerView) v.findViewById(R.id.my_dis_recycler_view);
+//            mRecyclerView.setHasFixedSize(true);
+//
+//            mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
+//            mRecyclerView.setLayoutManager(mLayoutManager);
+//
+//            mAdapter = new AdjListDetailAdapter(adjustmentDetails);
+//            mRecyclerView.setAdapter(mAdapter);
+//
+//            btnApprove = (Button) v.findViewById(R.id.btnApprove);
+//            btnReject = (Button) v.findViewById(R.id.btnReject);
+//
+//            if(Setup.user.getRoleID().equals("SC")){
+//                btnApprove.setVisibility(View.GONE);
+//                btnReject.setVisibility(View.GONE);
+//            }
+//            btnApprove.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                }
+//            });
+//            btnReject.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                }
+//            });
+//
+//            Log.e("Reach into BuildTable", "Success");
+//            final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+//                    Log.e("adjustmentDetails size", String.valueOf(adjustmentDetails.size()));
+//                    EmployeeAPI employeeAPI = restAdapter.create(EmployeeAPI.class);
+//        }
+//
 
-        for (int z=1; z<adjustmentDetails.size()+1; z++){
-
-            TableRow tr = new TableRow(this.getActivity());
-            tr.setId(+(100+z));
-            tr.setBackgroundColor(Color.LTGRAY);
-            tr.setLayoutParams(new TableLayout.LayoutParams(
-                    TableLayout.LayoutParams.FILL_PARENT,
-                    TableLayout.LayoutParams.WRAP_CONTENT));
-
-            //Create two columns to add as table data
-            // Create a TextView to add date
-            TextView ladelName = new TextView(this.getActivity());
-            ladelName.setId(+(200 + z));
-            //ladelName.setTextColor(Color.WHITE);
-            ladelName.setText(adjustmentDetails.get(z - 1).getItemID());
-            //ladelName.setPadding(2, 0, 5, 0);
-            tr.addView(ladelName);
-
-            TextView labelQty = new TextView(this.getActivity());
-            labelQty.setId(+(300 + z));
-            labelQty.setGravity(Gravity.CENTER);
-            //labelQty.setTextColor(Color.WHITE);
-            labelQty.setText(String.valueOf(adjustmentDetails.get(z - 1).getQuantity()));
-            tr.addView(labelQty);
-
-            TextView labelPrice = new TextView(this.getActivity());
-            labelPrice.setId(+(400 + z));
-            //labelQty.setTextColor(Color.WHITE);
-            labelPrice.setText(String.valueOf(adjustmentDetails.get(z - 1).getPrice()));
-            tr.addView(labelPrice);
-
-            TextView labelReason = new TextView(this.getActivity());
-            labelReason.setId(+(500 + z));
-            //labelQty.setTextColor(Color.WHITE);
-            labelReason.setText(String.valueOf(adjustmentDetails.get(z - 1).getReason()));
-            tr.addView(labelReason);
-
-            TextView labelRemark = new TextView(this.getActivity());
-            labelRemark.setId(+(500 + z));
-            //labelQty.setTextColor(Color.WHITE);
-            labelRemark.setText(String.valueOf(adjustmentDetails.get(z - 1).getRemark()));
-            tr.addView(labelRemark);
-
-            // finally add this to the table row
-            detail_table.addView(tr, new TableLayout.LayoutParams(
-                    TableLayout.LayoutParams.FILL_PARENT,
-                    TableLayout.LayoutParams.WRAP_CONTENT));
-
-        }
 
         return v;
     }
-
-    public ArrayList<AdjustmentDetail> getAllAdjustmentDetail(){
-        ArrayList<AdjustmentDetail> details = new ArrayList<>();
-
-        for (int i=1; i< 6; i++){
-            AdjustmentDetail adj = new AdjustmentDetail(i, "AD"+i, "Item"+i, 10 +i, i*(i+10), "Broken", "Remark");
-            details.add(adj);
-        }
-        return details;
-    }
-
 }

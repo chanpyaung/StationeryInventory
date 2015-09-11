@@ -2,7 +2,9 @@ package team5.ad.sa40.stationeryinventory.Model;
 
 import com.google.gson.annotations.Expose;
 
-public class JSONAdjustmentDetail {
+import java.io.Serializable;
+
+public class JSONAdjustmentDetail implements Serializable{
 
     @Expose
     private Integer AdjSN;
