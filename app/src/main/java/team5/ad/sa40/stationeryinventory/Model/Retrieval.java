@@ -120,7 +120,10 @@ public class Retrieval {
 
         Log.i("resultObj:",resultObj.toString());
         Log.i("resultItems:",resultItems.toString());
-        Log.i("resultReqForms:",resultReqForms.toString());
+        if(resultReqForms != null) {
+            Log.i("resultReqForms:", resultReqForms.toString());
+        }
+
 
         try {
             JSONObject result = resultObj.getJSONObject(0);
