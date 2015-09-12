@@ -2,6 +2,8 @@ package team5.ad.sa40.stationeryinventory.API;
 
 import com.google.gson.JsonObject;
 
+import java.util.List;
+
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -20,4 +22,6 @@ public interface EmployeeAPI {
     @GET("/employeeAPI.svc/getemployeebyId/{empID}")
     void getEmployeeById(@Path("empID") int empID, Callback<JSONEmployee> emp);
 
+    @GET("/employeeAPI.svc/getemployeebyDeptID/{DeptID}")
+    void getEmployeeByDeptID(@Path("DeptID") String deptID, Callback<List<JSONEmployee>> empList);
 }

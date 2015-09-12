@@ -7,6 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -65,6 +68,7 @@ public class DisbursementList extends android.support.v4.app.Fragment {
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_disbursement_list, container, false);
         ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
         mRecyclerView = (RecyclerView)view.findViewById(R.id.dis_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
@@ -273,5 +277,21 @@ public class DisbursementList extends android.support.v4.app.Fragment {
             }
         }
         return filteredModelList;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        this.getActivity().getMenuInflater().inflate(R.menu.search_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_details){
+            text_start_date.setText("");
+            text_end_date.setText("");
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

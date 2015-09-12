@@ -9,19 +9,26 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.EmployeeAPI;
 import team5.ad.sa40.stationeryinventory.Model.Delegate;
+import team5.ad.sa40.stationeryinventory.Model.JSONDelegate;
+import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
 
 /**
  * Created by student on 7/9/15.
  */
 public class DelegateGridAdapter extends RecyclerView.Adapter<DelegateGridAdapter.ViewHolder> {
-    List<Delegate> mDelegates;
+    List<JSONDelegate> mDelegates;
     DelegateGridAdapter.OnItemClickListener mItemClickListener;
-    public DelegateGridAdapter(){
+    public DelegateGridAdapter(List<JSONDelegate> delegates){
         super();
         mDelegates = new ArrayList<>();
         //Place for adding the JSON list if elseif else
-        mDelegates = Delegate.getAllDelegation();
+        mDelegates = delegates;
 
     }
     @Override
@@ -36,26 +43,31 @@ public class DelegateGridAdapter extends RecyclerView.Adapter<DelegateGridAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Delegate del = mDelegates.get(i);
-        viewHolder.txtNoNeedLabel1.setText("");
-        viewHolder.txtNoNeedLabel2.setText("");
-        viewHolder.txtNoNeedLabel3.setText("");
-        viewHolder.txtEmpLabel.setText("Employee Name:");
-        viewHolder.txtEmpName.setText(del.getEmpName());
-        viewHolder.txtStartLabel.setText("Start Date:");
-        viewHolder.txtStartDate.setText(Setup.parseDateToString(del.getStartDate()));
-        viewHolder.txtEndLabel.setText("End Date:");
-        viewHolder.txtEndDate.setText(Setup.parseDateToString(del.getEndDate()));
-//        Adjustment disItem = mAdjustments.get(i);
-//        viewHolder.adjNoLabel.setText("Voucher #");
-//        viewHolder.noNeedLabel1.setText("");
-//        viewHolder.noNeedLable2.setText("");
-//        viewHolder.adjNo.setText(String.valueOf(disItem.getAdjustmentID()));
-//        String string_date = Setup.parseDateToString(disItem.getDate());
-//        viewHolder.adjDate.setText(string_date);
-//        viewHolder.adjStatus.setText(disItem.getStatus());
+    public void onBindViewHolder(final ViewHolder viewHolder, int i) {
+        final JSONDelegate del = mDelegates.get(i);
 
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        EmployeeAPI employeeAPI = restAdapter.create(EmployeeAPI.class);
+        employeeAPI.getEmployeeById(del.getEmpID(), new Callback<JSONEmployee>() {
+            @Override
+            public void success(JSONEmployee jsonEmployee, Response response) {
+
+                viewHolder.txtNoNeedLabel1.setText("");
+                viewHolder.txtNoNeedLabel2.setText("");
+                viewHolder.txtNoNeedLabel3.setText("");
+                viewHolder.txtEmpLabel.setText("Employee Name:");
+                viewHolder.txtEmpName.setText(jsonEmployee.getEmpName());
+                viewHolder.txtStartLabel.setText("Start Date:");
+                viewHolder.txtStartDate.setText(Setup.parseJSONDateToString(del.getStartDate()));
+                viewHolder.txtEndLabel.setText("End Date:");
+                viewHolder.txtEndDate.setText(Setup.parseJSONDateToString(del.getEndDate()));
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
     @Override
     public int getItemCount() {
@@ -63,50 +75,50 @@ public class DelegateGridAdapter extends RecyclerView.Adapter<DelegateGridAdapte
         return mDelegates.size();
     }
 
-    public Delegate removeItem(int position) {
-        final Delegate item = mDelegates.remove(position);
+    public JSONDelegate removeItem(int position) {
+        final JSONDelegate item = mDelegates.remove(position);
         notifyItemRemoved(position);
         return item;
     }
 
-    public void addItem(int position, Delegate item) {
+    public void addItem(int position, JSONDelegate item) {
         mDelegates.add(position, item);
         notifyItemInserted(position);
     }
 
     public void moveItem(int fromPosition, int toPosition) {
-        final Delegate model = mDelegates.remove(fromPosition);
+        final JSONDelegate model = mDelegates.remove(fromPosition);
         mDelegates.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
 
-    public void animateTo(List<Delegate> items) {
+    public void animateTo(List<JSONDelegate> items) {
         applyAndAnimateRemovals(items);
         applyAndAnimateAdditions(items);
         applyAndAnimateMovedItems(items);
     }
 
-    private void applyAndAnimateRemovals(List<Delegate> newItems) {
+    private void applyAndAnimateRemovals(List<JSONDelegate> newItems) {
         for (int i = mDelegates.size() - 1; i >= 0; i--) {
-            final Delegate model = mDelegates.get(i);
+            final JSONDelegate model = mDelegates.get(i);
             if (!newItems.contains(model)) {
                 removeItem(i);
             }
         }
     }
 
-    private void applyAndAnimateAdditions(List<Delegate> newModels) {
+    private void applyAndAnimateAdditions(List<JSONDelegate> newModels) {
         for (int i = 0, count = newModels.size(); i < count; i++) {
-            final Delegate item = newModels.get(i);
+            final JSONDelegate item = newModels.get(i);
             if (!mDelegates.contains(item)) {
                 addItem(i, item);
             }
         }
     }
 
-    private void applyAndAnimateMovedItems(List<Delegate> newModels) {
+    private void applyAndAnimateMovedItems(List<JSONDelegate> newModels) {
         for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
-            final Delegate model = newModels.get(toPosition);
+            final JSONDelegate model = newModels.get(toPosition);
             final int fromPosition = mDelegates.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);
