@@ -24,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
@@ -46,7 +47,7 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
     @Bind(R.id.deptHead) EditText deptHead;
     @Bind(R.id.spinnerRep) Spinner representative;
     @Bind(R.id.spinnerCPoint) Spinner collectionPoint;
-    @Bind(R.id.mapview) MapView cpMap;
+    MapView cpMap;
     GoogleMap map;
     Department dept;
     String[] col_names;
@@ -97,6 +98,22 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
         deptHead.setEnabled(false);
         contactName.setEnabled(false);
 
+        cpMap = (MapView) view.findViewById(R.id.mapview);
+        cpMap.onCreate(savedInstanceState);
+        cpMap.onResume();
+
+        // Gets to GoogleMap from the MapView and does initialization stuff
+        map = cpMap.getMap();
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.setMyLocationEnabled(true);
+
+        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
+        try {
+            MapsInitializer.initialize(this.getActivity());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         new AsyncTask<Void, Void, Department>(){
             @Override
             protected Department doInBackground(Void... params) {
@@ -116,14 +133,32 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
                         col_names = new String[collectionPoints.size()];
                         for(int i = 0; i < collectionPoints.size(); i++){
                             col_names[i] = collectionPoints.get(i).getColPt_name();
+                            map.addMarker(new MarkerOptions()
+                                    .position(new LatLng(collectionPoints.get(i).getColPt_lat(), collectionPoints.get(i).getColPt_long()))
+                                    .title(collectionPoints.get(i).getColPt_name()));
                             if(collectionPoints.get(i).getColPt_id() == dept.getCpID()){
                                 currentCol = collectionPoints.get(i);
                                 selected_colPt = new CollectionPoint();
                                 selected_colPt.setColPt_lat(currentCol.getColPt_lat());
                                 selected_colPt.setColPt_long(currentCol.getColPt_long());
                                 // Updates the location and zoom of the MapView
-                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getColPt_lat(), selected_colPt.getColPt_long()), 10);
-                                map.animateCamera(cameraUpdate);
+                                collectionPoint.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                        for (int i = 0; i < collectionPoints.size(); i++) {
+                                            if (collectionPoint.getSelectedItem().toString().equals(collectionPoints.get(i).getColPt_name())) {
+                                                selected_colPt = collectionPoints.get(i);
+                                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getColPt_lat(), selected_colPt.getColPt_long()), 15);
+                                                map.animateCamera(cameraUpdate);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
                             }
                         }
                         new AsyncTask<Void, Void, ArrayList<Employee>>(){
@@ -145,39 +180,6 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
                 }.execute();
             }
         }.execute();
-
-
-        collectionPoint.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                for (int i = 0; i < collectionPoints.size(); i++){
-                    if(collectionPoint.getSelectedItem().toString().equals(collectionPoints.get(i).getColPt_name())){
-                        selected_colPt = collectionPoints.get(i);
-                    }
-                }
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getColPt_lat(), selected_colPt.getColPt_long()), 10);
-                map.animateCamera(cameraUpdate);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        cpMap.onCreate(savedInstanceState);
-
-        // Gets to GoogleMap from the MapView and does initialization stuff
-        map = cpMap.getMap();
-        map.getUiSettings().setMyLocationButtonEnabled(false);
-        map.setMyLocationEnabled(true);
-
-        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
-        try {
-            MapsInitializer.initialize(this.getActivity());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         return  view;
     }
@@ -291,6 +293,11 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
                                 Log.e("In Update Dept", result);
                                 if(result.equals("true")){
                                     Dflag = "true";
+                                    for(int z = 0; z < collectionPoints.size(); z++){
+                                        if(collectionPoint.getSelectedItem().toString().equals(collectionPoints.get(z).getColPt_name())){
+                                                currentCol = collectionPoints.get(z);
+                                        }
+                                    }
                                     if(!newEmpHead.getEmail().equals(currentHead.getEmail())) {
                                         new AsyncTask<Void, Void, String>() {
                                             @Override

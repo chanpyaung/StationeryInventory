@@ -22,6 +22,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
@@ -88,6 +89,9 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
         map = mapView.getMap();
         map.getUiSettings().setMyLocationButtonEnabled(false);
         map.setMyLocationEnabled(true);
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()))
+                .title(selected_colPt.getCPName()));
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         try {
@@ -97,7 +101,7 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
         }
 
         // Updates the location and zoom of the MapView
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 10);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 15);
         map.animateCamera(cameraUpdate);
 
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
