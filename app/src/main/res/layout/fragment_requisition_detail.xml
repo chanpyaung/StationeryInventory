@@ -76,6 +76,7 @@
     <TextView
         android:id="@+id/priority_text"
         android:layout_marginLeft="-5dp"
+        android:layout_marginBottom="15dp"
         android:text="Low"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_toRightOf="@+id/priority"
@@ -83,25 +84,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/remark"
-        android:text="Remark"
-        android:layout_marginLeft="75dp"
-        android:layout_marginRight="15dp"
-        android:layout_below="@+id/inv_detail_itemName"
-        android:layout_toRightOf="@+id/priority_text"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--<TextView-->
+        <!--android:id="@+id/remark"-->
+        <!--android:text="Remark"-->
+        <!--android:layout_marginLeft="75dp"-->
+        <!--android:layout_marginRight="15dp"-->
+        <!--android:layout_below="@+id/inv_detail_itemName"-->
+        <!--android:layout_toRightOf="@+id/priority_text"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
-    <TextView
-        android:id="@+id/remark_text"
-        android:text="N/A"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_toRightOf="@+id/remark"
-        android:layout_below="@+id/inv_detail_itemName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--<TextView-->
+        <!--android:id="@+id/remark_text"-->
+        <!--android:text="N/A"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+        <!--android:layout_toRightOf="@+id/remark"-->
+        <!--android:layout_below="@+id/inv_detail_itemName"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
     <TextView
         android:id="@+id/status"
@@ -109,7 +110,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_below="@+id/remark"
+        android:layout_below="@+id/priority"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -120,32 +121,32 @@
         android:text="Pending"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_toRightOf="@+id/status"
-        android:layout_below="@+id/remark_text"
+        android:layout_below="@+id/priority_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/reason"
-        android:text="Reason"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="15dp"
-        android:layout_below="@+id/remark"
-        android:layout_toRightOf="@+id/status_text"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--<TextView-->
+        <!--android:id="@+id/reason"-->
+        <!--android:text="Reason"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--android:layout_marginRight="15dp"-->
+        <!--android:layout_below="@+id/remark"-->
+        <!--android:layout_toRightOf="@+id/status_text"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
-    <TextView
-        android:id="@+id/reason_text"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="3dp"
-        android:text="N/A"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_toRightOf="@+id/reason"
-        android:layout_below="@+id/remark_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--<TextView-->
+        <!--android:id="@+id/reason_text"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:layout_marginLeft="3dp"-->
+        <!--android:text="N/A"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+        <!--android:layout_toRightOf="@+id/reason"-->
+        <!--android:layout_below="@+id/remark_text"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
     <View style="@style/Divider"
         android:layout_width="fill_parent"

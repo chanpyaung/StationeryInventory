@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +14,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import team5.ad.sa40.stationeryinventory.Model.JSONReqDetail;
 import team5.ad.sa40.stationeryinventory.Model.Requisition;
-import team5.ad.sa40.stationeryinventory.Model.RequisitionDetail;
 
 
 /**
@@ -33,16 +29,14 @@ import team5.ad.sa40.stationeryinventory.Model.RequisitionDetail;
 public class RequisitionDetailFragment extends android.support.v4.app.Fragment implements AdapterView.OnClickListener{
 
     private Requisition req;
-    private List<RequisitionDetail> allItems;
+    private List<JSONReqDetail> allItems;
     private RecyclerView mRecyclerView;
     private RequisitionFormAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     @Bind(R.id.inv_detail_itemName) TextView reqFormID;
     @Bind(R.id.priority_text) TextView priority;
-    @Bind(R.id.remark_text) TextView remark;
     @Bind(R.id.status_text) TextView status;
-    @Bind(R.id.reason_text) TextView reason;
     @Bind(R.id.requisition_cancel) Button cancel;
 
 
@@ -62,74 +56,81 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
         Setup s = new Setup();
 
         if (getArguments() != null) {
-            Log.i("arguments: ", getArguments().toString());
-            req.setReqID(getArguments().getInt("ReqID"));
-            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            Log.i("date passed:",getArguments().getString("ReqDate"));
-            try {
-                Date d = format.parse(getArguments().getString("ReqDate"));
-                System.out.println(d);
-                req.setDate(d);
-            } catch (ParseException e) {
-                e.printStackTrace();
+            //Log.i("arguments: ", getArguments().toString());
+            //req.setReqID(getArguments().getInt("ReqID"));
+            //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            //Log.i("date passed:",getArguments().getString("ReqDate"));
+            //try {
+            //    Date d = format.parse(getArguments().getString("ReqDate"));
+            //    System.out.println(d);
+            //    req.setDate(d);
+            //} catch (ParseException e) {
+            //    e.printStackTrace();
+            //}
+            //req.setStatusID(getArguments().getInt("StatusID"));
+            String idDisplay = "";
+            int id = getArguments().getInt("ReqID");
+            if(id<10) {
+                idDisplay = "000" + String.valueOf(id);
             }
-            req.setStatusID(getArguments().getInt("StatusID"));
+            else if(id<100) {
+                idDisplay = "00" + String.valueOf(id);
+            }
+            else if(id<1000) {
+                idDisplay = "0" + String.valueOf(id);
+            }
+            else if(id<10000) {
+                idDisplay = String.valueOf(id);
+            }
+            reqFormID.setText(idDisplay);
+
+
+            if (getArguments().getInt("StatusID")==1){
+                status.setText("Pending Approval");
+            }
+            else if (getArguments().getInt("StatusID")==2){
+                status.setText("Approved");
+            }
+            else if (getArguments().getInt("StatusID")==3){
+                status.setText("Processed");
+            }
+            else if (getArguments().getInt("StatusID")==4){
+                status.setText("Collected");
+            }
+            else if(getArguments().getInt("StatusID")==5){
+                status.setText("Rejected");
+            }
+            else if(getArguments().getInt("StatusID")==6) {
+                status.setText("Cancelled");
+            }
+
         }
         else {
-            req.setRetID(123);
-            req.setDate(new Date());
+//            req.setRetID(123);
+//            req.setDate(new Date());
         }
-
-        String idDisplay = "";
-        int id = req.getRetID();
-        if(id<10) {
-            idDisplay = "000" + String.valueOf(id);
-        }
-        else if(id<100) {
-            idDisplay = "00" + String.valueOf(id);
-        }
-        else if(id<1000) {
-            idDisplay = "0" + String.valueOf(id);
-        }
-        else if(id<10000) {
-            idDisplay = String.valueOf(id);
-        }
-        reqFormID.setText(idDisplay);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.ret_detail_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        String status = "";
-        if (req.getStatusID()==1){
-            status = "Approved";
-        }
-        else if (req.getStatusID()==2){
-            status= "Rejected";
-        }
-        else if (req.getStatusID()==3){
-            status= "Processed";
-        }
-        else if (req.getStatusID()==4){
-            status= "Collected";
-        }
-        adapter = new RequisitionFormAdapter(req.getRetID(),status);
-        allItems = new ArrayList<RequisitionDetail>();
+        adapter = new RequisitionFormAdapter(req.getRetID(),status.getText().toString());
+        allItems = new ArrayList<JSONReqDetail>();
         allItems = adapter.mRequisitionDetails;
         mRecyclerView.setAdapter(adapter);
         adapter.SetOnItemClickListener(new RequisitionFormAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                RequisitionDetail selected = allItems.get(position);
+                JSONReqDetail selected = allItems.get(position);
             }
         });
         //reqFormID.setText(adapter.mReqForms);
 
-        if(status == "Pending") {
+        if(status.getText() == "Pending Approval") {
             cancel.setOnClickListener(this);
         }
         else {
-            //cancel.setVisibility(View.GONE);
+            cancel.setVisibility(View.GONE);
         }
 
         return view;
@@ -141,7 +142,7 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
         Boolean checkIfNoNull = true;
         // Check for a valid password, if the user entered one.
         for (int i=0; i<allItems.size(); i++) {
-            if(allItems.get(i).get("ActualQty") == "0") {
+            if(allItems.get(i).getRequestQty() == 0) {
                 checkIfNoNull = false;
             }
         }

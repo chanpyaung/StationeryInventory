@@ -24,8 +24,11 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
 import team5.ad.sa40.stationeryinventory.API.RequestCartAPI;
+import team5.ad.sa40.stationeryinventory.API.RequisitionAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 import team5.ad.sa40.stationeryinventory.Model.JSONRequestCart;
+import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
+import team5.ad.sa40.stationeryinventory.Model.JSONStatus;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static List<JSONItem> requestCart = new ArrayList<JSONItem>();
     public static String user;
+    final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
 
     //Call UI element with butter knife
     @Bind(R.id.toolbar) android.support.v7.widget.Toolbar toolbar;
@@ -141,13 +145,44 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.requisition:
-                        RequisitionListFragment reqListFrag = new RequisitionListFragment();
-                        fragmentTran = getSupportFragmentManager().beginTransaction();
-                        fragmentTran.replace(R.id.frame,reqListFrag).commit();
+                        final RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
+                        reqAPI.getStatus(new Callback<List<JSONStatus>>() {
+                            @Override
+                            public void success(List<JSONStatus> jsonStatuses, Response response) {
+                                Log.i("Status Size", String.valueOf(jsonStatuses.size()));
+                                RequisitionListAdapter.mStatus = jsonStatuses;
+                                reqAPI.getRequisition(Setup.user.getEmpID(), new Callback<List<JSONRequisition>>() {
+                                    @Override
+                                    public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                                        Log.i("URL", response.getUrl());
+                                        Log.i("STATUS", String.valueOf(response.getStatus()));
+                                        Log.i("REASON", response.getReason());
+                                        Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
+                                        RequisitionListAdapter.mRequisitions = jsonRequisitions;
+                                        Setup.allRequisition = jsonRequisitions;
+                                        RequisitionListAdapter.mRequisitions = Setup.allRequisition;
+                                        RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                                        fragmentTran = getSupportFragmentManager().beginTransaction();
+                                        fragmentTran.replace(R.id.frame, reqListFrag).commit();
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        Log.i("GetRequisitionFail", error.toString());
+                                    }
+                                });
+
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.i("Status Fail", error.toString());
+                                Log.i("URL", error.getUrl());
+                            }
+                        });
                         return true;
 
                     case R.id.cart:
-                        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
                         RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
                         rqAPI.getItemsbyEmpID(Setup.user.getEmpID(), new Callback<List<JSONRequestCart>>() {
                             @Override

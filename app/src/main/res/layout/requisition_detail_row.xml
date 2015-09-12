@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="100"
+                android:text="0"
                 android:textStyle="bold"
                 android:id="@+id/qty_actual"
                 android:textSize="18dp"

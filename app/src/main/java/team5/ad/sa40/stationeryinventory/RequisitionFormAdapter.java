@@ -9,15 +9,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import team5.ad.sa40.stationeryinventory.Model.JSONReqDetail;
 import team5.ad.sa40.stationeryinventory.Model.Requisition;
-import team5.ad.sa40.stationeryinventory.Model.RequisitionDetail;
 
 /**
  * Created by johnmajor on 9/6/15.
  */
 public class RequisitionFormAdapter extends RecyclerView.Adapter<RequisitionFormAdapter.ViewHolder> {
 
-    List<RequisitionDetail> mRequisitionDetails;
+    public static List<JSONReqDetail> mRequisitionDetails;
     String[] reqDetailID;
     String mReqForms = "";
     RequisitionFormAdapter.OnItemClickListener mItemClickListener;
@@ -25,9 +25,9 @@ public class RequisitionFormAdapter extends RecyclerView.Adapter<RequisitionForm
 
     public RequisitionFormAdapter(int ReqID, String status){
         super();
-        mRequisitionDetails = Requisition.initializeDataDetails(ReqID);
+        //mRequisitionDetails = Requisition.initializeDataDetails(ReqID);
         mStatus = status;
-        List<Requisition> req = Requisition.initializeData();
+        List<JSONReqDetail> req = mRequisitionDetails;
         for(int i=0; i<req.size(); i++) {
             String idDisplay = "";
             int id = req.get(i).getReqID();
@@ -59,10 +59,9 @@ public class RequisitionFormAdapter extends RecyclerView.Adapter<RequisitionForm
         Log.i("Size of list", String.valueOf(mRequisitionDetails.size()));
         Setup s = new Setup();
         for(int i = 0; i < mRequisitionDetails.size(); i++){
-            String temp = String.valueOf(mRequisitionDetails.get(i).get("itemID"));
+            String temp = String.valueOf(mRequisitionDetails.get(i).getItemID());
             reqDetailID[i] = temp;
         }
-        Log.i("First of string ", reqDetailID[0]);
     }
 
     @Override
@@ -75,10 +74,11 @@ public class RequisitionFormAdapter extends RecyclerView.Adapter<RequisitionForm
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        RequisitionDetail ret = mRequisitionDetails.get(i);
-        viewHolder.itemId.setText(ret.get("itemID").toString());
-        viewHolder.itemName.setText(ret.get("itemName").toString());
-        viewHolder.requestQty.setText(ret.get("RequestQty").toString());
+        JSONReqDetail ret = mRequisitionDetails.get(i);
+        viewHolder.itemId.setText(ret.getItemID().toString());
+        //search for name
+        //viewHolder.itemName.setText(ret..toString());
+        viewHolder.requestQty.setText(ret.getRequestQty().toString());
         if(mStatus == "Retrieved") {
             viewHolder.actualQty.setEnabled(false);
         }
@@ -90,50 +90,50 @@ public class RequisitionFormAdapter extends RecyclerView.Adapter<RequisitionForm
         return mRequisitionDetails.size();
     }
 
-    public RequisitionDetail removeItem(int position) {
-        final RequisitionDetail item = mRequisitionDetails.remove(position);
+    public JSONReqDetail removeItem(int position) {
+        final JSONReqDetail item = mRequisitionDetails.remove(position);
         notifyItemRemoved(position);
         return item;
     }
 
-    public void addItem(int position, RequisitionDetail item) {
+    public void addItem(int position, JSONReqDetail item) {
         mRequisitionDetails.add(position, item);
         notifyItemInserted(position);
     }
 
     public void moveItem(int fromPosition, int toPosition) {
-        final RequisitionDetail model = mRequisitionDetails.remove(fromPosition);
+        final JSONReqDetail model = mRequisitionDetails.remove(fromPosition);
         mRequisitionDetails.add(toPosition, model);
         notifyItemMoved(fromPosition, toPosition);
     }
 
-    public void animateTo(List<RequisitionDetail> items) {
+    public void animateTo(List<JSONReqDetail> items) {
         applyAndAnimateRemovals(items);
         applyAndAnimateAdditions(items);
         applyAndAnimateMovedItems(items);
     }
 
-    private void applyAndAnimateRemovals(List<RequisitionDetail> newItems) {
+    private void applyAndAnimateRemovals(List<JSONReqDetail> newItems) {
         for (int i = mRequisitionDetails.size() - 1; i >= 0; i--) {
-            final RequisitionDetail model = mRequisitionDetails.get(i);
+            final JSONReqDetail model = mRequisitionDetails.get(i);
             if (!newItems.contains(model)) {
                 removeItem(i);
             }
         }
     }
 
-    private void applyAndAnimateAdditions(List<RequisitionDetail> newModels) {
+    private void applyAndAnimateAdditions(List<JSONReqDetail> newModels) {
         for (int i = 0, count = newModels.size(); i < count; i++) {
-            final RequisitionDetail item = newModels.get(i);
+            final JSONReqDetail item = newModels.get(i);
             if (!mRequisitionDetails.contains(item)) {
                 addItem(i, item);
             }
         }
     }
 
-    private void applyAndAnimateMovedItems(List<RequisitionDetail> newModels) {
+    private void applyAndAnimateMovedItems(List<JSONReqDetail> newModels) {
         for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
-            final RequisitionDetail model = newModels.get(toPosition);
+            final JSONReqDetail model = newModels.get(toPosition);
             final int fromPosition = mRequisitionDetails.indexOf(model);
             if (fromPosition >= 0 && fromPosition != toPosition) {
                 moveItem(fromPosition, toPosition);

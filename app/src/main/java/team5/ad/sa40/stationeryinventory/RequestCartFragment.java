@@ -32,8 +32,11 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.RequestCartAPI;
+import team5.ad.sa40.stationeryinventory.API.RequisitionAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 import team5.ad.sa40.stationeryinventory.Model.JSONRequestCart;
+import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
+import team5.ad.sa40.stationeryinventory.Model.JSONStatus;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -165,7 +168,7 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
         if(id == R.id.action_request_done){
             //to load request cart list inside here
 
-            RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+            final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
             final RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
             rqAPI.getItemsbyEmpID(Setup.user.getEmpID(), new Callback<List<JSONRequestCart>>() {
                 @Override
@@ -199,14 +202,44 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
                         public void success(Integer integer, Response response) {
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Request Successful")
-                                    .setMessage("Your have been submitted successfuly.")
+                                    .setMessage("Your request have been successfuly submitted.")
                                     .setCancelable(false)
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            RequisitionListFragment rqListFrag = new RequisitionListFragment();
-                                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                                            fragmentTransaction.replace(R.id.frame, rqListFrag).addToBackStack("REQUEST_CART").commit();
+                                            Log.i("User", Setup.user.getEmpID().toString());
+                                            final RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
+                                            reqAPI.getRequisition(Setup.user.getEmpID(), new Callback<List<JSONRequisition>>() {
+                                                @Override
+                                                public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                                                    reqAPI.getStatus(new Callback<List<JSONStatus>>() {
+                                                        @Override
+                                                        public void success(List<JSONStatus> jsonStatuses, Response response) {
+                                                            RequisitionListAdapter.mStatus = jsonStatuses;
+                                                        }
+
+                                                        @Override
+                                                        public void failure(RetrofitError error) {
+
+                                                        }
+                                                    });
+                                                    Log.i("URL", response.getUrl());
+                                                    Log.i("STATUS", String.valueOf(response.getStatus()));
+                                                    Log.i("REASON", response.getReason());
+                                                    Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
+                                                    RequisitionListAdapter.mRequisitions = jsonRequisitions;
+                                                    Setup.allRequisition = jsonRequisitions;
+                                                    RequisitionListFragment rqListFrag = new RequisitionListFragment();
+                                                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                                    fragmentTransaction.replace(R.id.frame, rqListFrag).addToBackStack("REQUEST_CART").commit();
+                                                }
+
+                                                @Override
+                                                public void failure(RetrofitError error) {
+                                                    Log.i("GetRequisitionFail", error.toString());
+                                                }
+                                            });
+
                                         }
                                     })
                                     .setIcon(android.R.drawable.ic_dialog_info)
