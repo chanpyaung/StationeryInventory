@@ -25,4 +25,13 @@ public interface RequisitionAPI {
     @GET("/requisitionAPI.svc/getRequisitionDetail/{ReqID}")
     void getReqDetail(@Path("ReqID") int reqID, Callback<List<JSONReqDetail>> reqDetailList);
 
+    @GET("/requisitionAPI.svc/reject/{ReqID}/{HandledBy}/{Remark}")
+    void rejectRequisition(@Path("ReqID") int reqID, @Path("HandledBy") int empID, @Path("Remark") String remark, Callback<Boolean> isReject);
+
+    @GET("/requisitionAPI.svc/approve/{ReqID}/{HandledBy}/{Remark}")
+    void approveRequisition(@Path("ReqID") int reqID, @Path("HandledBy") int empID, @Path("Remark") String remark, Callback<Boolean> isReject);
+
+    @GET("/requisitionAPI.svc/deleteRequisition/{ReqID}")
+    void cancelRequisition(@Path("ReqID") int reqID, Callback<Boolean> isDeleted);
+
 }

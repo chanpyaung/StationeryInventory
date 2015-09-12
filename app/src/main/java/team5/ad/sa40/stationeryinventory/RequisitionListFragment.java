@@ -183,7 +183,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
                         args.putString("Date", selected.getDate());
                         args.putInt("ReqID", selected.getReqID());
                         args.putInt("StatusID", selected.getStatusID());
-                        if(Setup.user.getRoleID().equals("DD") && Setup.user.getRoleID().equals("DH")){
+                        if(Setup.user.getRoleID().equals("DD") || Setup.user.getRoleID().equals("DH")){
                             args.putString("APPROVAL", "ENABLED");
                         }
 //                        args.putInt("PriorityID", selected.getPriorityID());

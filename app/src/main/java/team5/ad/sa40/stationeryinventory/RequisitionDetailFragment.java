@@ -1,25 +1,28 @@
 package team5.ad.sa40.stationeryinventory;
 
 
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.RequisitionAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONReqDetail;
 import team5.ad.sa40.stationeryinventory.Model.Requisition;
 
@@ -34,6 +37,10 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
     private RecyclerView mRecyclerView;
     private RequisitionFormAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private final RestAdapter restadapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+    RequisitionAPI reqAPI = restadapter.create(RequisitionAPI.class);
+    int reqID;
 
     @Bind(R.id.inv_detail_itemName) TextView reqFormID;
     @Bind(R.id.priority_text) TextView priority;
@@ -58,18 +65,18 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
 
         if (getArguments() != null) {
             String idDisplay = "";
-            int id = getArguments().getInt("ReqID");
-            if(id<10) {
-                idDisplay = "000" + String.valueOf(id);
+            reqID = getArguments().getInt("ReqID");
+            if(reqID<10) {
+                idDisplay = "000" + String.valueOf(reqID);
             }
-            else if(id<100) {
-                idDisplay = "00" + String.valueOf(id);
+            else if(reqID<100) {
+                idDisplay = "00" + String.valueOf(reqID);
             }
-            else if(id<1000) {
-                idDisplay = "0" + String.valueOf(id);
+            else if(reqID<1000) {
+                idDisplay = "0" + String.valueOf(reqID);
             }
-            else if(id<10000) {
-                idDisplay = String.valueOf(id);
+            else if(reqID<10000) {
+                idDisplay = String.valueOf(reqID);
             }
             reqFormID.setText(idDisplay);
 
@@ -93,26 +100,61 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
                 status.setText("Cancelled");
             }
 
-            if(Setup.user.getRoleID().equals("DH") || Setup.user.getRoleID().equals("DD")){
-                cancel.setText("REJECT");
-                approve.setVisibility(View.VISIBLE);
 
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(RequisitionDetailFragment.this.getActivity(), "DD or DH click", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if(Setup.user.getRoleID().equals("DH") || Setup.user.getRoleID().equals("DD")){
+                    if(getArguments().getString("APPROVAL").equals("ENABLED")){
+                    cancel.setText("REJECT");
+                    approve.setVisibility(View.VISIBLE);
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.i("Reach", "Here reject click");
+                                                reqAPI.rejectRequisition(reqID, Setup.user.getEmpID(), "NA", new Callback<Boolean>() {
+                                                    @Override
+                                                    public void success(Boolean aBoolean, Response response) {
+                                                        Log.i("Success Reject", aBoolean.toString());
+                                                        Log.i("Response", response.getUrl() + " " + String.valueOf(response.getStatus()) + " " + response.getReason());
+                                                    }
 
-                approve.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(RequisitionDetailFragment.this.getActivity(), "DD or DH click", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                                                    @Override
+                                                    public void failure(RetrofitError error) {
+                                                        Log.i("Reject Failed", error.toString()+" "+ error.getUrl());
+                                                    }});
+                        }
+                    });
+                    approve.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.i("Reach", "Here approve click");
+                                                reqAPI.approveRequisition(reqID, Setup.user.getEmpID(), "NA", new Callback<Boolean>() {
+                                                    @Override
+                                                    public void success(Boolean aBoolean, Response response) {
+                                                        Log.i("Success Approve", aBoolean.toString());
+                                                        Log.i("Response", response.getUrl() + " " + String.valueOf(response.getStatus()) + " " + response.getReason());
+                                                    }
 
+                                                    @Override
+                                                    public void failure(RetrofitError error) {
+
+                                                        Log.i("Approved Failed", error.toString() +" "+ error.getUrl());
+                                                    }
+                                                });
+
+                        }
+                    });
+                }
             }
-
+            else {
+                if(status.getText().equals("Pending Approval")) {
+                    cancel.setOnClickListener(this);
+                }
+                else if (status.getText().equals("Pending Approval") && Setup.user.getRoleID().equals("SC")) {
+                    cancel.setVisibility(View.GONE);
+                }
+                else {
+                    cancel.setVisibility(View.GONE);
+                }
+            }
         }
         else {
 
@@ -125,89 +167,32 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
         allItems = new ArrayList<JSONReqDetail>();
         allItems = adapter.mRequisitionDetails;
         mRecyclerView.setAdapter(adapter);
-        adapter.SetOnItemClickListener(new RequisitionFormAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                JSONReqDetail selected = allItems.get(position);
-                Toast.makeText(RequisitionDetailFragment.this.getActivity(), "Click " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+//        adapter.SetOnItemClickListener(new RequisitionFormAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//                JSONReqDetail selected = allItems.get(position);
+//                Toast.makeText(RequisitionDetailFragment.this.getActivity(), "Click " + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
         System.out.println("USERROLE:::::"+Setup.user.getRoleID());
-        if(status.getText().equals("Pending Approval")) {
-            cancel.setOnClickListener(this);
-        }
-        else if (status.getText().equals("Pending Approval") && Setup.user.getRoleID().equals("SC")) {
-            cancel.setVisibility(View.GONE);
-        }
-        else {
-            cancel.setVisibility(View.GONE);
-        }
+
 
         return view;
     }
 
     @Override
     public void onClick(View v) {
-
-        Boolean checkIfNoNull = true;
-        // Check for a valid password, if the user entered one.
-        for (int i=0; i<allItems.size(); i++) {
-            if(allItems.get(i).getRequestQty() == 0) {
-                checkIfNoNull = false;
-            }
-        }
-        /*
-
-        if(checkIfNoNull == true) {
-
-            JSONArray jsonArray = new JSONArray();
-
-            for (int i = 0; i < allItems.size(); i++) {
-
-                try {
-                    JSONObject obj = new JSONObject();
-                    obj.put("RetID", Integer.toString(ret.getRetID()));
-                    obj.put("ItemID", allItems.get(i).get("itemID"));
-                    obj.put("ActualQty", allItems.get(i).get("ActualQty"));
-                    jsonArray.put(obj);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        reqAPI.cancelRequisition(reqID, new Callback<Boolean>() {
+            @Override
+            public void success(Boolean aBoolean, Response response) {
+                Log.i("Success Cancel", aBoolean.toString());
             }
 
-            //update retrieval form in server
-            Setup s = new Setup();
-            String result = JSONParser.postStream(String.format("%s/retrieval.svc/save", Setup.baseurl),
-                    jsonArray.toString());
-            Log.i("json post result:", result);
-            */
-
-        String result = "HttpResponse_OK";
-        //process retrieval update status
-        if (result != "HttpResponse_OK") {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("Submission of Retrieval Form #" + req.getRetID() + " failed. Please try again.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-                    }).create();
-            builder.show();
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("Retrieval Form #" + req.getRetID() + " has been successfully submitted! Please login to the web for allocation of items retrieved.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            RetrievalList fragment = new RetrievalList();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.frame, fragment);
-                            fragmentTransaction.commit();
-                        }
-                    }).create();
-            builder.show();
-        }
-        //}
-
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("Cancel Fail", error.toString());
+            }
+        });
     }
 
 

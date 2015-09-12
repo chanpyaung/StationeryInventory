@@ -219,10 +219,16 @@ public class MainActivity extends AppCompatActivity {
                                 Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
                                 List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
                                 for(JSONRequisition jsonReq : jsonRequisitions){
-                                    if(jsonReq.getDeptID().equals(Setup.user.getDeptID()) && !jsonReq.getEmpID().equals(Setup.user.getEmpID()) && jsonReq.getStatusID().equals(1) && jsonReq.getStatusID().equals(2) && jsonReq.getStatusID().equals(5)){
-                                        reqList.add(jsonReq);
+                                    if(jsonReq.getDeptID().equals(Setup.user.getDeptID()) && !jsonReq.getEmpID().equals(Setup.user.getEmpID())){
+                                        Log.i("Here what", String.valueOf(jsonReq.getReqID()));
+                                        if(jsonReq.getStatusID().equals(1) || jsonReq.getStatusID().equals(2) || jsonReq.getStatusID().equals(5)){
+                                            reqList.add(jsonReq);
+                                            Log.i("what here", String.valueOf(jsonReq.getReqID()));
+                                        }
+
                                     }
                                 }
+                                Log.i("SIZE OFFFFF reqList", String.valueOf(reqList.size()));
                                 RequisitionListAdapter.mRequisitions = reqList;
                                 Setup.allRequisition = reqList;
                                 //RequisitionListAdapter.mRequisitions = Setup.allRequisition;
