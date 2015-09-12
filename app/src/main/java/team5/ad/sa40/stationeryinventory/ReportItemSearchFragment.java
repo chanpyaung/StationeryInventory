@@ -132,43 +132,48 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
         for (int i = 0; i < itemList.size(); i++) {
             JSONItem item = itemList.get(i);
             if (itemCat == 0) {
-                if(!(itemCode.isEmpty()) && !(itemName.isEmpty())) {
+                if(!(itemCode.matches("")) && !(itemName.matches(""))) {
                     if (item.getItemID().contains(itemCode) && item.getItemName().toUpperCase().contains(itemName)) {
                         searchResultsList.add(item);
                         Log.i("searchResult item:", item.getItemID());
                     }
                 }
-                else if(itemCode.isEmpty() && !(itemName.isEmpty())){
+                else if(itemCode.matches("") && !(itemName.matches(""))){
                     if (item.getItemName().toUpperCase().contains(itemName)) {
                         searchResultsList.add(item);
                         Log.i("searchResult item:", item.getItemID());
                     }
                 }
-                else if(!(itemCode.isEmpty()) && itemName.isEmpty()){
+                else if(!(itemCode.matches("")) && itemName.matches("")){
                     if (item.getItemID().contains(itemCode)) {
                         searchResultsList.add(item);
                         Log.i("searchResult item:", item.getItemID());
                     }
                 }
             } else {
-                if (item.getItemCatID().equals(itemCat)) {
-                    if(!(itemCode.isEmpty()) && !(itemName.isEmpty())) {
+                if (item.getItemCatID() == itemCat) {
+                    Log.e("itemcatid", String.valueOf(item.getItemCatID()));
+                    Log.e("itemCat", String.valueOf(itemCat));
+                    if(!(itemCode.matches("")) && !(itemName.matches(""))) {
                         if (item.getItemID().contains(itemCode) && item.getItemName().toUpperCase().contains(itemName)) {
                             searchResultsList.add(item);
                             Log.i("searchResult item:", item.getItemID());
                         }
                     }
-                    else if(itemCode.isEmpty() && !(itemName.isEmpty())){
+                    else if(itemCode.matches("") && !(itemName.matches(""))){
                         if (item.getItemName().toUpperCase().contains(itemName)) {
                             searchResultsList.add(item);
                             Log.i("searchResult item:", item.getItemID());
                         }
                     }
-                    else if(!(itemCode.isEmpty()) && itemName.isEmpty()){
+                    else if(!(itemCode.matches("")) && itemName.matches("")){
                         if (item.getItemID().contains(itemCode)) {
                             searchResultsList.add(item);
                             Log.i("searchResult item:", item.getItemID());
                         }
+                    }
+                    else {
+                        searchResultsList.add(item);
                     }
                 }
             }
