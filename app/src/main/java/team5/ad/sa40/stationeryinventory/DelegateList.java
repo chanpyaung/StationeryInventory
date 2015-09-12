@@ -18,7 +18,13 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.DelegateAPI;
 import team5.ad.sa40.stationeryinventory.Model.Delegate;
+import team5.ad.sa40.stationeryinventory.Model.JSONDelegate;
 
 
 /**
@@ -29,7 +35,7 @@ public class DelegateList extends android.support.v4.app.Fragment {
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     DelegateGridAdapter mAdapter;
-    private List<Delegate> mAdjustment;
+    private List<JSONDelegate> mDelegates;
 
     public DelegateList() {
         // Required empty public constructor
@@ -62,54 +68,80 @@ public class DelegateList extends android.support.v4.app.Fragment {
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new DelegateGridAdapter();
-        mAdjustment = mAdapter.mDelegates;
-        mRecyclerView.setAdapter(mAdapter);
-
-        mAdapter.SetOnItemClickListener(new DelegateGridAdapter.OnItemClickListener() {
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        final DelegateAPI delegateAPI = restAdapter.create(DelegateAPI.class);
+        delegateAPI.getDelegate(Setup.user.getDeptID(), new Callback<List<JSONDelegate>>() {
             @Override
-            public void onItemClick(View view, int position) {
-                android.support.v4.app.Fragment frag = new AddNewDelegate();
-                Bundle bundle = new Bundle();
-                Delegate temp = mAdjustment.get(position);
-                bundle.putSerializable("delegate", temp);
-                frag.setArguments(bundle);
-                Log.i("Reached into method", "Hello");
-                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
-                        .commit();
+            public void success(List<JSONDelegate> jsonDelegates, Response response) {
+                mDelegates = jsonDelegates;
+                mAdapter = new DelegateGridAdapter(mDelegates);
+                mRecyclerView.setAdapter(mAdapter);
+
+                mAdapter.SetOnItemClickListener(new DelegateGridAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        android.support.v4.app.Fragment frag = new AddNewDelegate();
+                        Bundle bundle = new Bundle();
+                        JSONDelegate temp = mDelegates.get(position);
+                        bundle.putSerializable("delegate", temp);
+                        frag.setArguments(bundle);
+                        Log.i("Reached into method", "Hello");
+                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
+                                .commit();
+                    }
+                });
+                ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Delete Delegate")
+                                .setMessage("Are you sure you want to delete this delegation?")
+                                .setCancelable(false)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Log.i("Position", String.valueOf(viewHolder.getPosition()));
+
+                                        JSONDelegate temp = mDelegates.get(viewHolder.getPosition());
+                                        delegateAPI.deleteDelegate(temp.getDelegateSN(), new Callback<Boolean>() {
+                                            @Override
+                                            public void success(Boolean aBoolean, Response response) {
+                                                mDelegates.remove(viewHolder.getPosition());
+                                                mAdapter.mDelegates = mDelegates;
+                                                mRecyclerView.setAdapter(mAdapter);
+                                            }
+
+                                            @Override
+                                            public void failure(RetrofitError error) {
+                                                Log.e("deleteDelegate", error.toString());
+                                                mRecyclerView.setAdapter(mAdapter);
+                                            }
+                                        });
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        mRecyclerView.setAdapter(mAdapter);
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
+                };
+                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+                itemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
             }
         });
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Delete Delegate")
-                        .setMessage("Are you sure you want to delete this delegation?")
-                        .setCancelable(false)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.i("Position", String.valueOf(viewHolder.getPosition()));
-                                mAdjustment.remove(viewHolder.getPosition());
-                                mAdapter.mDelegates = mAdjustment;
-                                mRecyclerView.setAdapter(mAdapter);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                mRecyclerView.setAdapter(mAdapter);
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         return view;
     }
