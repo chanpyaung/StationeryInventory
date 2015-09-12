@@ -50,7 +50,7 @@
                 android:textColor="#08AE9E"
                 android:layout_alignBottom="@+id/ret_EmpID"
                 android:layout_toStartOf="@+id/reportQty"
-                android:layout_alignParentTop="true" />
+                android:layout_below="@+id/txtCP" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -83,8 +83,8 @@
                 android:gravity="center_vertical"
                 android:layout_alignBottom="@+id/ret_EmpID"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:textSize="24dp" />
+                android:textSize="24dp"
+                android:layout_alignTop="@+id/txtStatus" />
 
             <TextView
                 android:layout_width="wrap_content"

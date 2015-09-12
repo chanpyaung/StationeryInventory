@@ -85,6 +85,18 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_department_info, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
+        if(Setup.user.getRoleID().equals("EM")){
+            representative.setEnabled(false);
+            collectionPoint.setEnabled(false);
+        }
+        if(Setup.user.getRoleID().equals("DR")){
+            representative.setEnabled(false);
+        }
+        telephone.setEnabled(false);
+        fax.setEnabled(false);
+        deptHead.setEnabled(false);
+        contactName.setEnabled(false);
+
         new AsyncTask<Void, Void, Department>(){
             @Override
             protected Department doInBackground(Void... params) {

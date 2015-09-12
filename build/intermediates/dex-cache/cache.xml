@@ -7,6 +7,11 @@
         revision="22.0.1"
         sha1="45945a28eee4137eb7e4d49214a05df5cb9ce487">
         <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-7bbd4d6667fd8c20a58b47f8b19982c31eaaa2df.jar" />
+        jar="/Users/student/Documents/AD project Mobile/StationeryInventory/app/build/intermediates/exploded-aar/com.bowyer.app/fab-toolbar/1.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="45945a28eee4137eb7e4d49214a05df5cb9ce487">
+        <dex dex="/Users/student/Documents/AD project Mobile/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-42a5afac122849a091081b3aaec77c4cff68e5ff.jar" />
     </item>
 
 </items>

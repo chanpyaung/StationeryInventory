@@ -44,7 +44,7 @@ public class AdjVouList extends android.support.v4.app.Fragment {
     RecyclerView.LayoutManager mLayoutManager;
     AdjListGridAdapter mAdapter;
     private List<JSONAdjustment> mAdjustment;
-    String[] stat_ary = {"View All","PENDING", "APPROVED", "REJECTED"};
+    String[] stat_ary = {"View All","PENDING", "APPROVED", "REJECT"};
 
     @Bind(R.id.spnStat) Spinner spn_status;
     public AdjVouList() {
@@ -176,8 +176,8 @@ public class AdjVouList extends android.support.v4.app.Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_details){
-            //android.support.v4.app.Fragment frag = new AdjListSearch();
-            //getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Adj").commit();
+            android.support.v4.app.Fragment frag = new AdjListSearch();
+            getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Adj").commit();
         }
         return super.onOptionsItemSelected(item);
     }

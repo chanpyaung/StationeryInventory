@@ -103,11 +103,13 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setTitle("Approve");
+                        builder.setMessage("Do you want to approve?");
                         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 //TODO
                                 JsonObject object = new JsonObject();
                                 object.addProperty("adjId", dis.getAdjID());
+                                object.addProperty("ApprovedBy", Setup.user.getEmpID());
                                 AdjustmentAPI adjustmentAPI = restAdapter.create(AdjustmentAPI.class);
                                 adjustmentAPI.approveAdjVoucher(object, new Callback<String>() {
                                     @Override
@@ -119,7 +121,8 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  {
                                                 .setCancelable(false)
                                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int which) {
-
+                                                        btnApprove.setVisibility(View.GONE);
+                                                        btnReject.setVisibility(View.GONE);
                                                     }
                                                 })
                                                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -148,12 +151,14 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  {
                     @Override
                     public void onClick(View v) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setTitle("Approve");
+                        builder.setTitle("Reject");
+                        builder.setMessage("Do you want to reject?");
                         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 //TODO
                                 JsonObject object = new JsonObject();
                                 object.addProperty("adjId", dis.getAdjID());
+                                object.addProperty("ApprovedBy", Setup.user.getEmpID());
                                 AdjustmentAPI adjustmentAPI = restAdapter.create(AdjustmentAPI.class);
                                 adjustmentAPI.rejectAdjVoucher(object, new Callback<String>() {
                                     @Override
@@ -165,7 +170,8 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  {
                                                 .setCancelable(false)
                                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int which) {
-
+                                                        btnApprove.setVisibility(View.GONE);
+                                                        btnReject.setVisibility(View.GONE);
                                                     }
                                                 })
                                                 .setIcon(android.R.drawable.ic_dialog_alert)
