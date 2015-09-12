@@ -11,6 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -35,6 +38,7 @@ import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.AdjustmentAPI;
 import team5.ad.sa40.stationeryinventory.Model.Adjustment;
 import team5.ad.sa40.stationeryinventory.Model.JSONAdjustment;
+import team5.ad.sa40.stationeryinventory.Model.JSONAdjustmentDetail;
 
 
 /**
@@ -151,6 +155,7 @@ public class AdjListSearch extends android.support.v4.app.Fragment {
 
                         object.addProperty("startDate", str_date1);
                         object.addProperty("endDate", str_date2);
+                        Log.e("Search adj json", object.toString());
 
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -201,6 +206,42 @@ public class AdjListSearch extends android.support.v4.app.Fragment {
                                     .setIcon(android.R.drawable.ic_dialog_alert)
                                     .show();
                         }
+
+                        mAdapter.SetOnItemClickListener(new AdjListGridAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                JsonObject object = new JsonObject();
+                                object.addProperty("adjId", String.valueOf(mAdjustment.get(position).getAdjID()));
+                                final JSONAdjustment temp = mAdjustment.get(position);
+                                adjustmentAPI.getAdjVoucherDetail(object, new Callback<List<JSONAdjustmentDetail>>() {
+                                    @Override
+                                    public void success(List<JSONAdjustmentDetail> jsonAdjustmentDetails, Response response) {
+                                        android.support.v4.app.Fragment frag;
+                                        if(temp.getStatus().equals("PENDING")){
+                                            frag = new AdjListDetail2();
+                                        }
+                                        else{
+                                            frag = new AdjListDetail();
+                                        }
+                                        ArrayList<JSONAdjustmentDetail> tempList = new ArrayList<JSONAdjustmentDetail>(jsonAdjustmentDetails);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("adjustment", temp);
+                                        bundle.putSerializable("adjustmentDetail", tempList);
+                                        for(JSONAdjustmentDetail detail:tempList){
+                                            Log.e("detail id", String.valueOf(detail.getAdjustmentID()));
+                                        }
+                                        frag.setArguments(bundle);
+                                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
+                                                .commit();
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        Log.e("search trigger", error.toString());
+                                    }
+                                });
+                            }
+                        });
                     }
 
                     @Override
@@ -215,4 +256,20 @@ public class AdjListSearch extends android.support.v4.app.Fragment {
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        this.getActivity().getMenuInflater().inflate(R.menu.search_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_details){
+            txtSearch.setText("");
+            text_start_date.setText("");
+            text_end_date.setText("");
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

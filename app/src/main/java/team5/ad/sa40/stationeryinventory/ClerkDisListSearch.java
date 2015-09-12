@@ -70,52 +70,56 @@ public class ClerkDisListSearch extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 //search button action
+                if (txtSearch.getText().toString().matches("")) {
+                    txtSearch.setError("Please fill in the value!");
+                } else {
+                    txtSearch.setError(null);
+                    final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                    DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
+                    disbursementAPI.getDisbursementByDisID(Integer.parseInt(txtSearch.getText().toString()), new Callback<List<JSONDisbursement>>() {
+                        @Override
+                        public void success(List<JSONDisbursement> jsonDisbursements, Response response) {
+                            mDisbursement = jsonDisbursements;
+                            mAdapter = new DisListGridAdapter("Search", mDisbursement, mCollectionPoint);
+                            mRecyclerView.setAdapter(mAdapter);
+                            if (mDisbursement.size() < 1) {
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("Information")
+                                        .setMessage("No disbursement is found!")
+                                        .setCancelable(false)
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
 
-                final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-                DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
-                disbursementAPI.getDisbursementByDisID(Integer.parseInt(txtSearch.getText().toString()), new Callback<List<JSONDisbursement>>() {
-                    @Override
-                    public void success(List<JSONDisbursement> jsonDisbursements, Response response) {
-                        mDisbursement = jsonDisbursements;
-                        mAdapter = new DisListGridAdapter("Search", mDisbursement, mCollectionPoint);
-                        mRecyclerView.setAdapter(mAdapter);
-                        if (mDisbursement.size() < 1) {
-                            new AlertDialog.Builder(getActivity())
-                                    .setTitle("Information")
-                                    .setMessage("No disbursement is found!")
-                                    .setCancelable(false)
-                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                        }
-                                    })
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .show();
-                        }
-                        mAdapter.SetOnItemClickListener(new DisListGridAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                android.support.v4.app.Fragment frag = new ClerkDisListDetail();
-                                Bundle bundle = new Bundle();
-                                JSONDisbursement temp = mDisbursement.get(position);
-                                bundle.putSerializable("disbursement", temp);
-                                for (int i = 0; i < mCollectionPoint.size(); i++) {
-                                    if (temp.getCPID() == mCollectionPoint.get(i).getCPID()) {
-                                        bundle.putSerializable("collection", mCollectionPoint.get(i));
-                                    }
-                                }
-                                frag.setArguments(bundle);
-                                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
-                                        .commit();
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
                             }
-                        });
-                    }
+                            mAdapter.SetOnItemClickListener(new DisListGridAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, int position) {
+                                    android.support.v4.app.Fragment frag = new ClerkDisListDetail();
+                                    Bundle bundle = new Bundle();
+                                    JSONDisbursement temp = mDisbursement.get(position);
+                                    bundle.putSerializable("disbursement", temp);
+                                    for (int i = 0; i < mCollectionPoint.size(); i++) {
+                                        if (temp.getCPID() == mCollectionPoint.get(i).getCPID()) {
+                                            bundle.putSerializable("collection", mCollectionPoint.get(i));
+                                        }
+                                    }
+                                    frag.setArguments(bundle);
+                                    getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
+                                            .commit();
+                                }
+                            });
+                        }
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.e("getDisbursementByDisID", error.toString());
-                    }
-                });
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Log.e("getDisbursementByDisID", error.toString());
+                        }
+                    });
+                }
             }
         });
 

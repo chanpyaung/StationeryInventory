@@ -92,7 +92,7 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  {
                 txtAdjDate.setText(string_date);
                 txtEmpID.setText(String.valueOf(dis.getReportedBy()));
                 txtTotalCost.setText("$" + String.valueOf(dis.getTotalAmt()));
-                if(Setup.user.getRoleID().equals("SC"))
+                if(Setup.user.getRoleID().equals("SC") || !dis.getStatus().equals("PENDING"))
                 {
                     btnApprove.setVisibility(View.GONE);
                     btnReject.setVisibility(View.GONE);
