@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public static List<JSONItem> requestCart = new ArrayList<JSONItem>();
     public static String user;
     final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+    final RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
 
     //Call UI element with butter knife
     @Bind(R.id.toolbar) android.support.v7.widget.Toolbar toolbar;
@@ -145,39 +146,94 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.requisition:
-                        final RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
                         reqAPI.getStatus(new Callback<List<JSONStatus>>() {
                             @Override
                             public void success(List<JSONStatus> jsonStatuses, Response response) {
                                 Log.i("Status Size", String.valueOf(jsonStatuses.size()));
                                 RequisitionListAdapter.mStatus = jsonStatuses;
-                                reqAPI.getRequisition(Setup.user.getEmpID(), new Callback<List<JSONRequisition>>() {
-                                    @Override
-                                    public void success(List<JSONRequisition> jsonRequisitions, Response response) {
-                                        Log.i("URL", response.getUrl());
-                                        Log.i("STATUS", String.valueOf(response.getStatus()));
-                                        Log.i("REASON", response.getReason());
-                                        Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
-                                        RequisitionListAdapter.mRequisitions = jsonRequisitions;
-                                        Setup.allRequisition = jsonRequisitions;
-                                        RequisitionListAdapter.mRequisitions = Setup.allRequisition;
-                                        RequisitionListFragment reqListFrag = new RequisitionListFragment();
-                                        fragmentTran = getSupportFragmentManager().beginTransaction();
-                                        fragmentTran.replace(R.id.frame, reqListFrag).commit();
-                                    }
+                                if(Setup.user.getRoleID().equals("SC")){
+                                    reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
+                                        @Override
+                                        public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                                            List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
+                                            for(JSONRequisition jsonReq : jsonRequisitions){
+                                                if(jsonReq.getStatusID().equals(2)){
+                                                    reqList.add(jsonReq);
+                                                }
+                                            }
+                                            Log.i("URL", response.getUrl());
+                                            Log.i("STATUS", String.valueOf(response.getStatus()));
+                                            Log.i("REASON", response.getReason());
+                                            Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
+                                            RequisitionListAdapter.mRequisitions = reqList;
+                                            Setup.allRequisition = reqList;
+                                            RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                                            fragmentTran = getSupportFragmentManager().beginTransaction();
+                                            fragmentTran.replace(R.id.frame, reqListFrag).commit();
+                                        }
 
-                                    @Override
-                                    public void failure(RetrofitError error) {
-                                        Log.i("GetRequisitionFail", error.toString());
-                                    }
-                                });
+                                        @Override
+                                        public void failure(RetrofitError error) {
+                                            Log.i("GetRequisitionFail", error.toString());
+                                        }
+                                    });
+                                }else{
+                                    reqAPI.getRequisition(Setup.user.getEmpID(), new Callback<List<JSONRequisition>>() {
+                                        @Override
+                                        public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                                            Log.i("URL", response.getUrl());
+                                            Log.i("STATUS", String.valueOf(response.getStatus()));
+                                            Log.i("REASON", response.getReason());
+                                            Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
+                                            RequisitionListAdapter.mRequisitions = jsonRequisitions;
+                                            Setup.allRequisition = jsonRequisitions;
+                                            RequisitionListAdapter.mRequisitions = Setup.allRequisition;
+                                            RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                                            fragmentTran = getSupportFragmentManager().beginTransaction();
+                                            fragmentTran.replace(R.id.frame, reqListFrag).commit();
+                                        }
 
+                                        @Override
+                                        public void failure(RetrofitError error) {
+                                            Log.i("GetRequisitionFail", error.toString());
+                                        }
+                                    });
+                                }
                             }
 
                             @Override
                             public void failure(RetrofitError error) {
                                 Log.i("Status Fail", error.toString());
                                 Log.i("URL", error.getUrl());
+                            }
+                        });
+                        return true;
+
+                    case R.id.approval:
+                        reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
+                            @Override
+                            public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                                Log.i("URL", response.getUrl());
+                                Log.i("STATUS", String.valueOf(response.getStatus()));
+                                Log.i("REASON", response.getReason());
+                                Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
+                                List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
+                                for(JSONRequisition jsonReq : jsonRequisitions){
+                                    if(jsonReq.getDeptID().equals(Setup.user.getDeptID()) && !jsonReq.getEmpID().equals(Setup.user.getEmpID()) && jsonReq.getStatusID().equals(1) && jsonReq.getStatusID().equals(2) && jsonReq.getStatusID().equals(5)){
+                                        reqList.add(jsonReq);
+                                    }
+                                }
+                                RequisitionListAdapter.mRequisitions = reqList;
+                                Setup.allRequisition = reqList;
+                                //RequisitionListAdapter.mRequisitions = Setup.allRequisition;
+                                RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                                fragmentTran = getSupportFragmentManager().beginTransaction();
+                                fragmentTran.replace(R.id.frame, reqListFrag).commit();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.i("GetRequisitionFail", error.toString());
                             }
                         });
                         return true;
@@ -210,14 +266,6 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTran = getSupportFragmentManager().beginTransaction();
                         fragmentTran.replace(R.id.frame,deptFrag).commit();
                         return true;
-
-//                    case R.id.setting:
-//                        SettingListFragment settingFragment = new SettingListFragment();
-//                        fragmentTran = getSupportFragmentManager().beginTransaction();
-//                        //FragmentTransaction fragmentTran = getSupportFragmentManager().beginTransaction();
-//                        fragmentTran.replace(R.id.frame, settingFragment);
-//                        fragmentTran.commit();
-//                        return true;
 
                     case R.id.disburse://change
                         DisbursementList disbursementList = new DisbursementList();

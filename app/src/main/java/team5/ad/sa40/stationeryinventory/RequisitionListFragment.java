@@ -63,10 +63,10 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle args = new Bundle();
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_retrieval_list, container, false);
         ButterKnife.bind(this, view);
-
         mRecyclerView = (RecyclerView) view.findViewById(R.id.ret_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
@@ -95,7 +95,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
                 }
             });
         }
-        else if (User.equals("clerk")){
+        else if (Setup.user.getRoleID().equals("SC")){
             filterBy.setVisibility(View.GONE);
 
             spinnerRetStatus.getLayoutParams().width = 340;
@@ -183,6 +183,9 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
                         args.putString("Date", selected.getDate());
                         args.putInt("ReqID", selected.getReqID());
                         args.putInt("StatusID", selected.getStatusID());
+                        if(Setup.user.getRoleID().equals("DD") && Setup.user.getRoleID().equals("DH")){
+                            args.putString("APPROVAL", "ENABLED");
+                        }
 //                        args.putInt("PriorityID", selected.getPriorityID());
 //                        args.putString("PRemark", selected.getPRemark());
 //                        args.putString("Remark", selected.getRemark());

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
     @Bind(R.id.priority_text) TextView priority;
     @Bind(R.id.status_text) TextView status;
     @Bind(R.id.requisition_cancel) Button cancel;
-
+    @Bind(R.id.requi_approve) Button approve;
 
     public RequisitionDetailFragment() {
         // Required empty public constructor
@@ -56,18 +57,6 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
         Setup s = new Setup();
 
         if (getArguments() != null) {
-            //Log.i("arguments: ", getArguments().toString());
-            //req.setReqID(getArguments().getInt("ReqID"));
-            //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            //Log.i("date passed:",getArguments().getString("ReqDate"));
-            //try {
-            //    Date d = format.parse(getArguments().getString("ReqDate"));
-            //    System.out.println(d);
-            //    req.setDate(d);
-            //} catch (ParseException e) {
-            //    e.printStackTrace();
-            //}
-            //req.setStatusID(getArguments().getInt("StatusID"));
             String idDisplay = "";
             int id = getArguments().getInt("ReqID");
             if(id<10) {
@@ -104,12 +93,30 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
                 status.setText("Cancelled");
             }
 
+            if(Setup.user.getRoleID().equals("DH") || Setup.user.getRoleID().equals("DD")){
+                cancel.setText("REJECT");
+                approve.setVisibility(View.VISIBLE);
+
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(RequisitionDetailFragment.this.getActivity(), "DD or DH click", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                approve.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(RequisitionDetailFragment.this.getActivity(), "DD or DH click", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+
         }
         else {
-//            req.setRetID(123);
-//            req.setDate(new Date());
-        }
 
+        }
         mRecyclerView = (RecyclerView) view.findViewById(R.id.ret_detail_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
@@ -122,12 +129,15 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
             @Override
             public void onItemClick(View view, int position) {
                 JSONReqDetail selected = allItems.get(position);
+                Toast.makeText(RequisitionDetailFragment.this.getActivity(), "Click " + position, Toast.LENGTH_SHORT).show();
             }
         });
-        //reqFormID.setText(adapter.mReqForms);
-
-        if(status.getText() == "Pending Approval") {
+        System.out.println("USERROLE:::::"+Setup.user.getRoleID());
+        if(status.getText().equals("Pending Approval")) {
             cancel.setOnClickListener(this);
+        }
+        else if (status.getText().equals("Pending Approval") && Setup.user.getRoleID().equals("SC")) {
+            cancel.setVisibility(View.GONE);
         }
         else {
             cancel.setVisibility(View.GONE);

@@ -16,6 +16,9 @@ public interface RequisitionAPI {
     @GET("/requisitionAPI.svc/getRequisition/null/null/{EmpID}")
     void getRequisition(@Path("EmpID") int empID, Callback<List<JSONRequisition>> requisitionList);
 
+    @GET("/requisitionAPI.svc/getRequisition/null/null/null")
+    void getRequisitionFromSC(Callback<List<JSONRequisition>> requisitionList);
+
     @GET("/requisitionAPI.svc/getStatus")
     void getStatus(Callback<List<JSONStatus>> statusList);
 
