@@ -42,7 +42,8 @@
                 android:layout_toEndOf="@+id/reportItemCode"
                 android:maxLines="2"
                 android:gravity="center_vertical"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:layout_toStartOf="@+id/ret_detail_bin" />
 
             <TextView
                 android:layout_width="40dp"
