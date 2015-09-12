@@ -11,7 +11,7 @@
     <string name="close_scanner">Stop Scan</string>
     <string name="scan_hearder_text">Scan Item</string>
     <string name="rescanBtn">Scan Again</string>
-    <string name="itemNumber">Item Number</string>
+    <string name="itemNumber">Item ID</string>
     <string name="name">Name</string>
     <string name="category">Category</string>
     <string name="camera_error">Camera initialization error: %s</string>

@@ -28,7 +28,7 @@
         android:layout_weight="1"
         android:visibility="visible">
 
-    <eu.livotov.zxscan.ScannerView
+        <eu.livotov.zxscan.ScannerView
             android:id="@+id/scanner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -63,7 +63,7 @@
             android:text="@string/close_scanner"
             style="@android:style/Widget.Material.Button"/>
 
-    <TextView
+        <TextView
             android:id="@+id/waitLabel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -94,7 +94,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"/>
+            android:layout_marginLeft="-75dp"
+            />
 
     </LinearLayout>
 
@@ -119,7 +120,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"/>
+            android:layout_marginLeft="-75dp"
+            />
 
     </LinearLayout>
 
@@ -149,7 +151,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"/>
+                />
 
         </LinearLayout>
         <LinearLayout

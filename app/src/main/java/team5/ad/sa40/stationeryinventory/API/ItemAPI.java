@@ -5,6 +5,7 @@ import java.util.List;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;
+import team5.ad.sa40.stationeryinventory.Model.JSONCategory;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
 /**
@@ -17,5 +18,9 @@ public interface ItemAPI {
 
     @GET("/catalogAPI.svc/getitem")
     void getItems(Callback<List<JSONItem>> itemlist);
+
+    //get Catalog
+    @GET("/catalogAPI.svc/getCategory")
+    void getCategory(Callback<List<JSONCategory>> categorylist);
 
 }

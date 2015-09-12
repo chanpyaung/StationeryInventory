@@ -3,6 +3,7 @@ package team5.ad.sa40.stationeryinventory;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import eu.livotov.zxscan.ScannerView;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
+import team5.ad.sa40.stationeryinventory.API.ItemAPI;
+import team5.ad.sa40.stationeryinventory.API.RequestCartAPI;
+import team5.ad.sa40.stationeryinventory.Model.JSONCategory;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
+import team5.ad.sa40.stationeryinventory.Model.JSONRequestCart;
 
 
 /**
@@ -34,13 +49,15 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
     @Bind(R.id.scannerRoot) FrameLayout embeddedScannerRoot;
     @Bind(R.id.fab) FloatingActionButton btnFab;
     Boolean scannerRunning = false;
-
+    RestAdapter restAdapter;
+    static String itemID;
     //zxscanlib
     private String lastEmbeddedScannerScannedData;
     private long lastEmbeddedScannerScannedDataTimestamp;
 
     public ScannerFragment() {
         // Required empty public constructor
+
     }
 
 
@@ -53,6 +70,7 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
         ButterKnife.bind(this, view);
         embeddedScanner.setScannerViewEventListener(this);
         startEmbeddedScanner();
+        restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
         return view;
     }
 
@@ -81,23 +99,21 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
 
     @OnClick(R.id.fab) void actionAdd(){
 
-        /*
-        //Add to request card methods to be implement here
+
+        //Add to request cart methods to be implement here
 
         final int empID = Setup.user.getEmpID();
         final int qty = 1;
-        //need to get itemID from displayScannerResult()
-        //final String itemID = myItemlist.get(getAdapterPosition()).getItemID();
         final JsonObject reqItem = new JsonObject();
         reqItem.addProperty("EmpID", empID);
 
 
-        //reqItem.addProperty("ItemID", itemID);
+        reqItem.addProperty("ItemID", itemID);
         reqItem.addProperty("Qty", qty);
 
 
         //retrofit
-        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+
         final RequestCartAPI rqCartAPI = restAdapter.create(RequestCartAPI.class);
         rqCartAPI.getItemsbyEmpID(empID, new Callback<List<JSONRequestCart>>() {
             @Override
@@ -162,8 +178,7 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
             public void failure(RetrofitError error) {
                 Toast.makeText(ScannerFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
             }
-        });*/
-        Toast.makeText(ScannerFragment.this.getActivity(), "Fab clicked.", Toast.LENGTH_SHORT).show();
+        });
     }
 
 
@@ -185,9 +200,40 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
     private void displayScannedResult(final String data)
     {
         //call api here
+        itemID = data;
+        InventoryAPI  invAPI = restAdapter.create(InventoryAPI.class);
+        invAPI.getItemDetails(data, new Callback<JSONItem>() {
+            @Override
+            public void success(final JSONItem jsonItem, Response response) {
+                textItemNumber.setText(jsonItem.getItemID());
+                textItemName.setText(jsonItem.getItemName());
+                ItemAPI itemAPI = restAdapter.create(ItemAPI.class);
+                itemAPI.getCategory(new Callback<List<JSONCategory>>() {
+                    @Override
+                    public void success(List<JSONCategory> jsonCategories, Response response) {
+                        for (JSONCategory category : jsonCategories) {
+                            if (category.getItemCatID().equals(jsonItem.getItemCatID())) {
+                                Log.i("Category", category.getItemDescription());
+                                textCategory.setText(category.getItemDescription());
+                            }
+                        }
+                    }
 
-        textItemNumber.setText(data);
-        Toast.makeText(getActivity(), "Data scanned: " + data, Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.i("Category", error.toString());
+                    }
+                });
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("Item Detail", error.toString());
+            }
+        });
+
+
 
     }
 
