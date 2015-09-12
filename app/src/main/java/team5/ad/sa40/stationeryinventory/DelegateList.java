@@ -107,6 +107,7 @@ public class DelegateList extends android.support.v4.app.Fragment {
                                         Log.i("Position", String.valueOf(viewHolder.getPosition()));
 
                                         JSONDelegate temp = mDelegates.get(viewHolder.getPosition());
+                                        Log.e("getDelegateSN", String.valueOf(temp.getDelegateSN()));
                                         delegateAPI.deleteDelegate(temp.getDelegateSN(), new Callback<Boolean>() {
                                             @Override
                                             public void success(Boolean aBoolean, Response response) {

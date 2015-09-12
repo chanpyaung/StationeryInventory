@@ -159,10 +159,19 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
                     Date start = Setup.parseStringToDate(text_start_date.getText().toString());
                     Date end = Setup.parseStringToDate(text_end_date.getText().toString());
 
+                    String sflag = checkWithTodayDate(start);
+                    String sflag2 = checkWithTodayDate(end);
                     if (end.before(start)) {
-                        text_end_date.setError("End Date should be after Start Date");
+                        text_end_date.setError("Should be after Start Date");
+                    }
+                    else if(sflag.equals("false")){
+                        text_start_date.setError("Should not be before today");
+                    }
+                    else if(sflag2.equals("false")){
+                        text_end_date.setError("Should not be before today");
                     }
                     else{
+                        text_start_date.setError(null);
                         text_end_date.setError(null);
                         new AlertDialog.Builder(getActivity())
                                 .setTitle("Create Delegate")
@@ -258,7 +267,12 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
                     }
                 }
                 else{
-
+                    if(text_start_date.getText().toString().matches("")){
+                        text_start_date.setError("Fill Data");
+                    }
+                    if(text_end_date.getText().toString().matches("")){
+                        text_end_date.setError("Fill Data");
+                    }
                 }
             }
         });
@@ -266,5 +280,25 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
         return view;
     }
 
+    public String checkWithTodayDate(Date temp){
+        SimpleDateFormat out = new SimpleDateFormat("dd/MM/yyyy");
+        String today_date = out.format(new Date());
+        Log.e("today date_str", today_date);
+        String flag = "";
+        try {
+            Date today = out.parse(today_date);
+            Log.e("today date", today.toString());
+            Log.e("today date2", out.format(today));
+            if(temp.before(today)){
+                flag = "false";
+            }
+            else{
+                flag = "true";
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
 
 }

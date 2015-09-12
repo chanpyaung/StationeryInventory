@@ -87,7 +87,7 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
     @Override
     public void onClick (View v){
         //connect to server and handled JSON here
-        Log.i("itemList:",String.valueOf(itemList.size()));
+        Log.i("itemList:", String.valueOf(itemList.size()));
         if(itemList.size() == 0) {
             RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
             InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
@@ -99,8 +99,8 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
                     Log.i("First item: ", jsonItems.get(0).getItemID().toString());
                     Log.i("Response: ", response.getBody().toString());
                     System.out.println("Response Status " + response.getStatus());
-                    InvListAdapter.mJSONItems = jsonItems;
-                    System.out.println("SIZE:::::" + InvListAdapter.mJSONItems.size());
+                    itemList = jsonItems;
+                    searchItems();
                 }
 
                 @Override
@@ -109,8 +109,6 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
                 }
             });
         }
-
-        searchItems();
     }
 
     private void searchItems() {
