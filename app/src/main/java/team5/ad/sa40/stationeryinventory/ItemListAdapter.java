@@ -140,8 +140,9 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                                         if (itemID.equals(jCart.getItemID())) {
                                             System.out.println("We are the same " + jCart.getItemID() + " " + ItemID);
                                             System.out.println("JSON new" + jsonElement.getAsJsonObject());
-                                            reqItem.addProperty("Qty", jCart.getQty()+qty);
-                                            rqCartAPI.updatetoCart(jsonElement.getAsJsonObject(), new Callback<Boolean>() {
+                                            qty += jCart.getQty();
+                                            reqItem.addProperty("Qty", qty);
+                                            rqCartAPI.updatetoCart(reqItem, new Callback<Boolean>() {
                                                 @Override
                                                 public void success(Boolean aBoolean, Response response) {
                                                     Toast.makeText(itemView.getContext(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
@@ -149,11 +150,12 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
 
                                                 @Override
                                                 public void failure(RetrofitError error) {
-                                                    Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                                    Log.i("Item Update Failed", error.toString());
                                                 }
                                             });
                                             break;
                                         }//end of if statement which item equal others inside cart
+                                        //item not equal any item inside request cart; so add new item
                                         else {
                                             reqItem.addProperty("EmpID", empID);
                                             reqItem.addProperty("ItemID", itemID);
@@ -173,7 +175,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                             }//end of checking return jsonarray size
                                     //Log.i("Success", String.valueOf(Setup.allRequestItems.size()));
                                     else {
-                                rqCartAPI.addtoCart(jsonElement.getAsJsonObject(), new Callback<Boolean>() {
+                                rqCartAPI.addtoCart(reqItem, new Callback<Boolean>() {
                                     @Override
                                     public void success(Boolean aBoolean, Response response) {
                                         Toast.makeText(itemView.getContext(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();

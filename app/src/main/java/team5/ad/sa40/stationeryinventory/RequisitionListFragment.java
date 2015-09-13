@@ -36,7 +36,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
 
 
     private String User;
-    public static String[] filters = {"View All","Pending Approval", "Approved", "Processed", "Collected", "Rejected", "Cancelled"};
+    public static String[] filters = {"View All","Pending", "Approved", "Processed", "Collected", "Rejected", "Cancelled"};
     private List<JSONRequisition> allRequisitions;
     private RecyclerView mRecyclerView;
     private RequisitionListAdapter adapter;
@@ -98,8 +98,8 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
         else if (Setup.user.getRoleID().equals("SC")){
             filterBy.setVisibility(View.GONE);
 
-            spinnerRetStatus.getLayoutParams().width = 340;
-            spinnerStatus.getLayoutParams().width = 340;
+            spinnerRetStatus.getLayoutParams().width = 360;
+            spinnerStatus.getLayoutParams().width = 360;
             spinnerStatus.setVisibility(View.VISIBLE);
             spinnerStatus.setAdapter(FiltersAdapter);
         }
@@ -200,40 +200,6 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
 
                     }
                 });
-                /*DELETE START HERE
-                JSONRequisition selected = allRequisitions.get(position);
-                Bundle args = new Bundle();
-                args.putInt("ReqID", selected.getReqID());
-                args.putString("ReqDate", selected.getDate().toString());
-                String status = "";
-                String priority = "";
-                if (selected.getStatusID() == 1) {
-                    status = "Approved";
-                } else if (selected.getStatusID() == 2) {
-                    status = "Rejected";
-                } else if (selected.getStatusID() == 3) {
-                    status = "Processed";
-                } else if (selected.getStatusID() == 4) {
-                    status = "Collected";
-                }
-
-                if (selected.getPriorityID() == 1) {
-                    priority = "High";
-                } else if (selected.getPriorityID() == 2) {
-                    priority = "Normal";
-                } else if (selected.getPriorityID() == 3) {
-                    priority = "Low";
-                }
-                //get Dept ID first, then based on DeptID > get DeptHead Name
-                args.putString("approvedBy", selected.getDeptID());
-                //pass store clerk empID & convert to name on next Fragment
-                args.putInt("processedBy", selected.getHandledBy());
-                args.putInt("StatusID", selected.getStatusID());
-                args.putString("Status", status);
-                args.putString("Priority", priority);
-                args.putString("Remark", selected.getRemark());
-                args.putString("Reason", selected.getPRemark());
-                DELETE END HERE*/
             }
         });
     }

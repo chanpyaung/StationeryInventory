@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
                             public void success(List<JSONStatus> jsonStatuses, Response response) {
                                 Log.i("Status Size", String.valueOf(jsonStatuses.size()));
                                 RequisitionListAdapter.mStatus = jsonStatuses;
+                                //if user is StoreClerk; load all requisition
                                 if(Setup.user.getRoleID().equals("SC")){
                                     reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
                                         @Override
@@ -177,7 +178,9 @@ public class MainActivity extends AppCompatActivity {
                                             Log.i("GetRequisitionFail", error.toString());
                                         }
                                     });
-                                }else{
+                                }
+                                //load requisitionlist by EmpID
+                                else{
                                     reqAPI.getRequisition(Setup.user.getEmpID(), new Callback<List<JSONRequisition>>() {
                                         @Override
                                         public void success(List<JSONRequisition> jsonRequisitions, Response response) {
@@ -209,7 +212,9 @@ public class MainActivity extends AppCompatActivity {
                         });
                         return true;
 
+                    //load all requisition under department of current user
                     case R.id.approval:
+                        //by default load all requisition
                         reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
                             @Override
                             public void success(List<JSONRequisition> jsonRequisitions, Response response) {
@@ -218,8 +223,9 @@ public class MainActivity extends AppCompatActivity {
                                 Log.i("REASON", response.getReason());
                                 Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
                                 List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
+                                //inside all requisition filter requisition by Department & PENDING Status
                                 for(JSONRequisition jsonReq : jsonRequisitions){
-                                    if(jsonReq.getDeptID().equals(Setup.user.getDeptID()) && !jsonReq.getEmpID().equals(Setup.user.getEmpID())){
+                                    if(jsonReq.getDeptID().equals(Setup.user.getDeptID())){
                                         Log.i("Here what", String.valueOf(jsonReq.getReqID()));
                                         if(jsonReq.getStatusID().equals(1) || jsonReq.getStatusID().equals(2) || jsonReq.getStatusID().equals(5)){
                                             reqList.add(jsonReq);
@@ -255,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                                     fragmentTran = getSupportFragmentManager().beginTransaction();
                                     fragmentTran.replace(R.id.frame, rqFrag).addToBackStack("REQUEST_CART_FRAG").commit();
                                 } else {
-                                    Toast.makeText(MainActivity.this, "We acknoledge you that you haven't add any item yet.Please add some items before you proceed.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, "We acknowledge you that you haven't add any item yet.Please add some items before you proceed.", Toast.LENGTH_SHORT).show();
                                 }
 
                             }

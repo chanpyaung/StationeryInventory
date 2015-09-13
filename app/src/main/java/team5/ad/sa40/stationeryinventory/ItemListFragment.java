@@ -90,8 +90,9 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 final List<JSONItem> filteredModelList = filter(mItems, newText);
-                mAdapter.animateTo(filteredModelList);
+
                 mAdapter.myItemlist = filteredModelList;
+                mAdapter.animateTo(filteredModelList);
                 mRecyclerView.scrollToPosition(0);
                 return true;
             }
@@ -143,7 +144,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
                     else {
                         new AlertDialog.Builder(getActivity())
                                 .setTitle("Request Cart Empty")
-                                .setMessage("We acknoledge you that you haven't add any item yet.Please add some items before you proceed.")
+                                .setMessage("We acknowledge you that you haven't add any item yet.Please add some items before you proceed.")
                                 .setCancelable(false)
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     @Override
