@@ -54,6 +54,7 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
     //zxscanlib
     private String lastEmbeddedScannerScannedData;
     private long lastEmbeddedScannerScannedDataTimestamp;
+    android.support.v4.app.FragmentTransaction fragmentTran;
 
     public ScannerFragment() {
         // Required empty public constructor
@@ -151,6 +152,27 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
                                 @Override
                                 public void success(Boolean aBoolean, Response response) {
                                     Toast.makeText(ScannerFragment.this.getActivity(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
+                                    RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
+                                    rqAPI.getItemsbyEmpID(Setup.user.getEmpID(), new Callback<List<JSONRequestCart>>() {
+                                        @Override
+                                        public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
+                                            Setup.allRequestItems = jsonRequestCarts;
+                                            if (Setup.allRequestItems.size() > 0) {
+                                                RequestCartFragment rqFrag = new RequestCartFragment();
+                                                fragmentTran = getFragmentManager().beginTransaction();
+                                                fragmentTran.replace(R.id.frame, rqFrag).addToBackStack("REQUEST_CART_FRAG").commit();
+                                            } else {
+                                                Toast.makeText(getActivity(), "We acknowledge you that you haven't add any item yet.Please add some items before you proceed.", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        }
+
+                                        @Override
+                                        public void failure(RetrofitError error) {
+
+                                        }
+                                    });
+
                                 }
                                 @Override
                                 public void failure(RetrofitError error) {
@@ -166,6 +188,26 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
                         @Override
                         public void success(Boolean aBoolean, Response response) {
                             Toast.makeText(ScannerFragment.this.getActivity(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
+                            RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
+                            rqAPI.getItemsbyEmpID(Setup.user.getEmpID(), new Callback<List<JSONRequestCart>>() {
+                                @Override
+                                public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
+                                    Setup.allRequestItems = jsonRequestCarts;
+                                    if (Setup.allRequestItems.size() > 0) {
+                                        RequestCartFragment rqFrag = new RequestCartFragment();
+                                        fragmentTran = getFragmentManager().beginTransaction();
+                                        fragmentTran.replace(R.id.frame, rqFrag).addToBackStack("REQUEST_CART_FRAG").commit();
+                                    } else {
+                                        Toast.makeText(getActivity(), "We acknowledge you that you haven't add any item yet.Please add some items before you proceed.", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+
+                                }
+                            });
                         }
                         @Override
                         public void failure(RetrofitError error) {
