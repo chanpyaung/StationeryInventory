@@ -67,6 +67,7 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_report_item_search, container, false);
         ButterKnife.bind(this,view);
+        searchItemCode.setVisibility(View.GONE);
         itemList = new ArrayList<JSONItem>();
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.inv_recycler_view);
@@ -79,13 +80,6 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
         FiltersAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerCateogry.setAdapter(FiltersAdapter);
 
-        btnSearchItem.setOnClickListener(this);
-
-        return  view;
-    }
-
-    @Override
-    public void onClick (View v){
         //connect to server and handled JSON here
         Log.i("itemList:", String.valueOf(itemList.size()));
         if(itemList.size() == 0) {
@@ -100,7 +94,6 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
                     Log.i("Response: ", response.getBody().toString());
                     System.out.println("Response Status " + response.getStatus());
                     itemList = jsonItems;
-                    searchItems();
                 }
 
                 @Override
@@ -109,74 +102,57 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
                 }
             });
         }
+
+        btnSearchItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchItems();
+            }
+        });
+
+        return  view;
+    }
+
+    @Override
+    public void onClick (View v){
+
     }
 
     private void searchItems() {
 
         searchResultsList = new ArrayList<JSONItem>();
+        adapter = new InvListAdapter(searchResultsList);
+        mRecyclerView.setAdapter(adapter);
 
-        String itemCode = searchItemCode.getText().toString();
-        if (!(itemCode.isEmpty())) {
-            itemCode.toUpperCase();
-        }
-        Log.i("itemCode search:", itemCode);
-        String itemName = searchItemName.getText().toString();
-        if (!(itemName.isEmpty())) {
-            itemName.toUpperCase();
-        }
-        Log.i("itemName search:", itemName);
         int itemCat = spinnerCateogry.getSelectedItemPosition();
-        Log.i("itemCat search:", String.valueOf(itemCat));
 
-        //search for item by criteria
-        for (int i = 0; i < itemList.size(); i++) {
+        String itemName = "";
+
+        if(!searchItemName.getText().toString().matches("")){
+            itemName = searchItemName.getText().toString();
+        }
+
+        for(int i = 0; i < itemList.size(); i++){
             JSONItem item = itemList.get(i);
-            if (itemCat == 0) {
-                if(!(itemCode.matches("")) && !(itemName.matches(""))) {
-                    if (item.getItemID().contains(itemCode) && item.getItemName().toUpperCase().contains(itemName)) {
-                        searchResultsList.add(item);
-                        Log.i("searchResult item:", item.getItemID());
-                    }
-                }
-                else if(itemCode.matches("") && !(itemName.matches(""))){
-                    if (item.getItemName().toUpperCase().contains(itemName)) {
-                        searchResultsList.add(item);
-                        Log.i("searchResult item:", item.getItemID());
-                    }
-                }
-                else if(!(itemCode.matches("")) && itemName.matches("")){
-                    if (item.getItemID().contains(itemCode)) {
-                        searchResultsList.add(item);
-                        Log.i("searchResult item:", item.getItemID());
-                    }
-                }
-            } else {
-                if (item.getItemCatID() == itemCat) {
-                    Log.e("itemcatid", String.valueOf(item.getItemCatID()));
-                    Log.e("itemCat", String.valueOf(itemCat));
-                    if(!(itemCode.matches("")) && !(itemName.matches(""))) {
-                        if (item.getItemID().contains(itemCode) && item.getItemName().toUpperCase().contains(itemName)) {
-                            searchResultsList.add(item);
-                            Log.i("searchResult item:", item.getItemID());
-                        }
-                    }
-                    else if(itemCode.matches("") && !(itemName.matches(""))){
-                        if (item.getItemName().toUpperCase().contains(itemName)) {
-                            searchResultsList.add(item);
-                            Log.i("searchResult item:", item.getItemID());
-                        }
-                    }
-                    else if(!(itemCode.matches("")) && itemName.matches("")){
-                        if (item.getItemID().contains(itemCode)) {
-                            searchResultsList.add(item);
-                            Log.i("searchResult item:", item.getItemID());
-                        }
-                    }
-                    else {
-                        searchResultsList.add(item);
-                    }
+            Log.e("itemList.get(i)", itemList.get(i).getItemName().toLowerCase());
+            Log.e("itemName.toLowerCase()", itemName.toLowerCase());
+            if(!spinnerCateogry.getSelectedItem().toString().equals("All Categories")){
+                Log.e("Not categories", "Reach");
+                if(itemList.get(i).getItemName().toLowerCase().contains(itemName.toLowerCase()) && itemList.get(i).getItemCatID() == spinnerCateogry.getSelectedItemPosition()){
+                    searchResultsList.add(itemList.get(i));
                 }
             }
+            else{
+                Log.e("Not categories", "Reach");
+                if(itemList.get(i).getItemName().toLowerCase().contains(itemName.toLowerCase())){
+                    searchResultsList.add(itemList.get(i));
+                }
+            }
+        }
+
+        Log.e("itemList size()", String.valueOf(searchResultsList.size()));
+        for(JSONItem it: searchResultsList){
+            Log.e("Item Name", it.getItemName());
         }
 
         // if no search result:

@@ -18,6 +18,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Check user role and redirect to respective layout
+        //CircleImageView circleImageView = (CircleImageView)findViewById(R.id.profile_image);
+        //new ItemListAdapter.DownloadImageTask(circleImageView).execute("http://192.168.31.202/img/user/" + Setup.user.getEmpID() + ".jpg");
         switch (Setup.user.getRoleID()) {
             case "EM":
                 setContentView(R.layout.activity_main);
@@ -334,8 +337,8 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.reportItem://change
-                        AdjVouList reportItemFrag = new AdjVouList();
-                        //ReportItemListFragment reportItemFrag = new ReportItemListFragment();
+                        //AdjVouList reportItemFrag = new AdjVouList();
+                        ReportItemListFragment reportItemFrag = new ReportItemListFragment();
                         fragmentTran = getSupportFragmentManager().beginTransaction();
                         fragmentTran.replace(R.id.frame, reportItemFrag);
                         fragmentTran.commit();
