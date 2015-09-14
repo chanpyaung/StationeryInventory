@@ -13,7 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseException;
+import com.parse.ParseInstallation;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -368,6 +373,8 @@ public class MainActivity extends AppCompatActivity {
                         editor.putString("username", null);
                         editor.putString("password", null);
                         editor.commit();
+                        ParseUser.logOutInBackground();
+
                         Intent i = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(i);
                         return true;
