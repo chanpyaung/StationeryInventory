@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,12 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseAnalytics;
-import com.parse.ParseUser;
-<<<<<<< HEAD
-import com.parse.PushService;
-import com.parse.SaveCallback;
-=======
->>>>>>> origin/master
+import com.parse.ParseInstallation;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +35,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 import team5.ad.sa40.stationeryinventory.Model.JSONRequestCart;
 import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
 import team5.ad.sa40.stationeryinventory.Model.JSONStatus;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
         //Check user role and redirect to respective layout
-        //CircleImageView circleImageView = (CircleImageView)findViewById(R.id.profile_image);
-        //new ItemListAdapter.DownloadImageTask(circleImageView).execute("http://192.168.31.202/img/user/" + Setup.user.getEmpID() + ".jpg");
         switch (Setup.user.getRoleID()) {
             case "EM":
                 setContentView(R.layout.activity_main);
@@ -279,8 +272,6 @@ public class MainActivity extends AppCompatActivity {
                                                     System.out.println("ordered by Date" + jr.getDate() + " " +jr.getReqID() );
                                                 }
                                             }
-
-
                                             RequisitionListAdapter.mRequisitions = Setup.allRequisition;
                                             RequisitionListFragment reqListFrag = new RequisitionListFragment();
                                             fragmentTran = getSupportFragmentManager().beginTransaction();
@@ -463,6 +454,12 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(i);
                         return true;
 
+                    case R.id.analytics:
+                        AnalyticsSearchFragment asfrag = new AnalyticsSearchFragment();
+                        fragmentTran = getSupportFragmentManager().beginTransaction();
+                        fragmentTran.replace(R.id.frame, asfrag).commit();
+                        return true;
+
                     default:
                         Toast.makeText(MainActivity.this, "Default", Toast.LENGTH_SHORT).show();
                         return true;
@@ -477,9 +474,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
+            public void onDrawerOpened(View drawerView){
+                    super.onDrawerOpened(drawerView);
+                }
         };
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();

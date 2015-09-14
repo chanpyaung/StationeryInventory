@@ -310,6 +310,7 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
                 displayScannedResult(data);
                 lastEmbeddedScannerScannedData = data;
                 lastEmbeddedScannerScannedDataTimestamp = System.currentTimeMillis();
+                stopEmbeddedScanner();
                 return true;
             }
         }

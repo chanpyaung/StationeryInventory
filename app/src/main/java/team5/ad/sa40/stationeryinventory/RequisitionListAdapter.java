@@ -1,6 +1,5 @@
 package team5.ad.sa40.stationeryinventory;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -78,19 +77,15 @@ public class RequisitionListAdapter extends RecyclerView.Adapter<RequisitionList
         }
         else if (req.getStatusID()==2){
             viewHolder.retStatus.setText("Approved");
-            viewHolder.retStatus.setTextColor(Color.GREEN);
         }
         else if (req.getStatusID()==3){
             viewHolder.retStatus.setText("Processed");
-            viewHolder.retStatus.setTextColor(Color.MAGENTA);
         }
         else if (req.getStatusID()==4){
             viewHolder.retStatus.setText("Collected");
-            viewHolder.retHeader.setTextColor(Color.BLUE);
         }
         else if(req.getStatusID()==5){
             viewHolder.retStatus.setText("Rejected");
-            viewHolder.retStatus.setTextColor(Color.RED);
         }
         else if(req.getStatusID()==6){
             viewHolder.retStatus.setText("Cancelled");

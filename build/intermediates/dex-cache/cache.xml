@@ -2,12 +2,53 @@
 <items version="2" >
 
     <item
-        jar="/Users/johnmajor/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.2.1/44780c2cf98f6a3cf4e77f1234d644758b329201/bolts-android-1.2.1.jar"
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.github.clans/fab/1.6.0/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="44780c2cf98f6a3cf4e77f1234d644758b329201">
-        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/bolts-android-1.2.1-80913ce65c6737db0b42e8cf5ea1d963f335e82f.jar" />
-        <dex dex="/Users/student/Documents/AD project Mobile/StationeryInventory/app/build/intermediates/pre-dexed/debug/bolts-android-1.2.1-18314a5d41ad40a7a6e521177844a2f9c858aed6.jar" />
+        sha1="f61181528d587cc6fe45719e4560153935d374c2">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-a8472e3640ced67eafad14f71a1b9003f43e078f.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c2ac04c5b232f6f0658ee4f1c13be09cd76406e2">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-3438f35f76a46aa028c9a918b791c1bb719a238e.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="adebe28e0c0c05d34a3bfd76f3275bf4d8ff87b6">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-bfe2538757b0a3f08873865e8261d276c3d59e3c.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="6e85edfc9b5346d216e50ccef1f8e825504144a3">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-352416aca159b9c7104632fd54dcb77d470fdfc3.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="166e458ee3b5fb5fcff0f936df3f3a788e6c54f3">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-64c86291fe73aa6fa37a284004280d2f7384e96f.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-1916e72d7548da3af880f5200874c0ff9ef4a639.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="dcf8c83c3dead00a6c4fe313e95f7aaca20dc641">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-7319c2a0787366fa01c2bfafe916ff999aaaa997.jar" />
     </item>
     <item
         jar="/Users/johnmajor/.gradle/caches/modules-2/files-2.1/com.parse/parse-android/1.10.1/a87cb993a12e574a216213d0b8b2b78f6da35d37/parse-android-1.10.1.jar"
@@ -15,7 +56,244 @@
         revision="22.0.1"
         sha1="a87cb993a12e574a216213d0b8b2b78f6da35d37">
         <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/parse-android-1.10.1-b013678f08f42c7435e88c133f0bc2b336d4a916.jar" />
-        <dex dex="/Users/student/Documents/AD project Mobile/StationeryInventory/app/build/intermediates/pre-dexed/debug/parse-android-1.10.1-092ed99a2a323383bbffd733a8a124277f11cb1d.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="d11330ea68c0d964d30d5caed1f27e6b1488b189">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-526e38479372403ff8cf18c1f7977529d93cc258.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="77a9dcb5f8b1dba36aacaa9c150eb0942dbea158">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-4e495bfc48d3b9e560fb584226f5c29e86d727eb.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/7.0.1/d5d13ea991eab0252e3710e5df3d6a9d4b21d461/butterknife-7.0.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="d5d13ea991eab0252e3710e5df3d6a9d4b21d461">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/butterknife-7.0.1-f07030eaf8bae7e9cda8647e9229f5d435e9e7bb.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/libs/internal_impl-22.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.1-a707d4efcd809aaae788f634dc647f556e9e640c.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appstate/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="edea92852b40eee716e910af8dad9eeaa58fb0e1">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-5f205533b2b939007a97a93d1677ffbeee896d15.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2491ae1b2a848af1f4f0c795f3117c1bd6a1989f">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-9fe7d8fe4f88b394e21677d46c0d19ec6eb22bf8.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="3abb4b88f5a8a0584a9b01d3170d7165f12f8588">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-932cabb9f7bd26dc8c95caca18007b5120003b40.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-vision/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="b99f0b78bbcb76b915bc6529a83b65d4d46990dd">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-b71fe8a5fe9e32f208bdaeb7bcc652d8e553dad8.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c756d14e99d39471e99013a1e8fd2f3813ed42bf">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-05f227ec35d2d68a90c222b50d901cb72a30e3a7.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/de.hdodenhof/circleimageview/1.3.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="ac6948cce36f694f3eb3d73a135e298dc4b3527a">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-3bc96635b1b9761838c263649be126472f1652ba.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2e24e5f1b11170163028277de63f709e42525db4">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-df2916575abaf4f2e4cc19bdde153c510ca60f14.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/eu.livotov.labs/camview/1.0.3/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="cb8c66080211594efc3429bd52c1fae39ca3886d">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-cd0ad96b0253acd674467f033d0fd93bad01f7f6.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="42a1ee578b62fd1bd28b3307a679dc9ba0791587">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-1d488e369ff317281ee338eda319097a96f12187.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="0632f06970823b7e3436f649bfa65b47035c91d0">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-264f829e592f70f33800ae8e26605c0e1854062a.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="0124ce31248c0e8acfa2b28283c6d1a4d76e73d2">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-ebb75bff8ddc2b4deb22e64f50446e82e3db5c4f.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/eu.livotov.labs/zxscanlib/2.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="381ed9690f3fcc50be3fee77a9ff5e69eb1cd11c">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-cf73c10aff25ec18a5f2139b8653c1afb4353e02.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="e23ea11124bb700eeddd4ab7aa848c615f493850">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-944e540c5e5985e9def82d79b89b1e9057ef7386.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/ecb6e1f8e4b0e84c4b886c2f14a1500caf309757/gson-2.3.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/gson-2.3.1-5c15948a2e24848dc3cb1e9eb2f8753fb42da7e4.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/design/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="fc63b820d54c8a27a3a614bdd93920e0076581c2">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-a167c4db91a2c59972c5ed565fca68a0205b1a6a.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.bowyer.app/fab-toolbar/1.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="45945a28eee4137eb7e4d49214a05df5cb9ce487">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-7bbd4d6667fd8c20a58b47f8b19982c31eaaa2df.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c5cafb324568d954780abb858c25db7ce675ab3c">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-90bd35c038b129e9b1d9bd3101293fb347b8d7ef.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-193ba37d05c4c0530191ae5b379640c7c02a89e6.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1ff30fa49c07a08c3035d7218a3efebf5680d522">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-947512485d5248d8b03564f631b819b7de5252c0.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="130b32ed466fa0f63efd4c7d6250ccd2ed506790">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-d4647d3a014324007b13aa2e0b252322553c3c27.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.2.1/44780c2cf98f6a3cf4e77f1234d644758b329201/bolts-android-1.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="44780c2cf98f6a3cf4e77f1234d644758b329201">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/bolts-android-1.2.1-80913ce65c6737db0b42e8cf5ea1d963f335e82f.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/retrofit/1.9.0/a681c044244d9fc375198588297a39ba78028423/retrofit-1.9.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="a681c044244d9fc375198588297a39ba78028423">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/retrofit-1.9.0-b4e42035da90595abfb6e5ca26898c859aa8c837.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.1-e6bd4e6b7054c6909c0c066bba8a2e01fb580baa.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c0c912d58c9468b1f9d9769c8975afdf2c85d681">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-62fe4587a844fce1f8e1377f75c664da994d95b8.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/eu.livotov.labs/zxscanlib/2.0.1/jars/libs/core-3.1.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="908e18674f895e3e1fa8f4a954b8c637a23d2801">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/core-3.1.0-e6634673e132992901d647c3aff10ce046cc27e4.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="4a135d56554069e5d0ff80e3220e887e57146ee5">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-ec246a8e4d04f93d9bfd1351fd0dc5e14bed6412.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="cb6fab7a71fa9ec1f483d44c5fca65ab469d8aca">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-bf6fc06ec150d149be1353b9736db99309a470c4.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="98137c4d12c50923f5809852b1ef4d1c4e162081">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-c71cb1d49243c287af92e27261caaa86a7faad4a.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="e1fa5e1123997a55e3ed65b44892993ff4b58cfe">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-66458b7144c723f3db01152277b023b9ac026e0c.jar" />
+    </item>
+    <item
+        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/jp.wasabeef/recyclerview-animators/1.2.2/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="19fca4378b6bf4dcb8a606d87d4f4da8286297ef">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-598fb6e5b3bfa6177cf014717ed0de5868869679.jar" />
     </item>
 
 </items>

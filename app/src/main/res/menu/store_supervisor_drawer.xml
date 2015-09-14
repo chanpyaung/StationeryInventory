@@ -35,7 +35,7 @@
             android:title="Report Item" />
 
         <item
-            android:id="@+id/analytis"
+            android:id="@+id/analytics"
             android:checked="false"
             android:icon="@drawable/ic_trending_up_black_24dp"
             android:title="Anaylytics" />
