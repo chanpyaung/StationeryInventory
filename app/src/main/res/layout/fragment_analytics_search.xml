@@ -28,5 +28,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <EditText
+        android:id="@+id/sDate"
+        android:layout_below="@id/or"
+        android:layout_toRightOf="@+id/rpDateLabel"
+        android:hint="Start Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/or"
+        android:layout_toRightOf="@id/sDate"
+        android:layout_margin="15dp"
+        android:id="@+id/to"
+        android:text="To"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_marginLeft="15dp"
+        android:id="@+id/eDate"
+        android:layout_below="@id/or"
+        android:layout_toRightOf="@+id/to"
+        android:hint="End Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <Button
+        android:layout_margin="15dp"
+        android:background="@color/PrimaryColor"
+        android:text="Search"
+        android:textColor="@android:color/white"
+        android:layout_centerInParent="true"
+        android:paddingLeft="45dp"
+        android:paddingRight="45dp"
+        android:id="@+id/searchBtn"
+        android:layout_below="@id/sDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/searchBtn"
+        android:id="@+id/analytics_search_result"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="3dp"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
