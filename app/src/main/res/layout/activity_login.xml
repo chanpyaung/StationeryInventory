@@ -27,15 +27,15 @@
         android:layout_height="45dp" android:hint="@string/username"
         android:inputType="phone" android:maxLines="1"
         android:singleLine="true"
-        android:textColor="#ffffffff"
-        android:textColorHint="#ffffffff"
-        android:textColorLink="#ffffffff"
-        android:textColorHighlight="#ffffffff"
+        android:textColor="#ff404040"
+        android:textColorHint="#ff404040"
+        android:textColorLink="#ff404040"
+        android:textColorHighlight="#ff404040"
         android:textIsSelectable="false"
         android:textSize="20dp"
         android:layout_below="@+id/imageLogo"
         android:layout_marginTop="60dp"
-        android:background="#4cffffff"
+        android:background="#c9ffffff"
         android:paddingLeft="5dp" />
 
     <EditText android:id="@+id/password" android:layout_width="match_parent"
@@ -44,15 +44,15 @@
         android:imeActionLabel="@string/action_sign_in"
         android:imeOptions="actionUnspecified" android:inputType="textPassword"
         android:maxLines="1" android:singleLine="true"
-        android:textColor="#ffffffff"
-        android:textColorHighlight="#ffffffff"
-        android:textColorHint="#ffffffff"
-        android:textColorLink="#ffffffff"
+        android:textColor="#ff404040"
+        android:textColorHighlight="#ff404040"
+        android:textColorHint="#ff404040"
+        android:textColorLink="#ff404040"
         android:textSize="20dp"
         android:layout_below="@+id/userid"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"
-        android:background="#4cffffff"
+        android:background="#c9ffffff"
         android:paddingLeft="5dp" />
 
     <Button android:id="@+id/sign_in_button" style="?android:textAppearanceSmall"
@@ -60,9 +60,9 @@
         android:text="@string/action_sign_in"
         android:textStyle="bold"
         android:layout_weight="1.59"
-        android:textColor="@color/PrimaryColor"
+        android:textColor="#ffffffff"
         android:textSize="20dp"
-        android:background="#ffeaeaea"
+        android:background="#08AE9E"
         android:layout_below="@+id/password"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp" />
@@ -90,10 +90,11 @@
         android:id="@+id/forgetPassword"
         android:layout_gravity="center_horizontal"
         android:background="#00ffffff"
-        android:textColor="#ffffff"
+        android:textColor="#ffffbd4c"
         android:shadowColor="#00ffffff"
         android:layout_below="@+id/textViewStatus"
-        android:layout_alignEnd="@+id/imageLogo" />
+        android:layout_alignEnd="@+id/imageLogo"
+        android:layout_marginTop="15dp" />
 
     <TextView
         android:layout_width="wrap_content"

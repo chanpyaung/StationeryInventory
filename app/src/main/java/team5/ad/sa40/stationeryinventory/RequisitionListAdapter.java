@@ -1,5 +1,6 @@
 package team5.ad.sa40.stationeryinventory;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,33 +67,27 @@ public class RequisitionListAdapter extends RecyclerView.Adapter<RequisitionList
         //format to date only:
         viewHolder.retDate.setText(Setup.parseJSONDateToString(req.getDate()));
         if (req.getStatusID()==1){
-            viewHolder.retStatus.setText("Pending Approval");
+            viewHolder.retStatus.setText("Pending");
         }
         else if (req.getStatusID()==2){
             viewHolder.retStatus.setText("Approved");
+            viewHolder.retStatus.setTextColor(Color.GREEN);
         }
         else if (req.getStatusID()==3){
             viewHolder.retStatus.setText("Processed");
+            viewHolder.retStatus.setTextColor(Color.MAGENTA);
         }
         else if (req.getStatusID()==4){
             viewHolder.retStatus.setText("Collected");
+            viewHolder.retHeader.setTextColor(Color.BLUE);
         }
         else if(req.getStatusID()==5){
             viewHolder.retStatus.setText("Rejected");
+            viewHolder.retStatus.setTextColor(Color.RED);
         }
         else if(req.getStatusID()==6){
             viewHolder.retStatus.setText("Cancelled");
         }
-//
-//        if(viewHolder.retStatus.getText().equals("Rejected")) {
-//            viewHolder.retStatus.setTextColor(Color.RED);
-//        }
-//        else if(viewHolder.retStatus.getText().equals("Collected")){
-//            viewHolder.retStatus.setTextColor(Color.BLUE);
-//        }
-//        else if(viewHolder.retStatus.getText().equals("Processed")){
-//            viewHolder.retStatus.setTextColor(Color.MAGENTA);
-//        }
         viewHolder.retIfEmpIDNeeded.setText("");
         viewHolder.retEmpID.setText(req.getDeptID());
     }

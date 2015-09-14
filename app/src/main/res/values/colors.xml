@@ -6,4 +6,5 @@
     <color name="PrimaryDarkInvertedColor">#ff485a</color>
     <color name="SecondaryColor">#3F51B5</color>
     <color name="SecondaryDarkColor">#303F9F</color>
+    <color name="DefaultTextColor">#ff787878</color>
 </resources>
