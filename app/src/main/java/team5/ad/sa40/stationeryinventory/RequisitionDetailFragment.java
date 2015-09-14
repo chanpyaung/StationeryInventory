@@ -56,6 +56,7 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
     @Bind(R.id.requisition_cancel) Button cancel;
     @Bind(R.id.requi_approve) Button approve;
     @Bind(R.id.rmkText) EditText remark;
+    @Bind(R.id.createdBy) TextView createdBy;
 
     public RequisitionDetailFragment() {
         // Required empty public constructor
@@ -89,6 +90,10 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
                 idDisplay = String.valueOf(reqID);
             }
             reqFormID.setText(idDisplay);
+
+            if(getArguments().getString("EmpName") != ""){
+                createdBy.setText(getArguments().getString("EmpName"));
+            }
 
 
             if (getArguments().getInt("StatusID")==1){

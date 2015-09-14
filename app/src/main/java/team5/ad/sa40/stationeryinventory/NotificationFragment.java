@@ -10,6 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit.Callback;
@@ -17,7 +21,10 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.NotificationAPI;
+import team5.ad.sa40.stationeryinventory.API.RequisitionAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONNotification;
+import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
+import team5.ad.sa40.stationeryinventory.Model.JSONStatus;
 
 
 public class NotificationFragment extends android.support.v4.app.Fragment{
@@ -28,6 +35,8 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
     private RecyclerView mRecyclerView;
     private NotifListAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+    final RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
 
     public NotificationFragment() {
     }
@@ -82,7 +91,7 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
 
     public void onClickGoTo(JSONNotification n) {
         notifID = n.getNotifID();
-        Log.i("Notifid selected:",Integer.toString(notifID));
+        Log.i("Notifid selected:", Integer.toString(notifID));
 
         //update status of notification
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
@@ -102,63 +111,27 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
 
         switch(n.getNotifName()) {
             case "New Pending Requisition":{
-                RequisitionListFragment fragment = new RequisitionListFragment();
-                Bundle args = new Bundle();
-                args.putString("NotifID", Integer.toString(notifID));
-                Log.i("NotifID", Integer.toString(notifID));
-                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                fragment.setArguments(args);
-                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                goToReqList();
                 break;
             }
             case "Requisition Approved":{
-                RequisitionListFragment fragment = new RequisitionListFragment();
-                Bundle args = new Bundle();
-                args.putString("NotifID", Integer.toString(notifID));
-                Log.i("NotifID", Integer.toString(notifID));
-                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                fragment.setArguments(args);
-                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                goToReqList();
                 break;
             }
             case "Requisition Rejected":{
-                RequisitionListFragment fragment = new RequisitionListFragment();
-                Bundle args = new Bundle();
-                args.putString("NotifID", Integer.toString(notifID));
-                Log.i("NotifID", Integer.toString(notifID));
-                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                fragment.setArguments(args);
-                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                goToReqList();
                 break;
             }
             case "Processing Requisition":{
-                RequisitionListFragment fragment = new RequisitionListFragment();
-                Bundle args = new Bundle();
-                args.putString("NotifID", Integer.toString(notifID));
-                Log.i("NotifID", Integer.toString(notifID));
-                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                fragment.setArguments(args);
-                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                goToReqList();
                 break;
             }
             case "Requisition Processed":{
-                RequisitionListFragment fragment = new RequisitionListFragment();
-                Bundle args = new Bundle();
-                args.putString("NotifID", Integer.toString(notifID));
-                Log.i("NotifID", Integer.toString(notifID));
-                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                fragment.setArguments(args);
-                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                goToReqList();
                 break;
             }
             case "Requisition Disbursed":{
-                RequisitionListFragment fragment = new RequisitionListFragment();
-                Bundle args = new Bundle();
-                args.putString("NotifID", Integer.toString(notifID));
-                Log.i("NotifID", Integer.toString(notifID));
-                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                fragment.setArguments(args);
-                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                goToReqList();
                 break;
             }
             case "New Pending Adjustment Voucher":{
@@ -192,13 +165,7 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
                 break;
             }
             case "Requisition Items Not Fulfilled": {
-                RequisitionListFragment fragment = new RequisitionListFragment();
-                Bundle args = new Bundle();
-                args.putString("NotifID", Integer.toString(notifID));
-                Log.i("NotifID", Integer.toString(notifID));
-                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                fragment.setArguments(args);
-                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                goToReqList();
                 break;
             }
             case "New Collection Schedule": {
@@ -253,10 +220,102 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
                 Log.i("NotifID", Integer.toString(notifID));
                 FragmentTransaction fragTran = getFragmentManager().beginTransaction();
                 fragment.setArguments(args);
-                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
-                break;*/
+                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();*/
+                break;
             }
 
         }
+    }
+
+    public void goToReqList(){
+        reqAPI.getStatus(new Callback<List<JSONStatus>>() {
+            @Override
+            public void success(List<JSONStatus> jsonStatuses, Response response) {
+                Log.i("Status Size", String.valueOf(jsonStatuses.size()));
+                RequisitionListAdapter.mStatus = jsonStatuses;
+                //if user is StoreClerk; load all requisition
+                if(Setup.user.getRoleID().equals("SC")){
+                    reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
+                        @Override
+                        public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                            if (jsonRequisitions.size() > 0) {
+                                List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
+                                for (JSONRequisition jsonReq : jsonRequisitions) {
+                                    if (jsonReq.getStatusID().equals(2)) {
+                                        reqList.add(jsonReq);
+                                    }
+                                }
+                                Log.i("URL", response.getUrl());
+                                Log.i("STATUS", String.valueOf(response.getStatus()));
+                                Log.i("REASON", response.getReason());
+                                Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
+                                if (jsonRequisitions.size() > 0) {
+                                    System.out.println("Sorting here");
+                                    Collections.sort(jsonRequisitions);
+                                    Setup.allRequisition = reqList;
+                                    RequisitionListAdapter.mRequisitions = reqList;
+                                    for (JSONRequisition jr : jsonRequisitions) {
+                                        System.out.println("ordered by Date" + jr.getDate() + " " + jr.getReqID());
+                                    }
+                                }
+                                RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                                FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
+                                fragmentTran.replace(R.id.frame, reqListFrag).commit();
+
+                            } else {
+
+                                Toast.makeText(getActivity(), "We acknowledge you that you haven't made any requisition yet.Please made some requisition before you proceed.", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                        @Override
+                        public void failure (RetrofitError error){
+                            Log.i("GetRequisitionFail", error.toString() + " " + error.getUrl());
+                        }
+
+                    });
+                }
+                //load requisitionlist by EmpID
+                else{
+                    reqAPI.getRequisition(Setup.user.getEmpID(), new Callback<List<JSONRequisition>>() {
+                        @Override
+                        public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                            if (jsonRequisitions.size() > 0) {
+                                Log.i("URL", response.getUrl());
+                                Log.i("STATUS", String.valueOf(response.getStatus()));
+                                Log.i("REASON", response.getReason());
+                                Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
+                                if (jsonRequisitions.size() > 0) {
+                                    System.out.println("Sorting here");
+                                    Collections.sort(jsonRequisitions);
+                                    Setup.allRequisition = jsonRequisitions;
+                                    RequisitionListAdapter.mRequisitions = jsonRequisitions;
+                                    for (JSONRequisition jr : jsonRequisitions) {
+                                        System.out.println("ordered by Date" + jr.getDate() + " " + jr.getReqID());
+                                    }
+                                }
+                                RequisitionListAdapter.mRequisitions = Setup.allRequisition;
+                                RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                                FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
+                                fragmentTran.replace(R.id.frame, reqListFrag).commit();
+                            } else {
+                                Toast.makeText(getActivity(), "We acknowledge you that you haven't made any requisition yet.Please made some requisition before you proceed.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Log.i("GetRequisitionFail", error.toString() + " " + error.getUrl());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("Status Fail", error.toString());
+                Log.i("URL", error.getUrl());
+            }
+        });
     }
 }
