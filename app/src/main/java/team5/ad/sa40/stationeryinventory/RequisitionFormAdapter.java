@@ -9,6 +9,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
+import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 import team5.ad.sa40.stationeryinventory.Model.JSONReqDetail;
 import team5.ad.sa40.stationeryinventory.Model.Requisition;
 
@@ -73,10 +79,22 @@ public class RequisitionFormAdapter extends RecyclerView.Adapter<RequisitionForm
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final ViewHolder viewHolder, int i) {
         JSONReqDetail ret = mRequisitionDetails.get(i);
         viewHolder.itemId.setText(ret.getItemID().toString());
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+        invAPI.getItemDetails(ret.getItemID().toString(), new Callback<JSONItem>() {
+            @Override
+            public void success(JSONItem jsonItem, Response response) {
+                viewHolder.itemName.setText(jsonItem.getItemName());
+            }
 
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("GetItemDetails", error.toString() +" "+ error.getUrl());
+            }
+        });
         //search for name
         //viewHolder.itemName.setText(ret..toString());
         viewHolder.requestQty.setText(ret.getRequestQty().toString());

@@ -10,7 +10,7 @@ android {
     buildToolsVersion '22.0.1'
     defaultConfig {
         applicationId "team5.ad.sa40.stationeryinventory"
-        minSdkVersion 22
+        minSdkVersion 19
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"

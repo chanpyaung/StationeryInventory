@@ -63,8 +63,8 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
         mPasswordView = (EditText) findViewById(R.id.password);
         mStatus = (TextView) findViewById(R.id.textViewStatus);
         forgetPasswordBtn = (Button) findViewById(R.id.forgetPassword);
-
         Button signInButton = (Button) findViewById(R.id.sign_in_button);
+
         signInButton.setOnClickListener(this);
 
         forgetPasswordBtn.setOnClickListener(this);
