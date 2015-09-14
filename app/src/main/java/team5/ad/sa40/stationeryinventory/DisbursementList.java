@@ -124,7 +124,7 @@ public class DisbursementList extends android.support.v4.app.Fragment {
         });
 
         search = (SearchView)view.findViewById(R.id.disSearchCat);
-
+        search.setQueryHint("Search disbursement ID");
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

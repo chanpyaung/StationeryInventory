@@ -196,7 +196,7 @@ public class AdjListSearch extends android.support.v4.app.Fragment {
                         else{
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Search results")
-                                    .setMessage(String.valueOf(mAdjustment.size()) + " adjustments are found!")
+                                    .setMessage(String.valueOf(mAdjustment.size()) + " adjustment is found!")
                                     .setCancelable(false)
                                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {

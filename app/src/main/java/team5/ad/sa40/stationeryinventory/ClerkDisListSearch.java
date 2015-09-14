@@ -94,6 +94,30 @@ public class ClerkDisListSearch extends android.support.v4.app.Fragment {
                                         })
                                         .setIcon(android.R.drawable.ic_dialog_alert)
                                         .show();
+                            } else if (mDisbursement.size() > 1) {
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("Information")
+                                        .setMessage(mDisbursement.size() + " disbursements are found!")
+                                        .setCancelable(false)
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            } else {
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("Information")
+                                        .setMessage(mDisbursement.size() + " disbursement is found!")
+                                        .setCancelable(false)
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
                             }
                             mAdapter.SetOnItemClickListener(new DisListGridAdapter.OnItemClickListener() {
                                 @Override

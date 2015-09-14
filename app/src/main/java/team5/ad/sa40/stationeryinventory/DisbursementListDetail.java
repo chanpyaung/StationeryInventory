@@ -23,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +139,9 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
                                 text_col_pt.setText(selected_colPt.getCPName());
                                 text_status.setText(dis.getStatus());
 
+                                map.addMarker(new MarkerOptions()
+                                        .position(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()))
+                                        .title(selected_colPt.getCPName()));
                                 // Updates the location and zoom of the MapView
                                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 10);
                                 map.animateCamera(cameraUpdate);
