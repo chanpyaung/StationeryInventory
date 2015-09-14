@@ -37,6 +37,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
 
     private String User;
     public static String[] filters = {"View All","Pending", "Approved", "Processed", "Collected", "Rejected", "Cancelled"};
+    public static String[] priority = {"High", "Normal", "Low"};
     private List<JSONRequisition> allRequisitions;
     private RecyclerView mRecyclerView;
     private RequisitionListAdapter adapter;
@@ -65,6 +66,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         Bundle args = new Bundle();
         inflater = getActivity().getLayoutInflater();
+        getActivity().setTitle("Requisition");
         View view = inflater.inflate(R.layout.fragment_retrieval_list, container, false);
         ButterKnife.bind(this, view);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.ret_recycler_view);
@@ -99,9 +101,12 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
             filterBy.setVisibility(View.GONE);
 
             spinnerRetStatus.getLayoutParams().width = 360;
-            spinnerStatus.getLayoutParams().width = 360;
             spinnerStatus.setVisibility(View.VISIBLE);
-            spinnerStatus.setAdapter(FiltersAdapter);
+            spinnerStatus.getLayoutParams().width = 360;
+
+            ArrayAdapter<String> PriorityAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,priority);
+            PriorityAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            spinnerStatus.setAdapter(PriorityAdapter);
         }
         spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

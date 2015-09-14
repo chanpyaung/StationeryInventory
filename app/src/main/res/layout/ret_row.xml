@@ -81,6 +81,7 @@
                 android:id="@+id/reportItemName"
                 android:layout_alignTop="@+id/ret_ifEmpIDNeeded"
                 android:layout_toEndOf="@+id/ret_ifEmpIDNeeded"
+                android:layout_marginLeft="10dp"
                 android:textSize="14dp" />
 
             <TextView

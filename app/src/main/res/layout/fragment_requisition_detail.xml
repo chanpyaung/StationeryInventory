@@ -7,7 +7,8 @@
 
     <TextView
         android:id="@+id/inv_detail_itemID"
-        android:layout_margin="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:text="Requisition"
         android:layout_width="wrap_content"
@@ -16,11 +17,14 @@
     <TextView
         android:id="@+id/inv_detail_itemName"
         android:text="00012"
-        android:layout_margin="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:layout_toRightOf="@+id/inv_detail_itemID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+
 
     <!--<TextView-->
         <!--android:id="@+id/approvedBy"-->
@@ -67,7 +71,6 @@
         android:text="Priority"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="15dp"
         android:layout_below="@+id/inv_detail_itemID"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
@@ -76,7 +79,6 @@
     <TextView
         android:id="@+id/priority_text"
         android:layout_marginLeft="-5dp"
-        android:layout_marginBottom="15dp"
         android:text="Low"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_toRightOf="@+id/priority"
@@ -160,7 +162,7 @@
         android:layout_height="wrap_content"
         android:text="CANCEL"
         android:id="@+id/requisition_cancel"
-        android:layout_below="@+id/requisition_detail_table"
+        android:layout_below="@+id/rmkText"
         android:layout_alignParentEnd="true"
         android:background="@color/PrimaryInvertedColor"
         android:layout_marginTop="15dp"
@@ -174,10 +176,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:text="Approve"
         android:id="@+id/requi_approve"
-        android:layout_below="@+id/requisition_detail_table"
-        android:layout_toLeftOf="@+id/requisition_cancel"
+        android:layout_below="@+id/rmkText"
         android:background="@color/PrimaryColor"
         android:layout_marginTop="15dp"
         android:layout_marginRight="15dp"
@@ -217,6 +219,14 @@
             android:layout_alignParentBottom="true" />
 
     </FrameLayout>
+
+    <EditText
+        android:id="@+id/rmkText"
+        android:layout_below="@+id/requisition_detail_table"
+        android:hint="Remark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

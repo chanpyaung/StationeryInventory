@@ -76,6 +76,7 @@ public class RequisitionFormAdapter extends RecyclerView.Adapter<RequisitionForm
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         JSONReqDetail ret = mRequisitionDetails.get(i);
         viewHolder.itemId.setText(ret.getItemID().toString());
+
         //search for name
         //viewHolder.itemName.setText(ret..toString());
         viewHolder.requestQty.setText(ret.getRequestQty().toString());
