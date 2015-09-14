@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import team5.ad.sa40.stationeryinventory.Model.JSONNotification;
@@ -22,13 +23,25 @@ public class NotifListAdapter extends RecyclerView.Adapter<NotifListAdapter.View
 
     public NotifListAdapter(List<JSONNotification> JSONNotificationList){
         super();
+        mJSONNotifications = new ArrayList<JSONNotification>();
+
         if(JSONNotificationList.size() >0) {
-            mJSONNotifications = JSONNotificationList;
-            Collections.sort(mJSONNotifications);
+            List<JSONNotification> temp = JSONNotificationList;
+            Collections.sort(temp);
+            List<JSONNotification> readNotif = new ArrayList<JSONNotification>();
+            for(JSONNotification jn : temp){
+                if(jn.getStatus().equals("UNREAD")){
+                    mJSONNotifications.add(jn);
+                }
+                else{
+                    readNotif.add(jn);
+                }
+            }
+            for(JSONNotification j : readNotif){
+                mJSONNotifications.add(j);
+            }
         }
-        else {
-            mJSONNotifications = new ArrayList<JSONNotification>();
-        }
+
         retId = new String[mJSONNotifications.size()];
         if(mJSONNotifications.size() >0) {
             Log.i("Size of list", String.valueOf(mJSONNotifications.size()));
@@ -55,7 +68,16 @@ public class NotifListAdapter extends RecyclerView.Adapter<NotifListAdapter.View
 
         viewHolder.JSONNotificationID.setText(JSONNotification.getNotifName());
         viewHolder.JSONNotificationName.setText(JSONNotification.getNotifDesc());
-        viewHolder.JSONNotificationStatus.setText("More");
+        Date d = Setup.parseJSONDateToJavaDate(JSONNotification.getDateTime());
+        String displayD = "";
+        Date today = new Date();
+        if(d.getDate() == today.getDate()) {
+            displayD = String.valueOf(today.getTime() - d.getTime());
+        }
+        else {
+            displayD = Setup.parseDateToString(d);
+        }
+        viewHolder.JSONNotificationStatus.setText(displayD);
         if(JSONNotification.getStatus().equals("READ")) {
             viewHolder.JSONNotificationStatus.setTextColor(R.color.DefaultTextColor);
         }

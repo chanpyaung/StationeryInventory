@@ -25,7 +25,9 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.EmployeeAPI;
 import team5.ad.sa40.stationeryinventory.API.RequisitionAPI;
+import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
 import team5.ad.sa40.stationeryinventory.Model.JSONReqDetail;
 import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
 
@@ -36,6 +38,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
 
 
     private String User;
+    private String empName = "";
     public static String[] filters = {"View All","Pending", "Approved", "Processed", "Collected", "Rejected", "Cancelled"};
     public static String[] priority = {"High", "Normal", "Low"};
     private List<JSONRequisition> allRequisitions;
@@ -188,6 +191,9 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
                         args.putString("Date", selected.getDate());
                         args.putInt("ReqID", selected.getReqID());
                         args.putInt("StatusID", selected.getStatusID());
+                        getEmpName(selected.getEmpID());
+                        args.putString("EmpName",empName);
+                        Log.i("empName passed: ", empName);
                         if(Setup.user.getRoleID().equals("DD") || Setup.user.getRoleID().equals("DH")){
                             args.putString("APPROVAL", "ENABLED");
                         }
@@ -271,5 +277,26 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
         return filteredRequestList;
     }
 
+    public void getEmpName(int id){
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        EmployeeAPI empAPI = restAdapter.create(EmployeeAPI.class);
+
+        empAPI.getEmployeeById(id, new Callback<JSONEmployee>() {
+            @Override
+            public void success(JSONEmployee jsonItem, Response response) {
+                Log.i("Result :", jsonItem.toString());
+                Log.i("First item: ", jsonItem.toString());
+                Log.i("Response: ", response.getBody().toString());
+                System.out.println("Response Status " + response.getStatus());
+
+                empName = jsonItem.getEmpName();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("Error: ", error.toString());
+            }
+        });
+    }
 
 }

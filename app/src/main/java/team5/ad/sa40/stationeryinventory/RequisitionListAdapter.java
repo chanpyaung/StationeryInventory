@@ -169,6 +169,11 @@ public class RequisitionListAdapter extends RecyclerView.Adapter<RequisitionList
             retIfEmpIDNeeded = (TextView) itemView.findViewById(R.id.ret_ifEmpIDNeeded);
             retEmpID = (TextView) itemView.findViewById(R.id.reportItemName);
 
+            if(Setup.user.getRoleID().equals("EM") || Setup.user.getRoleID().equals("DR") || Setup.user.getRoleID().equals("DD")|| Setup.user.getRoleID().equals("DH")){
+                retEmpID.setVisibility(View.GONE);
+                retIfEmpIDNeeded.setVisibility(View.GONE);
+            }
+
             itemView.setOnClickListener(this);
         }
 
