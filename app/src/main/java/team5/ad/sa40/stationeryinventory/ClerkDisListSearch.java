@@ -56,6 +56,8 @@ public class ClerkDisListSearch extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_clerk_dis_list_search, container, false);
         ButterKnife.bind(this, view);
 
+        getActivity().setTitle("Disbursement Search");
+
         Bundle bundle = this.getArguments();
         mCollectionPoint = (ArrayList<JSONCollectionPoint>)bundle.getSerializable("collection");
         //mCollectionPoint = (ArrayList<JSONCollectionPoint>)this.getArguments().getSerializable("collection");

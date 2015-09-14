@@ -72,6 +72,8 @@ public class AdjListSearch extends android.support.v4.app.Fragment {
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
 
+        getActivity().setTitle("Adjustment Search");
+
         mRecyclerView = (RecyclerView)view.findViewById(R.id.dis_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 

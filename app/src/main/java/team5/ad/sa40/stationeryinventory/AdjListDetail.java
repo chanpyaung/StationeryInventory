@@ -85,6 +85,8 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
 
         ButterKnife.bind(this, v);
 
+        getActivity().setTitle("Adjustment List Detail");
+
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
                 Log.e("Reach into BuildTable", "Success");
                 EmployeeAPI employeeAPI = restAdapter.create(EmployeeAPI.class);

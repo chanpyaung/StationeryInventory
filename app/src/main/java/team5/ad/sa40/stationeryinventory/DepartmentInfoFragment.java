@@ -86,6 +86,9 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_department_info, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
+
+        getActivity().setTitle("Department Info");
+
         if(Setup.user.getRoleID().equals("EM")){
             representative.setEnabled(false);
             collectionPoint.setEnabled(false);
@@ -117,7 +120,7 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
         new AsyncTask<Void, Void, Department>(){
             @Override
             protected Department doInBackground(Void... params) {
-                return Department.getDeptByID("ENGL");//Should be Setup.user.DeptID
+                return Department.getDeptByID(Setup.user.getDeptID());//Should be Setup.user.DeptID
             }
             @Override
             protected void onPostExecute(Department result) {
@@ -164,7 +167,7 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
                         new AsyncTask<Void, Void, ArrayList<Employee>>(){
                             @Override
                             protected ArrayList<Employee> doInBackground(Void... params) {
-                                return Employee.getEmployeeByDept("ENGL");//Should be Setup.user.DeptID
+                                return Employee.getEmployeeByDept(Setup.user.getDeptID());//Should be Setup.user.DeptID
                             }
                             @Override
                             protected void onPostExecute(ArrayList<Employee> result) {

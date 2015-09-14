@@ -48,6 +48,8 @@ public class DisListDetailItemList extends android.support.v4.app.Fragment {
         View v = inflater.inflate(R.layout.fragment_dis_list_detail_item_list, container, false);
         ButterKnife.bind(this, v);
 
+        getActivity().setTitle("Disbursement Detail Items");
+
         Bundle bundle = this.getArguments();
         ArrayList<JSONItem> items = (ArrayList<JSONItem>)bundle.getSerializable("items");
         ArrayList<JSONDisbursementDetail> disList = (ArrayList<JSONDisbursementDetail>) bundle.getSerializable("disbursement");

@@ -61,6 +61,8 @@ public class AdjVouList extends android.support.v4.app.Fragment {
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
 
+        getActivity().setTitle("Adjustment List");
+
         mRecyclerView = (RecyclerView)view.findViewById(R.id.dis_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 

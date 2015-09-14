@@ -38,6 +38,7 @@ import team5.ad.sa40.stationeryinventory.API.CollectionPointAPI;
 import team5.ad.sa40.stationeryinventory.API.DisbursementAPI;
 import team5.ad.sa40.stationeryinventory.API.EmployeeAPI;
 import team5.ad.sa40.stationeryinventory.API.ItemAPI;
+import team5.ad.sa40.stationeryinventory.API.RequisitionAPI;
 import team5.ad.sa40.stationeryinventory.Model.CollectionPoint;
 import team5.ad.sa40.stationeryinventory.Model.Disbursement;
 import team5.ad.sa40.stationeryinventory.Model.Item;
@@ -46,6 +47,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
 import team5.ad.sa40.stationeryinventory.Model.JSONDisbursementDetail;
 import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
+import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
 
 
 /**
@@ -84,6 +86,9 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
         View v = inflater.inflate(R.layout.fragment_disbursement_list_detail, container, false);
         setHasOptionsMenu(true);
         ButterKnife.bind(this, v);
+
+        getActivity().setTitle("Disbursement List Detail");
+
         Bundle bundle = this.getArguments();
         dis = (JSONDisbursement) bundle.getSerializable("disbursement");
         Log.i("Dis id is ", String.valueOf(dis.getDisID()));
@@ -143,7 +148,7 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
                                         .position(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()))
                                         .title(selected_colPt.getCPName()));
                                 // Updates the location and zoom of the MapView
-                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 10);
+                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 15);
                                 map.animateCamera(cameraUpdate);
 
                                 new InventoryDetails.DownloadImageTask(clerk_img).execute("http://192.168.31.202/img/user/" + clerk.getEmpID() + ".jpg");
@@ -233,8 +238,22 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_details){
-            Toast.makeText(DisbursementListDetail.this.getActivity(), "Detail selected!", Toast.LENGTH_SHORT);
-            text_status.setText("");
+            RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+            RequisitionAPI requisitionAPI = restAdapter.create(RequisitionAPI.class);
+            requisitionAPI.getRequisitionListByDisID(dis.getDisID(), new Callback<List<JSONRequisition>>() {
+                @Override
+                public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                    RequisitionListAdapter.mRequisitions = jsonRequisitions;
+                    android.support.v4.app.Fragment frag = new RequisitionListFragment();
+                    getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("DisListDetail")
+                            .commit();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("getRequisitionByDisID", error.toString());
+                }
+            });
         }
         return super.onOptionsItemSelected(item);
     }

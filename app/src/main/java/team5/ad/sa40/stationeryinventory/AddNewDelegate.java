@@ -82,6 +82,7 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
                     EmpNames[i] = employeeList.get(i).getEmpName();
                 }
 
+                getActivity().setTitle("Add Delegate");
 
                 JSONDelegate delegate;
                 if(bundle != null){
@@ -90,6 +91,8 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
                     text_end_date.setText(Setup.parseJSONDateToString(delegate.getEndDate()));
                     btnSubmit.setText("Save");
                     flag = "Current";
+
+                    getActivity().setTitle("Edit Delegate");
 
                     for(int i = 0; i < employeeList.size(); i++){
                         if(employeeList.get(i).getEmpID() == delegate.getEmpID()){
@@ -219,6 +222,7 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
                                                                 public void onClick(DialogInterface dialog, int which) {
                                                                     flag = "Current";
                                                                     btnSubmit.setText("Save");
+                                                                    getActivity().setTitle("Edit Delegate");
                                                                 }
                                                             })
                                                             .setIcon(android.R.drawable.ic_dialog_alert)

@@ -66,6 +66,9 @@ public class SignatureFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_signature,container,false);
         ButterKnife.bind(this,view);
         setHasOptionsMenu(true);
+
+        getActivity().setTitle("Disbursement List Detail");
+
         mSignature = new signature(SignatureFragment.this.getActivity(), null);
         mSignature.setBackgroundColor(Color.WHITE);
         signArea.addView(mSignature, ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
@@ -154,7 +157,7 @@ public class SignatureFragment extends android.support.v4.app.Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(SignatureFragment.this.getActivity(), "Could not initiate File System.. Is Sdcard mounted properly?", 1000).show();
+            Toast.makeText(SignatureFragment.this.getActivity(), "Could not initiate File System.. Is Sdcard mounted properly?", Toast.LENGTH_SHORT).show();
             return false;
         }
     }

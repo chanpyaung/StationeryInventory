@@ -34,4 +34,7 @@ public interface RequisitionAPI {
     @GET("/requisitionAPI.svc/deleteRequisition/{ReqID}")
     void cancelRequisition(@Path("ReqID") int reqID, Callback<Boolean> isDeleted);
 
+    @GET("/requisitionAPI.svc/getRequisitionList/{DisID}")
+    void getRequisitionListByDisID(@Path("DisID") int disID, Callback<List<JSONRequisition>> reqList);
+
 }

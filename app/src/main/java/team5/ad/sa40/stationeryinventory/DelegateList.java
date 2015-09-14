@@ -50,6 +50,8 @@ public class DelegateList extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_delegate_list, container, false);
         setHasOptionsMenu(true);
 
+        getActivity().setTitle("Delegate List");
+
         new AlertDialog.Builder(getActivity())
                 .setTitle("Information")
                 .setMessage("Please swipe the item to delete!")

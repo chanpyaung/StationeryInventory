@@ -69,6 +69,9 @@ public class DisbursementList extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_disbursement_list, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
+
+        getActivity().setTitle("Disbursement List");
+
         mRecyclerView = (RecyclerView)view.findViewById(R.id.dis_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 

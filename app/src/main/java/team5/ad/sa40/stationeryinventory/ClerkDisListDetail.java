@@ -75,6 +75,8 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
         setHasOptionsMenu(true);
         ButterKnife.bind(this, v);
 
+        getActivity().setTitle("Disbursement List Detail");
+
         Bundle bundle = this.getArguments();
         final JSONDisbursement dis = (JSONDisbursement) bundle.getSerializable("disbursement");
         Log.i("Dis id is ", String.valueOf(dis.getDisID()));
@@ -162,8 +164,8 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_details){
-            Toast.makeText(ClerkDisListDetail.this.getActivity(), "Detail selected!", Toast.LENGTH_SHORT);
-            text_col_pt.setText("");
+            android.support.v4.app.Fragment frag = new SignatureFragment();
+            getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Sign").commit();
         }
         return super.onOptionsItemSelected(item);
     }
