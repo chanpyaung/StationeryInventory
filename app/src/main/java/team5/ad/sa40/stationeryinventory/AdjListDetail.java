@@ -85,6 +85,11 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
 
         ButterKnife.bind(this, v);
 
+
+        if(dis.getStatus().equals("REJECT")){
+            txtStatusLabel.setText("Rejected By");
+        }
+
         getActivity().setTitle("Adjustment List Detail");
 
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
