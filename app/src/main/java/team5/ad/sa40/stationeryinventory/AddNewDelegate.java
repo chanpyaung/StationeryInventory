@@ -48,10 +48,14 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
     @Bind(R.id.txtStartDate)EditText text_start_date;
     @Bind(R.id.txtEndDate)EditText text_end_date;
     @Bind(R.id.btnSubmit)Button btnSubmit;
+    @Bind(R.id.spnStat)Spinner spnStat;
+
     private DatePickerDialog fromDatePickerDialog;
     private DatePickerDialog toDatePickerDialog;
     private List<JSONEmployee> employeeList;
     private String flag = "New";
+    String[] stat_ary = {"Select Status","LEAVE/OFF", "MEDICAL LEAVE", "OUTSTATION"};
+    String temp1 = "Create"; String temp2 = "create";
 
     public AddNewDelegate() {
         // Required empty public constructor
@@ -65,6 +69,10 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_add_new_delegate, container, false);
         ButterKnife.bind(this, view);
+
+        final ArrayAdapter<String> col_collect = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, stat_ary);
+        col_collect.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spnStat.setAdapter(col_collect);
 
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
         final DelegateAPI delegateAPI = restAdapter.create(DelegateAPI.class);
@@ -89,14 +97,20 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
                     delegate = (JSONDelegate)bundle.getSerializable("delegate");
                     text_start_date.setText(Setup.parseJSONDateToString(delegate.getStartDate()));
                     text_end_date.setText(Setup.parseJSONDateToString(delegate.getEndDate()));
+                    int rindex = col_collect.getPosition(delegate.getStatus());
+                    spnStat.setSelection(rindex);
                     btnSubmit.setText("Save");
                     flag = "Current";
 
                     getActivity().setTitle("Edit Delegate");
 
                     for(int i = 0; i < employeeList.size(); i++){
-                        if(employeeList.get(i).getEmpID() == delegate.getEmpID()){
+                        Log.e("Emp ID", String.valueOf(employeeList.get(i).getEmpID()));
+                        Log.e("Delegate empID", String.valueOf(delegate.getEmpID()));
+                        if(employeeList.get(i).getEmpID().equals(delegate.getEmpID())){
+                            Log.e("Flag", "True");
                             currentEmp = employeeList.get(i).getEmpName();
+                            Log.e("Current Emp", currentEmp);
                         }
                     }
                 }
@@ -158,13 +172,25 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
 
-                if (!text_start_date.getText().toString().matches("") || !text_end_date.getText().toString().matches("")) {
+                if (!text_start_date.getText().toString().matches("") && !text_end_date.getText().toString().matches("")) {
                     Date start = Setup.parseStringToDate(text_start_date.getText().toString());
                     Date end = Setup.parseStringToDate(text_end_date.getText().toString());
 
                     String sflag = checkWithTodayDate(start);
                     String sflag2 = checkWithTodayDate(end);
-                    if (end.before(start)) {
+                    if(spnStat.getSelectedItemPosition() == 0){
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Fail")
+                                .setMessage("Please select the delegation status!")
+                                .setCancelable(false)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
+                    else if (end.before(start)) {
                         text_end_date.setError("Should be after Start Date");
                     }
                     else if(sflag.equals("false")){
@@ -176,9 +202,12 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
                     else{
                         text_start_date.setError(null);
                         text_end_date.setError(null);
+                        if(!flag.equals("New")){
+                            temp1 = "Edit"; temp2 = "edit";
+                        }
                         new AlertDialog.Builder(getActivity())
-                                .setTitle("Create Delegate")
-                                .setMessage("Are you sure you want to create this delegation?")
+                                .setTitle(temp1 + " Delegate")
+                                .setMessage("Are you sure you want to "+temp2+" this delegation?")
                                 .setCancelable(false)
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -204,7 +233,7 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
 
                                             object.addProperty("StartDate", str_date1);
                                             object.addProperty("EndDate", str_date2);
-                                            object.addProperty("Status", "ADVANCED");
+                                            object.addProperty("Status", spnStat.getSelectedItem().toString());
                                         }
                                         catch (ParseException e){
                                             Log.e("Change new del", e.toString());
@@ -236,6 +265,7 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
                                             });
                                         }
                                         if(flag.equals("Current")){
+                                            Log.e("json", object.toString());
                                             delegateAPI.editDelegate(object, new Callback<Boolean>() {
                                                 @Override
                                                 public void success(Boolean aBoolean, Response response) {

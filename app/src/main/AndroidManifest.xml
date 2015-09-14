@@ -46,7 +46,7 @@
         <meta-data android:name="com.parse.push.gcm_sender_id"
             android:value="326827207539" />
         <meta-data android:name="com.parse.push.notification_icon"
-            android:resource="@drawable/logo_50"/>
+            android:resource="@drawable/logo"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

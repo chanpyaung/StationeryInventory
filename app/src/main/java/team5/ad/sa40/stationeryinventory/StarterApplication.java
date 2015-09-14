@@ -15,6 +15,7 @@ import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.PushService;
 import com.parse.SaveCallback;
 
 
@@ -29,6 +30,7 @@ public class StarterApplication extends Application {
 
     //initialise
     Parse.initialize(this, "EQnJ9kuR5DKhU0UfVPr6VwN0QA0wVys00jnrv4KU", "7Zl9KD105R31YzV7h3dUskdjk3LJwv8FsdHLMOBh");
+
     ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
       @Override
       public void done(ParseException e) {

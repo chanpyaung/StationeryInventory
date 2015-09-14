@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,11 @@ import android.widget.Toast;
 
 import com.parse.ParseAnalytics;
 import com.parse.ParseUser;
+<<<<<<< HEAD
+import com.parse.PushService;
+import com.parse.SaveCallback;
+=======
+>>>>>>> origin/master
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +64,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //to receive notifications:
+        //to receive notifications for the employee logged in:
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.remove("channels");
+        String emp = Setup.user.getRoleID() + String.valueOf(Setup.user.getEmpID());
+        installation.add("channels",emp);
+        Log.i("channel: ", installation.get("channels").toString());
+        installation.saveInBackground();
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
         //Check user role and redirect to respective layout
@@ -438,6 +450,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.logout:
+                        //clear user
                         SharedPreferences pref =
                                 PreferenceManager.getDefaultSharedPreferences
                                         (getApplicationContext());
@@ -445,7 +458,6 @@ public class MainActivity extends AppCompatActivity {
                         editor.putString("username", null);
                         editor.putString("password", null);
                         editor.commit();
-                        ParseUser.logOutInBackground();
 
                         Intent i = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(i);
