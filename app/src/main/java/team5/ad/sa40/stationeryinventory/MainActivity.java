@@ -16,12 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
-<<<<<<< HEAD
 import com.parse.PushService;
 import com.parse.SaveCallback;
-=======
->>>>>>> origin/master
 
 import java.util.ArrayList;
 import java.util.Collections;
