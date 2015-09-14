@@ -52,9 +52,9 @@ public class DelegateGridAdapter extends RecyclerView.Adapter<DelegateGridAdapte
             @Override
             public void success(JSONEmployee jsonEmployee, Response response) {
 
-                viewHolder.txtNoNeedLabel1.setText("");
+                viewHolder.txtNoNeedLabel1.setText(del.getStatus());
                 viewHolder.txtNoNeedLabel2.setText("");
-                viewHolder.txtNoNeedLabel3.setText("");
+                viewHolder.txtNoNeedLabel3.setText(" >");
                 viewHolder.txtEmpLabel.setText("Employee Name:");
                 viewHolder.txtEmpName.setText(jsonEmployee.getEmpName());
                 viewHolder.txtStartLabel.setText("Start Date:");
