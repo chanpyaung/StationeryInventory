@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
 
 import java.util.List;
 
@@ -48,6 +49,13 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //reset notification channel to listen to
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.remove("channels");
+        installation.saveInBackground();
+
+
+        //check if user is logged in
         SharedPreferences pref =
                 PreferenceManager.getDefaultSharedPreferences
                         (getApplicationContext());
