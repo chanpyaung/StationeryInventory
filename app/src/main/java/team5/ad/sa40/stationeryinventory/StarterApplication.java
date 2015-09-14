@@ -9,7 +9,6 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
@@ -36,7 +35,6 @@ public class StarterApplication extends Application {
       @Override
       public void done(ParseException e) {
         String deviceToken = (String) ParseInstallation.getCurrentInstallation().get("deviceToken");
-        Log.i("deviceToken", deviceToken);
         Setup.deviceToken = deviceToken;
       }
     });

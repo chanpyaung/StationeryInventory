@@ -2,17 +2,19 @@
 <items version="2" >
 
     <item
-        jar="/Users/student/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.2.1/44780c2cf98f6a3cf4e77f1234d644758b329201/bolts-android-1.2.1.jar"
+        jar="/Users/johnmajor/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.2.1/44780c2cf98f6a3cf4e77f1234d644758b329201/bolts-android-1.2.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="44780c2cf98f6a3cf4e77f1234d644758b329201">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/bolts-android-1.2.1-80913ce65c6737db0b42e8cf5ea1d963f335e82f.jar" />
         <dex dex="/Users/student/Documents/AD project Mobile/StationeryInventory/app/build/intermediates/pre-dexed/debug/bolts-android-1.2.1-18314a5d41ad40a7a6e521177844a2f9c858aed6.jar" />
     </item>
     <item
-        jar="/Users/student/.gradle/caches/modules-2/files-2.1/com.parse/parse-android/1.10.1/a87cb993a12e574a216213d0b8b2b78f6da35d37/parse-android-1.10.1.jar"
+        jar="/Users/johnmajor/.gradle/caches/modules-2/files-2.1/com.parse/parse-android/1.10.1/a87cb993a12e574a216213d0b8b2b78f6da35d37/parse-android-1.10.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="a87cb993a12e574a216213d0b8b2b78f6da35d37">
+        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/parse-android-1.10.1-b013678f08f42c7435e88c133f0bc2b336d4a916.jar" />
         <dex dex="/Users/student/Documents/AD project Mobile/StationeryInventory/app/build/intermediates/pre-dexed/debug/parse-android-1.10.1-092ed99a2a323383bbffd733a8a124277f11cb1d.jar" />
     </item>
 

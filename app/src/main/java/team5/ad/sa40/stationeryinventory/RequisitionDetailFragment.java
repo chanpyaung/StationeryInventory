@@ -70,6 +70,7 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_requisition_detail, container, false);
         ButterKnife.bind(this, view);
+        getActivity().setTitle("Requisition Detail");
         Setup s = new Setup();
 
         if (getArguments() != null) {
