@@ -85,7 +85,9 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_department_info, container, false);
         ButterKnife.bind(this, view);
-        setHasOptionsMenu(true);
+        if(!Setup.user.getRoleID().equals("EM")){
+            setHasOptionsMenu(true);
+        }
 
         getActivity().setTitle("Department Info");
 

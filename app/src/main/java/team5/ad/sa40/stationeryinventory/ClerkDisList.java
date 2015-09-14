@@ -213,14 +213,14 @@ public class ClerkDisList extends android.support.v4.app.Fragment implements Spi
         }
         if (spnCol.getSelectedItemPosition() != 0 && spnDept.getSelectedItemPosition() != 0) {
             for (int z = 0; z < mDisbursement.size(); z++) {
-                if (mDisbursement.get(z).getDeptID() == dept && mDisbursement.get(z).getCPID() == col_id) {
+                if (mDisbursement.get(z).getDeptID().equals(dept) && mDisbursement.get(z).getCPID() == col_id) {
                     JSONDisbursement temp = mDisbursement.get(z);
                     fil_dis.add(temp);
                 }
             }
         } else {
             for (int z = 0; z < mDisbursement.size(); z++) {
-                if (mDisbursement.get(z).getDeptID() == dept || mDisbursement.get(z).getCPID() == col_id) {
+                if (mDisbursement.get(z).getDeptID().equals(dept) || mDisbursement.get(z).getCPID() == col_id) {
                     JSONDisbursement temp = mDisbursement.get(z);
                     fil_dis.add(temp);
                 }
