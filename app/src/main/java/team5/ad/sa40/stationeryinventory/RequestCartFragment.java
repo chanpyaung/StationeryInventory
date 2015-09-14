@@ -179,23 +179,7 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
                         myItem.addProperty("EmpID", Setup.user.getEmpID());
                         myItem.addProperty("ItemID", jitem.getItemID());
                         myItem.addProperty("Qty", jitem.getQty());
-                        myItem.addProperty("UOM", jitem.getUOM());
                         myRequest.add(myItem);
-                        JsonObject delItem = new JsonObject();
-                        delItem.addProperty("EmpID", Setup.user.getEmpID());
-                        delItem.addProperty("ItemID", jitem.getItemID());
-                        delItem.addProperty("Qty", jitem.getQty());
-                        rqAPI.deletefromCart(delItem, new Callback<Boolean>() {
-                            @Override
-                            public void success(Boolean aBoolean, Response response) {
-                                Log.i("Delete ", aBoolean.toString());
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-                                Log.i("Delete Fail ", error.toString());
-                            }
-                        });
                     }
                     rqAPI.submit(myRequest, new Callback<Integer>() {
                         @Override

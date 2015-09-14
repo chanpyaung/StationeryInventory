@@ -11,9 +11,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseException;
+import com.parse.ParseInstallation;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -46,17 +55,28 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.navigation_view) NavigationView navigationView;
     @Bind(R.id.drawer) DrawerLayout drawerLayout;
 
+
     private CategoryFragment mCategoryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //to receive notifications:
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
+
         //Check user role and redirect to respective layout
         //CircleImageView circleImageView = (CircleImageView)findViewById(R.id.profile_image);
         //new ItemListAdapter.DownloadImageTask(circleImageView).execute("http://192.168.31.202/img/user/" + Setup.user.getEmpID() + ".jpg");
         switch (Setup.user.getRoleID()) {
             case "EM":
                 setContentView(R.layout.activity_main);
+                CircleImageView profileImage = (CircleImageView) findViewById(R.id.profile_image);
+                TextView unameText = (TextView) findViewById(R.id.unameText);
+                TextView email = (TextView) findViewById(R.id.email);
+                new ItemListAdapter.DownloadImageTask(profileImage).execute("http://192.168.31.202/img/user/" + Setup.user.getEmpID() + ".jpg");
+                unameText.setText(Setup.user.getEmpName());
+                email.setText("Employee");
                 //Set fragment
                 mCategoryFragment = new CategoryFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -65,6 +85,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "DD":
                 setContentView(R.layout.empdelegate_activity_main);
+                CircleImageView profileImageDD = (CircleImageView) findViewById(R.id.profile_image);
+                TextView unameTextDD = (TextView) findViewById(R.id.unameText);
+                TextView emailDD = (TextView) findViewById(R.id.email);
+                new ItemListAdapter.DownloadImageTask(profileImageDD).execute("http://192.168.31.202/img/user/" + Setup.user.getEmpID() + ".jpg");
+                unameTextDD.setText(Setup.user.getEmpName());
+                emailDD.setText("Department Delegate");
                 //Set fragment
                 mCategoryFragment = new CategoryFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransactionDD = getSupportFragmentManager().beginTransaction();
@@ -73,6 +99,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "DR":
                 setContentView(R.layout.emprep_activity_main);
+                CircleImageView profileImageDR = (CircleImageView) findViewById(R.id.profile_image);
+                TextView unameTextDR = (TextView) findViewById(R.id.unameText);
+                TextView emailDR = (TextView) findViewById(R.id.email);
+                new ItemListAdapter.DownloadImageTask(profileImageDR).execute("http://192.168.31.202/img/user/" + Setup.user.getEmpID() + ".jpg");
+                unameTextDR.setText(Setup.user.getEmpName());
+                emailDR.setText("Department Representative");
                 //Set fragment
                 mCategoryFragment = new CategoryFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransactionDR = getSupportFragmentManager().beginTransaction();
@@ -81,6 +113,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "DH":
                 setContentView(R.layout.depthead_activity_main);
+                CircleImageView profileImageDH = (CircleImageView) findViewById(R.id.profile_image);
+                TextView unameTextDH = (TextView) findViewById(R.id.unameText);
+                TextView emailDH = (TextView) findViewById(R.id.email);
+                new ItemListAdapter.DownloadImageTask(profileImageDH).execute("http://192.168.31.202/img/user/" + Setup.user.getEmpID() + ".jpg");
+                unameTextDH.setText(Setup.user.getEmpName());
+                emailDH.setText("Department Head");
                 //Set fragment
                 mCategoryFragment = new CategoryFragment();
                 android.support.v4.app.FragmentTransaction fragmentTransactionDH = getSupportFragmentManager().beginTransaction();
@@ -89,6 +127,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "SC":
                 setContentView(R.layout.storeclerk_activity_main);
+                CircleImageView profileImageSC = (CircleImageView) findViewById(R.id.profile_image);
+                TextView unameTextSC = (TextView) findViewById(R.id.unameText);
+                TextView emailSC = (TextView) findViewById(R.id.email);
+                new ItemListAdapter.DownloadImageTask(profileImageSC).execute("http://192.168.31.202/img/user/" + Setup.user.getEmpID() + ".jpg");
+                unameTextSC.setText(Setup.user.getEmpName());
+                emailSC.setText("Store Clerk");
                 //Set fragment
                 InventoryList fragment = new InventoryList();
                 fragmentTran = getSupportFragmentManager().beginTransaction();
@@ -97,6 +141,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "SS":
                 setContentView(R.layout.storesupervisor_activity_main);
+                CircleImageView profileImageSS = (CircleImageView) findViewById(R.id.profile_image);
+                TextView unameTextSS = (TextView) findViewById(R.id.unameText);
+                TextView emailSS = (TextView) findViewById(R.id.email);
+                new ItemListAdapter.DownloadImageTask(profileImageSS).execute("http://192.168.31.202/img/user/" + Setup.user.getEmpID() + ".jpg");
+                unameTextSS.setText(Setup.user.getEmpName());
+                emailSS.setText("Store Supervisor");
                 //Set fragment
                 InventoryList fragmentSS = new InventoryList();
                 fragmentTran = getSupportFragmentManager().beginTransaction();
@@ -105,6 +155,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "SM":
                 setContentView(R.layout.storesupervisor_activity_main);
+                CircleImageView profileImageSM = (CircleImageView) findViewById(R.id.profile_image);
+                TextView unameTextSM = (TextView) findViewById(R.id.unameText);
+                TextView emailSM = (TextView) findViewById(R.id.email);
+                new ItemListAdapter.DownloadImageTask(profileImageSM).execute("http://192.168.31.202/img/user/" + Setup.user.getEmpID() + ".jpg");
+                unameTextSM.setText(Setup.user.getEmpName());
+                emailSM.setText("Store Manager");
                 //Set fragment
                 InventoryList fragmentSM = new InventoryList();
                 fragmentTran = getSupportFragmentManager().beginTransaction();
@@ -169,8 +225,15 @@ public class MainActivity extends AppCompatActivity {
                                             Log.i("STATUS", String.valueOf(response.getStatus()));
                                             Log.i("REASON", response.getReason());
                                             Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
-                                            RequisitionListAdapter.mRequisitions = reqList;
-                                            Setup.allRequisition = reqList;
+                                            if(jsonRequisitions.size()>0){
+                                                System.out.println("Sorting here");
+                                                Collections.sort(jsonRequisitions);
+                                                Setup.allRequisition = reqList;
+                                                RequisitionListAdapter.mRequisitions = reqList;
+                                                for(JSONRequisition jr : jsonRequisitions){
+                                                    System.out.println("ordered by Date" + jr.getDate() + " " +jr.getReqID() );
+                                                }
+                                            }
                                             RequisitionListFragment reqListFrag = new RequisitionListFragment();
                                             fragmentTran = getSupportFragmentManager().beginTransaction();
                                             fragmentTran.replace(R.id.frame, reqListFrag).commit();
@@ -191,8 +254,17 @@ public class MainActivity extends AppCompatActivity {
                                             Log.i("STATUS", String.valueOf(response.getStatus()));
                                             Log.i("REASON", response.getReason());
                                             Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
-                                            RequisitionListAdapter.mRequisitions = jsonRequisitions;
-                                            Setup.allRequisition = jsonRequisitions;
+                                            if(jsonRequisitions.size()>0){
+                                                System.out.println("Sorting here");
+                                                Collections.sort(jsonRequisitions);
+                                                Setup.allRequisition = jsonRequisitions;
+                                                RequisitionListAdapter.mRequisitions = jsonRequisitions;
+                                                for(JSONRequisition jr : jsonRequisitions){
+                                                    System.out.println("ordered by Date" + jr.getDate() + " " +jr.getReqID() );
+                                                }
+                                            }
+
+
                                             RequisitionListAdapter.mRequisitions = Setup.allRequisition;
                                             RequisitionListFragment reqListFrag = new RequisitionListFragment();
                                             fragmentTran = getSupportFragmentManager().beginTransaction();
@@ -365,6 +437,8 @@ public class MainActivity extends AppCompatActivity {
                         editor.putString("username", null);
                         editor.putString("password", null);
                         editor.commit();
+                        ParseUser.logOutInBackground();
+
                         Intent i = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(i);
                         return true;
@@ -417,5 +491,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     */
-
 }

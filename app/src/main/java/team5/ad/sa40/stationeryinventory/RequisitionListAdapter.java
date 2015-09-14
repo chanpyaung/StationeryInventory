@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
@@ -32,6 +33,10 @@ public class RequisitionListAdapter extends RecyclerView.Adapter<RequisitionList
         for(int i = 0; i < mRequisitions.size(); i++){
             String temp = String.valueOf(mRequisitions.get(i).getRetID());
             retId[i] = temp;
+        }
+        if (mRequisitions.size()>0){
+            System.out.println("Sorting here");
+            Collections.sort(mRequisitions);
         }
     }
 

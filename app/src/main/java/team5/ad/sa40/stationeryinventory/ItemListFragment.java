@@ -43,6 +43,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
     ItemListAdapter mAdapter;
     @Bind(R.id.searchItem) SearchView search;
     private List<JSONItem> mItems;
+    private List<String> itemNameList;
 
     public ItemListFragment() {
         // Required empty public constructor
@@ -68,10 +69,12 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
         mAdapter = new ItemListAdapter();
         mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
         mItems = new ArrayList<JSONItem>();
+        itemNameList = new ArrayList<String>();
         ScaleInAnimationAdapter animatedAdapter = new ScaleInAnimationAdapter(mAdapter);
         mRecyclerView.setAdapter(animatedAdapter);
         for(JSONItem it: mAdapter.myItemlist){
             mItems.add(it);
+            itemNameList.add(it.getItemName());
             Log.i("Add to mitems:", it.getItemName());
         }
         Log.i("Size of mItems: ", String.valueOf(mItems.size()));
@@ -90,9 +93,9 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 final List<JSONItem> filteredModelList = filter(mItems, newText);
-
                 mAdapter.myItemlist = filteredModelList;
                 mAdapter.animateTo(filteredModelList);
+                mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.scrollToPosition(0);
                 return true;
             }
@@ -107,12 +110,12 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
         for (JSONItem itemm : items) {
             final String text = itemm.getItemName().toLowerCase();
             Log.i("Item Name", text);
-            if (text.contains(query)) {
+            if (text.contains(query) || text.equals(query)) {
                 filteredItemList.add(itemm);
                 Log.i("Search Result", itemm.getItemName() + itemm.toString());
             }
         }
-        System.out.println("Result list: "+filteredItemList.get(filteredItemList.size()-1));
+        //System.out.println("Result list: "+filteredItemList.get(filteredItemList.size()-1));
         return filteredItemList;
     }
 

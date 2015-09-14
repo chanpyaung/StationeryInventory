@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 /**
  * Created by johnmajor on 9/12/15.
  */
-public class JSONRequisition {
+public class JSONRequisition implements  Comparable {
     @Expose
     private String Date;
     @Expose
@@ -245,6 +245,23 @@ public class JSONRequisition {
      */
     public void setStatusID(Integer StatusID) {
         this.StatusID = StatusID;
+    }
+
+    public int compareTo(Object o) {
+
+        JSONRequisition f = (JSONRequisition) o;
+
+        if (getReqID().compareTo(f.getReqID()) > 0) {
+
+            return 1;
+        }
+        else if (getReqID().compareTo(f.getReqID()) < 0) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+
     }
 }
 
