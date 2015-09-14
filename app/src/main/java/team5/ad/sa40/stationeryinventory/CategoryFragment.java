@@ -120,7 +120,9 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 final List<CategoryItem> filteredModelList = filter(mItems, newText);
+                mAdapter.mItems = filteredModelList;
                 mAdapter.animateTo(filteredModelList);
+                mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.scrollToPosition(0);
                 return true;
             }

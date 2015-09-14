@@ -115,7 +115,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
                 Log.i("Search Result", itemm.getItemName() + itemm.toString());
             }
         }
-        System.out.println("Result list: "+filteredItemList.get(filteredItemList.size()-1));
+        //System.out.println("Result list: "+filteredItemList.get(filteredItemList.size()-1));
         return filteredItemList;
     }
 
