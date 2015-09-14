@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.parse.ParseAnalytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //to receive notifications:
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
+
         //Check user role and redirect to respective layout
         switch (Setup.user.getRoleID()) {
             case "EM":
