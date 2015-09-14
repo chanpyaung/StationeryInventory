@@ -17,7 +17,7 @@
             android:title="Retrieval" />
 
         <item
-            android:id="@+id/disburse"
+            android:id="@+id/disbursement"
             android:checked="false"
             android:icon="@drawable/ic_swap_calls_black_24dp"
             android:title="Disbursement"/>
