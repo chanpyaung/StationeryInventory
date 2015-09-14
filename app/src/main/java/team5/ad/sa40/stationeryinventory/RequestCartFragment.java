@@ -65,6 +65,18 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_item_list,container,false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
+        getActivity().setTitle("Request Cart");
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Information")
+                .setMessage("Please swipe left the item to delete from request cart!")
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(R.drawable.ic_info_white_24dp)
+                .show();
         mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
         mAdapter = new RequestCartAdapter();
         Log.i("Request Cart Size: ", String.valueOf(MainActivity.requestCart.size()));
@@ -78,7 +90,7 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
         mAdapter.SetOnItemClickListener( new RequestCartAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(RequestCartFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(RequestCartFragment.this.getActivity(), "Click position at " + position, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -200,11 +212,12 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
                                                         @Override
                                                         public void success(List<JSONStatus> jsonStatuses, Response response) {
                                                             RequisitionListAdapter.mStatus = jsonStatuses;
+                                                            Log.i("Status Success", response.getUrl() + " " + String.valueOf(response.getStatus()));
                                                         }
 
                                                         @Override
                                                         public void failure(RetrofitError error) {
-
+                                                            Log.i("Status Failed", error.toString() + " " + error.getUrl());
                                                         }
                                                     });
                                                     Log.i("URL", response.getUrl());
@@ -220,7 +233,7 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
 
                                                 @Override
                                                 public void failure(RetrofitError error) {
-                                                    Log.i("GetRequisitionFail", error.toString());
+                                                    Log.i("GetRequisitionFail", error.toString()+ " " + error.getUrl());
                                                 }
                                             });
 
@@ -233,7 +246,18 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
 
                         @Override
                         public void failure(RetrofitError error) {
-                            Log.i("fail submit", error.toString());
+                            Log.i("fail submit", error.toString()+ " " + error.getUrl());
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Failed to Submit Requisition")
+                                    .setMessage("Sorry Requisition cannot made for the moment! Please try again later.")
+                                    .setCancelable(false)
+                                    .setPositiveButton("TRY AGAIN", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
                         }
                     });
                 }

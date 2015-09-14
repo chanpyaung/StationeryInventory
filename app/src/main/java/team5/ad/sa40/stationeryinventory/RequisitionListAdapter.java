@@ -27,7 +27,9 @@ public class RequisitionListAdapter extends RecyclerView.Adapter<RequisitionList
     public RequisitionListAdapter(){
         super();
         //mRequisitions = Requisition.getAllRetrievals();
-        retId = new String[mRequisitions.size()];
+        if(mRequisitions.size()>0){
+            retId = new String[mRequisitions.size()];
+        }
         Log.i("Size of list", String.valueOf(mRequisitions.size()));
         Setup s = new Setup();
         for(int i = 0; i < mRequisitions.size(); i++){

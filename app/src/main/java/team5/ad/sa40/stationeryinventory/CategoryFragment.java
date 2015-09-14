@@ -52,7 +52,7 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
 
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_category, container, false);
-        CategoryFragment.this.getActivity().setTitle("Category");
+        getActivity().setTitle("Catalog");
         mRecyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
 

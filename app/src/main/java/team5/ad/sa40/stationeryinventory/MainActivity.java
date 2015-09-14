@@ -14,12 +14,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.Parse;
 import com.parse.ParseAnalytics;
-import com.parse.ParseException;
-import com.parse.ParseInstallation;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -215,34 +211,41 @@ public class MainActivity extends AppCompatActivity {
                                     reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
                                         @Override
                                         public void success(List<JSONRequisition> jsonRequisitions, Response response) {
-                                            List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
-                                            for(JSONRequisition jsonReq : jsonRequisitions){
-                                                if(jsonReq.getStatusID().equals(2)){
-                                                    reqList.add(jsonReq);
+                                            if (jsonRequisitions.size() > 0) {
+                                                List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
+                                                for (JSONRequisition jsonReq : jsonRequisitions) {
+                                                    if (jsonReq.getStatusID().equals(2)) {
+                                                        reqList.add(jsonReq);
+                                                    }
                                                 }
-                                            }
-                                            Log.i("URL", response.getUrl());
-                                            Log.i("STATUS", String.valueOf(response.getStatus()));
-                                            Log.i("REASON", response.getReason());
-                                            Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
-                                            if(jsonRequisitions.size()>0){
-                                                System.out.println("Sorting here");
-                                                Collections.sort(jsonRequisitions);
-                                                Setup.allRequisition = reqList;
-                                                RequisitionListAdapter.mRequisitions = reqList;
-                                                for(JSONRequisition jr : jsonRequisitions){
-                                                    System.out.println("ordered by Date" + jr.getDate() + " " +jr.getReqID() );
+                                                Log.i("URL", response.getUrl());
+                                                Log.i("STATUS", String.valueOf(response.getStatus()));
+                                                Log.i("REASON", response.getReason());
+                                                Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
+                                                if (jsonRequisitions.size() > 0) {
+                                                    System.out.println("Sorting here");
+                                                    Collections.sort(jsonRequisitions);
+                                                    Setup.allRequisition = reqList;
+                                                    RequisitionListAdapter.mRequisitions = reqList;
+                                                    for (JSONRequisition jr : jsonRequisitions) {
+                                                        System.out.println("ordered by Date" + jr.getDate() + " " + jr.getReqID());
+                                                    }
                                                 }
-                                            }
-                                            RequisitionListFragment reqListFrag = new RequisitionListFragment();
-                                            fragmentTran = getSupportFragmentManager().beginTransaction();
-                                            fragmentTran.replace(R.id.frame, reqListFrag).commit();
-                                        }
+                                                RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                                                fragmentTran = getSupportFragmentManager().beginTransaction();
+                                                fragmentTran.replace(R.id.frame, reqListFrag).commit();
 
-                                        @Override
-                                        public void failure(RetrofitError error) {
-                                            Log.i("GetRequisitionFail", error.toString());
+                                            } else {
+
+                                                Toast.makeText(MainActivity.this, "We acknowledge you that you haven't made any requisition yet.Please made some requisition before you proceed.", Toast.LENGTH_SHORT).show();
+
+                                            }
                                         }
+                                            @Override
+                                            public void failure (RetrofitError error){
+                                                Log.i("GetRequisitionFail", error.toString() + " " + error.getUrl());
+                                            }
+
                                     });
                                 }
                                 //load requisitionlist by EmpID
@@ -250,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
                                     reqAPI.getRequisition(Setup.user.getEmpID(), new Callback<List<JSONRequisition>>() {
                                         @Override
                                         public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                                            if (jsonRequisitions.size()>0){
                                             Log.i("URL", response.getUrl());
                                             Log.i("STATUS", String.valueOf(response.getStatus()));
                                             Log.i("REASON", response.getReason());
@@ -269,11 +273,15 @@ public class MainActivity extends AppCompatActivity {
                                             RequisitionListFragment reqListFrag = new RequisitionListFragment();
                                             fragmentTran = getSupportFragmentManager().beginTransaction();
                                             fragmentTran.replace(R.id.frame, reqListFrag).commit();
+                                            }
+                                            else{
+                                                Toast.makeText(MainActivity.this, "We acknowledge you that you haven't made any requisition yet.Please made some requisition before you proceed.", Toast.LENGTH_SHORT).show();
+                                            }
                                         }
 
                                         @Override
                                         public void failure(RetrofitError error) {
-                                            Log.i("GetRequisitionFail", error.toString());
+                                            Log.i("GetRequisitionFail", error.toString()+ " " + error.getUrl());
                                         }
                                     });
                                 }
@@ -320,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void failure(RetrofitError error) {
-                                Log.i("GetRequisitionFail", error.toString());
+                                Log.i("GetRequisitionFail", error.toString()+ " " + error.getUrl());
                             }
                         });
                         return true;

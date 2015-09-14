@@ -13,10 +13,10 @@ import team5.ad.sa40.stationeryinventory.Model.JSONStatus;
  * Created by johnmajor on 9/12/15.
  */
 public interface RequisitionAPI {
-    @GET("/requisitionAPI.svc/getRequisition/null/null/{EmpID}")
+    @GET("/requisitionAPI.svc/getRequisition/null/null/{EmpID}/null")
     void getRequisition(@Path("EmpID") int empID, Callback<List<JSONRequisition>> requisitionList);
 
-    @GET("/requisitionAPI.svc/getRequisition/null/null/null")
+    @GET("/requisitionAPI.svc/getRequisition/null/null/null/null")
     void getRequisitionFromSC(Callback<List<JSONRequisition>> requisitionList);
 
     @GET("/requisitionAPI.svc/getStatus")

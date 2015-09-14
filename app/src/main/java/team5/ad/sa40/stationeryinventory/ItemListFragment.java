@@ -66,6 +66,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
+        getActivity().setTitle("Items");
         mAdapter = new ItemListAdapter();
         mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 1));
         mItems = new ArrayList<JSONItem>();
