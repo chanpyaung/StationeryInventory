@@ -4,6 +4,7 @@ package team5.ad.sa40.stationeryinventory;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,6 +15,7 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -35,6 +37,12 @@ import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.DisbursementAPI;
+import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
 
 
 /**
@@ -54,6 +62,9 @@ public class SignatureFragment extends android.support.v4.app.Fragment {
     public static String tempDir;
     signature mSignature;
     String abc;
+
+    JSONDisbursement dis;
+    int RepID;
     public SignatureFragment() {
         // Required empty public constructor
     }
@@ -63,9 +74,13 @@ public class SignatureFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_signature,container,false);
+        View view = inflater.inflate(R.layout.fragment_signature, container, false);
         ButterKnife.bind(this,view);
         setHasOptionsMenu(true);
+
+        Bundle bundle = this.getArguments();
+        dis = (JSONDisbursement)bundle.getSerializable("disbursement");
+        RepID = bundle.getInt("RepID");
 
         getActivity().setTitle("Disbursement List Detail");
 
@@ -74,13 +89,13 @@ public class SignatureFragment extends android.support.v4.app.Fragment {
         signArea.addView(mSignature, ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
         mView = signArea;
 
-        tempDir = Environment.getExternalStorageDirectory() + "/" + getResources().getString(R.string.external_dir) + "/";
-        ContextWrapper cw = new ContextWrapper(SignatureFragment.this.getActivity().getApplicationContext());
-        File directory = cw.getDir(getResources().getString(R.string.external_dir), Context.MODE_PRIVATE);
-        prepareDirectory();
-        uniqueId = getTodaysDate() + Setup.user.getEmpID();
-        current = uniqueId + ".png";
-        mypath = new File(directory, current);
+//        tempDir = Environment.getExternalStorageDirectory() + "/" + getResources().getString(R.string.external_dir) + "/";
+//        ContextWrapper cw = new ContextWrapper(SignatureFragment.this.getActivity().getApplicationContext());
+//        File directory = cw.getDir(getResources().getString(R.string.external_dir), Context.MODE_PRIVATE);
+//        prepareDirectory();
+//        uniqueId = getTodaysDate() + Setup.user.getEmpID();
+//        current = uniqueId + ".png";
+//        mypath = new File(directory, current);
         return view;
     }
 
@@ -105,10 +120,63 @@ public class SignatureFragment extends android.support.v4.app.Fragment {
     void save(){
         boolean error = captureSignature();
         if(!error){
-            mView.setDrawingCacheEnabled(true);
-            mSignature.save(mView);
+            try {
+                mView.setDrawingCacheEnabled(true);
+                mBitmap = Bitmap.createBitmap(mView.getWidth(), mView.getHeight(), Bitmap.Config.RGB_565);
+                Canvas canvas = new Canvas(mBitmap);
+                mView.draw(canvas);
+                this.SaveImage(mBitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("error", "print");
+            }
         }
 
+    }
+
+    private void SaveImage(Bitmap finalBitmap) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/signatures");
+        myDir.mkdirs();
+        String fname = String.valueOf(dis.getDisID())+".jpg";
+        File file = new File (myDir, fname);
+        if (file.exists ()) file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+
+            RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+            DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
+            disbursementAPI.completeDisbursement(dis.getDisID(), new Callback<Boolean>() {
+                @Override
+                public void success(Boolean aBoolean, Response response) {
+                    Log.e("Reach near alert", "Alert");
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Success")
+                            .setMessage("The disbursement process is completed!")
+                            .setCancelable(false)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    android.support.v4.app.Fragment frag = new ClerkDisList();
+                                    getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.e("error", error.toString());
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean captureSignature() {

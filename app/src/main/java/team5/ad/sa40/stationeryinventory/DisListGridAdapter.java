@@ -60,7 +60,7 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
             String string_date = Setup.parseJSONDateToString(disItem.getDate());
             viewHolder.disDate.setText(string_date);
             viewHolder.disStatus.setText(disItem.getStatus());
-            if(disItem.getStatus().toUpperCase().equals("PENDING")){
+            if(disItem.getStatus().equals("PENDING")){
                 viewHolder.disStatus.setTextColor(Color.RED);
             }
         }

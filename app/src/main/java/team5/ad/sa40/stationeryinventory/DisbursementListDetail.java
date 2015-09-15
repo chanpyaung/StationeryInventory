@@ -3,8 +3,11 @@ package team5.ad.sa40.stationeryinventory;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -72,6 +75,7 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
     //@Bind(R.id.imgPhone) ImageView img_phCall;
     @Bind(R.id.btnView) Button btn_view;
     @Bind(R.id.img3) ImageView clerk_img;
+    @Bind(R.id.img2) ImageView signImage;
 
 
     public DisbursementListDetail() {
@@ -130,6 +134,23 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
                     public void success(JSONEmployee jsonEmployee, Response response) {
                         clerk = jsonEmployee;
 
+                        text_clerk.setText(clerk.getEmpName());
+                        text_dis_no.setText(String.valueOf(dis.getDisID()));
+                        String string_date = Setup.parseJSONDateToString(dis.getDate());
+                        text_dis_date.setText(string_date);
+                        text_col_pt.setText(selected_colPt.getCPName());
+                        text_status.setText(dis.getStatus());
+
+                        map.addMarker(new MarkerOptions()
+                                .position(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()))
+                                .title(selected_colPt.getCPName()));
+                        // Updates the location and zoom of the MapView
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 15);
+                        map.animateCamera(cameraUpdate);
+
+                        new InventoryDetails.DownloadImageTask(clerk_img).execute("http://192.168.31.202/img/user/" + clerk.getEmpID() + ".jpg");
+
+                        if(dis.getStatus().equals("DISBURSED")){
                         EmployeeAPI employeeAPI = restAdapter.create(EmployeeAPI.class);
                         employeeAPI.getEmployeeById(dis.getReceivedBy(), new Callback<JSONEmployee>() {
                             @Override
@@ -137,21 +158,14 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
                                 representative = jsonEmployee;
 
                                 text_rep.setText(representative.getEmpName());
-                                text_clerk.setText(clerk.getEmpName());
-                                text_dis_no.setText(String.valueOf(dis.getDisID()));
-                                String string_date = Setup.parseJSONDateToString(dis.getDate());
-                                text_dis_date.setText(string_date);
-                                text_col_pt.setText(selected_colPt.getCPName());
-                                text_status.setText(dis.getStatus());
 
-                                map.addMarker(new MarkerOptions()
-                                        .position(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()))
-                                        .title(selected_colPt.getCPName()));
-                                // Updates the location and zoom of the MapView
-                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(selected_colPt.getCPLat(), selected_colPt.getCPLgt()), 15);
-                                map.animateCamera(cameraUpdate);
-
-                                new InventoryDetails.DownloadImageTask(clerk_img).execute("http://192.168.31.202/img/user/" + clerk.getEmpID() + ".jpg");
+                                String root = Environment.getExternalStorageDirectory().toString();
+                                String fname =  String.valueOf(dis.getDisID()) +".jpg";
+                                String completeDir = root + "/signatures/"+ fname;
+                                Bitmap bmp = BitmapFactory.decodeFile(completeDir);
+                                if(bmp != null){
+                                    signImage.setImageBitmap(bmp);
+                                }
                             }
 
                             @Override
@@ -159,6 +173,7 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment {
 
                             }
                         });
+                        }
                     }
 
                     @Override

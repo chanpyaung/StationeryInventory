@@ -51,6 +51,8 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
 
     MapView mapView;
     GoogleMap map;
+    JSONDisbursement dis;
+    JSONEmployee rep;
 
     @Bind(R.id.txtNo) TextView text_dis_no;
     @Bind(R.id.txtDisDate) TextView text_dis_date;
@@ -72,16 +74,19 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_clerk_dis_list_detail, container, false);
-        setHasOptionsMenu(true);
         ButterKnife.bind(this, v);
 
         getActivity().setTitle("Disbursement List Detail");
 
         Bundle bundle = this.getArguments();
-        final JSONDisbursement dis = (JSONDisbursement) bundle.getSerializable("disbursement");
+        dis = (JSONDisbursement) bundle.getSerializable("disbursement");
         Log.i("Dis id is ", String.valueOf(dis.getDisID()));
         final JSONCollectionPoint selected_colPt;
         selected_colPt = (JSONCollectionPoint) bundle.getSerializable("collection");
+
+        if(!dis.getStatus().equals("DISBURSED")){
+            setHasOptionsMenu(true);
+        }
 
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapview);
@@ -117,7 +122,7 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
                 employeeAPI.getEmployeeById(sel_dept.getDeptRep(), new Callback<JSONEmployee>() {
                     @Override
                     public void success(JSONEmployee jsonEmployee, Response response) {
-                        final JSONEmployee rep = jsonEmployee;
+                        rep = jsonEmployee;
 
                         text_dis_no.setText(String.valueOf(dis.getDisID()));
                         String string_date = Setup.parseJSONDateToString(dis.getDate());
@@ -164,7 +169,11 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_details){
+            Bundle bundle = new Bundle();
             android.support.v4.app.Fragment frag = new SignatureFragment();
+            bundle.putSerializable("disbursement", dis);
+            bundle.putInt("RepID", rep.getEmpID());
+            frag.setArguments(bundle);
             getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Sign").commit();
         }
         return super.onOptionsItemSelected(item);
