@@ -130,7 +130,7 @@
         android:id="@+id/img2"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="25dp"
-        android:src="@drawable/sign"/>
+        android:src="@drawable/nophoto"/>
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"

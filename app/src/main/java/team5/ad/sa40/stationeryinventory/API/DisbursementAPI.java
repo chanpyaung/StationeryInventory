@@ -26,4 +26,7 @@ public interface DisbursementAPI {
 
     @GET("/disbursementAPI.svc/getDisbursement/null/null/null/null/null")
     void getAllDisbursements(Callback<List<JSONDisbursement>> disbursementList);
+
+    @GET("/disbursementAPI.svc/completeDisbursement/{DisID}")
+    void completeDisbursement(@Path("DisID") int DisID, Callback<Boolean> result);
 }
