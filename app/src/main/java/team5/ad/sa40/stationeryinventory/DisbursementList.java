@@ -1,7 +1,9 @@
 package team5.ad.sa40.stationeryinventory;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -203,62 +205,113 @@ public class DisbursementList extends android.support.v4.app.Fragment {
             }
         });
 
-        text_end_date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//        text_end_date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus) {
+//                    text_end_date.setError(null);
+//                    Date start = Setup.parseStringToDate(text_start_date.getText().toString());
+//                    Date end = Setup.parseStringToDate(text_end_date.getText().toString());
+//
+//                    if (end.before(start)) {
+//                        text_end_date.setError("End Date should be after Start Date");
+//                    }
+//                }
+//            }
+//        });
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    text_end_date.setError(null);
+            public void onClick(View v) {
+                if(!text_start_date.getText().toString().matches("") && !text_end_date.getText().toString().matches("")){
                     Date start = Setup.parseStringToDate(text_start_date.getText().toString());
                     Date end = Setup.parseStringToDate(text_end_date.getText().toString());
 
                     if (end.before(start)) {
                         text_end_date.setError("End Date should be after Start Date");
                     }
+                    else{
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+                        SimpleDateFormat original_format = new SimpleDateFormat("dd/MM/yyyy");
+                        try {
+                            Date uDate1 = original_format.parse(text_start_date.getText().toString());
+                            String str_date1 = format.format(uDate1);
+                            str_date1 = str_date1.replace('/', '-');
+                            Log.e("SQLDate 1", str_date1);
+
+                            Date uDate2 = original_format.parse(text_end_date.getText().toString());
+                            String str_date2 = format.format(uDate2);
+                            str_date2 = str_date2.replace('/', '-');
+                            Log.e("SQLDate 2", str_date2);
+
+                            DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
+                            disbursementAPI.getDisbursementByDates(Setup.user.getDeptID(), str_date1, str_date2, new Callback<List<JSONDisbursement>>() {
+                                @Override
+                                public void success(List<JSONDisbursement> jsonDisbursements, Response response) {
+                                    mDisbursement = jsonDisbursements;
+                                    Log.e("Success", String.valueOf(jsonDisbursements.size()));
+                                    mAdapter.animateTo(mDisbursement);
+                                    mRecyclerView.scrollToPosition(0);
+
+                                    if (mDisbursement.size() < 1) {
+                                        new AlertDialog.Builder(getActivity())
+                                                .setTitle("Information")
+                                                .setMessage("No disbursement is found!")
+                                                .setCancelable(false)
+                                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                    }
+                                                })
+                                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                                .show();
+                                    } else if (mDisbursement.size() > 1) {
+                                        new AlertDialog.Builder(getActivity())
+                                                .setTitle("Information")
+                                                .setMessage(mDisbursement.size() + " disbursements are found!")
+                                                .setCancelable(false)
+                                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                    }
+                                                })
+                                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                                .show();
+                                    } else {
+                                        new AlertDialog.Builder(getActivity())
+                                                .setTitle("Information")
+                                                .setMessage(mDisbursement.size() + " disbursement is found!")
+                                                .setCancelable(false)
+                                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                    }
+                                                })
+                                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                                .show();
+                                    }
+
+                                    text_start_date.setError(null);
+                                    text_end_date.setError(null);
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    Log.e("getDisbursementByDates", error.toString());
+                                }
+                            });
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
-            }
-        });
-
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Date start = Setup.parseStringToDate(text_start_date.getText().toString());
-                Date end = Setup.parseStringToDate(text_end_date.getText().toString());
-
-                if (end.before(start)) {
-                    text_end_date.setError("End Date should be after Start Date");
-                }
-                else{
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-                    SimpleDateFormat original_format = new SimpleDateFormat("dd/MM/yyyy");
-                    try {
-                        Date uDate1 = original_format.parse(text_start_date.getText().toString());
-                        String str_date1 = format.format(uDate1);
-                        str_date1 = str_date1.replace('/', '-');
-                        Log.e("SQLDate 1", str_date1);
-
-                        Date uDate2 = original_format.parse(text_end_date.getText().toString());
-                        String str_date2 = format.format(uDate2);
-                        str_date2 = str_date2.replace('/', '-');
-                        Log.e("SQLDate 2", str_date2);
-
-                        DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
-                        disbursementAPI.getDisbursementByDates(Setup.user.getDeptID(), str_date1, str_date2, new Callback<List<JSONDisbursement>>() {
-                            @Override
-                            public void success(List<JSONDisbursement> jsonDisbursements, Response response) {
-                                mDisbursement = jsonDisbursements;
-                                Log.e("Success", String.valueOf(jsonDisbursements.size()));
-                                mAdapter.animateTo(mDisbursement);
-                                mRecyclerView.scrollToPosition(0);
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-                                Log.e("getDisbursementByDates", error.toString());
-                            }
-                        });
-
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                else {
+                    if(text_start_date.getText().toString().matches("")){
+                        text_start_date.setError("Fill Data!");
+                    }
+                    else if (text_end_date.getText().toString().matches("")){
+                        text_end_date.setError("Fill Data!");
                     }
                 }
             }

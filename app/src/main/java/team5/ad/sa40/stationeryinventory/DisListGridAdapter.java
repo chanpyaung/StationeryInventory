@@ -71,6 +71,9 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
             viewHolder.txtdisStatus.setText(disItem.getStatus());
             viewHolder.txtDept.setText(disItem.getDeptID());
             viewHolder.txtCol.setText(getColPtNameFromDis(disItem.getCPID()));
+            if(disItem.getStatus().equals("PENDING")){
+                viewHolder.disStatus.setTextColor(Color.RED);
+            }
         }
 
     }
