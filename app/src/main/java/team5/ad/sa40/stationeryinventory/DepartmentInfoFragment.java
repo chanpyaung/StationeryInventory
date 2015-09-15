@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -41,10 +42,10 @@ import team5.ad.sa40.stationeryinventory.Model.Employee;
  */
 public class DepartmentInfoFragment extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
-    @Bind(R.id.contactName) EditText contactName;
+    @Bind(R.id.contactName) AutoCompleteTextView contactName;
     @Bind(R.id.telephone) EditText telephone;
     @Bind(R.id.fax) EditText fax;
-    @Bind(R.id.deptHead) EditText deptHead;
+    @Bind(R.id.deptHead) AutoCompleteTextView deptHead;
     @Bind(R.id.spinnerRep) Spinner representative;
     @Bind(R.id.spinnerCPoint) Spinner collectionPoint;
     MapView cpMap;
@@ -226,6 +227,14 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment impl
             deptHead.setText(String.valueOf(currentHead.getEmpName()));
             Log.e("Current Rep", currentRep.getEmpName());
             Log.e("Current Head", currentHead.getEmpName());
+
+            ArrayAdapter cAdapter = new ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,emp_names);
+            contactName.setAdapter(cAdapter);
+            contactName.setThreshold(1);
+
+            ArrayAdapter hAdapter = new ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,emp_names);
+            deptHead.setAdapter(hAdapter);
+            deptHead.setThreshold(1);
 
             ArrayAdapter<String> col_collect = new ArrayAdapter<String>(DepartmentInfoFragment.this.getActivity(),android.R.layout.simple_spinner_item, col_names);
             col_collect.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);

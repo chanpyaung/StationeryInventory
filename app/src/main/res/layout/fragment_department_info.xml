@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:text="Contact Name: " />
 
-    <EditText
+    <AutoCompleteTextView
         android:layout_toEndOf="@+id/contactLabel"
         android:textSize="14sp"
         android:id="@+id/contactName"
@@ -88,7 +88,7 @@
         android:layout_marginRight="15dp"/>
 
 
-    <EditText
+    <AutoCompleteTextView
         android:layout_below="@+id/fax"
         android:layout_toEndOf="@+id/deptHeadLabel"
         android:textSize="14sp"
