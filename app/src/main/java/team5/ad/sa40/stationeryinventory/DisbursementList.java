@@ -310,7 +310,7 @@ public class DisbursementList extends android.support.v4.app.Fragment {
                     if(text_start_date.getText().toString().matches("")){
                         text_start_date.setError("Fill Data!");
                     }
-                    else if (text_end_date.getText().toString().matches("")){
+                    if (text_end_date.getText().toString().matches("")){
                         text_end_date.setError("Fill Data!");
                     }
                 }
