@@ -153,6 +153,7 @@ public class SignatureFragment extends android.support.v4.app.Fragment {
             disbursementAPI.completeDisbursement(dis.getDisID(), new Callback<Boolean>() {
                 @Override
                 public void success(Boolean aBoolean, Response response) {
+                    Log.e("Reach near alert", "Alert");
                     new AlertDialog.Builder(getActivity())
                             .setTitle("Success")
                             .setMessage("The disbursement process is completed!")
@@ -169,7 +170,7 @@ public class SignatureFragment extends android.support.v4.app.Fragment {
 
                 @Override
                 public void failure(RetrofitError error) {
-
+                    Log.e("error", error.toString());
                 }
             });
 
