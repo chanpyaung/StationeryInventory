@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
 
-public class JSONAdjustment implements Serializable{
+public class JSONAdjustment implements Serializable, Comparable{
 
     @Expose
     private String AdjID;
@@ -125,6 +125,22 @@ public class JSONAdjustment implements Serializable{
      */
     public void setTotalAmt(Double TotalAmt) {
         this.TotalAmt = TotalAmt;
+    }
+
+    public int compareTo(Object o) {
+
+        JSONAdjustment f = (JSONAdjustment) o;
+
+        if (getDate().compareTo(f.getDate()) < 0) {
+            return 1;
+        }
+        else if (getDate().compareTo(f.getDate()) > 0) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+
     }
 
 }
