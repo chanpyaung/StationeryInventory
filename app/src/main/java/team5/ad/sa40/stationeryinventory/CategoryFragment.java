@@ -65,7 +65,7 @@ public class CategoryFragment extends android.support.v4.app.Fragment implements
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this.getActivity().getBaseContext(), 2));

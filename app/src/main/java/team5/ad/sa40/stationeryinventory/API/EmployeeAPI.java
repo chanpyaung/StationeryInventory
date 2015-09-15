@@ -19,6 +19,9 @@ public interface EmployeeAPI {
     @POST("/employeeAPI.svc/login")
     void login( @Body JsonObject userinfo, Callback<JSONEmployee> emp);
 
+    @POST("/employeeAPI.svc/logout")
+    void logout(@Body JsonObject userID,Callback<Boolean> isLogOut);
+
     @GET("/employeeAPI.svc/getemployeebyId/{empID}")
     void getEmployeeById(@Path("empID") int empID, Callback<JSONEmployee> emp);
 
