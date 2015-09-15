@@ -7,6 +7,11 @@
         revision="22.0.1"
         sha1="1821601ddbec5ff125653097812823388700af74">
         <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-a84ce30c40526712c3022e9770049e37c80b1e4e.jar" />
+        jar="/Users/student/Documents/AD project Mobile/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/design/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1821601ddbec5ff125653097812823388700af74">
+        <dex dex="/Users/student/Documents/AD project Mobile/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-1fb75c6f94b0938b59684b619c16f2db3478ad24.jar" />
     </item>
 
 </items>

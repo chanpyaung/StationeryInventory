@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
 
-public class JSONDisbursement implements Serializable{
+public class JSONDisbursement implements Serializable, Comparable{
 
     @Expose
     private Integer CPID;
@@ -147,4 +147,19 @@ public class JSONDisbursement implements Serializable{
         this.Status = Status;
     }
 
+    public int compareTo(Object o) {
+
+        JSONDisbursement f = (JSONDisbursement) o;
+
+        if (getDisID().compareTo(f.getDisID()) < 0) {
+            return 1;
+        }
+        else if (getDisID().compareTo(f.getDisID()) > 0) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+
+    }
 }

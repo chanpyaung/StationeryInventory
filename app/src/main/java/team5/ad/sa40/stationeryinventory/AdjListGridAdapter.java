@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import team5.ad.sa40.stationeryinventory.Model.Adjustment;
@@ -23,6 +24,11 @@ public class AdjListGridAdapter extends RecyclerView.Adapter<AdjListGridAdapter.
     public AdjListGridAdapter(String type, List<JSONAdjustment> adjustments){
         super();
         mAdjustments = adjustments;
+        if(mAdjustments.size()>0){
+            List<JSONAdjustment> temp = mAdjustments;
+            Collections.sort(temp);
+            mAdjustments = temp;
+        }
 
     }
     @Override

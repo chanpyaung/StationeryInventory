@@ -94,14 +94,22 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
         if(Setup.user.getRoleID().equals("EM")){
             representative.setEnabled(false);
             collectionPoint.setEnabled(false);
+            telephone.setEnabled(false);
+            fax.setEnabled(false);
+            deptHead.setEnabled(false);
+            contactName.setEnabled(false);
         }
         if(Setup.user.getRoleID().equals("DR")){
             representative.setEnabled(false);
+            telephone.setEnabled(false);
+            fax.setEnabled(false);
+            deptHead.setEnabled(false);
+            contactName.setEnabled(false);
         }
-        telephone.setEnabled(false);
-        fax.setEnabled(false);
-        deptHead.setEnabled(false);
-        contactName.setEnabled(false);
+//        telephone.setEnabled(false);
+//        fax.setEnabled(false);
+//        deptHead.setEnabled(false);
+//        contactName.setEnabled(false);
 
         cpMap = (MapView) view.findViewById(R.id.mapview);
         cpMap.onCreate(savedInstanceState);
@@ -268,6 +276,8 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
                     }
                 }
                 if(contactName.getText().toString().equals(employees.get(i).getEmpName())){
+                    Log.e("Current Contact", employees.get(i).getEmpName());
+                    Log.e("Test contact", contactName.getText().toString());
                     currentContact = employees.get(i);
                     dC = "Not Null";
                 }

@@ -73,7 +73,7 @@ public class ClerkDisListSearch extends android.support.v4.app.Fragment {
             public void onClick(View v) {
                 //search button action
                 if (txtSearch.getText().toString().matches("")) {
-                    txtSearch.setError("Please fill in the value!");
+                    txtSearch.setError("Fill Data!");
                 } else {
                     txtSearch.setError(null);
                     final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();

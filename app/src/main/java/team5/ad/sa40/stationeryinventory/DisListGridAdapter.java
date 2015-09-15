@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import team5.ad.sa40.stationeryinventory.Model.JSONCollectionPoint;
@@ -28,6 +29,12 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
         user_dept = part;
         mdisbursements = dis;
         mCollectionPoints = col;
+
+        if(dis.size() > 0){
+            List<JSONDisbursement> temp = dis;
+            Collections.sort(temp);
+            dis = temp;
+        }
         //Place for adding the JSON list if elseif else
         if (user_dept != "Search"){
 
@@ -71,6 +78,9 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
             viewHolder.txtdisStatus.setText(disItem.getStatus());
             viewHolder.txtDept.setText(disItem.getDeptID());
             viewHolder.txtCol.setText(getColPtNameFromDis(disItem.getCPID()));
+            if(disItem.getStatus().equals("PENDING")){
+                viewHolder.disStatus.setTextColor(Color.RED);
+            }
         }
 
     }

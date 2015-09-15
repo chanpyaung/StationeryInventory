@@ -23,7 +23,7 @@
         android:textStyle="bold"/>
     <TextView
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/SNNO"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
         android:textStyle="bold"/>
     <TextView
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_below="@id/txtNo"
         android:layout_toRightOf="@+id/datelabel"
         android:layout_width="wrap_content"
@@ -50,18 +50,17 @@
         android:text="disbursement_date"
         android:paddingLeft="5dp"/>
     <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@+id/datelabel"
         android:id="@+id/colPoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Collection Point:"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/txtColPt"
+        android:layout_alignStart="@+id/statuslabel" />
     <TextView
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="0dp"
-        android:layout_below="@id/txtDisDate"
+        android:layout_marginLeft="5dp"
+        android:layout_below="@id/txtStatus"
         android:layout_toRightOf="@id/colPoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,7 +71,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:id="@+id/statuslabel"
-        android:layout_below="@id/colPoint"
+        android:layout_below="@id/datelabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Status:"
@@ -80,7 +79,7 @@
     <TextView
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/txtColPt"
+        android:layout_below="@id/txtDisDate"
         android:layout_toRightOf="@id/statuslabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,15 +90,16 @@
     <com.google.android.gms.maps.MapView
         android:layout_margin="15dp"
         android:layout_centerInParent="true"
-        android:layout_below="@+id/statuslabel"
+        android:layout_below="@+id/colPoint"
         android:id="@+id/mapview"
         android:layout_width="300dp"
         android:layout_height="150dp" />
     <Button
         android:layout_below="@+id/mapview"
         android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
+        android:background="@color/PrimaryColor"
         android:text="View disbursed items"
         android:id="@+id/btnView"
         />
