@@ -3,6 +3,8 @@ package team5.ad.sa40.stationeryinventory;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -30,11 +33,12 @@ import team5.ad.sa40.stationeryinventory.API.RequisitionAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
 import team5.ad.sa40.stationeryinventory.Model.JSONReqDetail;
 import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
+import team5.ad.sa40.stationeryinventory.Model.JSONStatus;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RequisitionListFragment extends android.support.v4.app.Fragment {
+public class RequisitionListFragment extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
 
     private String User;
@@ -49,7 +53,10 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
     @Bind(R.id.req_search) SearchView requisitionSearch;
     @Bind(R.id.spinnerStatus) Spinner spinnerStatus;
     @Bind(R.id.filter) TextView filterBy;
+    @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
     final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+    RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
+    FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
     public RequisitionListFragment() {
         // Required empty public constructor
 
@@ -70,6 +77,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
         Bundle args = new Bundle();
         inflater = getActivity().getLayoutInflater();
         getActivity().setTitle("Requisition");
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
         View view = inflater.inflate(R.layout.fragment_retrieval_list, container, false);
         ButterKnife.bind(this, view);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.ret_recycler_view);
@@ -169,7 +177,21 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
             }
         });
 
+
+        //PullToRefresh
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showAllRequisition();
+                onItemsLoadComplete();
+            }
+        });
+
         return view;
+    }
+
+    void onItemsLoadComplete() {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     public void showAllRequisition() {
@@ -300,4 +322,95 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
 
     }
 
+    @Override
+    public void doBack() {
+        reqAPI.getStatus(new Callback<List<JSONStatus>>() {
+            @Override
+            public void success(List<JSONStatus> jsonStatuses, Response response) {
+                Log.i("Status Size", String.valueOf(jsonStatuses.size()));
+                RequisitionListAdapter.mStatus = jsonStatuses;
+                //if user is StoreClerk; load all requisition
+                if(Setup.user.getRoleID().equals("SC")){
+                    reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
+                        @Override
+                        public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                            if (jsonRequisitions.size() > 0) {
+                                List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
+                                for (JSONRequisition jsonReq : jsonRequisitions) {
+                                    if (jsonReq.getStatusID().equals(2)) {
+                                        reqList.add(jsonReq);
+                                    }
+                                }
+                                Log.i("URL", response.getUrl());
+                                Log.i("STATUS", String.valueOf(response.getStatus()));
+                                Log.i("REASON", response.getReason());
+                                Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
+                                if (jsonRequisitions.size() > 0) {
+                                    System.out.println("Sorting here");
+                                    Collections.sort(jsonRequisitions);
+                                    Setup.allRequisition = reqList;
+                                    RequisitionListAdapter.mRequisitions = reqList;
+                                    for (JSONRequisition jr : jsonRequisitions) {
+                                        System.out.println("ordered by Date" + jr.getDate() + " " + jr.getReqID());
+                                    }
+                                }
+                                RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                                fragmentTran.replace(R.id.frame, reqListFrag).commit();
+
+                            } else {
+
+                                Toast.makeText(getActivity(), "We acknowledge you that you haven't made any requisition yet.Please made some requisition before you proceed.", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                        @Override
+                        public void failure (RetrofitError error){
+                            Log.i("GetRequisitionFail", error.toString() + " " + error.getUrl());
+                        }
+
+                    });
+                }
+                //load requisitionlist by EmpID
+                else{
+                    reqAPI.getRequisition(Setup.user.getEmpID(), new Callback<List<JSONRequisition>>() {
+                        @Override
+                        public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                            if (jsonRequisitions.size()>0){
+                                Log.i("URL", response.getUrl());
+                                Log.i("STATUS", String.valueOf(response.getStatus()));
+                                Log.i("REASON", response.getReason());
+                                Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
+                                if(jsonRequisitions.size()>0){
+                                    System.out.println("Sorting here");
+                                    Collections.sort(jsonRequisitions);
+                                    Setup.allRequisition = jsonRequisitions;
+                                    RequisitionListAdapter.mRequisitions = jsonRequisitions;
+                                    for(JSONRequisition jr : jsonRequisitions){
+                                        System.out.println("ordered by Date" + jr.getDate() + " " +jr.getReqID() );
+                                    }
+                                }
+                                RequisitionListAdapter.mRequisitions = Setup.allRequisition;
+                                RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                                fragmentTran.replace(R.id.frame, reqListFrag).commit();
+                            }
+                            else{
+                                Toast.makeText(getActivity(), "We acknowledge you that you haven't made any requisition yet.Please made some requisition before you proceed.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Log.i("GetRequisitionFail", error.toString()+ " " + error.getUrl());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("Status Fail", error.toString());
+                Log.i("URL", error.getUrl());
+            }
+        });
+    }
 }

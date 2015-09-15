@@ -55,11 +55,18 @@
 
     </RelativeLayout>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <android.support.v7.widget.RecyclerView
         android:layout_below="@id/filterLayout"
         android:id="@+id/ret_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="522dp"
         android:layout_marginTop="10dp"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

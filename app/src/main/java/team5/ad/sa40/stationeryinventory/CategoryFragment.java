@@ -162,7 +162,8 @@ public class CategoryFragment extends android.support.v4.app.Fragment implements
 
     @Override
     public void doBack() {
-        MainActivity.onBackPressedListener = null;
-        getActivity().onBackPressed();
+        CategoryFragment fragment = new CategoryFragment();
+        FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+        fragTran.replace(R.id.frame, fragment).commit();
     }
 }

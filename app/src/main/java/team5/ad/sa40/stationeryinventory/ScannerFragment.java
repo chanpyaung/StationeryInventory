@@ -3,6 +3,7 @@ package team5.ad.sa40.stationeryinventory;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONRequestCart;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ScannerFragment extends android.support.v4.app.Fragment implements ScannerView.ScannerViewEventListener {
+public class ScannerFragment extends android.support.v4.app.Fragment implements ScannerView.ScannerViewEventListener,MainActivity.OnBackPressedListener {
 
     @Bind(R.id.scanner) ScannerView embeddedScanner;
     @Bind(R.id.rescanBtn) Button btnReScan;
@@ -68,6 +69,7 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
         // Inflate the layout for this fragment
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
         ButterKnife.bind(this, view);
         embeddedScanner.setScannerViewEventListener(this);
         startEmbeddedScanner();
@@ -104,6 +106,8 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
         //Add to request cart methods to be implement here
 
         final int empID = Setup.user.getEmpID();
+        //need to check empID; implement condition here
+        //SC go other page
         final int qty = 1;
         final JsonObject reqItem = new JsonObject();
         reqItem.addProperty("EmpID", empID);
@@ -316,5 +320,12 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
         }
 
         return false;
+    }
+
+    @Override
+    public void doBack() {
+        CategoryFragment fragment = new CategoryFragment();
+        FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+        fragTran.replace(R.id.frame, fragment).commit();
     }
 }
