@@ -56,7 +56,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DisbursementListDetail extends android.support.v4.app.Fragment {
+public class DisbursementListDetail extends android.support.v4.app.Fragment{
 
 
     MapView mapView;

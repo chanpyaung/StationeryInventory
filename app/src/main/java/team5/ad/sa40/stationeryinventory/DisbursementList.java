@@ -109,8 +109,7 @@ public class DisbursementList extends android.support.v4.app.Fragment {
                                 JSONDisbursement temp = mDisbursement.get(position);
                                 bundle.putSerializable("disbursement", temp);
                                 frag.setArguments(bundle);
-                                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Dis")
-                                        .commit();
+                                getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
                             }
                         });
                     }
