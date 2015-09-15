@@ -78,13 +78,13 @@
 
     <TextView
         android:id="@+id/priority_text"
-        android:layout_marginLeft="0dp"
+        android:layout_marginRight="10dp"
         android:text="Low"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/inv_detail_itemID"
-        android:layout_alignStart="@+id/createdBy" />
+        android:layout_toRightOf="@+id/priority" />
 
     <!--<TextView-->
         <!--android:id="@+id/remark"-->
@@ -109,13 +109,12 @@
     <TextView
         android:id="@+id/status"
         android:text="Status:"
-        android:layout_marginLeft="0dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView16"
-        android:layout_alignStart="@+id/textView16"
+        android:layout_below="@+id/priority"
         android:layout_marginTop="5dp" />
 
     <TextView
@@ -125,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/view9"
-        android:layout_toEndOf="@+id/textView16" />
+        android:layout_toRightOf="@id/status" />
 
     <!--<TextView-->
         <!--android:id="@+id/reason"-->
@@ -232,23 +231,25 @@
     <TextView
         android:id="@+id/textView16"
         android:text="Created By:"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="10dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:layout_below="@id/inv_detail_itemID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/priority"
-        android:layout_alignStart="@+id/priority"
-        android:layout_marginTop="3dp" />
+        android:layout_toRightOf="@+id/priority_text"
+        />
 
     <TextView
         android:id="@+id/createdBy"
         android:layout_marginLeft="0dp"
         android:text="Emp Name"
+        android:layout_toRightOf="@id/textView16"
+        android:layout_below="@id/inv_detail_itemID"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView16"
-        android:layout_toEndOf="@+id/textView16" />
+        />
 
 
 </RelativeLayout>

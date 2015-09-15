@@ -26,7 +26,9 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.EmployeeAPI;
 import team5.ad.sa40.stationeryinventory.API.RequisitionAPI;
+import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
 import team5.ad.sa40.stationeryinventory.Model.JSONReqDetail;
 import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
 import team5.ad.sa40.stationeryinventory.Model.JSONStatus;
@@ -40,7 +42,6 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
 
     private Requisition req;
     private List<JSONReqDetail> allItems;
-    private RecyclerView mRecyclerView;
     private RequisitionFormAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
     android.support.v4.app.FragmentTransaction fragmentTran;
@@ -56,7 +57,9 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
     @Bind(R.id.requisition_cancel) Button cancel;
     @Bind(R.id.requi_approve) Button approve;
     @Bind(R.id.rmkText) EditText remark;
+    @Bind(R.id.textView16) TextView tv16;
     @Bind(R.id.createdBy) TextView createdBy;
+    @Bind(R.id.ret_detail_recycler_view) RecyclerView mRecyclerView;
 
     public RequisitionDetailFragment() {
         // Required empty public constructor
@@ -91,10 +94,26 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
             }
             reqFormID.setText(idDisplay);
 
-            if(getArguments().getString("EmpName") != ""){
-                createdBy.setText(getArguments().getString("EmpName"));
+            if(Setup.user.getRoleID() == "EM"){
+                tv16.setVisibility(View.GONE);
+                createdBy.setVisibility(View.GONE);
             }
+            else{
+                //Log.i("CreatedBy", getArguments().getString("EmpName"));
+                int empID = getArguments().getInt("EmpID");
+                EmployeeAPI employeeAPI = restadapter.create(EmployeeAPI.class);
+                employeeAPI.getEmployeeById(empID, new Callback<JSONEmployee>() {
+                    @Override
+                    public void success(JSONEmployee employee, Response response) {
+                        createdBy.setText(employee.getEmpName());
+                    }
 
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
+            }
 
             if (getArguments().getInt("StatusID")==1){
                 status.setText("Pending");
@@ -331,7 +350,7 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
         else {
 
         }
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.ret_detail_recycler_view);
+
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);

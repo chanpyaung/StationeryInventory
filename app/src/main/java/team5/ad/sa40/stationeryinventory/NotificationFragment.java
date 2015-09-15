@@ -260,7 +260,7 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
                                 }
                                 RequisitionListFragment reqListFrag = new RequisitionListFragment();
                                 FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
-                                fragmentTran.replace(R.id.frame, reqListFrag).commit();
+                                fragmentTran.replace(R.id.frame, reqListFrag).addToBackStack("NOTI_TAG").commit();
 
                             } else {
 

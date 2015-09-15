@@ -72,7 +72,32 @@ public class NotifListAdapter extends RecyclerView.Adapter<NotifListAdapter.View
         String displayD = "";
         Date today = new Date();
         if(d.getDate() == today.getDate()) {
-            displayD = String.valueOf(today.getTime() - d.getTime());
+            if(d.getHours() >= 12){
+                String hour = String.valueOf(d.getHours());
+                Log.i("Hour", hour);
+                String min = "";
+                if(d.getMinutes() < 10){
+                    min = 0+String.valueOf(d.getMinutes());
+                }
+                else{
+                    min = String.valueOf(d.getMinutes());
+                }
+                Log.i("Minute", min + min.length());
+                displayD = hour+ " : "+min+ " PM";
+            }
+            else {
+                String hour = String.valueOf(d.getHours());
+                Log.i("Hour", hour);
+                String min = "";
+                if(d.getMinutes() < 10){
+                    min = 0+String.valueOf(d.getMinutes());
+                }
+                else{
+                    min = String.valueOf(d.getMinutes());
+                }
+                Log.i("Minute", min);
+                displayD = hour+ " : "+min+ " AM";
+            }
         }
         else {
             displayD = Setup.parseDateToString(d);

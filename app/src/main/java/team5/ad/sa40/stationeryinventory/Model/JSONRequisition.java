@@ -251,11 +251,10 @@ public class JSONRequisition implements  Comparable {
 
         JSONRequisition f = (JSONRequisition) o;
 
-        if (getReqID().compareTo(f.getReqID()) > 0) {
-
+        if (getDate().compareTo(f.getDate()) < 0) {
             return 1;
         }
-        else if (getReqID().compareTo(f.getReqID()) < 0) {
+        else if (getDate().compareTo(f.getDate()) > 0) {
             return -1;
         }
         else {

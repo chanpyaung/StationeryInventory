@@ -16,9 +16,6 @@ import android.widget.Toast;
 
 import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
-import com.parse.ParseUser;
-import com.parse.PushService;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -307,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
                         reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
                             @Override
                             public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+
                                 Log.i("URL", response.getUrl());
                                 Log.i("STATUS", String.valueOf(response.getStatus()));
                                 Log.i("REASON", response.getReason());
@@ -314,13 +312,15 @@ public class MainActivity extends AppCompatActivity {
                                 List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
                                 //inside all requisition filter requisition by Department & PENDING Status
                                 for(JSONRequisition jsonReq : jsonRequisitions){
-                                    if(jsonReq.getDeptID().equals(Setup.user.getDeptID())){
-                                        Log.i("Here what", String.valueOf(jsonReq.getReqID()));
-                                        if(jsonReq.getStatusID().equals(1) || jsonReq.getStatusID().equals(2) || jsonReq.getStatusID().equals(5)){
-                                            reqList.add(jsonReq);
-                                            Log.i("what here", String.valueOf(jsonReq.getReqID()));
-                                        }
+                                    if(jsonReq.getDeptID()!=null) {
+                                        if (jsonReq.getDeptID().toString().equals(Setup.user.getDeptID().toString())) {
+                                            Log.i("Here what", String.valueOf(jsonReq.getReqID()));
+                                            if (jsonReq.getStatusID().equals(1) || jsonReq.getStatusID().equals(2) || jsonReq.getStatusID().equals(5)) {
+                                                reqList.add(jsonReq);
+                                                Log.i("what here", String.valueOf(jsonReq.getReqID()));
+                                            }
 
+                                        }
                                     }
                                 }
                                 Log.i("SIZE OFFFFF reqList", String.valueOf(reqList.size()));

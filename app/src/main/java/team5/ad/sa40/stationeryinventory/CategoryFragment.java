@@ -99,7 +99,7 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
                         Log.i("CategoryName", mAdapter.categoryNames[position]);
                         FragmentTransaction fragTran = getFragmentManager().beginTransaction();
                         iLFrag.setArguments(args);
-                        fragTran.replace(R.id.frame,iLFrag).addToBackStack("CATEGORY").commit();
+                        fragTran.replace(R.id.frame,iLFrag,"CATALOG").commit();
                     }
 
                     @Override
@@ -159,6 +159,5 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 }

@@ -4,6 +4,8 @@ package team5.ad.sa40.stationeryinventory;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -50,6 +53,7 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
     RequestCartAdapter mAdapter;
     @Bind(R.id.searchItem)
     SearchView search;
+    Switch switchAB;
     private List<JSONRequestCart> mItems;
     private List<JSONItem> itemList;
 
@@ -62,10 +66,18 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_item_list,container,false);
+        View view = inflater.inflate(R.layout.fragment_item_list, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         getActivity().setTitle("Request Cart");
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
         new AlertDialog.Builder(getActivity())
                 .setTitle("Information")
                 .setMessage("Please swipe left the item to delete from request cart!")
@@ -171,7 +183,7 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        this.getActivity().getMenuInflater().inflate(R.menu.fragment_requestcart_done_menu, menu);
+        this.getActivity().getMenuInflater().inflate(R.menu.my_request_cart_menu, menu);
     }
 
     @Override

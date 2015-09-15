@@ -37,7 +37,9 @@ public class RequisitionListAdapter extends RecyclerView.Adapter<RequisitionList
         }
         if (mRequisitions.size()>0){
             System.out.println("Sorting here");
-            Collections.sort(mRequisitions);
+            List<JSONRequisition> temp = mRequisitions;
+            Collections.sort(temp);
+            mRequisitions = temp;
         }
     }
 

@@ -187,13 +187,11 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
                     @Override
                     public void success(List<JSONReqDetail> jsonReqDetails, Response response) {
                         RequisitionFormAdapter.mRequisitionDetails = jsonReqDetails;
-                        Bundle args = new Bundle();
+                        final Bundle args = new Bundle();
                         args.putString("Date", selected.getDate());
                         args.putInt("ReqID", selected.getReqID());
                         args.putInt("StatusID", selected.getStatusID());
-                        getEmpName(selected.getEmpID());
-                        args.putString("EmpName",empName);
-                        Log.i("empName passed: ", empName);
+                        args.putInt("EmpID", selected.getEmpID());
                         if(Setup.user.getRoleID().equals("DD") || Setup.user.getRoleID().equals("DH")){
                             args.putString("APPROVAL", "ENABLED");
                         }
@@ -280,16 +278,18 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
     public void getEmpName(int id){
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
         EmployeeAPI empAPI = restAdapter.create(EmployeeAPI.class);
-
         empAPI.getEmployeeById(id, new Callback<JSONEmployee>() {
+            String name;
             @Override
             public void success(JSONEmployee jsonItem, Response response) {
                 Log.i("Result :", jsonItem.toString());
-                Log.i("First item: ", jsonItem.toString());
+                Log.i("First Person: ", jsonItem.getEmpName() + " " + jsonItem.getEmpID());
                 Log.i("Response: ", response.getBody().toString());
                 System.out.println("Response Status " + response.getStatus());
-
+                String eName = jsonItem.getEmpName();
                 empName = jsonItem.getEmpName();
+                name = eName;
+                empName = name;
             }
 
             @Override
@@ -297,6 +297,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment {
                 Log.i("Error: ", error.toString());
             }
         });
+
     }
 
 }
