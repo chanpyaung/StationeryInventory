@@ -30,7 +30,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONDelegate;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DelegateList extends android.support.v4.app.Fragment {
+public class DelegateList extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -51,6 +51,8 @@ public class DelegateList extends android.support.v4.app.Fragment {
         setHasOptionsMenu(true);
 
         getActivity().setTitle("Delegate List");
+
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
         new AlertDialog.Builder(getActivity())
                 .setTitle("Information")
@@ -88,8 +90,7 @@ public class DelegateList extends android.support.v4.app.Fragment {
                         bundle.putSerializable("delegate", temp);
                         frag.setArguments(bundle);
                         Log.i("Reached into method", "Hello");
-                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
-                                .commit();
+                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
                     }
                 });
                 ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -160,8 +161,14 @@ public class DelegateList extends android.support.v4.app.Fragment {
         int id = item.getItemId();
         if(id == R.id.action_details){
             android.support.v4.app.Fragment frag = new AddNewDelegate();
-            getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("del").commit();
+            getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void doBack() {
+        android.support.v4.app.Fragment frag = new DelegateList();
+        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
     }
 }

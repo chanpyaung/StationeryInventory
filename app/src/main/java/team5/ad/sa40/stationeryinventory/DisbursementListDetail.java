@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -56,7 +57,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DisbursementListDetail extends android.support.v4.app.Fragment{
+public class DisbursementListDetail extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
 
     MapView mapView;
@@ -90,6 +91,8 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment{
         View v = inflater.inflate(R.layout.fragment_disbursement_list_detail, container, false);
         setHasOptionsMenu(true);
         ButterKnife.bind(this, v);
+
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
         getActivity().setTitle("Disbursement List Detail");
 
@@ -219,10 +222,10 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment{
                                 android.support.v4.app.Fragment frag = new DisListDetailItemList();
                                 Bundle bundle = new Bundle();
                                 bundle.putSerializable("items", itemList);
-                                bundle.putSerializable("disbursement", disbursementDetails);
+                                bundle.putSerializable("disbursementDetail", disbursementDetails);
+                                bundle.putSerializable("disbursement", dis);
                                 frag.setArguments(bundle);
-                                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Dis")
-                                        .commit();
+                                getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
                             }
 
                             @Override
@@ -260,8 +263,7 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment{
                 public void success(List<JSONRequisition> jsonRequisitions, Response response) {
                     RequisitionListAdapter.mRequisitions = jsonRequisitions;
                     android.support.v4.app.Fragment frag = new RequisitionListFragment();
-                    getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("DisListDetail")
-                            .commit();
+                    getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
                 }
 
                 @Override
@@ -271,5 +273,12 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment{
             });
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void doBack() {
+        DisbursementList fragment = new DisbursementList();
+        FragmentTransaction fragtran = getFragmentManager().beginTransaction();
+        fragtran.replace(R.id.frame, fragment).commit();
     }
 }

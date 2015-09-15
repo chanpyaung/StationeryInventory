@@ -4,6 +4,7 @@ package team5.ad.sa40.stationeryinventory;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -41,7 +42,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AdjListDetail extends android.support.v4.app.Fragment {
+public class AdjListDetail extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -90,6 +91,8 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
             txtStatusLabel.setText("Rejected By");
         }
 
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
+
         getActivity().setTitle("Adjustment List Detail");
 
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
@@ -136,67 +139,13 @@ public class AdjListDetail extends android.support.v4.app.Fragment {
                     }
                 });
 
-
-//        final TextView txtStatusLabel;
-//        final TextView txtAppName;
-//        TextView txtAppID;
-//        Button btnReject;
-//        Button btnApprove;
-//
-//        if(!dis.getStatus().equals("PENDING")){
-//            Log.e("Status", dis.getStatus());
-//            v = inflater.inflate(R.layout.fragment_adj_list_detail, container, false);
-//            ButterKnife.bind(this, v);
-
-//
-//            txtAppID = (TextView) v.findViewById(R.id.txtAppID);
-//            txtAppName = (TextView) v.findViewById(R.id.txtAppName);
-//            txtStatusLabel = (TextView) v.findViewById(R.id.txtStatusLabel);
-//            txtAppID.setText(String.valueOf(dis.getApprovedBy()));
-//
-//        }
-//        else{
-//            Log.e("else", "here");
-//            v = inflater.inflate(R.layout.fragment_adj_list_detail2, container, false);
-//            ButterKnife.bind(this, v);
-//
-//            mRecyclerView = (RecyclerView) v.findViewById(R.id.my_dis_recycler_view);
-//            mRecyclerView.setHasFixedSize(true);
-//
-//            mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
-//            mRecyclerView.setLayoutManager(mLayoutManager);
-//
-//            mAdapter = new AdjListDetailAdapter(adjustmentDetails);
-//            mRecyclerView.setAdapter(mAdapter);
-//
-//            btnApprove = (Button) v.findViewById(R.id.btnApprove);
-//            btnReject = (Button) v.findViewById(R.id.btnReject);
-//
-//            if(Setup.user.getRoleID().equals("SC")){
-//                btnApprove.setVisibility(View.GONE);
-//                btnReject.setVisibility(View.GONE);
-//            }
-//            btnApprove.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
-//            btnReject.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
-//
-//            Log.e("Reach into BuildTable", "Success");
-//            final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-//                    Log.e("adjustmentDetails size", String.valueOf(adjustmentDetails.size()));
-//                    EmployeeAPI employeeAPI = restAdapter.create(EmployeeAPI.class);
-//        }
-//
-
-
         return v;
+    }
+
+    @Override
+    public void doBack() {
+        AdjVouList fragment = new AdjVouList();
+        FragmentTransaction fragtran = getFragmentManager().beginTransaction();
+        fragtran.replace(R.id.frame, fragment).commit();
     }
 }

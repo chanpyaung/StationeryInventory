@@ -39,7 +39,7 @@ import team5.ad.sa40.stationeryinventory.Model.Employee;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
+public class DepartmentInfoFragment extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
     @Bind(R.id.contactName) EditText contactName;
     @Bind(R.id.telephone) EditText telephone;
@@ -88,6 +88,8 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
         if(!Setup.user.getRoleID().equals("EM")){
             setHasOptionsMenu(true);
         }
+
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
         getActivity().setTitle("Department Info");
 
@@ -468,5 +470,11 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void doBack() {
+        android.support.v4.app.Fragment frag = new DepartmentInfoFragment();
+        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
     }
 }

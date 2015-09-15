@@ -42,7 +42,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddNewDelegate extends android.support.v4.app.Fragment {
+public class AddNewDelegate extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
     @Bind(R.id.spnEmp)Spinner spnEmp;
     @Bind(R.id.txtStartDate)EditText text_start_date;
@@ -69,6 +69,8 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_add_new_delegate, container, false);
         ButterKnife.bind(this, view);
+
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
         final ArrayAdapter<String> col_collect = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, stat_ary);
         col_collect.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
@@ -335,4 +337,9 @@ public class AddNewDelegate extends android.support.v4.app.Fragment {
         return flag;
     }
 
+    @Override
+    public void doBack() {
+        android.support.v4.app.Fragment frag = new DelegateList();
+        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
+    }
 }

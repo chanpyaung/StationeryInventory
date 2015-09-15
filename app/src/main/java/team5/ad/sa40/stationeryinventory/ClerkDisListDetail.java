@@ -46,7 +46,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONEmployee;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClerkDisListDetail extends android.support.v4.app.Fragment {
+public class ClerkDisListDetail extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
 
     MapView mapView;
@@ -75,6 +75,8 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_clerk_dis_list_detail, container, false);
         ButterKnife.bind(this, v);
+
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
         getActivity().setTitle("Disbursement List Detail");
 
@@ -174,9 +176,14 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment {
             bundle.putSerializable("disbursement", dis);
             bundle.putInt("RepID", rep.getEmpID());
             frag.setArguments(bundle);
-            getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Sign").commit();
+            getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void doBack() {
+        android.support.v4.app.Fragment frag = new ClerkDisList();
+        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
+    }
 }

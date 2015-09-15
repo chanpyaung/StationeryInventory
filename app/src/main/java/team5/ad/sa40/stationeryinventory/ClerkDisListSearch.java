@@ -32,7 +32,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClerkDisListSearch extends android.support.v4.app.Fragment {
+public class ClerkDisListSearch extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -57,6 +57,8 @@ public class ClerkDisListSearch extends android.support.v4.app.Fragment {
         ButterKnife.bind(this, view);
 
         getActivity().setTitle("Disbursement Search");
+
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
         Bundle bundle = this.getArguments();
         mCollectionPoint = (ArrayList<JSONCollectionPoint>)bundle.getSerializable("collection");
@@ -134,8 +136,7 @@ public class ClerkDisListSearch extends android.support.v4.app.Fragment {
                                         }
                                     }
                                     frag.setArguments(bundle);
-                                    getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
-                                            .commit();
+                                    getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
                                 }
                             });
                         }
@@ -152,4 +153,9 @@ public class ClerkDisListSearch extends android.support.v4.app.Fragment {
         return view;
     }
 
+    @Override
+    public void doBack() {
+        android.support.v4.app.Fragment frag = new ClerkDisList();
+        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
+    }
 }

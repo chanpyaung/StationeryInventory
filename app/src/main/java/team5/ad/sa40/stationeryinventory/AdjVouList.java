@@ -3,6 +3,7 @@ package team5.ad.sa40.stationeryinventory;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -38,7 +39,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONDisbursementDetail;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AdjVouList extends android.support.v4.app.Fragment {
+public class AdjVouList extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -60,6 +61,8 @@ public class AdjVouList extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_adj_vou_list, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
+
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
         getActivity().setTitle("Adjustment List");
 
@@ -114,8 +117,7 @@ public class AdjVouList extends android.support.v4.app.Fragment {
                                     Log.e("detail id", String.valueOf(detail.getAdjustmentID()));
                                 }
                                 frag.setArguments(bundle);
-                                getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
-                                        .commit();
+                                getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
                             }
 
                             @Override
@@ -179,8 +181,15 @@ public class AdjVouList extends android.support.v4.app.Fragment {
         int id = item.getItemId();
         if(id == R.id.action_details){
             android.support.v4.app.Fragment frag = new AdjListSearch();
-            getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Adj").commit();
+            getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void doBack() {
+        ReportItemListFragment fragment = new ReportItemListFragment();
+        FragmentTransaction fragtran = getFragmentManager().beginTransaction();
+        fragtran.replace(R.id.frame, fragment).commit();
     }
 }

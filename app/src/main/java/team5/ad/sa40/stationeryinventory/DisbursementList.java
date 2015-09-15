@@ -40,7 +40,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONCollectionPoint;
 import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
 
 
-public class DisbursementList extends android.support.v4.app.Fragment {
+public class DisbursementList extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -73,7 +73,7 @@ public class DisbursementList extends android.support.v4.app.Fragment {
         setHasOptionsMenu(true);
 
         getActivity().setTitle("Disbursement List");
-
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
         mRecyclerView = (RecyclerView)view.findViewById(R.id.dis_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
@@ -348,5 +348,11 @@ public class DisbursementList extends android.support.v4.app.Fragment {
             text_end_date.setText("");
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void doBack() {
+        android.support.v4.app.Fragment frag = new DisbursementList();
+        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
     }
 }

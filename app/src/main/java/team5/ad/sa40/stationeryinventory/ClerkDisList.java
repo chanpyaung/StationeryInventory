@@ -39,7 +39,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClerkDisList extends android.support.v4.app.Fragment implements Spinner.OnItemSelectedListener{
+public class ClerkDisList extends android.support.v4.app.Fragment implements Spinner.OnItemSelectedListener, MainActivity.OnBackPressedListener{
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -66,6 +66,8 @@ public class ClerkDisList extends android.support.v4.app.Fragment implements Spi
         View view = inflater.inflate(R.layout.fragment_clerk_dis_list, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
+
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
         getActivity().setTitle("Disbursement List");
 
@@ -124,8 +126,7 @@ public class ClerkDisList extends android.support.v4.app.Fragment implements Spi
                                             }
                                         }
                                         frag.setArguments(bundle);
-                                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
-                                                .commit();
+                                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
                                     }
                                 });
                                 //        col_arr = mAdapter.mCollectionPoints;
@@ -233,7 +234,6 @@ public class ClerkDisList extends android.support.v4.app.Fragment implements Spi
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(ClerkDisList.this.getActivity(), "Selected: " + position, Toast.LENGTH_SHORT).show();
         if(spnCol.getSelectedItemPosition() > 0 || spnDept.getSelectedItemPosition() > 0 ){
             FilterDisbursements(spnCol.getSelectedItem().toString(), spnDept.getSelectedItem().toString());
         }
@@ -264,8 +264,14 @@ public class ClerkDisList extends android.support.v4.app.Fragment implements Spi
             Log.e("temp.size()", String.valueOf(temp.size()));
             bundle.putSerializable("collection", temp);
             frag.setArguments(bundle);
-            getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Search").commit();
+            getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void doBack() {
+        android.support.v4.app.Fragment frag = new ClerkDisList();
+        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
     }
 }

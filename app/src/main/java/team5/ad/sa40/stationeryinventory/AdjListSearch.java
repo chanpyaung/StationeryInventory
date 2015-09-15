@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,7 +45,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONAdjustmentDetail;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AdjListSearch extends android.support.v4.app.Fragment {
+public class AdjListSearch extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
 
     RecyclerView mRecyclerView;
@@ -73,6 +74,8 @@ public class AdjListSearch extends android.support.v4.app.Fragment {
         setHasOptionsMenu(true);
 
         getActivity().setTitle("Adjustment Search");
+
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
         mRecyclerView = (RecyclerView)view.findViewById(R.id.dis_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -233,8 +236,7 @@ public class AdjListSearch extends android.support.v4.app.Fragment {
                                             Log.e("detail id", String.valueOf(detail.getAdjustmentID()));
                                         }
                                         frag.setArguments(bundle);
-                                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).addToBackStack("Detail")
-                                                .commit();
+                                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
                                     }
 
                                     @Override
@@ -273,5 +275,12 @@ public class AdjListSearch extends android.support.v4.app.Fragment {
             text_end_date.setText("");
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void doBack() {
+        AdjVouList fragment = new AdjVouList();
+        FragmentTransaction fragtran = getFragmentManager().beginTransaction();
+        fragtran.replace(R.id.frame, fragment).commit();
     }
 }

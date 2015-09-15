@@ -48,7 +48,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SignatureFragment extends android.support.v4.app.Fragment {
+public class SignatureFragment extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
     //UI attribute
     @Bind(R.id.signArea) LinearLayout signArea;
@@ -77,6 +77,8 @@ public class SignatureFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_signature, container, false);
         ButterKnife.bind(this,view);
         setHasOptionsMenu(true);
+
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
         Bundle bundle = this.getArguments();
         dis = (JSONDisbursement)bundle.getSerializable("disbursement");
@@ -244,6 +246,15 @@ public class SignatureFragment extends android.support.v4.app.Fragment {
             }
         }
         return (tempdir.isDirectory());
+    }
+
+    @Override
+    public void doBack() {
+        android.support.v4.app.Fragment frag = new ClerkDisListDetail();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("disbursement", dis);
+        frag.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
     }
 
     //***************************************************************************************************************

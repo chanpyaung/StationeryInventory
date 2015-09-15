@@ -4,6 +4,7 @@ package team5.ad.sa40.stationeryinventory;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +22,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import team5.ad.sa40.stationeryinventory.Model.CustomDisbursementDetail;
 import team5.ad.sa40.stationeryinventory.Model.Item;
+import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
 import team5.ad.sa40.stationeryinventory.Model.JSONDisbursementDetail;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 
@@ -28,12 +30,13 @@ import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DisListDetailItemList extends android.support.v4.app.Fragment {
+public class DisListDetailItemList extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     DisListDetailItemAdapter mAdapter;
+    JSONDisbursement dis;
 
     @Bind(R.id.inv_detail_itemName)TextView disName;
     public DisListDetailItemList() {
@@ -49,10 +52,12 @@ public class DisListDetailItemList extends android.support.v4.app.Fragment {
         ButterKnife.bind(this, v);
 
         getActivity().setTitle("Disbursement Detail Items");
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
         Bundle bundle = this.getArguments();
         ArrayList<JSONItem> items = (ArrayList<JSONItem>)bundle.getSerializable("items");
-        ArrayList<JSONDisbursementDetail> disList = (ArrayList<JSONDisbursementDetail>) bundle.getSerializable("disbursement");
+        ArrayList<JSONDisbursementDetail> disList = (ArrayList<JSONDisbursementDetail>) bundle.getSerializable("disbursementDetail");
+        dis = (JSONDisbursement)bundle.getSerializable("disbursement");
         ArrayList<CustomDisbursementDetail> customDisbursementDetails = new ArrayList<>();
 
         Log.e("Size of items", String.valueOf(items.size()));
@@ -81,5 +86,14 @@ public class DisListDetailItemList extends android.support.v4.app.Fragment {
     }
 
 
+    @Override
+    public void doBack() {
+        DisbursementListDetail fragment = new DisbursementListDetail();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("disbursement", dis);
+        fragment.setArguments(bundle);
+        FragmentTransaction fragtran = getFragmentManager().beginTransaction();
+        fragtran.replace(R.id.frame, fragment).commit();
+    }
 }
 
