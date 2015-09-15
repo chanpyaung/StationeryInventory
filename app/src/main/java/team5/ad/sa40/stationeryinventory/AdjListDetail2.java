@@ -129,6 +129,9 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  implements 
                                                     public void onClick(DialogInterface dialog, int which) {
                                                         btnApprove.setVisibility(View.GONE);
                                                         btnReject.setVisibility(View.GONE);
+                                                        AdjVouList fragment = new AdjVouList();
+                                                        FragmentTransaction fragtran = getFragmentManager().beginTransaction();
+                                                        fragtran.replace(R.id.frame, fragment).commit();
                                                     }
                                                 })
                                                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -178,6 +181,9 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  implements 
                                                     public void onClick(DialogInterface dialog, int which) {
                                                         btnApprove.setVisibility(View.GONE);
                                                         btnReject.setVisibility(View.GONE);
+                                                        AdjVouList fragment = new AdjVouList();
+                                                        FragmentTransaction fragtran = getFragmentManager().beginTransaction();
+                                                        fragtran.replace(R.id.frame, fragment).commit();
                                                     }
                                                 })
                                                 .setIcon(android.R.drawable.ic_dialog_alert)

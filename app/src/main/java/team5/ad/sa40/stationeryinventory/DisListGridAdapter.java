@@ -67,9 +67,9 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
             String string_date = Setup.parseJSONDateToString(disItem.getDate());
             viewHolder.disDate.setText(string_date);
             viewHolder.disStatus.setText(disItem.getStatus());
-            if(disItem.getStatus().equals("PENDING")){
-                viewHolder.disStatus.setTextColor(Color.RED);
-            }
+//            if(disItem.getStatus().equals("PENDING")){
+//                viewHolder.disStatus.setTextColor(Color.RED);
+//            }
         }
         else{
             viewHolder.txtdisNo.setText(String.valueOf(disItem.getDisID()));
@@ -78,9 +78,9 @@ public class DisListGridAdapter extends RecyclerView.Adapter<DisListGridAdapter.
             viewHolder.txtdisStatus.setText(disItem.getStatus());
             viewHolder.txtDept.setText(disItem.getDeptID());
             viewHolder.txtCol.setText(getColPtNameFromDis(disItem.getCPID()));
-            if(disItem.getStatus().equals("PENDING")){
-                viewHolder.disStatus.setTextColor(Color.RED);
-            }
+//            if(disItem.getStatus().equals("PENDING")){
+//                viewHolder.disStatus.setTextColor(Color.RED);
+//            }
         }
 
     }
