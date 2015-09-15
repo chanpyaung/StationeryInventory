@@ -44,7 +44,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONStatus;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RequestCartFragment extends android.support.v4.app.Fragment {
+public class RequestCartFragment extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener {
 
 
     @Bind(R.id.item_recycler_view)
@@ -66,6 +66,7 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         inflater = getActivity().getLayoutInflater();
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
@@ -284,4 +285,10 @@ public class RequestCartFragment extends android.support.v4.app.Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void doBack() {
+        ItemListFragment fragment = new ItemListFragment();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame, fragment).commit();
+    }
 }

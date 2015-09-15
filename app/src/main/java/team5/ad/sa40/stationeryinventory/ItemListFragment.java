@@ -36,7 +36,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONRequestCart;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ItemListFragment extends android.support.v4.app.Fragment {
+public class ItemListFragment extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener {
 
     @Bind(R.id.item_recycler_view) RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -58,6 +58,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_item_list,container,false);
         ButterKnife.bind(this, view);
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
         return view;
     }
 
@@ -143,7 +144,7 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
                     if(Setup.allRequestItems.size()>0){
                         RequestCartFragment rqFrag = new RequestCartFragment();
                         FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                        fragTran.replace(R.id.frame, rqFrag).addToBackStack("ITEM_LIST").commit();
+                        fragTran.replace(R.id.frame, rqFrag).commit();
                     }
                     else {
                         new AlertDialog.Builder(getActivity())
@@ -172,4 +173,12 @@ public class ItemListFragment extends android.support.v4.app.Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void doBack() {
+        Log.i("doBack()", "Hello from doback()");
+        CategoryFragment fragment = new CategoryFragment();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame, fragment).commit();
+    }
 }

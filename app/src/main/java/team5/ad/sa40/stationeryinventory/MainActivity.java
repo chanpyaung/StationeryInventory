@@ -39,6 +39,8 @@ import team5.ad.sa40.stationeryinventory.Model.JSONStatus;
 
 public class MainActivity extends AppCompatActivity {
 
+    static OnBackPressedListener onBackPressedListener;
+
     public static ActionBarDrawerToggle actionBarDrawerToggle;
     android.support.v4.app.FragmentTransaction fragmentTran;
 
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public static String user;
     final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
     final RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
+    Boolean drawerisOpen = false;
 
     //Call UI element with butter knife
     @Bind(R.id.toolbar) android.support.v7.widget.Toolbar toolbar;
@@ -478,12 +481,28 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onDrawerOpened(View drawerView){
+                    drawerisOpen = true;
                     super.onDrawerOpened(drawerView);
                 }
         };
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen(this.navigationView)){
+            drawerLayout.closeDrawers();
+            return;
+        }
+            actionBarDrawerToggle.syncState();
+            if(onBackPressedListener != null){
+                onBackPressedListener.doBack();
+            }
+            else {
+                super.onBackPressed();
+            }
     }
 
     /*
@@ -511,4 +530,18 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     */
+
+    public interface OnBackPressedListener{
+        void doBack();
+    }
+
+    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener){
+        this.onBackPressedListener = onBackPressedListener;
+    }
+
+    @Override
+    protected void onDestroy() {
+        onBackPressedListener = null;
+        super.onDestroy();
+    }
 }

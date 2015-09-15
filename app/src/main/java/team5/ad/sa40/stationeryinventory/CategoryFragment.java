@@ -31,7 +31,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CategoryFragment extends android.support.v4.app.Fragment {
+public class CategoryFragment extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener {
 
     public static List<JSONItem> itemsbyCategory = new ArrayList<JSONItem>();
     RecyclerView mRecyclerView;
@@ -53,9 +53,9 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_category, container, false);
         getActivity().setTitle("Catalog");
+        ((MainActivity)getActivity()).setOnBackPressedListener(this);
         mRecyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new GridAdapter();
@@ -99,7 +99,7 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
                         Log.i("CategoryName", mAdapter.categoryNames[position]);
                         FragmentTransaction fragTran = getFragmentManager().beginTransaction();
                         iLFrag.setArguments(args);
-                        fragTran.replace(R.id.frame,iLFrag,"CATALOG").commit();
+                        fragTran.replace(R.id.frame, iLFrag).commit();
                     }
 
                     @Override
@@ -160,4 +160,9 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void doBack() {
+        MainActivity.onBackPressedListener = null;
+        getActivity().onBackPressed();
+    }
 }
