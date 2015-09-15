@@ -60,7 +60,7 @@
         android:textStyle="bold"/>
     <TextView
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="0dp"
         android:layout_below="@id/txtDisDate"
         android:layout_toRightOf="@id/colPoint"
         android:layout_width="wrap_content"
@@ -70,7 +70,7 @@
         />
     <TextView
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="25dp"
+        android:layout_marginLeft="10dp"
         android:id="@+id/statuslabel"
         android:layout_below="@id/colPoint"
         android:layout_width="wrap_content"
@@ -78,13 +78,14 @@
         android:text="Status:"
         android:textStyle="bold"/>
     <TextView
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@id/txtColPt"
         android:layout_toRightOf="@id/statuslabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtStatus"
+        android:layout_toEndOf="@+id/txtStatusLabel"
         android:text="status_value"
         />
     <com.google.android.gms.maps.MapView
