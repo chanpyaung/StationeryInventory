@@ -3,7 +3,10 @@ package team5.ad.sa40.stationeryinventory;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +27,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -63,6 +67,7 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment implemen
     @Bind(R.id.txtRepID) TextView txtRepID;
     @Bind(R.id.txtRepName) TextView txtRepName;
     @Bind(R.id.img2) ImageView rep_img;
+    @Bind(R.id.txtRepLabel)TextView txtRepLabel;
 
     public ClerkDisListDetail() {
         // Required empty public constructor
@@ -89,6 +94,7 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment implemen
         if(!dis.getStatus().equals("DISBURSED")){
             setHasOptionsMenu(true);
         }
+        txtRepLabel.setText("Received By");
 
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapview);
@@ -121,35 +127,71 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment implemen
                 JSONDepartment sel_dept = jsonDepartment;
 
                 EmployeeAPI employeeAPI = restAdapter.create(EmployeeAPI.class);
-                employeeAPI.getEmployeeById(sel_dept.getDeptRep(), new Callback<JSONEmployee>() {
-                    @Override
-                    public void success(JSONEmployee jsonEmployee, Response response) {
-                        rep = jsonEmployee;
 
-                        text_dis_no.setText(String.valueOf(dis.getDisID()));
-                        String string_date = Setup.parseJSONDateToString(dis.getDate());
-                        text_dis_date.setText(string_date);
-                        text_col_pt.setText(selected_colPt.getCPName());
-                        text_dept.setText(dis.getDeptID());
-                        txtRepID.setText(String.valueOf(rep.getEmpID()));
-                        txtRepName.setText(rep.getEmpName());
+                if(!dis.getStatus().equals("DISBURSED")){
+                    Log.e("Reach in Pending", "pending");
+                    employeeAPI.getEmployeeById(sel_dept.getDeptRep(), new Callback<JSONEmployee>() {
+                        @Override
+                        public void success(JSONEmployee jsonEmployee, Response response) {
+                            rep = jsonEmployee;
 
-                        img_phCall.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Uri uri = Uri.parse("tel:" + String.valueOf(rep.getPhone()));
-                                Intent i = new Intent(Intent.ACTION_CALL, uri);
-                                startActivity(i);
-                            }
-                        });
-                        new InventoryDetails.DownloadImageTask(rep_img).execute("http://192.168.31.202/img/user/" + rep.getEmpID() + ".jpg");
-                    }
+                            text_dis_no.setText(String.valueOf(dis.getDisID()));
+                            String string_date = Setup.parseJSONDateToString(dis.getDate());
+                            text_dis_date.setText(string_date);
+                            text_col_pt.setText(selected_colPt.getCPName());
+                            text_dept.setText(dis.getDeptID());
+                            txtRepID.setText(String.valueOf(rep.getEmpID()));
+                            txtRepName.setText(rep.getEmpName());
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.e("getEmployeeById", error.toString());
-                    }
-                });
+                            img_phCall.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Uri uri = Uri.parse("tel:" + String.valueOf(rep.getPhone()));
+                                    Intent i = new Intent(Intent.ACTION_CALL, uri);
+                                    startActivity(i);
+                                }
+                            });
+                            new InventoryDetails.DownloadImageTask(rep_img).execute("http://192.168.31.202/img/user/" + rep.getEmpID() + ".jpg");
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Log.e("getEmployeeById", error.toString());
+                        }
+                    });
+                }
+                else{
+                    Log.e("Reach in Disbursed", "disbursed");
+                    employeeAPI.getEmployeeById(dis.getReceivedBy(), new Callback<JSONEmployee>() {
+                        @Override
+                        public void success(JSONEmployee jsonEmployee, Response response) {
+                            rep = jsonEmployee;
+
+                            text_dis_no.setText(String.valueOf(dis.getDisID()));
+                            String string_date = Setup.parseJSONDateToString(dis.getDate());
+                            text_dis_date.setText(string_date);
+                            text_col_pt.setText(selected_colPt.getCPName());
+                            text_dept.setText(dis.getDeptID());
+                            txtRepID.setText(String.valueOf(rep.getEmpID()));
+                            txtRepName.setText(rep.getEmpName());
+
+                            img_phCall.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Uri uri = Uri.parse("tel:" + String.valueOf(rep.getPhone()));
+                                    Intent i = new Intent(Intent.ACTION_CALL, uri);
+                                    startActivity(i);
+                                }
+                            });
+                            new InventoryDetails.DownloadImageTask(rep_img).execute("http://192.168.31.202/img/user/" + rep.getEmpID() + ".jpg");
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Log.e("getEmployeeById", error.toString());
+                        }
+                    });
+                }
             }
 
             @Override

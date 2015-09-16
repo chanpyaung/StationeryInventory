@@ -84,7 +84,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtStatus"
-        android:layout_toEndOf="@+id/txtStatusLabel"
         android:text="status_value"
         />
     <com.google.android.gms.maps.MapView
@@ -139,8 +138,7 @@
         android:id="@+id/img3"
         android:layout_marginTop="10dp"
         android:layout_marginRight="25dp"
-        android:layout_below="@+id/disburseBy"
-        android:src="@drawable/jmj"/>
+        android:layout_below="@+id/disburseBy"/>
 
     <TextView
         android:layout_below="@id/img2"

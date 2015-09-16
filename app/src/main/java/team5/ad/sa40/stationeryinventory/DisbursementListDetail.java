@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentTransaction;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,13 +164,36 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment impl
 
                                 text_rep.setText(representative.getEmpName());
 
-                                String root = Environment.getExternalStorageDirectory().toString();
-                                String fname =  String.valueOf(dis.getDisID()) +".jpg";
-                                String completeDir = root + "/signatures/"+ fname;
-                                Bitmap bmp = BitmapFactory.decodeFile(completeDir);
-                                if(bmp != null){
-                                    signImage.setImageBitmap(bmp);
+//                                String root = Environment.getExternalStorageDirectory().toString();
+//                                String fname =  String.valueOf(dis.getDisID()) +".jpg";
+//                                String completeDir = root + "/signatures/"+ fname;
+//                                Bitmap bmp = BitmapFactory.decodeFile(completeDir);
+//                                if(bmp != null){
+//                                    signImage.setImageBitmap(bmp);
+//                                }
+                                //new InventoryDetails.DownloadImageTask(signImage).execute("http://192.168.31.202/img/signatures/" + dis.getDisID() + ".jpg");
+
+                                new AsyncTask<Void, Void, Bitmap>() {
+                                    @Override
+                                    protected Bitmap doInBackground(Void... params) {
+                                        Bitmap mIcon11 = null;
+                                        String urldisplay = "http://192.168.31.202/img/signatures/" + dis.getDisID() + ".jpg";
+                                        try {
+                                            InputStream in = new java.net.URL(urldisplay).openStream();
+                                            mIcon11 = BitmapFactory.decodeStream(in);
+                                        } catch (Exception e) {
+                                            Log.e("Error", e.getMessage());
+                                            e.printStackTrace();
+                                        }
+                                        return mIcon11;
+                                    }
+                                @Override
+                                protected void onPostExecute(Bitmap result) {
+                                    if(result != null){
+                                        signImage.setImageBitmap(result);
+                                    }
                                 }
+                            }.execute();
                             }
 
                             @Override

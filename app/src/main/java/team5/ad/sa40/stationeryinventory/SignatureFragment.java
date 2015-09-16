@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,6 +30,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -42,6 +46,7 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.DisbursementAPI;
+import team5.ad.sa40.stationeryinventory.API.UploadAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONCollectionPoint;
 import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
 
@@ -138,50 +143,92 @@ public class SignatureFragment extends android.support.v4.app.Fragment implement
         }
 
     }
+    private String BitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte [] b=baos.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
 
     private void SaveImage(Bitmap finalBitmap) {
 
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/signatures");
-        myDir.mkdirs();
-        String fname = String.valueOf(dis.getDisID())+".jpg";
-        File file = new File (myDir, fname);
-        if (file.exists ()) file.delete ();
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
+//        String root = Environment.getExternalStorageDirectory().toString();
+//        File myDir = new File(root + "/signatures");
+//        myDir.mkdirs();
+//        String fname = String.valueOf(dis.getDisID())+".jpg";
+//        File file = new File (myDir, fname);
+//        if (file.exists ()) file.delete ();
+//        try {
+//            FileOutputStream out = new FileOutputStream(file);
+//            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+//            out.flush();
+//            out.close();
 
-            RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-            DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
-            disbursementAPI.completeDisbursement(dis.getDisID(), new Callback<Boolean>() {
-                @Override
-                public void success(Boolean aBoolean, Response response) {
-                    Log.e("Reach near alert", "Alert");
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle("Success")
-                            .setMessage("The disbursement process is completed!")
-                            .setCancelable(false)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    android.support.v4.app.Fragment frag = new ClerkDisList();
-                                    getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
-                }
+        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
 
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.e("error", error.toString());
-                }
-            });
+        JsonObject object = new JsonObject();
+        String img_str = BitMapToString(mBitmap);
+        object.addProperty("imageStr", img_str);
+        object.addProperty("Filename", dis.getDisID());
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.print("File "+ object.toString());
+        Log.e("Img_File", object.get("Filename").toString());
+
+        UploadAPI uploadAPI = restAdapter.create(UploadAPI.class);
+        uploadAPI.uploadSignature(object, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                Log.e("Img_URL is:", s);
+
+                DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
+                disbursementAPI.completeDisbursement(dis.getDisID(), new Callback<Boolean>() {
+                    @Override
+                    public void success(Boolean aBoolean, Response response) {
+                        Log.e("Reach near alert", "Alert");
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Success")
+                                .setMessage("The disbursement process is completed!")
+                                .setCancelable(false)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        android.support.v4.app.Fragment frag = new ClerkDisList();
+                                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("error", error.toString());
+                    }
+                });
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("Img_Upload Error", error.toString());
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Fail")
+                        .setMessage("The disbursement process cannot be completed!")
+                        .setCancelable(false)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
+
+
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     private boolean captureSignature() {

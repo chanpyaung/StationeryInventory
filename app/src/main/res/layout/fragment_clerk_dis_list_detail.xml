@@ -86,7 +86,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/img2"
-        android:src="@drawable/jmj"
         android:layout_below="@+id/mapview"
         android:layout_alignStart="@+id/mapview"
         android:layout_marginTop="14dp" />
@@ -97,6 +96,7 @@
         android:layout_height="wrap_content"
         android:text="Representative:"
         android:textStyle="bold"
+        android:id="@+id/txtRepLabel"
         android:layout_above="@+id/txtRepName"
         android:layout_alignStart="@+id/txtRepName" />
     <TextView
