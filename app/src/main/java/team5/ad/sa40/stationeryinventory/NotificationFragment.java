@@ -10,7 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,17 +26,22 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import team5.ad.sa40.stationeryinventory.API.AdjustmentAPI;
 import team5.ad.sa40.stationeryinventory.API.NotificationAPI;
 import team5.ad.sa40.stationeryinventory.API.RequisitionAPI;
+import team5.ad.sa40.stationeryinventory.Model.JSONAdjustment;
+import team5.ad.sa40.stationeryinventory.Model.JSONAdjustmentDetail;
 import team5.ad.sa40.stationeryinventory.Model.JSONNotification;
+import team5.ad.sa40.stationeryinventory.Model.JSONReqDetail;
 import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
 import team5.ad.sa40.stationeryinventory.Model.JSONStatus;
 
 
-public class NotificationFragment extends android.support.v4.app.Fragment{
+public class NotificationFragment extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
     private int empID;
     private int notifID;
+    private String adjustID = "";
     private List<JSONNotification> notificationList;
     private RecyclerView mRecyclerView;
     private NotifListAdapter adapter;
@@ -64,7 +75,7 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
         notifAPI.getList(Integer.toString(empID), new Callback<List<JSONNotification>>() {
             @Override
             public void success(List<JSONNotification> jsonItems, Response response) {
-                if(jsonItems.size() > 0) {
+                if (jsonItems.size() > 0) {
                     Log.i("Result :", jsonItems.toString());
                     Log.i("First item: ", jsonItems.get(0).getNotifName());
                 }
@@ -113,37 +124,31 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
 
         switch(n.getNotifName()) {
             case "New Pending Requisition":{
-                goToReqList();
+                goToReqList(n);
                 break;
             }
             case "Requisition Approved":{
-                goToReqList();
+                goToReqList(n);
                 break;
             }
             case "Requisition Rejected":{
-                goToReqList();
+                goToReqList(n);
                 break;
             }
             case "Processing Requisition":{
-                goToReqList();
+                goToReqList(n);
                 break;
             }
             case "Requisition Processed":{
-                goToReqList();
+                goToReqList(n);
                 break;
             }
             case "Requisition Disbursed":{
-                goToReqList();
+                goToReqList(n);
                 break;
             }
             case "New Pending Adjustment Voucher":{
-                AdjVouList fragment = new AdjVouList();
-                Bundle args = new Bundle();
-                args.putString("NotifID", Integer.toString(notifID));
-                Log.i("NotifID", Integer.toString(notifID));
-                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                fragment.setArguments(args);
-                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+                goToAdjVoucher(n);
                 break;
             }
             case "Adjustment Voucher Approved":{
@@ -167,7 +172,7 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
                 break;
             }
             case "Requisition Items Not Fulfilled": {
-                goToReqList();
+                goToReqList(n);
                 break;
             }
             case "New Collection Schedule": {
@@ -229,95 +234,119 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
         }
     }
 
-    public void goToReqList(){
-        reqAPI.getStatus(new Callback<List<JSONStatus>>() {
+    public void goToReqList(JSONNotification n){
+        final int reqID = Integer.parseInt(n.getNotifDesc().substring(7, 4));
+        Log.i("reqID from notification: ", String.valueOf(reqID));
+
+        // get object from server
+        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
+
+        reqAPI.getRequisitionByReqID(reqID, new Callback<List<JSONRequisition>>() {
             @Override
-            public void success(List<JSONStatus> jsonStatuses, Response response) {
-                Log.i("Status Size", String.valueOf(jsonStatuses.size()));
-                RequisitionListAdapter.mStatus = jsonStatuses;
-                //if user is StoreClerk; load all requisition
-                if(Setup.user.getRoleID().equals("SC")){
-                    reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
-                        @Override
-                        public void success(List<JSONRequisition> jsonRequisitions, Response response) {
-                            if (jsonRequisitions.size() > 0) {
-                                List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
-                                for (JSONRequisition jsonReq : jsonRequisitions) {
-                                    if (jsonReq.getStatusID().equals(2)) {
-                                        reqList.add(jsonReq);
-                                    }
-                                }
-                                Log.i("URL", response.getUrl());
-                                Log.i("STATUS", String.valueOf(response.getStatus()));
-                                Log.i("REASON", response.getReason());
-                                Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
-                                if (jsonRequisitions.size() > 0) {
-                                    System.out.println("Sorting here");
-                                    Collections.sort(jsonRequisitions);
-                                    Setup.allRequisition = reqList;
-                                    RequisitionListAdapter.mRequisitions = reqList;
-                                    for (JSONRequisition jr : jsonRequisitions) {
-                                        System.out.println("ordered by Date" + jr.getDate() + " " + jr.getReqID());
-                                    }
-                                }
-                                RequisitionListFragment reqListFrag = new RequisitionListFragment();
-                                FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
-                                fragmentTran.replace(R.id.frame, reqListFrag).addToBackStack("NOTI_TAG").commit();
-
-                            } else {
-
-                                Toast.makeText(getActivity(), "We acknowledge you that you haven't made any requisition yet.Please made some requisition before you proceed.", Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-                        @Override
-                        public void failure (RetrofitError error){
-                            Log.i("GetRequisitionFail", error.toString() + " " + error.getUrl());
-                        }
-
-                    });
+            public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                JSONRequisition obj = new JSONRequisition();
+                for (JSONRequisition jr : jsonRequisitions) {
+                    if (jr.getReqID() == reqID) {
+                        obj = jr;
+                    }
                 }
-                //load requisitionlist by EmpID
-                else{
-                    reqAPI.getRequisition(Setup.user.getEmpID(), new Callback<List<JSONRequisition>>() {
-                        @Override
-                        public void success(List<JSONRequisition> jsonRequisitions, Response response) {
-                            if (jsonRequisitions.size() > 0) {
-                                Log.i("URL", response.getUrl());
-                                Log.i("STATUS", String.valueOf(response.getStatus()));
-                                Log.i("REASON", response.getReason());
-                                Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
-                                if (jsonRequisitions.size() > 0) {
-                                    System.out.println("Sorting here");
-                                    Collections.sort(jsonRequisitions);
-                                    Setup.allRequisition = jsonRequisitions;
-                                    RequisitionListAdapter.mRequisitions = jsonRequisitions;
-                                    for (JSONRequisition jr : jsonRequisitions) {
-                                        System.out.println("ordered by Date" + jr.getDate() + " " + jr.getReqID());
-                                    }
-                                }
-                                RequisitionListAdapter.mRequisitions = Setup.allRequisition;
-                                RequisitionListFragment reqListFrag = new RequisitionListFragment();
-                                FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
-                                fragmentTran.replace(R.id.frame, reqListFrag).commit();
-                            } else {
-                                Toast.makeText(getActivity(), "We acknowledge you that you haven't made any requisition yet.Please made some requisition before you proceed.", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                final JSONRequisition selected = obj;
 
-                        @Override
-                        public void failure(RetrofitError error) {
-                            Log.i("GetRequisitionFail", error.toString() + " " + error.getUrl());
+                // retrieve requisition details from server
+                final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
+                reqAPI.getReqDetail(selected.getReqID(), new Callback<List<JSONReqDetail>>() {
+                    @Override
+                    public void success(List<JSONReqDetail> jsonReqDetails, Response response) {
+                        RequisitionFormAdapter.mRequisitionDetails = jsonReqDetails;
+                        final Bundle args = new Bundle();
+                        args.putString("Date", selected.getDate());
+                        args.putInt("ReqID", selected.getReqID());
+                        args.putInt("StatusID", selected.getStatusID());
+                        args.putInt("EmpID", selected.getEmpID());
+                        if (Setup.user.getRoleID().equals("DD") || Setup.user.getRoleID().equals("DH")) {
+                            args.putString("APPROVAL", "ENABLED");
                         }
-                    });
-                }
+                        RequisitionDetailFragment reqDetailFrag = new RequisitionDetailFragment();
+                        reqDetailFrag.setArguments(args);
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.frame, reqDetailFrag).addToBackStack("REQUESITION_LIST").commit();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.i("Status Fail", error.toString());
-                Log.i("URL", error.getUrl());
+
             }
         });
+    }
+
+    public void goToAdjVoucher(JSONNotification n){
+        adjustID = n.getNotifDesc().substring(21,31);
+        Log.i("AdjID notif selected: ", adjustID);
+
+        final JsonObject json = new JsonObject();
+        json.addProperty("adjId", adjustID);
+        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        final AdjustmentAPI adjustmentAPI = restAdapter.create(AdjustmentAPI.class);
+        adjustmentAPI.getAdjVoucher(json, new Callback<List<JSONAdjustment>>() {
+            @Override
+            public void success(List<JSONAdjustment> adjustments, Response response) {
+                JSONAdjustment selected = new JSONAdjustment();
+                for(JSONAdjustment j : adjustments){
+                    if(j.getAdjID().equals(json.get("adjId"))) {
+                        selected = j;
+                    }
+                }
+
+                JsonObject object = new JsonObject();
+                object.addProperty("adjId", selected.getAdjID());
+                final JSONAdjustment temp = selected;
+                adjustmentAPI.getAdjVoucherDetail(object, new Callback<List<JSONAdjustmentDetail>>() {
+                    @Override
+                    public void success(List<JSONAdjustmentDetail> jsonAdjustmentDetails, Response response) {
+                        android.support.v4.app.Fragment frag;
+                        if (temp.getStatus().equals("PENDING")) {
+                            frag = new AdjListDetail2();
+                        } else {
+                            frag = new AdjListDetail();
+                        }
+                        ArrayList<JSONAdjustmentDetail> tempList = new ArrayList<JSONAdjustmentDetail>(jsonAdjustmentDetails);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("adjustment", temp);
+                        bundle.putSerializable("adjustmentDetail", tempList);
+                        for (JSONAdjustmentDetail detail : tempList) {
+                            Log.e("detail id", String.valueOf(detail.getAdjustmentID()));
+                        }
+                        frag.setArguments(bundle);
+                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("getAdjVoucher", error.toString());
+            }
+        });
+    }
+
+    @Override
+    public void doBack() {
+        NotificationFragment frag = new NotificationFragment();
+        android.support.v4.app.FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
+        fragmentTran.replace(R.id.frame, frag).commit();
     }
 }

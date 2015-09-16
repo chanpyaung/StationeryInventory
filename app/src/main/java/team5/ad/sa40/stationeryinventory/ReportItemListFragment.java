@@ -38,7 +38,7 @@ import team5.ad.sa40.stationeryinventory.Model.JSONItem;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReportItemListFragment extends android.support.v4.app.Fragment {
+public class ReportItemListFragment extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener {
 
     public static List<JSONAdjustmentDetail> reportItemList;
     private RecyclerView mRecyclerView;
@@ -176,5 +176,11 @@ public class ReportItemListFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
+    @Override
+    public void doBack(){
+        ReportItemListFragment frag = new ReportItemListFragment();
+        android.support.v4.app.FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
+        fragmentTran.replace(R.id.frame, frag).commit();
+    }
 
 }

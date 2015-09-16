@@ -1,5 +1,6 @@
 package team5.ad.sa40.stationeryinventory;
 
+import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,7 +21,7 @@ import butterknife.ButterKnife;
 import team5.ad.sa40.stationeryinventory.Model.Retrieval;
 
 
-public class RetrievalList extends android.support.v4.app.Fragment {
+public class RetrievalList extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
     private String empID;
     private String[] filters = {"View All","Pending","Retrieved"};
@@ -151,4 +152,10 @@ public class RetrievalList extends android.support.v4.app.Fragment {
         mRecyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void doBack() {
+        RetrievalList retListFrag = new RetrievalList();
+        android.support.v4.app.FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
+        fragmentTran.replace(R.id.frame, retListFrag).commit();
+    }
 }

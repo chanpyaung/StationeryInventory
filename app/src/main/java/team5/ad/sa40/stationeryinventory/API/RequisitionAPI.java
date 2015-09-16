@@ -37,4 +37,7 @@ public interface RequisitionAPI {
     @GET("/requisitionAPI.svc/getRequisitionList/{DisID}")
     void getRequisitionListByDisID(@Path("DisID") int disID, Callback<List<JSONRequisition>> reqList);
 
+    @GET("/requisitionAPI.svc/getRequisition/null/{ReqID}/null/null")
+    void getRequisitionByReqID(@Path("ReqID") int reqID, Callback<List<JSONRequisition>> requisitionList);
+
 }

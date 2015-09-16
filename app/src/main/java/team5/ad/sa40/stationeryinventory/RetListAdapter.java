@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import team5.ad.sa40.stationeryinventory.Model.Retrieval;
@@ -21,16 +22,19 @@ public class RetListAdapter extends RecyclerView.Adapter<RetListAdapter.ViewHold
     public RetListAdapter(){
         super();
         mRetrievals = Retrieval.getAllRetrievals();
+        if(mRetrievals != null) {
+            Collections.sort(mRetrievals);
 
-        retId = new String[mRetrievals.size()];
-        Log.i("Size of list", String.valueOf(mRetrievals.size()));
-        Setup s = new Setup();
-        if(mRetrievals.size()>0) {
-            for (int i = 0; i < mRetrievals.size(); i++) {
-                String temp = String.valueOf(mRetrievals.get(i).getRetID());
-                retId[i] = temp;
+            retId = new String[mRetrievals.size()];
+            Log.i("Size of list", String.valueOf(mRetrievals.size()));
+            Setup s = new Setup();
+            if (mRetrievals.size() > 0) {
+                for (int i = 0; i < mRetrievals.size(); i++) {
+                    String temp = String.valueOf(mRetrievals.get(i).getRetID());
+                    retId[i] = temp;
+                }
+                Log.i("First of string ", retId[0]);
             }
-            Log.i("First of string ", retId[0]);
         }
     }
 

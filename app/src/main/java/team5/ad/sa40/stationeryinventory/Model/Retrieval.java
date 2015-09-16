@@ -15,7 +15,7 @@ import java.util.List;
 import team5.ad.sa40.stationeryinventory.JSONParser;
 import team5.ad.sa40.stationeryinventory.Setup;
 
-public class Retrieval {
+public class Retrieval implements Comparable {
 
     private int retID;
     private Date date;
@@ -225,4 +225,21 @@ public class Retrieval {
         return result;
     }
 
+    @Override
+    public int compareTo(Object o) {
+
+        Retrieval f = (Retrieval) o;
+        String retID1 = String.valueOf(getRetID());
+        String retID2 = String.valueOf(f.getRetID());
+
+        if (retID1.compareTo(retID2) > 0) {
+            return 1;
+        }
+        else if (retID1.compareTo(retID2) < 0) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+    }
 }

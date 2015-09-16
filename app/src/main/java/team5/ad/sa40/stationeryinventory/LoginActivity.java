@@ -172,7 +172,7 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                 System.out.println("Response Status " + response.getStatus());
                 Setup.user = employee;
 
-                if(!(response.getBody().toString().contains("400"))) {
+                if(!(employee.getEmpID() == null)) {
 
                     RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
                     InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
