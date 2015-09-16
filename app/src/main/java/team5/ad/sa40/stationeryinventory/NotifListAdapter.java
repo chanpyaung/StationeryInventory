@@ -103,7 +103,7 @@ public class NotifListAdapter extends RecyclerView.Adapter<NotifListAdapter.View
             displayD = Setup.parseDateToString(d);
         }
         viewHolder.JSONNotificationStatus.setText(displayD);
-        viewHolder.JSONNotificationStatus.setTextSize(10);
+        viewHolder.JSONNotificationStatus.setTextSize(11);
         if(JSONNotification.getStatus().equals("READ")) {
             viewHolder.JSONNotificationStatus.setTextColor(R.color.DefaultTextColor);
         }

@@ -38,11 +38,9 @@
                 android:textStyle="bold"
                 android:id="@+id/reportReason"
                 android:textColor="#08AE9E"
-                android:layout_marginTop="-10dp"
-                android:layout_below="@+id/reportItemCode"
-                android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/reportQty"
-                 />
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@+id/reportItemName"/>
 
             <TextView
                 android:layout_width="150dp"
