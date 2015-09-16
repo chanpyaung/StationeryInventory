@@ -44,7 +44,8 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
     private String User;
     private String empName = "";
     public static String[] filters = {"View All","Pending", "Approved", "Processed", "Collected", "Rejected", "Cancelled"};
-    public static String[] priority = {"High", "Normal", "Low"};
+    public static String[] filters2 = {"View All", "Approved", "Processed", "Collected"};
+    public static String[] priority = {"High", "Low"};
     private List<JSONRequisition> allRequisitions;
     private RecyclerView mRecyclerView;
     private RequisitionListAdapter adapter;
@@ -56,7 +57,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
     @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
     final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
     RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
-    FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
+    FragmentTransaction fragmentTran;
     public RequisitionListFragment() {
         // Required empty public constructor
 
@@ -85,11 +86,43 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         System.out.println(filters.length);
-        ArrayAdapter<String> FiltersAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,filters);
-        FiltersAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        spinnerRetStatus.setAdapter(FiltersAdapter);
         showAllRequisition();
+        allRequisitions = Setup.allRequisition;
+        adapter.SetOnItemClickListener(new RequisitionListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                // retrieve requisition details from server and set to adapter here
+                final JSONRequisition selected = RequisitionListAdapter.mRequisitions.get(position);
+                RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
+                reqAPI.getReqDetail(selected.getReqID(), new Callback<List<JSONReqDetail>>() {
+                    @Override
+                    public void success(List<JSONReqDetail> jsonReqDetails, Response response) {
+                        RequisitionFormAdapter.mRequisitionDetails = jsonReqDetails;
+                        final Bundle args = new Bundle();
+                        args.putString("Date", selected.getDate());
+                        args.putInt("ReqID", selected.getReqID());
+                        args.putInt("StatusID", selected.getStatusID());
+                        args.putInt("EmpID", selected.getEmpID());
+                        if (Setup.user.getRoleID().equals("DD") || Setup.user.getRoleID().equals("DH")) {
+                            args.putString("APPROVAL", "ENABLED");
+                        }
+                        RequisitionDetailFragment reqDetailFrag = new RequisitionDetailFragment();
+                        reqDetailFrag.setArguments(args);
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.frame, reqDetailFrag).addToBackStack("REQUESITION_LIST").commit();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
+            }
+        });
         if(Setup.user.getRoleID().equals("EM") || Setup.user.getRoleID().equals("DR") || Setup.user.getRoleID().equals("DH") || Setup.user.getRoleID().equals("DD")){
+            ArrayAdapter<String> FiltersAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,filters);
+            FiltersAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            spinnerRetStatus.setAdapter(FiltersAdapter);
             spinnerRetStatus.getLayoutParams().width += 200;
             requisitionSearch.setVisibility(View.VISIBLE);
             requisitionSearch.setQueryHint("Search Requisition ID");
@@ -107,10 +140,47 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
                     return true;
                 }
             });
+
+            spinnerRetStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Log.i("spinner's :", filters[position]);
+                    switch (position) {
+                        case (0):
+                            showAllRequisition();
+                            break;
+                        case (1):
+                            showPendingRequisition();
+                            break;
+                        case (2):
+                            showApprovedRequisition();
+                            break;
+                        case (3):
+                            showProcessedRequistion();
+                            break;
+                        case (4):
+                            showCollectedRequisition();
+                            break;
+                        case (5):
+                            showRejectedRequisition();
+                            break;
+                        case (6):
+                            showCancelledRequisition();
+                            break;
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    showAllRequisition();
+                }
+            });
         }
         else if (Setup.user.getRoleID().equals("SC")){
             filterBy.setVisibility(View.GONE);
-
+            ArrayAdapter<String> FiltersAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,filters2);
+            FiltersAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            spinnerRetStatus.setAdapter(FiltersAdapter);
             spinnerRetStatus.getLayoutParams().width = 360;
             spinnerStatus.setVisibility(View.VISIBLE);
             spinnerStatus.getLayoutParams().width = 360;
@@ -118,65 +188,59 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
             ArrayAdapter<String> PriorityAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,priority);
             PriorityAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
             spinnerStatus.setAdapter(PriorityAdapter);
+
+
+            spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    switch (position) {
+                        case (0):
+                            showAllRequisition();
+                            break;
+                        case (1):
+                            showHighPriorityRequisition();
+                            break;
+                        case (2):
+                            showLowPriorityRequisition();
+                            break;
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+
+            spinnerRetStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Log.i("spinner's :", filters[position]);
+                    switch (position) {
+                        case (0):
+                            showAllRequisition();
+                            break;
+                        case (1):
+                            showApprovedRequisition();
+                            break;
+                        case (2):
+                            showProcessedRequistion();
+                            break;
+                        case (3):
+                            showCollectedRequisition();
+                            break;
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    showAllRequisition();
+                }
+            });
+
+
         }
-        spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case (0):
-                        showAllRequisition();
-                        break;
-                    case (1):
-                        showApprovedRequisition();
-                        break;
-                    case (2):
-                        showRejectedRequisition();
-                        break;
-                    case (3):
-                        showProcessedRequistion();
-                        break;
-                    case (4):
-                        showCollectedRequisition();
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        spinnerRetStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(RequisitionListFragment.this.getActivity(), "Selected: " + position, Toast.LENGTH_SHORT).show();
-                Log.i("spinner's :", filters[position]);
-                switch (position) {
-                    case (0):
-                        showAllRequisition();
-                        break;
-                    case (1):
-                        showApprovedRequisition();
-                        break;
-                    case (2):
-                        showRejectedRequisition();
-                        break;
-                    case (3):
-                        showProcessedRequistion();
-                        break;
-                    case (4):
-                        showCollectedRequisition();
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                showAllRequisition();
-            }
-        });
-
 
         //PullToRefresh
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -197,45 +261,34 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
     public void showAllRequisition() {
         adapter = new RequisitionListAdapter();
         allRequisitions = new ArrayList<JSONRequisition>();
-        allRequisitions = adapter.mRequisitions;
+        allRequisitions = Setup.allRequisition;
+        adapter.mRequisitions = Setup.allRequisition;
         mRecyclerView.setAdapter(adapter);
-        adapter.SetOnItemClickListener(new RequisitionListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                // retrieve requisition details from server and set to adapter here
-                final JSONRequisition selected = RequisitionListAdapter.mRequisitions.get(position);
-                RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
-                reqAPI.getReqDetail(selected.getReqID(), new Callback<List<JSONReqDetail>>() {
-                    @Override
-                    public void success(List<JSONReqDetail> jsonReqDetails, Response response) {
-                        RequisitionFormAdapter.mRequisitionDetails = jsonReqDetails;
-                        final Bundle args = new Bundle();
-                        args.putString("Date", selected.getDate());
-                        args.putInt("ReqID", selected.getReqID());
-                        args.putInt("StatusID", selected.getStatusID());
-                        args.putInt("EmpID", selected.getEmpID());
-                        if(Setup.user.getRoleID().equals("DD") || Setup.user.getRoleID().equals("DH")){
-                            args.putString("APPROVAL", "ENABLED");
-                        }
-//                        args.putInt("PriorityID", selected.getPriorityID());
-//                        args.putString("PRemark", selected.getPRemark());
-//                        args.putString("Remark", selected.getRemark());
-                        RequisitionDetailFragment reqDetailFrag = new RequisitionDetailFragment();
-                        reqDetailFrag.setArguments(args);
-                        android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.frame, reqDetailFrag).addToBackStack("REQUESITION_LIST").commit();
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-
-                    }
-                });
-            }
-        });
     }
 
-    public void showApprovedRequisition() {
+    public void showHighPriorityRequisition(){
+        List<JSONRequisition> highPriorityRequisition = new ArrayList<JSONRequisition>();
+        for(JSONRequisition jrq : allRequisitions){
+            if(jrq.getPriorityID() == 1){
+                highPriorityRequisition.add(jrq);
+            }
+        }
+        adapter.mRequisitions = highPriorityRequisition;
+        mRecyclerView.setAdapter(adapter);
+    }
+
+    public void showLowPriorityRequisition(){
+        List<JSONRequisition> highPriorityRequisition = new ArrayList<JSONRequisition>();
+        for(JSONRequisition jrq : allRequisitions){
+            if(jrq.getPriorityID() == 2){
+                highPriorityRequisition.add(jrq);
+            }
+        }
+        adapter.mRequisitions = highPriorityRequisition;
+        mRecyclerView.setAdapter(adapter);
+    }
+
+    public void showPendingRequisition() {
         List<JSONRequisition> approvedRequisition = new ArrayList<JSONRequisition>();
         for(int i=0; i<allRequisitions.size(); i++) {
             JSONRequisition r = allRequisitions.get(i);
@@ -247,15 +300,15 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
         mRecyclerView.setAdapter(adapter);
     }
 
-    public void showRejectedRequisition(){
-        List<JSONRequisition> rejectedRequisition = new ArrayList<JSONRequisition>();
-        for(int i=0; i<allRequisitions.size(); i++){
+    public void showApprovedRequisition() {
+        List<JSONRequisition> approvedRequisition = new ArrayList<JSONRequisition>();
+        for(int i=0; i<allRequisitions.size(); i++) {
             JSONRequisition r = allRequisitions.get(i);
-            if(r.getStatusID()==2){
-                rejectedRequisition.add(r);
+            if(r.getStatusID()==2) {
+                approvedRequisition.add(r);
             }
         }
-        adapter.mRequisitions = rejectedRequisition;
+        adapter.mRequisitions = approvedRequisition;
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -275,7 +328,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
         List<JSONRequisition> collectedRequisition = new ArrayList<JSONRequisition>();
         for(int i=0; i<allRequisitions.size(); i++) {
             JSONRequisition r = allRequisitions.get(i);
-            if(r.getStatusID()==3) {
+            if(r.getStatusID()==4) {
                 collectedRequisition.add(r);
             }
         }
@@ -283,6 +336,29 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
         mRecyclerView.setAdapter(adapter);
     }
 
+    public void showRejectedRequisition(){
+        List<JSONRequisition> rejectedRequisition = new ArrayList<JSONRequisition>();
+        for(int i=0; i<allRequisitions.size(); i++){
+            JSONRequisition r = allRequisitions.get(i);
+            if(r.getStatusID()==5){
+                rejectedRequisition.add(r);
+            }
+        }
+        adapter.mRequisitions = rejectedRequisition;
+        mRecyclerView.setAdapter(adapter);
+    }
+
+    public void showCancelledRequisition(){
+        List<JSONRequisition> collectedRequisition = new ArrayList<JSONRequisition>();
+        for(int i=0; i<allRequisitions.size(); i++) {
+            JSONRequisition r = allRequisitions.get(i);
+            if(r.getStatusID()==6) {
+                collectedRequisition.add(r);
+            }
+        }
+        adapter.mRequisitions = collectedRequisition;
+        mRecyclerView.setAdapter(adapter);
+    }
 
     private List<JSONRequisition> filter(List<JSONRequisition> requests, String query) {
         query = query.toLowerCase();
@@ -355,6 +431,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
                                     }
                                 }
                                 RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                                fragmentTran = getFragmentManager().beginTransaction();
                                 fragmentTran.replace(R.id.frame, reqListFrag).commit();
 
                             } else {
@@ -391,6 +468,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
                                 }
                                 RequisitionListAdapter.mRequisitions = Setup.allRequisition;
                                 RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                                fragmentTran = getFragmentManager().beginTransaction();
                                 fragmentTran.replace(R.id.frame, reqListFrag).commit();
                             }
                             else{

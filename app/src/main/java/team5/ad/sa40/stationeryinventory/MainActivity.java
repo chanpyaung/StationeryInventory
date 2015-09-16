@@ -454,6 +454,8 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("username", null);
                         editor.putString("password", null);
+                        editor.remove("username");
+                        editor.remove("password");
                         editor.commit();
 
                         Intent i = new Intent(MainActivity.this, LoginActivity.class);
