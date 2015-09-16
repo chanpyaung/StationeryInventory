@@ -230,6 +230,22 @@ public class ClerkDisList extends android.support.v4.app.Fragment implements Spi
 
         mAdapter.mdisbursements = fil_dis;
         mAdapter.notifyDataSetChanged();
+        mAdapter.SetOnItemClickListener(new DisListGridAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                android.support.v4.app.Fragment frag = new ClerkDisListDetail();
+                Bundle bundle = new Bundle();
+                JSONDisbursement temp = mAdapter.mdisbursements.get(position);
+                bundle.putSerializable("disbursement", temp);
+                for (int i = 0; i < col_arr.size(); i++) {
+                    if (temp.getCPID() == col_arr.get(i).getCPID()) {
+                        bundle.putSerializable("collection", col_arr.get(i));
+                    }
+                }
+                frag.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
+            }
+        });
     }
 
     @Override

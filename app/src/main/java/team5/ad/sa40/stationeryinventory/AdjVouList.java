@@ -167,6 +167,41 @@ public class AdjVouList extends android.support.v4.app.Fragment implements MainA
         }
         mAdapter.mAdjustments = temp;
         mAdapter.notifyDataSetChanged();
+        mAdapter.SetOnItemClickListener(new AdjListGridAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                JsonObject object = new JsonObject();
+                object.addProperty("adjId", String.valueOf(mAdapter.mAdjustments.get(position).getAdjID()));
+                final JSONAdjustment temp = mAdapter.mAdjustments.get(position);
+                final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                final AdjustmentAPI adjustmentAPI = restAdapter.create(AdjustmentAPI.class);
+                adjustmentAPI.getAdjVoucherDetail(object, new Callback<List<JSONAdjustmentDetail>>() {
+                    @Override
+                    public void success(List<JSONAdjustmentDetail> jsonAdjustmentDetails, Response response) {
+                        android.support.v4.app.Fragment frag;
+                        if (temp.getStatus().equals("PENDING")) {
+                            frag = new AdjListDetail2();
+                        } else {
+                            frag = new AdjListDetail();
+                        }
+                        ArrayList<JSONAdjustmentDetail> tempList = new ArrayList<JSONAdjustmentDetail>(jsonAdjustmentDetails);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("adjustment", temp);
+                        bundle.putSerializable("adjustmentDetail", tempList);
+                        for (JSONAdjustmentDetail detail : tempList) {
+                            Log.e("detail id", String.valueOf(detail.getAdjustmentID()));
+                        }
+                        frag.setArguments(bundle);
+                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
+            }
+        });
     }
 
 

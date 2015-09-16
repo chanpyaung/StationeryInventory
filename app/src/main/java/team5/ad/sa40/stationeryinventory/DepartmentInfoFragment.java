@@ -138,6 +138,8 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment impl
             @Override
             protected void onPostExecute(Department result) {
                 dept = result;
+                Log.e("dept id", Setup.user.getDeptID());
+                Log.e("dept name", dept.getDeptName());
                 new AsyncTask<Void, Void, ArrayList<CollectionPoint>>(){
                     @Override
                     protected ArrayList<CollectionPoint> doInBackground(Void... params) {
@@ -246,8 +248,10 @@ public class DepartmentInfoFragment extends android.support.v4.app.Fragment impl
             ArrayAdapter<String> emp_collect = new ArrayAdapter<String>(DepartmentInfoFragment.this.getActivity(),android.R.layout.simple_spinner_item, emp_names);
             emp_collect.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
             representative.setAdapter(emp_collect);
-            int rindex = emp_collect.getPosition(currentRep.getEmpName());
-            representative.setSelection(rindex);
+            if(currentRep != null){
+                int rindex = emp_collect.getPosition(currentRep.getEmpName());
+                representative.setSelection(rindex);
+            }
 
         }
     }
