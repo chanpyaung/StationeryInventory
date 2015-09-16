@@ -84,7 +84,6 @@ public class InventoryList extends android.support.v4.app.Fragment {
         spinnerInvStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(InventoryList.this.getActivity(), "Selected: " + position, Toast.LENGTH_SHORT).show();
                 Log.i("spinner's:", filters[position]);
                 switch (position) {
                     case (0):

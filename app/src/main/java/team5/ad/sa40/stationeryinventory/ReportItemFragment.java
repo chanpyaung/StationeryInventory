@@ -1,7 +1,9 @@
 package team5.ad.sa40.stationeryinventory;
 
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -164,12 +166,17 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
                     input = 0;
                 }
 
-                if (Math.abs(input) > Integer.parseInt(availableQty.getText().toString())) {
-                    reportedQtyField.setError("Value cannot be greater than available qty");
-                    Log.e("error:", "report qty > available Qty");
-                    View focusView = null;
-                    focusView = reportedQtyField;
-                } else {
+                if(Integer.parseInt(availableQty.getText().toString()) < 0) {
+                    if (Math.abs(input) > Integer.parseInt(availableQty.getText().toString())) {
+                        reportedQtyField.setError("Value cannot be greater than available qty");
+                        Log.e("error:", "report qty > available Qty");
+                        View focusView = null;
+                        focusView = reportedQtyField;
+                    } else {
+                        reportedQty = input;
+                    }
+                }
+                else {
                     reportedQty = input;
                 }
             }
@@ -182,7 +189,19 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
     @Override
     public void onClick(View v){
         if(reportedQty == 0) {
-            reportedQty = Integer.parseInt(reportedQtyField.getText().toString());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Oops! Please insert a quantity to report item")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    }).create();
+            builder.show();
+        }
+        else if(reportedQty > 0){
+            if(reasonSelected.toUpperCase().equals("DAMAGED")){
+                reportedQty = 0 - reportedQty;
+            }
         }
 
         JSONAdjustmentDetail mReportItem = new JSONAdjustmentDetail();
@@ -206,7 +225,7 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
 
         ReportItemListFragment fragment = new ReportItemListFragment();
         android.support.v4.app.FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-        fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();
+        fragTran.replace(R.id.frame, fragment).commit();
 
         Toast.makeText(ReportItemFragment.this.getActivity(), "Added to report item list", Toast.LENGTH_SHORT).show();
     }
