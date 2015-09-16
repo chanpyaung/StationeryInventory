@@ -15,7 +15,7 @@
         android:textColor="@android:color/white"
         android:background="@color/SecondaryColor"
         android:text="@string/add_new_item"
-        android:layout_width="170dp"
+        android:layout_width="120dp"
         android:layout_height="60dp"
         android:drawableLeft="@drawable/ic_m_add_white_24dp"/>
 
@@ -30,7 +30,7 @@
         android:background="@color/SecondaryColor"
         android:layout_alignParentEnd="true"
         android:text="@string/adjVouchers"
-        android:layout_width="170dp"
+        android:layout_width="120dp"
         android:layout_height="60dp"
         android:drawableLeft="@drawable/ic_folder_open_white_24dp"/>
 

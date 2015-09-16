@@ -127,7 +127,7 @@
 
     <Spinner
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginRight="15dp"
         android:id="@+id/reasonSpinner"
         android:layout_width="match_parent"
@@ -144,9 +144,10 @@
         android:hint="Remark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minLines="3"
+        android:minLines="2"
+        android:maxLines="3"
         android:gravity="top"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="5dp" />
 
     <Button
         android:layout_marginLeft="15dp"
@@ -185,13 +186,14 @@
         android:layout_toEndOf="@+id/qtyLabel" />
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:id="@+id/itemImg"
         android:layout_alignTop="@+id/itemCodeLabel"
         android:layout_alignStart="@+id/imageView"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="10dp"
-        android:src="@drawable/logo_200" />
+        android:src="@drawable/logo_200"
+        android:layout_alignBottom="@+id/reOrderLabel" />
 
 </RelativeLayout>

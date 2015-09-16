@@ -7,7 +7,7 @@
     <!-- TODO: Update blank fragment layout -->
     <Spinner
         android:layout_width="182dp"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:id="@+id/spinnerInvCat"
         android:spinnerMode="dropdown"
         android:layout_marginLeft="5dp"
