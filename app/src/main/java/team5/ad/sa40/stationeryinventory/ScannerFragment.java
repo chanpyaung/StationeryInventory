@@ -52,6 +52,7 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
     Boolean scannerRunning = false;
     RestAdapter restAdapter;
     static String itemID;
+    JSONItem myItem;
     //zxscanlib
     private String lastEmbeddedScannerScannedData;
     private long lastEmbeddedScannerScannedDataTimestamp;
@@ -106,125 +107,130 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
         //Add to request cart methods to be implement here
 
         final int empID = Setup.user.getEmpID();
-        //need to check empID; implement condition here
-        //SC go other page
-        final int qty = 1;
-        final JsonObject reqItem = new JsonObject();
-        reqItem.addProperty("EmpID", empID);
-
-
-        reqItem.addProperty("ItemID", itemID);
-        reqItem.addProperty("Qty", qty);
-
-
-        //retrofit
-
-        final RequestCartAPI rqCartAPI = restAdapter.create(RequestCartAPI.class);
-        rqCartAPI.getItemsbyEmpID(empID, new Callback<List<JSONRequestCart>>() {
-            @Override
-            public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
-                JsonElement jsonElement = reqItem;
-                int qty = jsonElement.getAsJsonObject().get("Qty").getAsInt();
-                String ItemID = jsonElement.getAsJsonObject().get("ItemID").getAsString();
-                System.out.println(jsonElement.getAsJsonObject().get("ItemID").getAsString() + ItemID);
-
-                if (jsonRequestCarts.size() > 0) {
-                    Setup.allRequestItems = jsonRequestCarts;
-                    for (JSONRequestCart jCart : jsonRequestCarts) {
-                        if (itemID.equals(jCart.getItemID())) {
-                            System.out.println("We are the same " + jCart.getItemID() + " " + ItemID);
-                            System.out.println("JSON new" + jsonElement.getAsJsonObject());
-                            reqItem.addProperty("Qty", jCart.getQty()+qty);
-                            rqCartAPI.updatetoCart(jsonElement.getAsJsonObject(), new Callback<Boolean>() {
-                                @Override
-                                public void success(Boolean aBoolean, Response response) {
-                                    Toast.makeText(ScannerFragment.this.getActivity(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
-                                }
-
-                                @Override
-                                public void failure(RetrofitError error) {
-                                    Toast.makeText(ScannerFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                            break;
-                        }//end of if statement which item equal others inside cart
-                        else {
-                            reqItem.addProperty("EmpID", empID);
-                            reqItem.addProperty("ItemID", itemID);
-                            reqItem.addProperty("Qty", qty);
-                            rqCartAPI.addtoCart(reqItem, new Callback<Boolean>() {
-                                @Override
-                                public void success(Boolean aBoolean, Response response) {
-                                    Toast.makeText(ScannerFragment.this.getActivity(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
-                                    RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
-                                    rqAPI.getItemsbyEmpID(Setup.user.getEmpID(), new Callback<List<JSONRequestCart>>() {
-                                        @Override
-                                        public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
-                                            Setup.allRequestItems = jsonRequestCarts;
-                                            if (Setup.allRequestItems.size() > 0) {
-                                                RequestCartFragment rqFrag = new RequestCartFragment();
-                                                fragmentTran = getFragmentManager().beginTransaction();
-                                                fragmentTran.replace(R.id.frame, rqFrag).addToBackStack("REQUEST_CART_FRAG").commit();
-                                            } else {
-                                                Toast.makeText(getActivity(), "We acknowledge you that you haven't add any item yet.Please add some items before you proceed.", Toast.LENGTH_SHORT).show();
-                                            }
-
-                                        }
-
-                                        @Override
-                                        public void failure(RetrofitError error) {
-
-                                        }
-                                    });
-
-                                }
-                                @Override
-                                public void failure(RetrofitError error) {
-                                    Toast.makeText(ScannerFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
-                                }
-                            });// end of add to cart method
-                        }//end of else statement which is item not equal inside cart
-                    } //end of forloop
-                }//end of checking return jsonarray size
-                //Log.i("Success", String.valueOf(Setup.allRequestItems.size()));
-                else {
-                    rqCartAPI.addtoCart(jsonElement.getAsJsonObject(), new Callback<Boolean>() {
-                        @Override
-                        public void success(Boolean aBoolean, Response response) {
-                            Toast.makeText(ScannerFragment.this.getActivity(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
-                            RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
-                            rqAPI.getItemsbyEmpID(Setup.user.getEmpID(), new Callback<List<JSONRequestCart>>() {
-                                @Override
-                                public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
-                                    Setup.allRequestItems = jsonRequestCarts;
-                                    if (Setup.allRequestItems.size() > 0) {
-                                        RequestCartFragment rqFrag = new RequestCartFragment();
-                                        fragmentTran = getFragmentManager().beginTransaction();
-                                        fragmentTran.replace(R.id.frame, rqFrag).addToBackStack("REQUEST_CART_FRAG").commit();
-                                    } else {
-                                        Toast.makeText(getActivity(), "We acknowledge you that you haven't add any item yet.Please add some items before you proceed.", Toast.LENGTH_SHORT).show();
+        if(Setup.user.getRoleID().equals("SC")){
+            InventoryDetails detailsFragment = new InventoryDetails();
+            detailsFragment.item = myItem;
+            android.support.v4.app.FragmentTransaction fragmentTransaction2 = getFragmentManager().beginTransaction();
+            fragmentTransaction2.replace(R.id.frame, detailsFragment).addToBackStack("INVENTORYLIST TAG").commit();
+        }
+        else {
+            //need to check empID; implement condition here
+            //SC go other page
+            final int qty = 1;
+            final JsonObject reqItem = new JsonObject();
+            reqItem.addProperty("EmpID", empID);
+            reqItem.addProperty("ItemID", itemID);
+            reqItem.addProperty("Qty", qty);
+            //retrofit
+            final RequestCartAPI rqCartAPI = restAdapter.create(RequestCartAPI.class);
+            rqCartAPI.getItemsbyEmpID(empID, new Callback<List<JSONRequestCart>>() {
+                @Override
+                public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
+                    JsonElement jsonElement = reqItem;
+                    int qty = jsonElement.getAsJsonObject().get("Qty").getAsInt();
+                    String ItemID = jsonElement.getAsJsonObject().get("ItemID").getAsString();
+                    System.out.println(jsonElement.getAsJsonObject().get("ItemID").getAsString() + ItemID);
+                    if (jsonRequestCarts.size() > 0) {
+                        Setup.allRequestItems = jsonRequestCarts;
+                        for (JSONRequestCart jCart : jsonRequestCarts) {
+                            if (itemID.equals(jCart.getItemID())) {
+                                System.out.println("We are the same " + jCart.getItemID() + " " + ItemID);
+                                System.out.println("JSON new" + jsonElement.getAsJsonObject());
+                                reqItem.addProperty("Qty", jCart.getQty() + qty);
+                                rqCartAPI.updatetoCart(jsonElement.getAsJsonObject(), new Callback<Boolean>() {
+                                    @Override
+                                    public void success(Boolean aBoolean, Response response) {
+                                        Toast.makeText(ScannerFragment.this.getActivity(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
                                     }
 
-                                }
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        Toast.makeText(ScannerFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                break;
+                            }//end of if statement which item equal others inside cart
+                            else {
+                                reqItem.addProperty("EmpID", empID);
+                                reqItem.addProperty("ItemID", itemID);
+                                reqItem.addProperty("Qty", qty);
+                                rqCartAPI.addtoCart(reqItem, new Callback<Boolean>() {
+                                    @Override
+                                    public void success(Boolean aBoolean, Response response) {
+                                        Toast.makeText(ScannerFragment.this.getActivity(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
+                                        RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
+                                        rqAPI.getItemsbyEmpID(Setup.user.getEmpID(), new Callback<List<JSONRequestCart>>() {
+                                            @Override
+                                            public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
+                                                Setup.allRequestItems = jsonRequestCarts;
+                                                if (Setup.allRequestItems.size() > 0) {
+                                                    RequestCartFragment rqFrag = new RequestCartFragment();
+                                                    fragmentTran = getFragmentManager().beginTransaction();
+                                                    fragmentTran.replace(R.id.frame, rqFrag).addToBackStack("REQUEST_CART_FRAG").commit();
+                                                } else {
+                                                    Toast.makeText(getActivity(), "We acknowledge you that you haven't add any item yet.Please add some items before you proceed.", Toast.LENGTH_SHORT).show();
+                                                }
 
-                                @Override
-                                public void failure(RetrofitError error) {
+                                            }
 
-                                }
-                            });
-                        }
-                        @Override
-                        public void failure(RetrofitError error) {
-                            Toast.makeText(ScannerFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                                            @Override
+                                            public void failure(RetrofitError error) {
+
+                                            }
+                                        });
+
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        Toast.makeText(ScannerFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });// end of add to cart method
+                            }//end of else statement which is item not equal inside cart
+                        } //end of forloop
+                    }//end of checking return jsonarray size
+                    //Log.i("Success", String.valueOf(Setup.allRequestItems.size()));
+                    else {
+                        rqCartAPI.addtoCart(jsonElement.getAsJsonObject(), new Callback<Boolean>() {
+                            @Override
+                            public void success(Boolean aBoolean, Response response) {
+                                Toast.makeText(ScannerFragment.this.getActivity(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
+                                RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
+                                rqAPI.getItemsbyEmpID(Setup.user.getEmpID(), new Callback<List<JSONRequestCart>>() {
+                                    @Override
+                                    public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
+                                        Setup.allRequestItems = jsonRequestCarts;
+                                        if (Setup.allRequestItems.size() > 0) {
+                                            RequestCartFragment rqFrag = new RequestCartFragment();
+                                            fragmentTran = getFragmentManager().beginTransaction();
+                                            fragmentTran.replace(R.id.frame, rqFrag).addToBackStack("REQUEST_CART_FRAG").commit();
+                                        } else {
+                                            Toast.makeText(getActivity(), "We acknowledge you that you haven't add any item yet.Please add some items before you proceed.", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Toast.makeText(ScannerFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
-            }
-            @Override
-            public void failure(RetrofitError error) {
-                Toast.makeText(ScannerFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Toast.makeText(ScannerFragment.this.getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
 
@@ -251,6 +257,7 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
         invAPI.getItemDetails(data, new Callback<JSONItem>() {
             @Override
             public void success(final JSONItem jsonItem, Response response) {
+                myItem = jsonItem;
                 textItemNumber.setText(jsonItem.getItemID());
                 textItemName.setText(jsonItem.getItemName());
                 ItemAPI itemAPI = restAdapter.create(ItemAPI.class);

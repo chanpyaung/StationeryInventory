@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -253,6 +254,7 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
                                                 reqAPI.approveRequisition(reqID, Setup.user.getEmpID(), strRemark, new Callback<Boolean>() {
                                                     @Override
                                                     public void success(Boolean aBoolean, Response response) {
+                                                        Toast.makeText(getActivity(), "Requisition #"+ reqID +" has been successfully approved.", Toast.LENGTH_SHORT).show();
                                                         Log.i("Success Approve", aBoolean.toString());
                                                         Log.i("Response", response.getUrl() + " " + String.valueOf(response.getStatus()) + " " + response.getReason());
                                                         reqAPI.getStatus(new Callback<List<JSONStatus>>() {
@@ -369,6 +371,7 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
         reqAPI.cancelRequisition(reqID, new Callback<Boolean>() {
             @Override
             public void success(Boolean aBoolean, Response response) {
+                Toast.makeText(getActivity(), "Requisition #"+ reqID +" has been rejected.", Toast.LENGTH_SHORT).show();
                 Log.i("Success Cancel", aBoolean.toString());
                 reqAPI.getStatus(new Callback<List<JSONStatus>>() {
                     @Override
