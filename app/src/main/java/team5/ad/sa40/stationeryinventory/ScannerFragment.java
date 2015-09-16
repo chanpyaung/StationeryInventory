@@ -331,8 +331,34 @@ public class ScannerFragment extends android.support.v4.app.Fragment implements 
 
     @Override
     public void doBack() {
-        CategoryFragment fragment = new CategoryFragment();
-        FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-        fragTran.replace(R.id.frame, fragment).commit();
+        if(!Setup.user.getRoleID().equals("SC")) {
+            CategoryFragment fragment = new CategoryFragment();
+            FragmentTransaction fragTran = getFragmentManager().beginTransaction();
+            fragTran.replace(R.id.frame, fragment).commit();
+        }
+        else{
+            InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+
+            invAPI.getList(new Callback<List<JSONItem>>() {
+                @Override
+                public void success(List<JSONItem> jsonItems, Response response) {
+                    Log.i("Result :", jsonItems.toString());
+                    Log.i("First item: ", jsonItems.get(0).getItemID().toString());
+                    Log.i("Response: ", response.getBody().toString());
+                    System.out.println("Response Status " + response.getStatus());
+                    InvListAdapter.mJSONItems = jsonItems;
+                    System.out.println("SIZE:::::" + InvListAdapter.mJSONItems.size());
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.i("Error: ", error.toString());
+                }
+            });
+            InventoryList fragment = new InventoryList();
+            fragmentTran = getFragmentManager().beginTransaction();
+            fragmentTran.replace(R.id.frame, fragment);
+            fragmentTran.commit();
+        }
     }
 }

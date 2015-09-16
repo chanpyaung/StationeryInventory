@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +29,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
-import team5.ad.sa40.stationeryinventory.Model.JSONItemPrice;
 
 
 public class InventoryList extends android.support.v4.app.Fragment {
@@ -138,7 +136,6 @@ public class InventoryList extends android.support.v4.app.Fragment {
         spinnerInvCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(InventoryList.this.getActivity(), "Selected: " + position, Toast.LENGTH_SHORT).show();
                 Log.i("spinner's:", categories[position]);
                 switch (position) {
                     case (0):
