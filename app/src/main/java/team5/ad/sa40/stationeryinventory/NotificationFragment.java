@@ -47,6 +47,8 @@ public class NotificationFragment extends android.support.v4.app.Fragment{
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
 
+        getActivity().setTitle("Notifications");
+
         Setup s = new Setup();
         empID = Setup.user.getEmpID();
         Log.i("empID: ",Integer.toString(empID));

@@ -2,16 +2,298 @@
 <items version="2" >
 
     <item
-        jar="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/design/22.2.1/jars/classes.jar"
+        jar="/Users/Phebz/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/7.0.1/d5d13ea991eab0252e3710e5df3d6a9d4b21d461/butterknife-7.0.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="d5d13ea991eab0252e3710e5df3d6a9d4b21d461">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/butterknife-7.0.1-d3669eea39681e0265494ad94dbcca4717d23cda.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="4a135d56554069e5d0ff80e3220e887e57146ee5">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-e04d8f852ff85e40cbee2ec477e6ff5537c4ef9d.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="e1fa5e1123997a55e3ed65b44892993ff4b58cfe">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-69d5026802134517ebe43f859910b2617b367957.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="cb6fab7a71fa9ec1f483d44c5fca65ab469d8aca">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-41fb95befdbe67258c980eacc17a7bb351fdafd3.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="130b32ed466fa0f63efd4c7d6250ccd2ed506790">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-674603e2065bab6d0a012135747c73928de3c9c1.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1ff30fa49c07a08c3035d7218a3efebf5680d522">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-d68998974dc1d2668762d425c088ccf6f464d624.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/retrofit/1.9.0/a681c044244d9fc375198588297a39ba78028423/retrofit-1.9.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="a681c044244d9fc375198588297a39ba78028423">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/retrofit-1.9.0-52fbc4cc130d1089c3da9911cbbf8b42bded3ccb.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/jp.wasabeef/recyclerview-animators/1.2.2/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="19fca4378b6bf4dcb8a606d87d4f4da8286297ef">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-456cfd004380ff3801aaeee7a86b6f192c528679.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c0c912d58c9468b1f9d9769c8975afdf2c85d681">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-50deda6b17d072cf6ca600708bb0e07027c5c85e.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/libs/internal_impl-22.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.1-6bf5a668e55d9e9ea2360a44f33feee05e6609ee.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.2.1/44780c2cf98f6a3cf4e77f1234d644758b329201/bolts-android-1.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="44780c2cf98f6a3cf4e77f1234d644758b329201">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/bolts-android-1.2.1-f538d68375cb3145bf1df68c8caf8d857f13870c.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2e24e5f1b11170163028277de63f709e42525db4">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-3dba1f3e0511fb04204a808da4631594fd71a60c.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="3abb4b88f5a8a0584a9b01d3170d7165f12f8588">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-c2bcfb8277228e8317f37b6738c38a4a64f508ba.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="77a9dcb5f8b1dba36aacaa9c150eb0942dbea158">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-523fbe2c7dfa851d364041c82f6a705de9ea0fe1.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="e23ea11124bb700eeddd4ab7aa848c615f493850">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-19b95ecc0fe01f51fa43518507f700bcfc127f01.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/.gradle/caches/modules-2/files-2.1/com.parse/parse-android/1.10.1/a87cb993a12e574a216213d0b8b2b78f6da35d37/parse-android-1.10.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="a87cb993a12e574a216213d0b8b2b78f6da35d37">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/parse-android-1.10.1-a8320636bda6697541f78148204651c61b9cfd5a.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="dcf8c83c3dead00a6c4fe313e95f7aaca20dc641">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-ca4c7a75dc28110ff9b85499a2c84d8346435008.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="d11330ea68c0d964d30d5caed1f27e6b1488b189">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-bdfed447791694f40ef986a35a30446140326eff.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="98137c4d12c50923f5809852b1ef4d1c4e162081">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-ae81ea12eb9dd910ddcacf73ccc483eeb290a24a.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/de.hdodenhof/circleimageview/1.3.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="ac6948cce36f694f3eb3d73a135e298dc4b3527a">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-47bd11213d77ce496dcb88a1032dd88078cf571c.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.bowyer.app/fab-toolbar/1.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="45945a28eee4137eb7e4d49214a05df5cb9ce487">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-a857465ac205cc896c43c3dd02a4fe4ccddb378f.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/ecb6e1f8e4b0e84c4b886c2f14a1500caf309757/gson-2.3.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/gson-2.3.1-eee2f2e248376cf8faaa7b038a170ab9d1d7de4f.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/design/22.2.1/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="1821601ddbec5ff125653097812823388700af74">
-        <dex dex="/Users/johnmajor/Desktop/ADProject/LogicUniversity/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-a84ce30c40526712c3022e9770049e37c80b1e4e.jar" />
-        jar="/Users/student/Documents/AD project Mobile/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/design/22.2.1/jars/classes.jar"
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-acecb2ab855861ee08c605ea02b9654c1090c994.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="1821601ddbec5ff125653097812823388700af74">
-        <dex dex="/Users/student/Documents/AD project Mobile/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-1fb75c6f94b0938b59684b619c16f2db3478ad24.jar" />
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-b09b287941f06ef2cb3d428bf5668877ec5cda1f.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c2ac04c5b232f6f0658ee4f1c13be09cd76406e2">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-5bd0e50539f1e0f5b31b0a0962e18e11dfe3aade.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appstate/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="edea92852b40eee716e910af8dad9eeaa58fb0e1">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-1286dc29e7ba9e44d59dac7fbd0269d44c73dc9d.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="42a1ee578b62fd1bd28b3307a679dc9ba0791587">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-488ed09dfd7b4a88281d45cc71964fc75abaeda5.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2491ae1b2a848af1f4f0c795f3117c1bd6a1989f">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-36e6a29afaa3a3f8e613fcc23fa7579d820a743f.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-vision/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="b99f0b78bbcb76b915bc6529a83b65d4d46990dd">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-a3266161cee72a8fe5273fd83dd112341f79c3df.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="0124ce31248c0e8acfa2b28283c6d1a4d76e73d2">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-a84d35fbcd465da54a55cafdae5e15dbcf3a6b4b.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="6e85edfc9b5346d216e50ccef1f8e825504144a3">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-1f0a35433e027503a4b51527a95623f0b5de6d34.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/eu.livotov.labs/zxscanlib/2.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="381ed9690f3fcc50be3fee77a9ff5e69eb1cd11c">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-eb63f94f4b228b74bd86b637b1f33b6d288af900.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="166e458ee3b5fb5fcff0f936df3f3a788e6c54f3">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-9ca6c6f4d73647fa0295bf931aeb22f839d55443.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c5cafb324568d954780abb858c25db7ce675ab3c">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-d19f4f2dfc2447a4a3a5e462a59ee9043d15f565.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.1-caa65f76c4ca2f764e5e06fea5bcd8ad9bd4a533.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/eu.livotov.labs/zxscanlib/2.0.1/jars/libs/core-3.1.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="908e18674f895e3e1fa8f4a954b8c637a23d2801">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/core-3.1.0-ac86e1852afe44fba8e1a41b66f5527c3cf57b43.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="adebe28e0c0c05d34a3bfd76f3275bf4d8ff87b6">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-bf039ea88b8f6f55ecf3149673d6c4c34b8966ed.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="0632f06970823b7e3436f649bfa65b47035c91d0">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-0d1f0ea0ca43261d61ca69b44ffc9a8c0976000a.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-ff96238c15a4ddad92a3b5ccebf7bb992971a751.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/eu.livotov.labs/camview/1.0.3/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="cb8c66080211594efc3429bd52c1fae39ca3886d">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-f2dffc8c4f81e328c4f94854bcc1518d7bd93f4b.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/7.8.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c756d14e99d39471e99013a1e8fd2f3813ed42bf">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-c1a1728a2f0d6dd02ab324c525d42a46d45a5cdb.jar" />
+    </item>
+    <item
+        jar="/Users/Phebz/StationeryInventory/app/build/intermediates/exploded-aar/com.github.clans/fab/1.6.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="f61181528d587cc6fe45719e4560153935d374c2">
+        <dex dex="/Users/Phebz/StationeryInventory/app/build/intermediates/pre-dexed/debug/classes-22cd889e85a12bd47eb1c1bc1695b9ff4a00b3b9.jar" />
     </item>
 
 </items>

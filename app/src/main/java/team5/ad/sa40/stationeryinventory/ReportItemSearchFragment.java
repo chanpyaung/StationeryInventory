@@ -67,6 +67,9 @@ public class ReportItemSearchFragment extends android.support.v4.app.Fragment im
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_report_item_search, container, false);
         ButterKnife.bind(this,view);
+
+        getActivity().setTitle("Search Item");
+
         searchItemCode.setVisibility(View.GONE);
         itemList = new ArrayList<JSONItem>();
 

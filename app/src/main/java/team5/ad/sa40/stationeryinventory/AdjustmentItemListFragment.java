@@ -64,6 +64,8 @@ public class AdjustmentItemListFragment extends android.support.v4.app.Fragment 
         View view = inflater.inflate(R.layout.fragment_adjustment_item_list, container, false);
         ButterKnife.bind(this, view);
 
+        getActivity().setTitle("Issue New Voucher");
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.report_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);

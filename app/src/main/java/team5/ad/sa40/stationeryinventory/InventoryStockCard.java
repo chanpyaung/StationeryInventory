@@ -35,6 +35,8 @@ public class InventoryStockCard extends android.support.v4.app.Fragment  {
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_inventory_stockcard, container, false);
 
+        getActivity().setTitle("Stock Card");
+
         if (getArguments() != null) {
             Log.i("arguments: ",getArguments().toString());
             itemID = getArguments().getString("ItemID");

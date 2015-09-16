@@ -20,17 +20,19 @@ public class SCListAdapter extends RecyclerView.Adapter<SCListAdapter.ViewHolder
 
     public SCListAdapter(String itemID){
         super();
-        if(mJSONStockCard.size() == 0) {
+        if(mJSONStockCard == null) {
             mJSONStockCard = new ArrayList<JSONStockCard>();
         }
-        mSCID = new String[mJSONStockCard.size()];
-        Log.i("Size of list", String.valueOf(mJSONStockCard.size()));
-        Setup s = new Setup();
-        for(int i = 0; i < mJSONStockCard.size(); i++){
-            String temp = String.valueOf(mJSONStockCard.get(i).getStockCardSN());
-            mSCID[i] = temp;
+        if(mJSONStockCard.size()>0) {
+            mSCID = new String[mJSONStockCard.size()];
+            Log.i("Size of list", String.valueOf(mJSONStockCard.size()));
+            Setup s = new Setup();
+            for (int i = 0; i < mJSONStockCard.size(); i++) {
+                String temp = String.valueOf(mJSONStockCard.get(i).getStockCardSN());
+                mSCID[i] = temp;
+            }
+            Log.i("First of string ", mSCID[0]);
         }
-        Log.i("First of string ", mSCID[0]);
     }
 
     @Override

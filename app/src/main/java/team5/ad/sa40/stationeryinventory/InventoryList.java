@@ -64,6 +64,9 @@ public class InventoryList extends android.support.v4.app.Fragment {
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_inventory_list, container, false);
         ButterKnife.bind(this, view);
+
+        getActivity().setTitle("Inventory");
+
         CategoryItem i = new CategoryItem();
         categories = CategoryItem.categories;
 

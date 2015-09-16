@@ -78,6 +78,8 @@ public class ReportItemFragment extends android.support.v4.app.Fragment implemen
         ButterKnife.bind(this,view);
         reportItem = new JSONItem();
 
+        getActivity().setTitle("Report Item");
+
         if(args != null){
             reportItem.setItemID(args.getString("ITEMCODE"));
             if(args.getString("ITEMNAME") != "" || args.getString("ITEMNAME") != null) {

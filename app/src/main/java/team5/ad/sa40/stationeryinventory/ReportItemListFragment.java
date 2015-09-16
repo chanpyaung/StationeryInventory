@@ -61,6 +61,8 @@ public class ReportItemListFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_report_item_list, container, false);
         ButterKnife.bind(this, view);
 
+        getActivity().setTitle("Report Item");
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.report_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);

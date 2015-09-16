@@ -49,6 +49,8 @@ public class RetrievalList extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_retrieval_list, container, false);
         ButterKnife.bind(this, view);
 
+        getActivity().setTitle("Retrieval List");
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.ret_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);

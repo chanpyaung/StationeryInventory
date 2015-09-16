@@ -58,6 +58,8 @@ public class RetrievalFormDetails extends android.support.v4.app.Fragment implem
         ButterKnife.bind(this, view);
         Setup s = new Setup();
 
+        getActivity().setTitle("Retrieval Details");
+
         if (getArguments() != null) {
             Log.i("arguments: ", getArguments().toString());
             ret.setRetID(getArguments().getInt("RetID"));

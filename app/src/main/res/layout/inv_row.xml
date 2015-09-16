@@ -28,7 +28,8 @@
                 android:textStyle="bold"
                 android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/reportItemName"
-                android:maxLines="2"/>
+                android:maxLines="2"
+                android:layout_toStartOf="@+id/reportReason" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -53,7 +54,8 @@
                 android:layout_below="@+id/reportItemCode"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="50dp"
-                android:maxLines="2" />
+                android:maxLines="3"
+                android:layout_toStartOf="@+id/reportReason" />
 
             <TextView
                 android:layout_width="wrap_content"
