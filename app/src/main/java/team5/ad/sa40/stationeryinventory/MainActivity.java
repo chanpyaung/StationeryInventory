@@ -28,9 +28,11 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.InventoryAPI;
+import team5.ad.sa40.stationeryinventory.API.ReportAPI;
 import team5.ad.sa40.stationeryinventory.API.RequestCartAPI;
 import team5.ad.sa40.stationeryinventory.API.RequisitionAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONItem;
+import team5.ad.sa40.stationeryinventory.Model.JSONReport;
 import team5.ad.sa40.stationeryinventory.Model.JSONRequestCart;
 import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
 import team5.ad.sa40.stationeryinventory.Model.JSONStatus;
@@ -460,9 +462,21 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.analytics:
-                        AnalyticsSearchFragment asfrag = new AnalyticsSearchFragment();
-                        fragmentTran = getSupportFragmentManager().beginTransaction();
-                        fragmentTran.replace(R.id.frame, asfrag).commit();
+                        ReportAPI rpAPI = restAdapter.create(ReportAPI.class);
+                        rpAPI.getReports(new Callback<List<JSONReport>>() {
+                            @Override
+                            public void success(List<JSONReport> jsonReports, Response response) {
+                                AnalyticsAdapter.mReports = jsonReports;
+                                AnalyticsListFragment afrag = new AnalyticsListFragment();
+                                fragmentTran = getSupportFragmentManager().beginTransaction();
+                                fragmentTran.replace(R.id.frame, afrag).commit();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.i("Fail getReports", error.toString());
+                            }
+                        });
                         return true;
 
                     default:

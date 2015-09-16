@@ -10,16 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import retrofit.Callback;
@@ -28,13 +22,14 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.AdjustmentAPI;
 import team5.ad.sa40.stationeryinventory.API.NotificationAPI;
+import team5.ad.sa40.stationeryinventory.API.ReportAPI;
 import team5.ad.sa40.stationeryinventory.API.RequisitionAPI;
 import team5.ad.sa40.stationeryinventory.Model.JSONAdjustment;
 import team5.ad.sa40.stationeryinventory.Model.JSONAdjustmentDetail;
 import team5.ad.sa40.stationeryinventory.Model.JSONNotification;
+import team5.ad.sa40.stationeryinventory.Model.JSONReport;
 import team5.ad.sa40.stationeryinventory.Model.JSONReqDetail;
 import team5.ad.sa40.stationeryinventory.Model.JSONRequisition;
-import team5.ad.sa40.stationeryinventory.Model.JSONStatus;
 
 
 public class NotificationFragment extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
@@ -226,14 +221,20 @@ public class NotificationFragment extends android.support.v4.app.Fragment implem
                 break;
             }
             case "New Report Generated": {
-                /*
-                AnalyticsList fragment = new AnalyticsList();
-                Bundle args = new Bundle();
-                args.putString("NotifID", Integer.toString(notifID));
-                Log.i("NotifID", Integer.toString(notifID));
-                FragmentTransaction fragTran = getFragmentManager().beginTransaction();
-                fragment.setArguments(args);
-                fragTran.replace(R.id.frame, fragment).addToBackStack("TAG").commit();*/
+                ReportAPI rpAPI = restAdapter.create(ReportAPI.class);
+                rpAPI.getReports(new Callback<List<JSONReport>>() {
+                    @Override
+                    public void success(List<JSONReport> jsonReports, Response response) {
+                        AnalyticsAdapter.mReports = jsonReports;
+                        AnalyticsListFragment afrag = new AnalyticsListFragment();
+                        getFragmentManager().beginTransaction().replace(R.id.frame, afrag).commit();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.i("Fail getReports", error.toString());
+                    }
+                });
                 break;
             }
 
