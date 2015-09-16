@@ -40,7 +40,8 @@
                 android:textColor="#08AE9E"
                 android:layout_toStartOf="@+id/reportQty"
                 android:layout_alignParentTop="true"
-                android:layout_alignBottom="@+id/reportItemName"/>
+                android:layout_alignBottom="@+id/reportItemName"
+                android:gravity="center_vertical" />
 
             <TextView
                 android:layout_width="150dp"
@@ -61,10 +62,10 @@
                 android:text="  >"
                 android:textStyle="bold"
                 android:id="@+id/reportQty"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="-10dp"
-                android:layout_below="@id/reportItemCode"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@+id/reportItemName"
+                android:gravity="center_vertical" />
 
             <ImageView
                 android:layout_width="40dp"
