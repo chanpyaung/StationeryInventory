@@ -32,7 +32,7 @@
             android:id="@+id/reportItem"
             android:checked="false"
             android:icon="@drawable/ic_error_black_24dp"
-            android:title="Report Item" />
+            android:title="Adjustment" />
 
         <item
             android:id="@+id/analytics"

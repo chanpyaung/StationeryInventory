@@ -40,11 +40,12 @@
         android:layout_marginTop="10dp"
         android:layout_height="1dp"
         android:layout_below="@id/add_new_item"
-        android:background="@color/background_floating_material_dark"/>
+        android:background="@color/background_floating_material_dark"
+        android:id="@+id/view10" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/report_recycler_view"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/add_new_item"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -53,7 +54,7 @@
     <Button
         android:id="@+id/genAdjVoucher"
         android:padding="10dp"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textColor="@android:color/white"
         android:background="@color/PrimaryColor"
         android:layout_alignParentBottom="true"
@@ -64,6 +65,16 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="5dp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Item Code                                                      Qty       Reason"
+        android:id="@+id/textView17"
+        android:layout_alignTop="@+id/view10"
+        android:layout_toEndOf="@+id/add_new_item"
+        android:textStyle="bold"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>
