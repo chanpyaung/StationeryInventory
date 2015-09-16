@@ -129,7 +129,7 @@ public class InventoryList extends android.support.v4.app.Fragment {
         });
 
         //set spinner category filter details -
-        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,categories);
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this.getActivity(), R.layout.custom_spinner_item,categories);
         FiltersAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerInvCat.setAdapter(categoryAdapter);
 
