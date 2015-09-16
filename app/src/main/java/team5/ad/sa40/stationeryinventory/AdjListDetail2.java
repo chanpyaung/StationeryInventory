@@ -82,6 +82,12 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  implements 
 
         getActivity().setTitle("Adjustment List Detail");
 
+        if(Setup.user.getRoleID().equals("SC") || !dis.getStatus().equals("PENDING"))
+        {
+            btnApprove.setVisibility(View.GONE);
+            btnReject.setVisibility(View.GONE);
+        }
+
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
         EmployeeAPI employeeAPI = restAdapter.create(EmployeeAPI.class);
         employeeAPI.getEmployeeById(dis.getReportedBy(), new Callback<JSONEmployee>() {
@@ -106,11 +112,6 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  implements 
                     DecimalFormat df = new DecimalFormat();
                     df.setMaximumFractionDigits(2);
                     txtTotalCost.setText("$ " + String.valueOf(df.format(dis.getTotalAmt())));
-                }
-                if(Setup.user.getRoleID().equals("SC") || !dis.getStatus().equals("PENDING"))
-                {
-                    btnApprove.setVisibility(View.GONE);
-                    btnReject.setVisibility(View.GONE);
                 }
                  btnApprove.setOnClickListener(new View.OnClickListener() {
                     @Override
