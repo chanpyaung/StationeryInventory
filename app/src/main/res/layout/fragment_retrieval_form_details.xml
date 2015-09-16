@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="team5.ad.sa40.stationeryinventory.RetrievalFormDetails"
+    tools:context="team5.ad.sa40.stationeryinventory.Fragment.RetrievalFormDetails"
     android:rowCount="4"
     android:columnCount="3"
     android:id="@+id/ret_detail">

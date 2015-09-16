@@ -4,7 +4,7 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="team5.ad.sa40.stationeryinventory.ItemListFragment">
+    tools:context="team5.ad.sa40.stationeryinventory.Fragment.ItemListFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

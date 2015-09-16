@@ -7,10 +7,9 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import team5.ad.sa40.stationeryinventory.JSONParser;
-import team5.ad.sa40.stationeryinventory.Setup;
+import team5.ad.sa40.stationeryinventory.Utilities.JSONParser;
+import team5.ad.sa40.stationeryinventory.Utilities.Setup;
 
 
 public class Employee implements Serializable {

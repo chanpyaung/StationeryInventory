@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="team5.ad.sa40.stationeryinventory.DisbursementListDetail"
+    tools:context="team5.ad.sa40.stationeryinventory.Fragment.DisbursementListDetail"
     >
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="team5.ad.sa40.stationeryinventory.DisbursementListDetail">
+    tools:context="team5.ad.sa40.stationeryinventory.Fragment.DisbursementListDetail">
     <TextView
         android:id="@+id/SNNO"
         android:layout_marginTop="10dp"

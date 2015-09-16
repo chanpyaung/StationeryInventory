@@ -6,8 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
-import team5.ad.sa40.stationeryinventory.JSONParser;
-import team5.ad.sa40.stationeryinventory.Setup;
+import team5.ad.sa40.stationeryinventory.Utilities.JSONParser;
+import team5.ad.sa40.stationeryinventory.Utilities.Setup;
 
 /**
  * Created by student on 8/9/15.

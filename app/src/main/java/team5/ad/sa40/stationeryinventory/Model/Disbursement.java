@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-import team5.ad.sa40.stationeryinventory.JSONParser;
-import team5.ad.sa40.stationeryinventory.Setup;
+import team5.ad.sa40.stationeryinventory.Utilities.JSONParser;
+import team5.ad.sa40.stationeryinventory.Utilities.Setup;
 
 /**
  * Created by student on 2/9/15.

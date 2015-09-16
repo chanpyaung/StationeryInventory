@@ -9,8 +9,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import team5.ad.sa40.stationeryinventory.JSONParser;
-import team5.ad.sa40.stationeryinventory.Setup;
+import team5.ad.sa40.stationeryinventory.Utilities.JSONParser;
+import team5.ad.sa40.stationeryinventory.Utilities.Setup;
 
 /**
  * Created by johnmajor on 9/3/15.
