@@ -1,6 +1,5 @@
 package team5.ad.sa40.stationeryinventory;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -209,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.requisition:
+                        Setup.MODE = 1;
                         reqAPI.getStatus(new Callback<List<JSONStatus>>() {
                             @Override
                             public void success(List<JSONStatus> jsonStatuses, Response response) {
@@ -303,6 +303,7 @@ public class MainActivity extends AppCompatActivity {
 
                     //load all requisition under department of current user
                     case R.id.approval:
+                        Setup.MODE = 2;
                         //by default load all requisition
                         reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
                             @Override
@@ -451,9 +452,11 @@ public class MainActivity extends AppCompatActivity {
                         editor.remove("username");
                         editor.remove("password");
                         editor.commit();
-
-                        Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(i);
+                        finish();
+                        finishActivity(0);
+                        System.exit(0);
+//                        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+//                        startActivity(i);
                         return true;
 
                     case R.id.analytics:

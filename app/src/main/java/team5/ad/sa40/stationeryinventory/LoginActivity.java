@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
-import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
 
 import java.util.List;
@@ -214,6 +213,11 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                 mPasswordView.setError("");
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
 

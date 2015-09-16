@@ -21,6 +21,7 @@ public class Setup {
     public static List<JSONRequestCart> allRequestItems;
     public static List<JSONRequestCart> allnewRequstItems = new ArrayList<JSONRequestCart>();
     public static String deviceToken;
+    public static int MODE;
 
     public static String parseDateToString(Date d) {
         String output = "";
