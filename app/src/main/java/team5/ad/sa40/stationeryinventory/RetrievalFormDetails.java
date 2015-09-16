@@ -60,6 +60,8 @@ public class RetrievalFormDetails extends android.support.v4.app.Fragment implem
 
         getActivity().setTitle("Retrieval Details");
 
+        submitBtn.setVisibility(View.GONE);
+
         if (getArguments() != null) {
             Log.i("arguments: ", getArguments().toString());
             ret.setRetID(getArguments().getInt("RetID"));
@@ -146,7 +148,7 @@ public class RetrievalFormDetails extends android.support.v4.app.Fragment implem
         }
         else {
             btnPressedName = "save";
-            btnPressedNameSuccess = "Retrieval Form #" + ret.getRetID() + " has been successfully saved!";
+            btnPressedNameSuccess = "Retrieval Form #" + ret.getRetID() + " has been successfully saved! Please login to the web to allocate items retrieved.";
             btnPressedNameFail = "Unable to save Retrieval Form #" + ret.getRetID() + ". Please try again.";
         }
 
