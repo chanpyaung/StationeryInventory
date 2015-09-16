@@ -236,7 +236,7 @@ public class NotificationFragment extends android.support.v4.app.Fragment implem
 
     public void goToReqList(JSONNotification n){
         final int reqID = Integer.parseInt(n.getNotifDesc().substring(7, 4));
-        Log.i("reqID from notification: ", String.valueOf(reqID));
+        Log.i("reqID from notif: ", String.valueOf(reqID));
 
         // get object from server
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
