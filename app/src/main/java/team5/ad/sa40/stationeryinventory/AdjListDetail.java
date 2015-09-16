@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,7 +120,15 @@ public class AdjListDetail extends android.support.v4.app.Fragment implements Ma
                                 txtStatus.setText(dis.getStatus());
                                 txtAdjDate.setText(string_date);
                                 txtEmpID.setText(String.valueOf(dis.getReportedBy()));
-                                txtTotalCost.setText("$" + String.valueOf(dis.getTotalAmt()));
+
+                                if(String.valueOf(dis.getTotalAmt()).equals("null")){
+                                    txtTotalCost.setText("$ 0");
+                                }
+                                else{
+                                    DecimalFormat df = new DecimalFormat();
+                                    df.setMaximumFractionDigits(2);
+                                    txtTotalCost.setText("$ " + String.valueOf(df.format(dis.getTotalAmt())));
+                                }
                                 txtAppName.setText(employee.getEmpName());
                                 if (dis.getStatus().equals("REJECTED")) {
                                     txtStatusLabel.setText("REJECTED BY");
