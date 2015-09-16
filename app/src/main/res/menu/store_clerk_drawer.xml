@@ -41,23 +41,10 @@
             android:title="Notification" />
 
         <item
-            android:id="@+id/Setting"
-            android:checked="false"
-            android:icon="@drawable/ic_settings_black_24dp"
-            android:title="Setting" />
-
-        <item
             android:id="@+id/logout"
             android:checked="false"
             android:icon="@drawable/ic_exit_to_app_black_24dp"
             android:title="Log Out" />
-
-        <item
-            android:id="@+id/help"
-            android:checked="false"
-            android:icon="@drawable/ic_help_black_24dp"
-            android:title="Help" />
-
     </group>
 
 </menu>

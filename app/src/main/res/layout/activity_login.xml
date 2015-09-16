@@ -7,7 +7,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="team5.ad.sa40.stationeryinventory.LoginActivity"
     android:id="@+id/loginScreen"
-    android:background="@drawable/bkg2"
+    android:background="#364150"
     android:weightSum="1">
 
     <!-- Login progress -->
@@ -90,11 +90,11 @@
         android:id="@+id/forgetPassword"
         android:layout_gravity="center_horizontal"
         android:background="#00ffffff"
-        android:textColor="#ffffbd4c"
         android:shadowColor="#00ffffff"
         android:layout_below="@+id/textViewStatus"
         android:layout_alignEnd="@+id/imageLogo"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="15dp"
+        android:textColor="#ffffff" />
 
     <TextView
         android:layout_width="wrap_content"
