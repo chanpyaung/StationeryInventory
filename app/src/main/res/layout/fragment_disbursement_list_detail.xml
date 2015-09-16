@@ -92,7 +92,7 @@
         android:layout_below="@+id/colPoint"
         android:id="@+id/mapview"
         android:layout_width="300dp"
-        android:layout_height="150dp" />
+        android:layout_height="200dp" />
     <Button
         android:layout_below="@+id/mapview"
         android:layout_centerInParent="true"

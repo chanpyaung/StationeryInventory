@@ -95,7 +95,7 @@
                 android:layout_alignBottom="@+id/reportItemName"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:textSize="24dp" />
+                android:textSize="18dp" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

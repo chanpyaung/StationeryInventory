@@ -80,7 +80,7 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  implements 
 
         ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
-        getActivity().setTitle("Adjustment List Detail");
+        getActivity().setTitle("Adjustment Detail");
 
         if(Setup.user.getRoleID().equals("SC") || !dis.getStatus().equals("PENDING"))
         {

@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -96,7 +97,7 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment impl
 
         ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
-        getActivity().setTitle("Disbursement List Detail");
+        getActivity().setTitle("Disbursement Detail");
 
         Bundle bundle = this.getArguments();
         dis = (JSONDisbursement) bundle.getSerializable("disbursement");
@@ -287,8 +288,11 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment impl
                 @Override
                 public void success(List<JSONRequisition> jsonRequisitions, Response response) {
                     RequisitionListAdapter.mRequisitions = jsonRequisitions;
+                    Setup.allRequisition = jsonRequisitions;
+                    Log.e("mRequisitions Size", String.valueOf(jsonRequisitions.size()));
                     android.support.v4.app.Fragment frag = new RequisitionListFragment();
                     getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
+                    Log.e("Adap mRequisitions Size", String.valueOf(RequisitionListAdapter.mRequisitions.size()));
                 }
 
                 @Override

@@ -98,7 +98,7 @@ public class RequisitionListAdapter extends RecyclerView.Adapter<RequisitionList
 
     @Override
     public int getItemCount() {
-
+        Log.i("mReqSize", String.valueOf(mRequisitions.size()));
         return mRequisitions.size();
     }
 

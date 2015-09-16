@@ -94,7 +94,7 @@ public class AdjListDetail extends android.support.v4.app.Fragment implements Ma
 
         ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
-        getActivity().setTitle("Adjustment List Detail");
+        getActivity().setTitle("Adjustment Detail");
 
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
                 Log.e("Reach into BuildTable", "Success");

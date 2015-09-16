@@ -136,7 +136,11 @@ public class AdjListSearch extends android.support.v4.app.Fragment implements Ma
                 //search button action
                 JsonObject object = new JsonObject();
                 if(txtSearch.getText().toString().matches("")){
-                    object.addProperty("adjId", "null");
+                    object.addProperty("AdjID", "null");
+                }
+                else{
+                    object.addProperty("AdjID", txtSearch.getText().toString());
+                    Log.e("JSON STRING", object.toString());
                 }
                 if(text_start_date.getText().toString().matches("") || text_end_date.getText().toString().matches("")){
                     object.addProperty("startDate", "null");
@@ -166,6 +170,7 @@ public class AdjListSearch extends android.support.v4.app.Fragment implements Ma
                         e.printStackTrace();
                     }
                 }
+                Log.e("JSON STRING2", object.toString());
                 adjustmentAPI.getAdjVoucher(object, new Callback<List<JSONAdjustment>>() {
                     @Override
                     public void success(List<JSONAdjustment> adjustments, Response response) {

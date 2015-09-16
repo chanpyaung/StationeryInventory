@@ -84,7 +84,7 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment implemen
 
         ((MainActivity)getActivity()).setOnBackPressedListener(this);
 
-        getActivity().setTitle("Disbursement List Detail");
+        getActivity().setTitle("Disbursement Detail");
 
         Bundle bundle = this.getArguments();
         dis = (JSONDisbursement) bundle.getSerializable("disbursement");
