@@ -440,12 +440,6 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTran.commit();
                         return true;
 
-                    case R.id.Setting:
-                        SignatureFragment signFrag = new SignatureFragment();
-                        fragmentTran = getSupportFragmentManager().beginTransaction();
-                        fragmentTran.replace(R.id.frame, signFrag).commit();
-                        return true;
-
                     case R.id.logout:
                         //clear user
                         SharedPreferences pref =
