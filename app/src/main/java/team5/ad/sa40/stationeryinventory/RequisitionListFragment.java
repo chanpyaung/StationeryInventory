@@ -58,6 +58,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
     final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
     RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
     FragmentTransaction fragmentTran;
+    String abc;
     public RequisitionListFragment() {
         // Required empty public constructor
 
