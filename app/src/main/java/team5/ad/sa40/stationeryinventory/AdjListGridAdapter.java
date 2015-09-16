@@ -52,9 +52,9 @@ public class AdjListGridAdapter extends RecyclerView.Adapter<AdjListGridAdapter.
         String string_date = Setup.parseJSONDateToString(disItem.getDate());
         viewHolder.adjDate.setText(string_date);
         viewHolder.adjStatus.setText(disItem.getStatus());
-        if(!disItem.getStatus().equals("APPROVED")){
-            viewHolder.adjStatus.setTextColor(Color.RED);
-        }
+//        if(!disItem.getStatus().equals("APPROVED")){
+//            viewHolder.adjStatus.setTextColor(Color.RED);
+//        }
 
     }
     @Override

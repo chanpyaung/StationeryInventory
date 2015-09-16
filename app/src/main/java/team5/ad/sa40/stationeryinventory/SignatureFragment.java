@@ -42,6 +42,7 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import team5.ad.sa40.stationeryinventory.API.DisbursementAPI;
+import team5.ad.sa40.stationeryinventory.Model.JSONCollectionPoint;
 import team5.ad.sa40.stationeryinventory.Model.JSONDisbursement;
 
 
@@ -58,6 +59,7 @@ public class SignatureFragment extends android.support.v4.app.Fragment implement
     private String uniqueId;
     public String current = null;
     private File mypath;
+    JSONCollectionPoint selected_colPt;
     View mView;
     public static String tempDir;
     signature mSignature;
@@ -82,6 +84,7 @@ public class SignatureFragment extends android.support.v4.app.Fragment implement
 
         Bundle bundle = this.getArguments();
         dis = (JSONDisbursement)bundle.getSerializable("disbursement");
+        selected_colPt = (JSONCollectionPoint) bundle.getSerializable("collection");
         RepID = bundle.getInt("RepID");
 
         getActivity().setTitle("Disbursement List Detail");
@@ -253,6 +256,7 @@ public class SignatureFragment extends android.support.v4.app.Fragment implement
         android.support.v4.app.Fragment frag = new ClerkDisListDetail();
         Bundle bundle = new Bundle();
         bundle.putSerializable("disbursement", dis);
+        bundle.putSerializable("collection", selected_colPt);
         frag.setArguments(bundle);
         getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
     }

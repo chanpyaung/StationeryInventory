@@ -53,6 +53,7 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment implemen
     GoogleMap map;
     JSONDisbursement dis;
     JSONEmployee rep;
+    JSONCollectionPoint selected_colPt;
 
     @Bind(R.id.txtNo) TextView text_dis_no;
     @Bind(R.id.txtDisDate) TextView text_dis_date;
@@ -83,7 +84,6 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment implemen
         Bundle bundle = this.getArguments();
         dis = (JSONDisbursement) bundle.getSerializable("disbursement");
         Log.i("Dis id is ", String.valueOf(dis.getDisID()));
-        final JSONCollectionPoint selected_colPt;
         selected_colPt = (JSONCollectionPoint) bundle.getSerializable("collection");
 
         if(!dis.getStatus().equals("DISBURSED")){
@@ -175,6 +175,7 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment implemen
             android.support.v4.app.Fragment frag = new SignatureFragment();
             bundle.putSerializable("disbursement", dis);
             bundle.putInt("RepID", rep.getEmpID());
+            bundle.putSerializable("collection", selected_colPt);
             frag.setArguments(bundle);
             getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
         }
