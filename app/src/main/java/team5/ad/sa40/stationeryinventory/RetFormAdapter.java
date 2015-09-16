@@ -91,7 +91,9 @@ public class RetFormAdapter extends RecyclerView.Adapter<RetFormAdapter.ViewHold
         viewHolder.itemName.setText(ret.get("itemName").toString());
         viewHolder.requestQty.setText(ret.get("RequestQty").toString());
         viewHolder.bin.setText(ret.get("Bin").toString());
-        viewHolder.actualQty.setText(ret.get("ActualQty").toString());
+        if(Integer.parseInt(ret.get("ActualQty").toString()) > 0) {
+            viewHolder.actualQty.setText(ret.get("ActualQty").toString());
+        }
         if(mStatus.equals("RETRIEVED")) {
             viewHolder.actualQty.setEnabled(false);
             viewHolder.actualQty.setTextColor(R.color.PrimaryColor);

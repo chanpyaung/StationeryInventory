@@ -73,7 +73,7 @@ public class NotifListAdapter extends RecyclerView.Adapter<NotifListAdapter.View
         Date today = new Date();
         if(d.getDate() == today.getDate()) {
             if(d.getHours() >= 12){
-                String hour = String.valueOf(d.getHours());
+                String hour = String.valueOf(d.getHours() - 12);
                 Log.i("Hour", hour);
                 String min = "";
                 if(d.getMinutes() < 10){

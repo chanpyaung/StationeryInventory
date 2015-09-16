@@ -150,7 +150,7 @@ public class Retrieval {
                     Log.i("r.getReqForms:", r.getReqForms().toString());
                 }
                 for(int form=0; form<r.getReqForms().size(); form++) {
-                    if(i.getString("ReqID") != r.getReqForms().get(form)) {
+                    if(!(i.getString("ReqID").equals(r.getReqForms().get(form)))) {
                         r.getReqForms().add(i.getString("ReqID").toString());
                         Log.i("r.getReqForms:", r.getReqForms().toString());
                         break;
