@@ -591,11 +591,6 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
                         Log.i("STATUS", String.valueOf(response.getStatus()));
                         Log.i("REASON", response.getReason());
                         Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
-                        for(JSONRequisition jr : jsonRequisitions){
-                            if(jr.getStatusID().equals(6)){
-                                jsonRequisitions.remove(jr);
-                            }
-                        }
                         RequisitionListAdapter.mRequisitions = jsonRequisitions;
                         Setup.allRequisition = jsonRequisitions;
                         RequisitionListAdapter.mRequisitions = Setup.allRequisition;
