@@ -3,6 +3,7 @@ package team5.ad.sa40.stationeryinventory.Fragment;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -56,6 +57,7 @@ public class DisbursementList extends android.support.v4.app.Fragment implements
     @Bind(R.id.startDate) EditText text_start_date;
     @Bind(R.id.endDate) EditText text_end_date;
     @Bind(R.id.button) Button btnSearch;
+    @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
 
     public DisbursementList(){
 
@@ -68,7 +70,7 @@ public class DisbursementList extends android.support.v4.app.Fragment implements
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_disbursement_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_disbursement_list, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
 
@@ -80,6 +82,210 @@ public class DisbursementList extends android.support.v4.app.Fragment implements
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
+                Log.e("Adapter:", "reach into constructor");
+                Log.e("Setup.user.getDeptID()", String.valueOf(Setup.user.getDeptID()));
+                disbursementAPI.getDisbursementByDeptID(Setup.user.getDeptID(), new Callback<List<JSONDisbursement>>() {
+                    @Override
+                    public void success(List<JSONDisbursement> jsonDisbursements, Response response) {
+                        Log.e("Response:", response.toString());
+                        Log.e("Size of json", String.valueOf(jsonDisbursements.size()));
+                        mDisbursement = jsonDisbursements;
+                        Log.e("Size of list", String.valueOf(mDisbursement.size()));
+                        CollectionPointAPI collectionPointAPI = restAdapter.create(CollectionPointAPI.class);
+
+                        collectionPointAPI.getAllCollectionPoints(new Callback<List<JSONCollectionPoint>>() {
+                            @Override
+                            public void success(List<JSONCollectionPoint> jsonCollectionPoints, Response response) {
+                                mCollectionPoint = jsonCollectionPoints;
+                                Log.e("Size of list", String.valueOf(mCollectionPoint.size()));
+                                mAdapter = new DisListGridAdapter("Dept", mDisbursement, mCollectionPoint);
+                                mRecyclerView.setAdapter(mAdapter);
+                                mAdapter.SetOnItemClickListener(new DisListGridAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(View view, int position) {
+                                        android.support.v4.app.Fragment frag = new DisbursementListDetail();
+                                        Bundle bundle = new Bundle();
+                                        JSONDisbursement temp = mDisbursement.get(position);
+                                        bundle.putSerializable("disbursement", temp);
+                                        frag.setArguments(bundle);
+                                        getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.e("getAllCollectionPoints", error.toString());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("getDisbursementByDeptID", error.toString());
+                    }
+                });
+
+                search = (SearchView)view.findViewById(R.id.disSearchCat);
+                search.setQueryHint("Search disbursement ID");
+                search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        Log.e("onQueryTextChange0", String.valueOf(mDisbursement.size()));
+                        DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
+                        disbursementAPI.getDisbursementByDeptID(Setup.user.getDeptID(), new Callback<List<JSONDisbursement>>() {
+                            @Override
+                            public void success(List<JSONDisbursement> jsonDisbursements, Response response) {
+                                mDisbursement = jsonDisbursements;
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.e("getDisbursementByDeptID", error.toString());
+                            }
+                        });
+                        ArrayList<JSONDisbursement> dis = new ArrayList<JSONDisbursement>();
+                        for(int i = 0; i < mDisbursement.size(); i++){
+                            JSONDisbursement temp = mDisbursement.get(i);
+                            dis.add(temp);
+                        }
+                        final List<JSONDisbursement> filteredModelList = filter(dis, newText);
+                        Log.e("onQueryTextChange1", String.valueOf(dis.size()));
+                        Log.e("onQueryTextChange2", String.valueOf(mCollectionPoint.size()));
+                        mAdapter.animateTo(filteredModelList);
+                        mRecyclerView.scrollToPosition(0);
+                        return true;
+                    }
+                });
+
+
+
+//        text_end_date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus) {
+//                    text_end_date.setError(null);
+//                    Date start = Setup.parseStringToDate(text_start_date.getText().toString());
+//                    Date end = Setup.parseStringToDate(text_end_date.getText().toString());
+//
+//                    if (end.before(start)) {
+//                        text_end_date.setError("End Date should be after Start Date");
+//                    }
+//                }
+//            }
+//        });
+
+                btnSearch.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(!text_start_date.getText().toString().matches("") && !text_end_date.getText().toString().matches("")){
+                            Date start = Setup.parseStringToDate(text_start_date.getText().toString());
+                            Date end = Setup.parseStringToDate(text_end_date.getText().toString());
+
+                            if (end.before(start)) {
+                                text_end_date.setError("End Date should be after Start Date");
+                            }
+                            else{
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+                                SimpleDateFormat original_format = new SimpleDateFormat("dd/MM/yyyy");
+                                try {
+                                    Date uDate1 = original_format.parse(text_start_date.getText().toString());
+                                    String str_date1 = format.format(uDate1);
+                                    str_date1 = str_date1.replace('/', '-');
+                                    Log.e("SQLDate 1", str_date1);
+
+                                    Date uDate2 = original_format.parse(text_end_date.getText().toString());
+                                    String str_date2 = format.format(uDate2);
+                                    str_date2 = str_date2.replace('/', '-');
+                                    Log.e("SQLDate 2", str_date2);
+
+                                    DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
+                                    disbursementAPI.getDisbursementByDates(Setup.user.getDeptID(), str_date1, str_date2, new Callback<List<JSONDisbursement>>() {
+                                        @Override
+                                        public void success(List<JSONDisbursement> jsonDisbursements, Response response) {
+                                            mDisbursement = jsonDisbursements;
+                                            Log.e("Success", String.valueOf(jsonDisbursements.size()));
+                                            mAdapter.animateTo(mDisbursement);
+                                            mRecyclerView.scrollToPosition(0);
+
+                                            if (mDisbursement.size() < 1) {
+                                                new AlertDialog.Builder(getActivity())
+                                                        .setTitle("Information")
+                                                        .setMessage("No disbursement is found!")
+                                                        .setCancelable(false)
+                                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int which) {
+
+                                                            }
+                                                        })
+                                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                                        .show();
+                                            } else if (mDisbursement.size() > 1) {
+                                                new AlertDialog.Builder(getActivity())
+                                                        .setTitle("Information")
+                                                        .setMessage(mDisbursement.size() + " disbursements are found!")
+                                                        .setCancelable(false)
+                                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int which) {
+
+                                                            }
+                                                        })
+                                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                                        .show();
+                                            } else {
+                                                new AlertDialog.Builder(getActivity())
+                                                        .setTitle("Information")
+                                                        .setMessage(mDisbursement.size() + " disbursement is found!")
+                                                        .setCancelable(false)
+                                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int which) {
+
+                                                            }
+                                                        })
+                                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                                        .show();
+                                            }
+
+                                            text_start_date.setError(null);
+                                            text_end_date.setError(null);
+                                        }
+
+                                        @Override
+                                        public void failure(RetrofitError error) {
+                                            Log.e("getDisbursementByDates", error.toString());
+                                        }
+                                    });
+
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        else {
+                            if(text_start_date.getText().toString().matches("")){
+                                text_start_date.setError("Fill Data!");
+                            }
+                            if (text_end_date.getText().toString().matches("")){
+                                text_end_date.setError("Fill Data!");
+                            }
+                        }
+                    }
+                });
+                onItemsLoadComplete();
+            }
+        });
 
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
         DisbursementAPI disbursementAPI = restAdapter.create(DisbursementAPI.class);
@@ -318,6 +524,10 @@ public class DisbursementList extends android.support.v4.app.Fragment implements
         //Date dialog code ends here
         return  view;
     }
+    void onItemsLoadComplete() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
 
     private List<JSONDisbursement> filter(List<JSONDisbursement> models, String query) {
         query = query.toLowerCase();

@@ -3,6 +3,7 @@ package team5.ad.sa40.stationeryinventory.Fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -51,6 +52,7 @@ public class ClerkDisList extends android.support.v4.app.Fragment implements Spi
 
     @Bind(R.id.spnCol) Spinner spnCol;
     @Bind(R.id.spnDept) Spinner spnDept;
+    @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
 
     public ClerkDisList() {
         // Required empty public constructor
@@ -81,7 +83,19 @@ public class ClerkDisList extends android.support.v4.app.Fragment implements Spi
 
         //binding codes end here
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ShowAllDisbursements();
+                onItemsLoadComplete();
+            }
+        });
+
         return view;
+    }
+
+    void onItemsLoadComplete() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     public void ShowAllDisbursements(){

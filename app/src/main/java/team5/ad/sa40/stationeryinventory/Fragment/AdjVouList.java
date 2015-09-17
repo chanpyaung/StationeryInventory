@@ -4,6 +4,7 @@ package team5.ad.sa40.stationeryinventory.Fragment;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -47,6 +48,7 @@ public class AdjVouList extends android.support.v4.app.Fragment implements MainA
     String[] stat_ary = {"View All","PENDING", "APPROVED", "REJECT"};
 
     @Bind(R.id.spnStat) Spinner spn_status;
+    @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     public AdjVouList() {
         // Required empty public constructor
     }
@@ -73,8 +75,20 @@ public class AdjVouList extends android.support.v4.app.Fragment implements MainA
 
         ShowAllAdjustments();
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ShowAllAdjustments();
+                onItemsLoadComplete();
+            }
+        });
+
 
         return view;
+    }
+
+    void onItemsLoadComplete() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     public void ShowAllAdjustments(){
