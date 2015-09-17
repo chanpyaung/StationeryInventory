@@ -41,7 +41,9 @@ public class AnalyticsListFragment extends android.support.v4.app.Fragment imple
         // Inflate the layout for this fragment
 
         inflater = getActivity().getLayoutInflater();
+
         View view = inflater.inflate(R.layout.fragment_analytics_list, container, false);
+        getActivity().setTitle("Analytics Reports");
         mRecyclerView = (RecyclerView) view.findViewById(R.id.analytics_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(this.getActivity().getBaseContext(), 1);

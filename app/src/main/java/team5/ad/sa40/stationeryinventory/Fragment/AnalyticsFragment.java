@@ -2,6 +2,7 @@ package team5.ad.sa40.stationeryinventory.Fragment;
 
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ public class AnalyticsFragment extends android.support.v4.app.Fragment implement
                              Bundle savedInstanceState) {
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_analytics_graph, container, false);
+        getActivity().setTitle("Analytics Report");
         final BarChart chart = (BarChart) view.findViewById(R.id.barChart);
         if(getArguments()!=null){
             reportID = getArguments().getInt("ReportID");
@@ -94,7 +96,24 @@ public class AnalyticsFragment extends android.support.v4.app.Fragment implement
                         valueSet1.add(vle1);
                     }
                     BarDataSet barDataSet1 = new BarDataSet(valueSet1, jsonReportItems.get(i).getMonthYear());
-                    barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+                    if(jsonReportItems.get(i).getMonthYear().equals("COMM") || jsonReportItems.get(i).getMonthYear().equals("ALPHA")){
+                        barDataSet1.setColor(Color.RED);
+                    }
+                    else if (jsonReportItems.get(i).getMonthYear().equals("CPSC") || jsonReportItems.get(i).getMonthYear().equals("BANE")){
+                        barDataSet1.setColor(Color.GREEN);
+                    }
+                    else if (jsonReportItems.get(i).getMonthYear().equals("ENGL") || jsonReportItems.get(i).getMonthYear().equals("CHEP")){
+                        barDataSet1.setColor(Color.BLUE);
+                    }
+                    else if (jsonReportItems.get(i).getMonthYear().equals("REGR")){
+                        barDataSet1.setColor(Color.MAGENTA);
+                    }
+                    else if (jsonReportItems.get(i).getMonthYear().equals("ZOOL")){
+                        barDataSet1.setColor(Color.YELLOW);
+                    }
+                    else{
+                        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+                    }
                     dataSets.add(barDataSet1);
                 }
 

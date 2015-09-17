@@ -69,7 +69,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Item Code                                                      Qty       Reason"
+        android:text="Item Code                                              Qty       Reason"
         android:id="@+id/textView17"
         android:layout_alignTop="@+id/view10"
         android:layout_toEndOf="@+id/add_new_item"

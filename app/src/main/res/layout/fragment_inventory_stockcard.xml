@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="    Date          Department/Supplier   Change  Balance"
+        android:text="    Date       Dept/Supplier   Change  Balance"
         android:id="@+id/textView6"
         android:textSize="16dp"
         android:layout_row="2"
