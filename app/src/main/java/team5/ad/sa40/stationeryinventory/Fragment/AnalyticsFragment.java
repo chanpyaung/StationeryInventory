@@ -32,7 +32,7 @@ import team5.ad.sa40.stationeryinventory.Utilities.Setup;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AnalyticsFragment extends android.support.v4.app.Fragment {
+public class AnalyticsFragment extends android.support.v4.app.Fragment implements MainActivity.OnBackPressedListener{
 
     ArrayList<BarDataSet> dataSets;
     ArrayList<BarEntry> valueSet1;
@@ -117,4 +117,22 @@ public class AnalyticsFragment extends android.support.v4.app.Fragment {
     }
 
 
+    @Override
+    public void doBack() {
+        RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        ReportAPI rpAPI = restAdapter.create(ReportAPI.class);
+        rpAPI.getReports(new Callback<List<JSONReport>>() {
+            @Override
+            public void success(List<JSONReport> jsonReports, Response response) {
+                AnalyticsAdapter.mReports = jsonReports;
+                AnalyticsListFragment afrag = new AnalyticsListFragment();
+                getFragmentManager().beginTransaction().replace(R.id.frame, afrag).commit();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("Fail getReports", error.toString());
+            }
+        });
+    }
 }
