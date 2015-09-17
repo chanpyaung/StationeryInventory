@@ -103,6 +103,17 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
                         args.putInt("ReqID", selected.getReqID());
                         args.putInt("StatusID", selected.getStatusID());
                         args.putInt("EmpID", selected.getEmpID());
+                        String p = "";
+                        if(selected.getPriorityID().equals(1)){
+                            p = "Low";
+                            System.out.println(p +" "+selected.getPriorityID());
+                            args.putString("Priority", p);
+                        }
+                        else if (selected.getPriorityID().equals(2)) {
+                            p = "High";
+                            System.out.println(p +" "+selected.getPriorityID());
+                            args.putString("Priority", p);
+                        }
                         if (Setup.user.getRoleID().equals("DD") || Setup.user.getRoleID().equals("DH")) {
                             args.putString("APPROVAL", "ENABLED");
                         }
@@ -191,6 +202,17 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
                             args.putInt("ReqID", selected.getReqID());
                             args.putInt("StatusID", selected.getStatusID());
                             args.putInt("EmpID", selected.getEmpID());
+                            String p = "";
+                            if(selected.getPriorityID().equals(1)){
+                                p = "Low";
+                                System.out.println(p +" "+selected.getPriorityID());
+                                args.putString("Priority", p);
+                            }
+                            else if (selected.getPriorityID().equals(2)) {
+                                p = "High";
+                                System.out.println(p +" "+selected.getPriorityID());
+                                args.putString("Priority", p);
+                            }
                             if (Setup.user.getRoleID().equals("DD") || Setup.user.getRoleID().equals("DH")) {
                                 args.putString("APPROVAL", "ENABLED");
                             }
@@ -274,12 +296,16 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
             adapter.SetOnItemClickListener(new RequisitionListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
+                    Log.i("Click", "Here");
                     // retrieve requisition details from server and set to adapter here
                     final JSONRequisition selected = RequisitionListAdapter.mRequisitions.get(position);
                     RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
                     reqAPI.getReqDetail(selected.getReqID(), new Callback<List<JSONReqDetail>>() {
                         @Override
                         public void success(List<JSONReqDetail> jsonReqDetails, Response response) {
+                            Log.i("Success", "success");
+                            Log.i("priorityID", selected.getPriorityID().toString());
+                            System.out.println(" "+selected.getPriorityID());
                             RequisitionFormAdapter.mRequisitionDetails = jsonReqDetails;
                             final Bundle args = new Bundle();
                             args.putString("Date", selected.getDate());
@@ -287,12 +313,14 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
                             args.putInt("StatusID", selected.getStatusID());
                             args.putInt("EmpID", selected.getEmpID());
                             String p = "";
-                            if(selected.getPriorityID()==1){
+                            if(selected.getPriorityID().equals(1)){
                                 p = "Low";
+                                System.out.println(p +" "+selected.getPriorityID());
                                 args.putString("Priority", p);
                             }
-                            else if (selected.getPriorityID()==2) {
+                            else if (selected.getPriorityID().equals(2)) {
                                 p = "High";
+                                System.out.println(p +" "+selected.getPriorityID());
                                 args.putString("Priority", p);
                             }
                             if (Setup.user.getRoleID().equals("DD") || Setup.user.getRoleID().equals("DH")) {
@@ -306,7 +334,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
 
                         @Override
                         public void failure(RetrofitError error) {
-
+                            Log.i("Fail get Detail", error.toString());
                         }
                     });
                 }
