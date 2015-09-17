@@ -2,6 +2,7 @@ package team5.ad.sa40.stationeryinventory.Fragment;
 
 
 import android.app.Fragment;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -96,20 +97,38 @@ public class AnalyticsFragment extends android.support.v4.app.Fragment implement
                         valueSet1.add(vle1);
                     }
                     BarDataSet barDataSet1 = new BarDataSet(valueSet1, jsonReportItems.get(i).getMonthYear());
-                    if(jsonReportItems.get(i).getMonthYear().equals("COMM") || jsonReportItems.get(i).getMonthYear().equals("ALPHA")){
+                    if(jsonReportItems.get(i).getMonthYear().equals("COMM") || jsonReportItems.get(i).getMonthYear().equals("ALPHA") || jsonReportItems.get(i).getMonthYear().equals("Clip")){
                         barDataSet1.setColor(Color.RED);
                     }
-                    else if (jsonReportItems.get(i).getMonthYear().equals("CPSC") || jsonReportItems.get(i).getMonthYear().equals("BANE")){
+                    else if (jsonReportItems.get(i).getMonthYear().equals("CPSC") || jsonReportItems.get(i).getMonthYear().equals("BANE") || jsonReportItems.get(i).getMonthYear().equals("Envelope")){
                         barDataSet1.setColor(Color.GREEN);
                     }
-                    else if (jsonReportItems.get(i).getMonthYear().equals("ENGL") || jsonReportItems.get(i).getMonthYear().equals("CHEP")){
+                    else if (jsonReportItems.get(i).getMonthYear().equals("ENGL") || jsonReportItems.get(i).getMonthYear().equals("CHEP") || jsonReportItems.get(i).getMonthYear().equals("Eraser")){
                         barDataSet1.setColor(Color.BLUE);
                     }
-                    else if (jsonReportItems.get(i).getMonthYear().equals("REGR")){
+                    else if (jsonReportItems.get(i).getMonthYear().equals("REGR") || jsonReportItems.get(i).getMonthYear().equals("OMEGA") || jsonReportItems.get(i).getMonthYear().equals("Exercise")){
                         barDataSet1.setColor(Color.MAGENTA);
                     }
-                    else if (jsonReportItems.get(i).getMonthYear().equals("ZOOL")){
+                    else if (jsonReportItems.get(i).getMonthYear().equals("ZOOL") || jsonReportItems.get(i).getMonthYear().equals("File")){
                         barDataSet1.setColor(Color.YELLOW);
+                    }
+                    else if (jsonReportItems.get(i).getMonthYear().equals("Pen") || jsonReportItems.get(i).getMonthYear().equals("Ruler")){
+                        barDataSet1.setColor(Color.BLACK);
+                    }
+                    else if (jsonReportItems.get(i).getMonthYear().equals("Puncher") || jsonReportItems.get(i).getMonthYear().equals("Scissors")){
+                        barDataSet1.setColor(Color.CYAN);
+                    }
+                    else if (jsonReportItems.get(i).getMonthYear().equals("Pad") || jsonReportItems.get(i).getMonthYear().equals("Tape")){
+                        barDataSet1.setColor(Color.DKGRAY);
+                    }
+                    else if (jsonReportItems.get(i).getMonthYear().equals("Paper") || jsonReportItems.get(i).getMonthYear().equals("Sharpener")){
+                        barDataSet1.setColor(Color.WHITE);
+                    }
+                    else if (jsonReportItems.get(i).getMonthYear().equals("Shorthand") || jsonReportItems.get(i).getMonthYear().equals("Tacks")){
+                        barDataSet1.setColor(Color.rgb(0,23,32));
+                    }
+                    else if (jsonReportItems.get(i).getMonthYear().equals("Stapler") || jsonReportItems.get(i).getMonthYear().equals("Transparency")){
+                        barDataSet1.setColor(Color.GRAY);
                     }
                     else{
                         barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
