@@ -40,4 +40,7 @@ public interface RequisitionAPI {
     @GET("/requisitionAPI.svc/getRequisition/null/{ReqID}/null/null")
     void getRequisitionByReqID(@Path("ReqID") int reqID, Callback<List<JSONRequisition>> requisitionList);
 
+    @GET("/requisitionAPI.svc/setReqPriority/{ReqID}/{PriorityID}/{Remark}")
+    void setReqPriority(@Path("ReqID") int reqID, @Path("PriorityID") int priID, @Path("Remark") String remark, Callback<Boolean> issetPriority);
+
 }

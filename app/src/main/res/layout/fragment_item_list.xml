@@ -1,4 +1,4 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
@@ -10,22 +10,25 @@
 
     <SearchView
         android:id="@+id/searchItem"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:queryHint="@string/searchHintItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/item_recycler_view"
+        android:layout_below="@+id/searchItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:src="@android:drawable/ic_menu_agenda" />
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fab"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="end|bottom"-->
+        <!--android:layout_margin="16dp"-->
+        <!--android:src="@android:drawable/ic_menu_agenda" />-->
 
-</LinearLayout>
+</RelativeLayout>

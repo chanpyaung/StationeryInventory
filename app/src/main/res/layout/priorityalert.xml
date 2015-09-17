@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_margin="15dp"
+        android:text="Set Priority and Remark"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:gravity="center" />
+
+    <Switch
+        android:layout_margin="15dp"
+        android:id="@+id/mySwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Priority"
+        android:layout_below="@+id/textView1"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <EditText
+        android:hint="Remark"
+        android:layout_margin="15dp"
+        android:layout_below="@+id/mySwitch"
+        android:id="@+id/myRemark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minLines="2">
+
+        <requestFocus />
+
+    </EditText>
+
+</RelativeLayout>

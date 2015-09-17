@@ -142,7 +142,12 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
             else if(getArguments().getInt("StatusID")==6) {
                 status.setText("Cancelled");
             }
-
+            if(getArguments().getString("Priority") != null) {
+                priority.setText(getArguments().getString("Priority"));
+            }
+            else{
+                priority.setText("Low");
+            }
 
                 if(Setup.user.getRoleID().equals("DH") || Setup.user.getRoleID().equals("DD")){
                     if(getArguments().getString("APPROVAL").equals("ENABLED") && status.getText().equals("Pending")){

@@ -219,14 +219,14 @@ public class MainActivity extends AppCompatActivity {
                                 Log.i("Status Size", String.valueOf(jsonStatuses.size()));
                                 RequisitionListAdapter.mStatus = jsonStatuses;
                                 //if user is StoreClerk; load all requisition
-                                if(Setup.user.getRoleID().equals("SC")){
+                                if(Setup.user.getRoleID().equals("SC") || Setup.user.getRoleID().equals("SS") || Setup.user.getRoleID().equals("SM")){
                                     reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
                                         @Override
                                         public void success(List<JSONRequisition> jsonRequisitions, Response response) {
                                             if (jsonRequisitions.size() > 0) {
                                                 List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
                                                 for (JSONRequisition jsonReq : jsonRequisitions) {
-                                                    if (jsonReq.getStatusID().equals(2)) {
+                                                    if (jsonReq.getStatusID().equals(2) || jsonReq.getStatusID().equals(3) || jsonReq.getStatusID().equals(4)) {
                                                         reqList.add(jsonReq);
                                                     }
                                                 }
@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
 
                                             } else {
 
-                                                Toast.makeText(MainActivity.this, "We acknowledge you that you haven't made any requisition yet.Please made some requisition before you proceed.", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(MainActivity.this, "We acknowledge you that there's no requisition to process currently", Toast.LENGTH_SHORT).show();
 
                                             }
                                         }

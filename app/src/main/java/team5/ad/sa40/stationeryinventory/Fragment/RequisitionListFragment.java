@@ -44,7 +44,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
     private String empName = "";
     public static String[] filters = {"View All","Pending", "Approved", "Processed", "Collected", "Rejected", "Cancelled"};
     public static String[] filters2 = {"View All", "Approved", "Processed", "Collected"};
-    public static String[] priority = {"High", "Low"};
+    public static String[] priority = {"ViewAll","High", "Low"};
     private List<JSONRequisition> allRequisitions;
     private RecyclerView mRecyclerView;
     private RequisitionListAdapter adapter;
@@ -286,6 +286,15 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
                             args.putInt("ReqID", selected.getReqID());
                             args.putInt("StatusID", selected.getStatusID());
                             args.putInt("EmpID", selected.getEmpID());
+                            String p = "";
+                            if(selected.getPriorityID()==1){
+                                p = "Low";
+                                args.putString("Priority", p);
+                            }
+                            else if (selected.getPriorityID()==2) {
+                                p = "High";
+                                args.putString("Priority", p);
+                            }
                             if (Setup.user.getRoleID().equals("DD") || Setup.user.getRoleID().equals("DH")) {
                                 args.putString("APPROVAL", "ENABLED");
                             }
@@ -311,13 +320,13 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
             public void onRefresh() {
                 if(Setup.MODE == 1){
                     //user requisition page
-                    if (Setup.user.getRoleID().equals("SC")) {
+                    if (Setup.user.getRoleID().equals("SC") || Setup.user.getRoleID().equals("SS") || Setup.user.getRoleID().equals("SM")) {
                         reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
                             @Override
                             public void success(List<JSONRequisition> jsonRequisitions, Response response) {
                                 List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
                                 for (JSONRequisition jsonReq : jsonRequisitions) {
-                                    if (jsonReq.getStatusID().equals(2)) {
+                                    if (jsonReq.getStatusID().equals(2) || jsonReq.getStatusID().equals(3) || jsonReq.getStatusID().equals(4)) {
                                         reqList.add(jsonReq);
                                     }
                                 }

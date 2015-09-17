@@ -2,6 +2,7 @@ package team5.ad.sa40.stationeryinventory.Fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,7 +33,7 @@ public class RetrievalList extends android.support.v4.app.Fragment implements Ma
     private RecyclerView.LayoutManager mLayoutManager;
 
     @Bind(R.id.spinnerRet) Spinner spinnerRetStatus;
-
+    @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
     public RetrievalList() {
     }
 
@@ -85,7 +86,14 @@ public class RetrievalList extends android.support.v4.app.Fragment implements Ma
                 showAllRetrieval();
             }
         });
-
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                RetrievalList retrievalList = new RetrievalList();
+                getFragmentManager().beginTransaction().replace(R.id.frame, retrievalList).commit();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
         return view;
     }
 

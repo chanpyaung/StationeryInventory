@@ -4,13 +4,13 @@ package team5.ad.sa40.stationeryinventory.Fragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +18,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -53,9 +55,7 @@ public class RequestCartFragment extends android.support.v4.app.Fragment impleme
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     RequestCartAdapter mAdapter;
-    @Bind(R.id.searchItem)
-    SearchView search;
-    Switch switchAB;
+    @Bind(R.id.searchItem) SearchView search;
     private List<JSONRequestCart> mItems;
     private List<JSONItem> itemList;
 
@@ -73,14 +73,6 @@ public class RequestCartFragment extends android.support.v4.app.Fragment impleme
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         getActivity().setTitle("Request Cart");
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         new AlertDialog.Builder(getActivity())
                 .setTitle("Information")
                 .setMessage("Please swipe left the item to delete from request cart!")
@@ -192,16 +184,50 @@ public class RequestCartFragment extends android.support.v4.app.Fragment impleme
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+        final RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
         if(id == R.id.action_request_done){
-            //to load request cart list inside here
+            //alert for priority and remark
+            LayoutInflater li = LayoutInflater.from(getActivity().getBaseContext());
+            final View priortyAlert = li.inflate(R.layout.priorityalert, null);
+            // set prompts.xml to alertdialog builder
+            final EditText myRemark = (EditText) priortyAlert.findViewById(R.id.myRemark);
+            final Switch mySwitch = (Switch) priortyAlert.findViewById(R.id.mySwitch);
 
-            final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-            final RequestCartAPI rqAPI = restAdapter.create(RequestCartAPI.class);
+            myRemark.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    Setup.strRemark = s.toString();
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+            mySwitch.setChecked(false);
+            mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        Setup.priorityID = 2;
+                    } else {
+                        Setup.priorityID = 1;
+                    }
+                }
+            });
+            //to load request cart list inside here
             rqAPI.getItemsbyEmpID(Setup.user.getEmpID(), new Callback<List<JSONRequestCart>>() {
                 @Override
                 public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
                     List<JsonObject> myRequest = new ArrayList<JsonObject>();
-                    for(JSONRequestCart jitem : jsonRequestCarts){
+                    for (JSONRequestCart jitem : jsonRequestCarts) {
                         JsonObject myItem = new JsonObject();
                         myItem.addProperty("EmpID", Setup.user.getEmpID());
                         myItem.addProperty("ItemID", jitem.getItemID());
@@ -211,57 +237,81 @@ public class RequestCartFragment extends android.support.v4.app.Fragment impleme
                     rqAPI.submit(myRequest, new Callback<Integer>() {
                         @Override
                         public void success(Integer integer, Response response) {
+                            Setup.reqID = integer;
                             new AlertDialog.Builder(getActivity())
-                                    .setTitle("Request Successful")
-                                    .setMessage("Your request have been successfuly submitted.")
                                     .setCancelable(false)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Log.i("User", Setup.user.getEmpID().toString());
-                                            final RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
-                                            reqAPI.getRequisition(Setup.user.getEmpID(), new Callback<List<JSONRequisition>>() {
-                                                @Override
-                                                public void success(List<JSONRequisition> jsonRequisitions, Response response) {
-                                                    reqAPI.getStatus(new Callback<List<JSONStatus>>() {
+                                    .setView(priortyAlert)
+                                    .setPositiveButton("OK",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(final DialogInterface dialog, int id) {
+                                                    // get user input and set it to result
+                                                    // edit text
+                                                    //call requisition api to set priority and remark
+                                                    RequisitionAPI requisitionAPI = restAdapter.create(RequisitionAPI.class);
+                                                    requisitionAPI.setReqPriority(Setup.reqID, Setup.priorityID, Setup.strRemark, new Callback<Boolean>() {
                                                         @Override
-                                                        public void success(List<JSONStatus> jsonStatuses, Response response) {
-                                                            RequisitionListAdapter.mStatus = jsonStatuses;
-                                                            Log.i("Status Success", response.getUrl() + " " + String.valueOf(response.getStatus()));
+                                                        public void success(Boolean aBoolean, Response response) {
+                                                            new AlertDialog.Builder(getActivity())
+                                                                    .setTitle("Request Successful")
+                                                                    .setMessage("Your request have been successfuly submitted.")
+                                                                    .setCancelable(false)
+                                                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(DialogInterface dialog, int which) {
+                                                                            Log.i("User", Setup.user.getEmpID().toString());
+                                                                            final RequisitionAPI reqAPI = restAdapter.create(RequisitionAPI.class);
+                                                                            reqAPI.getRequisition(Setup.user.getEmpID(), new Callback<List<JSONRequisition>>() {
+                                                                                @Override
+                                                                                public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                                                                                    reqAPI.getStatus(new Callback<List<JSONStatus>>() {
+                                                                                        @Override
+                                                                                        public void success(List<JSONStatus> jsonStatuses, Response response) {
+                                                                                            RequisitionListAdapter.mStatus = jsonStatuses;
+                                                                                            Log.i("Status Success", response.getUrl() + " " + String.valueOf(response.getStatus()));
+                                                                                        }
+
+                                                                                        @Override
+                                                                                        public void failure(RetrofitError error) {
+                                                                                            Log.i("Status Failed", error.toString() + " " + error.getUrl());
+                                                                                        }
+                                                                                    });
+                                                                                    Log.i("URL", response.getUrl());
+                                                                                    Log.i("STATUS", String.valueOf(response.getStatus()));
+                                                                                    Log.i("REASON", response.getReason());
+                                                                                    Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
+                                                                                    RequisitionListAdapter.mRequisitions = jsonRequisitions;
+                                                                                    Setup.allRequisition = jsonRequisitions;
+                                                                                    RequisitionListFragment rqListFrag = new RequisitionListFragment();
+                                                                                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                                                                    fragmentTransaction.replace(R.id.frame, rqListFrag).addToBackStack("REQUEST_CART").commit();
+                                                                                }
+
+                                                                                @Override
+                                                                                public void failure(RetrofitError error) {
+                                                                                    Log.i("GetRequisitionFail", error.toString() + " " + error.getUrl());
+                                                                                }
+                                                                            });
+
+                                                                        }
+                                                                    })
+                                                                    .setIcon(android.R.drawable.ic_dialog_info)
+                                                                    .show();
                                                         }
 
                                                         @Override
                                                         public void failure(RetrofitError error) {
-                                                            Log.i("Status Failed", error.toString() + " " + error.getUrl());
+                                                            Log.i("Error in setPrioriyt", error.getUrl()+error.toString());
                                                         }
                                                     });
-                                                    Log.i("URL", response.getUrl());
-                                                    Log.i("STATUS", String.valueOf(response.getStatus()));
-                                                    Log.i("REASON", response.getReason());
-                                                    Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
-                                                    RequisitionListAdapter.mRequisitions = jsonRequisitions;
-                                                    Setup.allRequisition = jsonRequisitions;
-                                                    RequisitionListFragment rqListFrag = new RequisitionListFragment();
-                                                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                                                    fragmentTransaction.replace(R.id.frame, rqListFrag).addToBackStack("REQUEST_CART").commit();
                                                 }
-
-                                                @Override
-                                                public void failure(RetrofitError error) {
-                                                    Log.i("GetRequisitionFail", error.toString()+ " " + error.getUrl());
-                                                }
-                                            });
-
-                                        }
-                                    })
-                                    .setIcon(android.R.drawable.ic_dialog_info)
-                                    .show();
+                                            }).show();
+                            //
                             Log.i("Success", String.valueOf(integer));
                         }
 
                         @Override
                         public void failure(RetrofitError error) {
-                            Log.i("fail submit", error.toString()+ " " + error.getUrl());
+                            Log.i("fail submit", error.toString() + " " + error.getUrl());
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Failed to Submit Requisition")
                                     .setMessage("Sorry Requisition cannot made for the moment! Please try again later.")
@@ -282,6 +332,7 @@ public class RequestCartFragment extends android.support.v4.app.Fragment impleme
                     Log.i("Failed calling rqCart", error.toString());
                 }
             });
+
 
         }
         return super.onOptionsItemSelected(item);
