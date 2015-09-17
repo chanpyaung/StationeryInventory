@@ -133,15 +133,22 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                         public void success(List<JSONRequestCart> jsonRequestCarts, Response response) {
                             JsonElement jsonElement = reqItem;
                             int qty = jsonElement.getAsJsonObject().get("Qty").getAsInt();
+                            Log.e("qty string", String.valueOf(qty));
                             String ItemID = jsonElement.getAsJsonObject().get("ItemID").getAsString();
+                            Log.e("Item ID", ItemID);
                             System.out.println(jsonElement.getAsJsonObject().get("ItemID").getAsString() + ItemID);
 
                             if (jsonRequestCarts.size() > 0) {
                                 Setup.allRequestItems = jsonRequestCarts;
-                                for (JSONRequestCart jCart : jsonRequestCarts) {
+                                Log.e("jsonRequest", String.valueOf(jsonRequestCarts.size()));
+                                String flag = "false";
+                                for (int i = 0; i < jsonRequestCarts.size(); i++) {
+                                    JSONRequestCart jCart = jsonRequestCarts.get(i);
                                         if (itemID.equals(jCart.getItemID())) {
+                                           flag = "true";
                                             System.out.println("We are the same " + jCart.getItemID() + " " + ItemID);
                                             System.out.println("JSON new" + jsonElement.getAsJsonObject());
+                                            Log.e("jsonRequest", String.valueOf(jsonRequestCarts.size()));
                                             qty += jCart.getQty();
                                             reqItem.addProperty("Qty", qty);
                                             rqCartAPI.updatetoCart(reqItem, new Callback<Boolean>() {
@@ -156,38 +163,43 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                                                 }
                                             });
                                             break;
+
                                         }//end of if statement which item equal others inside cart
                                         //item not equal any item inside request cart; so add new item
                                         else {
-                                            reqItem.addProperty("EmpID", empID);
-                                            reqItem.addProperty("ItemID", itemID);
-                                            reqItem.addProperty("Qty", qty);
-                                            rqCartAPI.addtoCart(reqItem, new Callback<Boolean>() {
-                                            @Override
-                                            public void success(Boolean aBoolean, Response response) {
-                                                Toast.makeText(itemView.getContext(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
-                                            }
-                                            @Override
-                                            public void failure(RetrofitError error) {
-                                                Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                                            }
-                                        });// end of add to cart method
+                                            // end of add to cart method
                                      }//end of else statement which is item not equal inside cart
+
                                 } //end of forloop
+                                if(flag.equals("false")){
+                                    reqItem.addProperty("EmpID", empID);
+                                    reqItem.addProperty("ItemID", itemID);
+                                    reqItem.addProperty("Qty", qty);
+                                    rqCartAPI.addtoCart(reqItem, new Callback<Boolean>() {
+                                        @Override
+                                        public void success(Boolean aBoolean, Response response) {
+                                            Toast.makeText(itemView.getContext(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
+                                        }
+                                        @Override
+                                        public void failure(RetrofitError error) {
+                                            Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
                             }//end of checking return jsonarray size
                                     //Log.i("Success", String.valueOf(Setup.allRequestItems.size()));
-                                    else {
-                                rqCartAPI.addtoCart(reqItem, new Callback<Boolean>() {
-                                    @Override
-                                    public void success(Boolean aBoolean, Response response) {
-                                        Toast.makeText(itemView.getContext(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
-                                    }
-                                    @Override
-                                    public void failure(RetrofitError error) {
-                                        Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
+//                                    else {
+//                                rqCartAPI.addtoCart(reqItem, new Callback<Boolean>() {
+//                                    @Override
+//                                    public void success(Boolean aBoolean, Response response) {
+//                                        Toast.makeText(itemView.getContext(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                    @Override
+//                                    public void failure(RetrofitError error) {
+//                                        Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+//                                    }
+//                                });
+//                            }
                         }
                         @Override
                         public void failure(RetrofitError error) {
