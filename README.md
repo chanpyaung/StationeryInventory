@@ -6,39 +6,39 @@ An android apps for Stationery Inventory Store Management System which is a grou
 
 #Overview
 Users of this apps can do
-<li>
-<ul>View Catalog</ul>
-<ul>Request Stationery Item</ul>
-<ul>View Requisition History</ul>
-<ul>High level users can (means department head in system) approve or reject requisitions of his department</ul>
-<ul>Maintain Department Info</ul>
-<ul>Assign Employee</ul>
-<ul>View Store Inventory</ul>
-<ul>Maintain Inventory Adjustment</ul>
-<ul>View Analytics Report</ul>
-</li>
+<ul>
+<li>View Catalog</li>
+<li>Request Stationery Item</li>
+<li>View Requisition History</li>
+<li>High level users can (means department head in system) approve or reject requisitions of his department</li>
+<li>Maintain Department Info</li>
+<li>Assign Employee</li>
+<li>View Store Inventory</li>
+<li>Maintain Inventory Adjustment</li>
+<li>View Analytics Report</li>
+</ul>
 
 #Features
-<li>
-<ol>Scan Barcode</ol>
-<ol>Signature Pad</ol>
-<ol>View Analytics BarChart</ol>
-</li>
+<ol>
+<li>Scan Barcode</li>
+<li>Signature Pad</li>
+<li>View Analytics BarChart</li>
+</ol>
 
 #Common Features
-<li>
-<ol>Card View and Recycler View</ol>
-<ol>Floating Action Button</ol>
-<ol>Pull to Refresh</ol>
-<ol>Swipable</ol>
-</li>
+<ol>
+<li>Card View and Recycler View</li>
+<li>Floating Action Button</li>
+<li>Pull to Refresh</li>
+<li>Swipable</li>
+</ol>
 
 #Pre-Installation
 This application need its own Back-End Service.
 Currently we are using our team' ASP.NET RESTFul Service & you can find it at <a href="https://github.com/a0134741/LogicUniversity_StationaryInventory">Stationery Inventory System Web</a>
-<li>
-<ul>Change <code>base_url</code> inside <code>Setup.java</code> according to your domain or ip address</ul>
-</li>
+<ul>
+<li>Change <code>base_url</code> inside <code>Setup.java</code> according to your domain or ip address</li>
+</ul>
 
 #Credits
 Everyone who has contributed code, libraries from which we've borrowed code.
