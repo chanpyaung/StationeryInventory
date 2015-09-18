@@ -238,92 +238,22 @@ public class NotificationFragment extends android.support.v4.app.Fragment implem
     }
 
     public void goToReqList(){
-        if(Setup.MODE == 1){
-            //user requisition page
-            if (Setup.user.getRoleID().equals("SC")) {
-                reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
-                    @Override
-                    public void success(List<JSONRequisition> jsonRequisitions, Response response) {
-                        List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
-                        for (JSONRequisition jsonReq : jsonRequisitions) {
-                            if (jsonReq.getStatusID().equals(2)) {
-                                reqList.add(jsonReq);
-                            }
-                        }
-                        Log.i("URL", response.getUrl());
-                        Log.i("STATUS", String.valueOf(response.getStatus()));
-                        Log.i("REASON", response.getReason());
-                        Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
-                        RequisitionListAdapter.mRequisitions = reqList;
-                        Setup.allRequisition = reqList;
-                        RequisitionListFragment reqListFrag = new RequisitionListFragment();
-                        FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
-                        fragmentTran.replace(R.id.frame, reqListFrag).commit();
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.i("GetRequisitionFail", error.toString());
-                    }
-                });
-            }
-            //load requisitionlist by EmpID
-            else {
-                reqAPI.getRequisition(Setup.user.getEmpID(), new Callback<List<JSONRequisition>>() {
-                    @Override
-                    public void success(List<JSONRequisition> jsonRequisitions, Response response) {
-                        Log.i("URL", response.getUrl());
-                        Log.i("STATUS", String.valueOf(response.getStatus()));
-                        Log.i("REASON", response.getReason());
-                        Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
-                        for(JSONRequisition jr : jsonRequisitions){
-                            if(jr.getStatusID().equals(6)){
-                                jsonRequisitions.remove(jr);
-                            }
-                        }
-                        RequisitionListAdapter.mRequisitions = jsonRequisitions;
-                        Setup.allRequisition = jsonRequisitions;
-                        RequisitionListAdapter.mRequisitions = Setup.allRequisition;
-                        RequisitionListFragment reqListFrag = new RequisitionListFragment();
-                        FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
-                        fragmentTran.replace(R.id.frame, reqListFrag).commit();
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.i("GetRequisitionFail", error.toString());
-                    }
-                });
-            }
-        }
-        else if (Setup.MODE == 2){
-            //approval
+        if (Setup.user.getRoleID().equals("SC")) {
             reqAPI.getRequisitionFromSC(new Callback<List<JSONRequisition>>() {
                 @Override
                 public void success(List<JSONRequisition> jsonRequisitions, Response response) {
-
+                    List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
+                    for (JSONRequisition jsonReq : jsonRequisitions) {
+                        if (jsonReq.getStatusID().equals(2)) {
+                            reqList.add(jsonReq);
+                        }
+                    }
                     Log.i("URL", response.getUrl());
                     Log.i("STATUS", String.valueOf(response.getStatus()));
                     Log.i("REASON", response.getReason());
                     Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
-                    List<JSONRequisition> reqList = new ArrayList<JSONRequisition>();
-                    //inside all requisition filter requisition by Department & PENDING Status
-                    for(JSONRequisition jsonReq : jsonRequisitions){
-                        if(jsonReq.getDeptID()!=null) {
-                            if (jsonReq.getDeptID().toString().equals(Setup.user.getDeptID().toString())) {
-                                Log.i("Here what", String.valueOf(jsonReq.getReqID()));
-                                if (jsonReq.getStatusID().equals(1) || jsonReq.getStatusID().equals(2) || jsonReq.getStatusID().equals(5)) {
-                                    reqList.add(jsonReq);
-                                    Log.i("what here", String.valueOf(jsonReq.getReqID()));
-                                }
-
-                            }
-                        }
-                    }
-                    Log.i("SIZE OFFFFF reqList", String.valueOf(reqList.size()));
                     RequisitionListAdapter.mRequisitions = reqList;
                     Setup.allRequisition = reqList;
-                    //RequisitionListAdapter.mRequisitions = Setup.allRequisition;
                     RequisitionListFragment reqListFrag = new RequisitionListFragment();
                     FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
                     fragmentTran.replace(R.id.frame, reqListFrag).commit();
@@ -331,7 +261,35 @@ public class NotificationFragment extends android.support.v4.app.Fragment implem
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.i("GetRequisitionFail", error.toString()+ " " + error.getUrl());
+                    Log.i("GetRequisitionFail", error.toString());
+                }
+            });
+        }
+        //load requisitionlist by EmpID
+        else {
+            reqAPI.getRequisition(Setup.user.getEmpID(), new Callback<List<JSONRequisition>>() {
+                @Override
+                public void success(List<JSONRequisition> jsonRequisitions, Response response) {
+                    Log.i("URL", response.getUrl());
+                    Log.i("STATUS", String.valueOf(response.getStatus()));
+                    Log.i("REASON", response.getReason());
+                    Log.i("Size of requisition", String.valueOf(jsonRequisitions.size()));
+                    for (JSONRequisition jr : jsonRequisitions) {
+                        if (jr.getStatusID().equals(6)) {
+                            jsonRequisitions.remove(jr);
+                        }
+                    }
+                    RequisitionListAdapter.mRequisitions = jsonRequisitions;
+                    Setup.allRequisition = jsonRequisitions;
+                    RequisitionListAdapter.mRequisitions = Setup.allRequisition;
+                    RequisitionListFragment reqListFrag = new RequisitionListFragment();
+                    FragmentTransaction fragmentTran = getFragmentManager().beginTransaction();
+                    fragmentTran.replace(R.id.frame, reqListFrag).commit();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.i("GetRequisitionFail", error.toString());
                 }
             });
         }

@@ -43,6 +43,7 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
     public JSONItem item;
     private String itemID = "";
     public List<JSONItemPrice> itemPrices;
+    private List<JSONSupplier> supplierList;
     private HashMap<String,String> supplierNum = new HashMap<String,String>();
     public String[] categories;
     private List<TextView> ItemPriceFields;
@@ -118,55 +119,73 @@ public class InventoryDetails extends android.support.v4.app.Fragment {
             itemStatusField.setTextColor(getResources().getColor(R.color.PrimaryInvertedColor));
         }
 
-        //get price & supplier info
+        //populate supplier list
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-        InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
-        invAPI.getItemPrice(itemID, new Callback<List<JSONItemPrice>>() {
+        SupplierAPI supAPI = restAdapter.create(SupplierAPI.class);
+        supplierList = new ArrayList<JSONSupplier>();
+        supAPI.getSupplierList(new Callback<List<JSONSupplier>>() {
             @Override
-            public void success(List<JSONItemPrice> jsonItems, Response response) {
-                Log.i("Response: ", response.getBody().toString());
-                System.out.println("Response Status " + response.getStatus());
-                if (jsonItems.size() > 0) {
-                    Log.i("Result :", jsonItems.toString());
-                    Log.i("First item: ", jsonItems.get(0).getItemID().toString());
-                    System.out.println("SIZE:::::" + InvListAdapter.mJSONItems.size());
-                }
-                itemPrices = jsonItems;
-
-                //populate price info
-                for(int i=0; i<itemPrices.size() && i<3; i++) {
-                    if(itemPrices.get(i) != null) {
-                        ItemPriceFields.get(i).setText(formatPrice(Double.parseDouble(String.valueOf(itemPrices.get(i).getPrice()))));
-                        SupplierFields.get(i).setText(itemPrices.get(i).getSupplierID());
+            public void success(List<JSONSupplier> jsonItems, Response response) {
+                if (jsonItems != null) {
+                    Log.i("Result :", jsonItems.get(0).toString());
+                    Log.i("supplier detail: ", jsonItems.get(0).getSupplierID().toString());
+                    Log.i("Response: ", response.getBody().toString());
+                    System.out.println("Response Status " + response.getStatus());
+                    for (JSONSupplier s : jsonItems) {
+                        if (s.getRank() < 4) {
+                            supplierList.add(s);
+                        }
                     }
-                    else {
-                        ItemPriceFields.get(i).setText("$0.00");
-                        SupplierFields.get(i).setText("");
+
+                    Log.i("jsonSuppliers: ", String.valueOf(jsonItems.size()));
+                    Log.i("supplierList: ", String.valueOf(supplierList.size()));
+                    //populate supplier info
+                    for(int i=0; i<SupplierFields.size(); i++) {
+                        SupplierFields.get(i).setText(supplierList.get(i).getSupplierID());
+                        supplierNum.put(supplierList.get(i).getSupplierID(), String.valueOf(supplierList.get(i).getPhone()));
                     }
-                }
 
-                //populate supplier phone no.
-                RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
-                SupplierAPI supAPI = restAdapter.create(SupplierAPI.class);
+                    //get price & supplier info
+                    RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                    InventoryAPI invAPI = restAdapter.create(InventoryAPI.class);
+                    invAPI.getItemPrice(itemID, new Callback<List<JSONItemPrice>>() {
+                                @Override
+                                public void success(List<JSONItemPrice> jsonItems, Response response) {
+                                    Log.i("Response: ", response.getBody().toString());
+                                    System.out.println("Response Status " + response.getStatus());
+                                    if (jsonItems.size() > 0) {
+                                        Log.i("Result :", jsonItems.toString());
+                                        Log.i("First item: ", jsonItems.get(0).getItemID().toString());
+                                        System.out.println("SIZE:::::" + InvListAdapter.mJSONItems.size());
+                                    }
+                                    itemPrices = jsonItems;
+                                    Log.i("itemPrices: ", String.valueOf(itemPrices.size()));
 
-                for(int j=0;j<itemPrices.size();j++) {
-                    supAPI.getSupplierDetails(itemPrices.get(j).getSupplierID(), new Callback<JSONSupplier>() {
-                        @Override
-                        public void success(JSONSupplier jsonItem, Response response) {
-                            if(jsonItem != null) {
-                                Log.i("Result :", jsonItem.toString());
-                                Log.i("supplier detail: ", jsonItem.getSupplierID().toString());
-                                Log.i("Response: ", response.getBody().toString());
-                                System.out.println("Response Status " + response.getStatus());
+                                    //populate price info
+                                    for (int i = 0; i < itemPrices.size(); i++) {
+                                        for (JSONSupplier s : supplierList) {
+                                            Log.i("item's supplier ID: ", itemPrices.get(i).getSupplierID());
+                                            Log.i("Suplist supplierID: ", s.getSupplierID());
+                                            if (itemPrices.get(i).getSupplierID().equals(s.getSupplierID())) {
+                                                Log.i("Setinfo", String.valueOf(itemPrices.get(i).getPrice()));
+
+                                                //populate price info
+                                                if (itemPrices.get(i) != null) {
+                                                    ItemPriceFields.get(i).setText(formatPrice(Double.parseDouble(String.valueOf(itemPrices.get(i).getPrice()))));
+                                                } else {
+                                                    ItemPriceFields.get(i).setText("$0.00");
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+
+                                }
                             }
-                            supplierNum.put(jsonItem.getSupplierID(), String.valueOf(jsonItem.getPhone()));
-                        }
-
-                        @Override
-                        public void failure(RetrofitError error) {
-                            Log.i("Error: ", error.toString());
-                        }
-                    });
+                    );
                 }
             }
 

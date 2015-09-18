@@ -349,7 +349,6 @@
 
     <TextView
         android:id="@+id/inv_detail_supplier1"
-        android:text="BANES"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -362,7 +361,6 @@
 
     <TextView
         android:id="@+id/inv_detail_supplier2"
-        android:text="CHEP"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -375,7 +373,6 @@
 
     <TextView
         android:id="@+id/inv_detail_supplier3"
-        android:text="ALPHA"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -436,7 +433,7 @@
 
     <TextView
         android:id="@+id/inv_detail_price1"
-        android:text="$1.00"
+        android:text="$0.00"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -451,7 +448,7 @@
 
     <TextView
         android:id="@+id/inv_detail_price2"
-        android:text="$1.00"
+        android:text="$0.00"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="100dp"
         android:layout_height="45dp"
@@ -464,7 +461,7 @@
 
     <TextView
         android:id="@+id/inv_detail_price3"
-        android:text="$1.00"
+        android:text="$0.00"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="100dp"
         android:layout_height="45dp"
