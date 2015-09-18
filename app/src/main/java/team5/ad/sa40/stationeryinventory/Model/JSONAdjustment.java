@@ -130,13 +130,13 @@ public class JSONAdjustment implements Serializable, Comparable{
     public int compareTo(Object o) {
 
         JSONAdjustment f = (JSONAdjustment) o;
-        String fadjID = f.getAdjID().substring(0,2);
-        String adjID = getAdjID().substring(0,2);
+        int fadjID = Integer.parseInt(f.getAdjID().substring(0,3));
+        int adjID = Integer.parseInt(getAdjID().substring(0,3));
 
-        if (adjID.compareTo(fadjID) < 0) {
+        if (adjID - fadjID < 0) {
             return 1;
         }
-        else if (adjID.compareTo(fadjID) > 0) {
+        else if (adjID - fadjID > 0) {
             return -1;
         }
         else {
