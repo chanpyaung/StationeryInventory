@@ -95,7 +95,7 @@ public class AnalyticsFragment extends android.support.v4.app.Fragment implement
 
                         BarEntry vle1 = new BarEntry(myreportItemlist.get(j).getQty(), j);
                         valueSet1.add(vle1);
-                    }
+                    }//
                     BarDataSet barDataSet1 = new BarDataSet(valueSet1, jsonReportItems.get(i).getMonthYear());
                     if(jsonReportItems.get(i).getMonthYear().equals("COMM") || jsonReportItems.get(i).getMonthYear().equals("ALPHA") || jsonReportItems.get(i).getMonthYear().equals("Clip")){
                         barDataSet1.setColor(Color.RED);
