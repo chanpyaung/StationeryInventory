@@ -187,19 +187,19 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                                     });
                                 }
                             }//end of checking return jsonarray size
-                                    //Log.i("Success", String.valueOf(Setup.allRequestItems.size()));
-//                                    else {
-//                                rqCartAPI.addtoCart(reqItem, new Callback<Boolean>() {
-//                                    @Override
-//                                    public void success(Boolean aBoolean, Response response) {
-//                                        Toast.makeText(itemView.getContext(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                    @Override
-//                                    public void failure(RetrofitError error) {
-//                                        Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
-//                                    }
-//                                });
-//                            }
+//                                    Log.i("Success", String.valueOf(Setup.allRequestItems.size()));
+                                    else {
+                                rqCartAPI.addtoCart(reqItem, new Callback<Boolean>() {
+                                    @Override
+                                    public void success(Boolean aBoolean, Response response) {
+                                        Toast.makeText(itemView.getContext(), "Your item is added to Cart.", Toast.LENGTH_SHORT).show();
+                                    }
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        Toast.makeText(itemView.getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
                         }
                         @Override
                         public void failure(RetrofitError error) {
