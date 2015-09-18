@@ -202,7 +202,7 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
                     });
                 }
                 else {
-                    mStatus.setText(getString(R.string.error_login_failed));
+                    mStatus.setText("Oops! Unable to connect to WIFI network.");
                     mUseridView.setError("");
                     mPasswordView.setError("");
                 }
@@ -211,7 +211,7 @@ public class LoginActivity extends Activity implements AdapterView.OnClickListen
             @Override
             public void failure(RetrofitError error) {
                 Log.i("Error: ", error.toString());
-                mStatus.setText("Oops! Unable to connect to WIFI network.");
+                mStatus.setText(getString(R.string.error_login_failed));
                 mUseridView.setError("");
                 mPasswordView.setError("");
             }

@@ -461,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent i = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(i);
 
-//                        finish();
+//                          finish();
 //                        System.exit(0);
                         return true;
 
