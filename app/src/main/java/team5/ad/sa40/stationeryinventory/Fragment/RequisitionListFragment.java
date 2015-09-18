@@ -203,7 +203,7 @@ public class RequisitionListFragment extends android.support.v4.app.Fragment imp
                             args.putInt("StatusID", selected.getStatusID());
                             args.putInt("EmpID", selected.getEmpID());
                             String p = "";
-                            if(selected.getPriorityID().equals(1)){
+                            if(selected.getPriorityID().equals(1) || selected.getPriorityID().equals(null)){
                                 p = "Low";
                                 System.out.println(p +" "+selected.getPriorityID());
                                 args.putString("Priority", p);

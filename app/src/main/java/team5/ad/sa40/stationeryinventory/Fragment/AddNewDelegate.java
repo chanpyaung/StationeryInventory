@@ -254,6 +254,8 @@ public class AddNewDelegate extends android.support.v4.app.Fragment implements M
                                                                     flag = "Current";
                                                                     btnSubmit.setText("Save");
                                                                     getActivity().setTitle("Edit Delegate");
+                                                                    android.support.v4.app.Fragment frag = new DelegateList();
+                                                                    getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
                                                                 }
                                                             })
                                                             .setIcon(android.R.drawable.ic_dialog_alert)
@@ -278,7 +280,8 @@ public class AddNewDelegate extends android.support.v4.app.Fragment implements M
                                                             .setCancelable(false)
                                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                                 public void onClick(DialogInterface dialog, int which) {
-
+                                                                    android.support.v4.app.Fragment frag = new DelegateList();
+                                                                    getFragmentManager().beginTransaction().replace(R.id.frame, frag).commit();
                                                                 }
                                                             })
                                                             .setIcon(android.R.drawable.ic_dialog_alert)

@@ -4,6 +4,12 @@
     <group android:checkableBehavior="single">
 
         <item
+            android:id="@+id/catalog"
+            android:checked="false"
+            android:icon="@drawable/ic_storage_black_24dp"
+            android:title="Catalog" />
+
+        <item
             android:id="@+id/cart"
             android:checked="false"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
@@ -14,12 +20,6 @@
             android:checked="false"
             android:icon="@drawable/ic_add_black_24dp"
             android:title="Requisition"/>
-
-        <item
-            android:id="@+id/catalog"
-            android:checked="false"
-            android:icon="@drawable/ic_storage_black_24dp"
-            android:title="Catalog" />
 
         <item
             android:id="@+id/approval"
