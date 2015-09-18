@@ -57,7 +57,9 @@ public class DelegateGridAdapter extends RecyclerView.Adapter<DelegateGridAdapte
                 viewHolder.txtNoNeedLabel2.setText("");
                 viewHolder.txtNoNeedLabel3.setText(" >");
                 viewHolder.txtEmpLabel.setText("Employee Name:");
+                viewHolder.txtEmpLabel.setTextSize(15);
                 viewHolder.txtEmpName.setText(jsonEmployee.getEmpName());
+                viewHolder.txtEmpName.setTextSize(15);
                 viewHolder.txtStartLabel.setText("Start Date:");
                 viewHolder.txtStartDate.setText(Setup.parseJSONDateToString(del.getStartDate()));
                 viewHolder.txtEndLabel.setText("End Date:");
