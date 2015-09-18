@@ -93,6 +93,7 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment implemen
         else{
             txtRepLabel.setText("Received By");
         }
+        txtStatus.setText(dis.getStatus());
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
