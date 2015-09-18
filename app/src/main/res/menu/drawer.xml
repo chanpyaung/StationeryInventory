@@ -4,10 +4,10 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/catalog"
+            android:id="@+id/cart"
             android:checked="false"
-            android:icon="@drawable/ic_storage_black_24dp"
-            android:title="Catalog" />
+            android:icon="@drawable/ic_shopping_cart_black_24dp"
+            android:title="Request Cart"/>
 
         <item
             android:id="@+id/requisition"
@@ -16,10 +16,10 @@
             android:title="Requisition"/>
 
         <item
-            android:id="@+id/cart"
+            android:id="@+id/catalog"
             android:checked="false"
-            android:icon="@drawable/ic_shopping_cart_black_24dp"
-            android:title="Request Cart"/>
+            android:icon="@drawable/ic_storage_black_24dp"
+            android:title="Catalog" />
 
         <!--<item-->
             <!--android:id="@+id/retrieval"-->

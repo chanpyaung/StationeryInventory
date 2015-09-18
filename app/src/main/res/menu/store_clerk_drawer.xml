@@ -5,6 +5,12 @@
 
 
         <item
+            android:id="@+id/inventory"
+            android:checked="false"
+            android:icon="@drawable/ic_storage_black_24dp"
+            android:title="Inventory" />
+
+        <item
             android:id="@+id/requisition"
             android:checked="false"
             android:icon="@drawable/ic_add_black_24dp"
@@ -21,12 +27,6 @@
             android:checked="false"
             android:icon="@drawable/ic_swap_calls_black_24dp"
             android:title="Disbursement"/>
-
-        <item
-        android:id="@+id/inventory"
-        android:checked="false"
-        android:icon="@drawable/ic_storage_black_24dp"
-        android:title="Inventory" />
 
         <item
             android:id="@+id/reportItem"

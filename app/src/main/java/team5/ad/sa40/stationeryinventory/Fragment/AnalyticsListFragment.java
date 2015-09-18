@@ -55,6 +55,7 @@ public class AnalyticsListFragment extends android.support.v4.app.Fragment imple
             public void onItemClick(View view, int position) {
                 Bundle args = new Bundle();
                 args.putInt("ReportID", mAdapter.mReports.get(position).getReportID());
+                args.putString("ReportName", mAdapter.mReports.get(position).getTitle());
                 AnalyticsFragment aFrag = new AnalyticsFragment();
                 aFrag.setArguments(args);
                 getFragmentManager().beginTransaction().replace(R.id.frame, aFrag).addToBackStack("ReportList").commit();

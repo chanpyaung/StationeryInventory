@@ -1,5 +1,6 @@
 package team5.ad.sa40.stationeryinventory.Fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -457,7 +458,11 @@ public class MainActivity extends AppCompatActivity {
                         editor.remove("password");
                         editor.commit();
                         finish();
-                        System.exit(0);
+                        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(i);
+
+//                        finish();
+//                        System.exit(0);
                         return true;
 
                     case R.id.analytics:

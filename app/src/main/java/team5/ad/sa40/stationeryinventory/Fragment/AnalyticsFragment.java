@@ -42,6 +42,7 @@ public class AnalyticsFragment extends android.support.v4.app.Fragment implement
     ArrayList<Integer> rpIDList;
     BarData data;
     int reportID;
+    String reportName;
 
     public AnalyticsFragment() {
         // Required empty public constructor
@@ -57,6 +58,7 @@ public class AnalyticsFragment extends android.support.v4.app.Fragment implement
         final BarChart chart = (BarChart) view.findViewById(R.id.barChart);
         if(getArguments()!=null){
             reportID = getArguments().getInt("ReportID");
+            reportName = getArguments().getString("ReportName");
         }
         RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
         final ReportAPI rpAPI = restAdapter.create(ReportAPI.class);

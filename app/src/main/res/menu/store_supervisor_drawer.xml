@@ -3,6 +3,11 @@
 
     <group android:checkableBehavior="single">
 
+        <item
+            android:id="@+id/inventory"
+            android:checked="false"
+            android:icon="@drawable/ic_storage_black_24dp"
+            android:title="Inventory" />
 
         <item
             android:id="@+id/requisition"
@@ -22,11 +27,6 @@
             android:icon="@drawable/ic_swap_calls_black_24dp"
             android:title="Disbursement"/>
 
-        <item
-            android:id="@+id/inventory"
-            android:checked="false"
-            android:icon="@drawable/ic_storage_black_24dp"
-            android:title="Inventory" />
 
         <item
             android:id="@+id/reportItem"

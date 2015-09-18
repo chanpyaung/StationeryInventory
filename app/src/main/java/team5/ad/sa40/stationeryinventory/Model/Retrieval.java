@@ -230,14 +230,16 @@ public class Retrieval implements Comparable {
         String retID1 = String.valueOf(getRetID());
         String retID2 = String.valueOf(f.getRetID());
 
-        if (retID1.compareTo(retID2) > 0) {
+        if (retID1.compareTo(retID2) < 0) {
             return 1;
         }
-        else if (retID1.compareTo(retID2) < 0) {
+        else if (retID1.compareTo(retID2) > 0) {
             return -1;
         }
         else {
             return 0;
         }
     }
+
+
 }
