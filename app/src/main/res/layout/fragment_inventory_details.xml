@@ -6,7 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="team5.ad.sa40.stationeryinventory.Fragment.InventoryDetails"
-    android:id="@+id/inv_detail">
+    android:id="@+id/inv_detail"
+    android:background="#364150">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -177,7 +178,7 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="0dp"
         android:text="Available Qty:"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="85dp"
