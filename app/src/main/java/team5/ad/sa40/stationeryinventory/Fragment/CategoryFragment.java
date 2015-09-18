@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,6 @@ public class CategoryFragment extends android.support.v4.app.Fragment implements
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     GridAdapter mAdapter;
-    SearchView search;
     private List<CategoryItem> mItems;
 
     public CategoryFragment() {
@@ -61,7 +59,6 @@ public class CategoryFragment extends android.support.v4.app.Fragment implements
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new GridAdapter();
         mRecyclerView.setAdapter(mAdapter);
-        search = (SearchView)view.findViewById(R.id.searchCat);
         return  view;
     }
 
@@ -109,23 +106,6 @@ public class CategoryFragment extends android.support.v4.app.Fragment implements
                     }
                 });
 
-            }
-        });
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                final List<CategoryItem> filteredModelList = filter(mItems, newText);
-                mAdapter.mItems = filteredModelList;
-                mAdapter.animateTo(filteredModelList);
-                mRecyclerView.setAdapter(mAdapter);
-                mRecyclerView.scrollToPosition(0);
-                return true;
             }
         });
     }

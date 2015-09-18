@@ -21,7 +21,7 @@
         android:layout_marginLeft="0dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp" />
+        android:layout_marginTop="20dp" />
 
     <AutoCompleteTextView android:id="@+id/userid" android:layout_width="match_parent"
         android:layout_height="45dp" android:hint="@string/username"
