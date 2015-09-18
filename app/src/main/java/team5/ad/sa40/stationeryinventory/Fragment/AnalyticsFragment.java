@@ -2,7 +2,6 @@ package team5.ad.sa40.stationeryinventory.Fragment;
 
 
 import android.app.Fragment;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;

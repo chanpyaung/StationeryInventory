@@ -22,6 +22,13 @@
             android:title="Request Cart"/>
 
         <item
+            android:id="@+id/disburse"
+            android:checked="false"
+            android:icon="@drawable/ic_swap_calls_black_24dp"
+            android:title="Disbursement"/>
+
+
+        <item
             android:id="@+id/approval"
             android:checked="false"
             android:icon="@drawable/ic_assignment_turned_in_black_24dp"
