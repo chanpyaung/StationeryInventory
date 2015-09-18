@@ -85,6 +85,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtStatus"
         android:text="status_value"
+        android:textColor="#08AE9E"
         />
     <com.google.android.gms.maps.MapView
         android:layout_marginTop="20dp"

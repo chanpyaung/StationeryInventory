@@ -4,6 +4,7 @@ package team5.ad.sa40.stationeryinventory.Fragment;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -96,6 +97,10 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment impl
         Bundle bundle = this.getArguments();
         dis = (JSONDisbursement) bundle.getSerializable("disbursement");
         Log.i("Dis id is ", String.valueOf(dis.getDisID()));
+
+        if(dis.getStatus().equals("PENDING")){
+            text_status.setTextColor(Color.RED);
+        }
 
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapview);

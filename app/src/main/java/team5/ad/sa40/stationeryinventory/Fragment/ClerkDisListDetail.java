@@ -3,6 +3,7 @@ package team5.ad.sa40.stationeryinventory.Fragment;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,6 +61,7 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment implemen
     @Bind(R.id.txtRepName) TextView txtRepName;
     @Bind(R.id.img2) ImageView rep_img;
     @Bind(R.id.txtRepLabel)TextView txtRepLabel;
+    @Bind(R.id.txtStatus) TextView txtStatus;
 
     public ClerkDisListDetail() {
         // Required empty public constructor
@@ -78,6 +80,7 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment implemen
 
         getActivity().setTitle("Disbursement Detail");
 
+
         Bundle bundle = this.getArguments();
         dis = (JSONDisbursement) bundle.getSerializable("disbursement");
         Log.i("Dis id is ", String.valueOf(dis.getDisID()));
@@ -85,9 +88,11 @@ public class ClerkDisListDetail extends android.support.v4.app.Fragment implemen
 
         if(!dis.getStatus().equals("DISBURSED")){
             setHasOptionsMenu(true);
+            txtStatus.setTextColor(Color.RED);
         }
-        txtRepLabel.setText("Received By");
-
+        else{
+            txtRepLabel.setText("Received By");
+        }
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
