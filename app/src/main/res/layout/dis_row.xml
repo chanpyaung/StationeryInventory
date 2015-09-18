@@ -42,7 +42,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Retrieved"
                 android:textStyle="bold"
                 android:id="@+id/txtStatus"
@@ -76,14 +75,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="  >"
                 android:textStyle="bold"
                 android:id="@+id/reportQty"
                 android:gravity="center_vertical"
                 android:layout_alignBottom="@+id/ret_EmpID"
                 android:layout_alignParentEnd="true"
-                android:textSize="24dp"
                 android:layout_alignTop="@+id/txtStatus" />
 
             <TextView
