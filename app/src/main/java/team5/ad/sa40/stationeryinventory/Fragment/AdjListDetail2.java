@@ -1,6 +1,7 @@
 package team5.ad.sa40.stationeryinventory.Fragment;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -86,6 +87,9 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  implements 
         {
             btnApprove.setVisibility(View.GONE);
             btnReject.setVisibility(View.GONE);
+        }
+        if(dis.getStatus().equals("PENDING")){
+            txtStatus.setTextColor(Color.RED);
         }
 
         final RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();

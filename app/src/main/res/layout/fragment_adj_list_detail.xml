@@ -110,6 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pending"
+                android:textColor="#08AE9E"
                 android:id="@+id/txtStatus"
                 android:paddingLeft="3dp" />
         </LinearLayout>
