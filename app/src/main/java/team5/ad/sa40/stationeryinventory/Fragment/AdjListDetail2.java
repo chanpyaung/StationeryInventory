@@ -155,6 +155,17 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  implements 
                                     @Override
                                     public void failure(RetrofitError error) {
                                         Log.e("approveAdjVoucher", error.toString());
+                                        new AlertDialog.Builder(getActivity())
+                                                .setTitle("Fail")
+                                                .setMessage("Cannot approve the adjustment!")
+                                                .setCancelable(false)
+                                                .setPositiveButton("TRY AGAIN", new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                    }
+                                                })
+                                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                                .show();
                                     }
                                 });
                                 dialog.dismiss();
@@ -207,6 +218,17 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  implements 
                                     @Override
                                     public void failure(RetrofitError error) {
                                         Log.e("approveAdjVoucher", error.toString());
+                                        new AlertDialog.Builder(getActivity())
+                                                .setTitle("Fail")
+                                                .setMessage("Cannot reject the adjustment!")
+                                                .setCancelable(false)
+                                                .setPositiveButton("TRY AGAIN", new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                    }
+                                                })
+                                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                                .show();
                                     }
                                 });
                                 dialog.dismiss();

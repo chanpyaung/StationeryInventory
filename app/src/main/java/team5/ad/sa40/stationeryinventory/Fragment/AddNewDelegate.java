@@ -265,6 +265,17 @@ public class AddNewDelegate extends android.support.v4.app.Fragment implements M
                                                 @Override
                                                 public void failure(RetrofitError error) {
                                                     Log.e("createDelegate", error.toString());
+                                                    new AlertDialog.Builder(getActivity())
+                                                            .setTitle("Fail")
+                                                            .setMessage("Cannot create the delegation!")
+                                                            .setCancelable(false)
+                                                            .setPositiveButton("TRY AGAIN", new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                                }
+                                                            })
+                                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                                            .show();
                                                 }
                                             });
                                         }
@@ -291,6 +302,17 @@ public class AddNewDelegate extends android.support.v4.app.Fragment implements M
                                                 @Override
                                                 public void failure(RetrofitError error) {
                                                     Log.e("editDelegate", error.toString());
+                                                    new AlertDialog.Builder(getActivity())
+                                                            .setTitle("Fail")
+                                                            .setMessage("Cannot update the delegation!")
+                                                            .setCancelable(false)
+                                                            .setPositiveButton("TRY AGAIN", new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                                }
+                                                            })
+                                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                                            .show();
                                                 }
                                             });
                                         }
