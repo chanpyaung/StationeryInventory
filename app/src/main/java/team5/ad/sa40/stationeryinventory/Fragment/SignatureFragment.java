@@ -89,7 +89,7 @@ public class SignatureFragment extends android.support.v4.app.Fragment implement
         selected_colPt = (JSONCollectionPoint) bundle.getSerializable("collection");
         RepID = bundle.getInt("RepID");
 
-        getActivity().setTitle("Disbursement List Detail");
+        getActivity().setTitle("Disbursement Detail");
 
         mSignature = new signature(SignatureFragment.this.getActivity(), null);
         mSignature.setBackgroundColor(Color.WHITE);
