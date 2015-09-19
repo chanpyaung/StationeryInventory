@@ -2,6 +2,7 @@ package team5.ad.sa40.stationeryinventory.Fragment;
 
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
@@ -78,8 +79,8 @@ public class AdjListDetail extends android.support.v4.app.Fragment implements Ma
         ButterKnife.bind(this, v);
 
 
-        if(dis.getStatus().equals("REJECT")){
-            txtStatusLabel.setText("Rejected By");
+        if(dis.getStatus().equals("PENDING") || dis.getStatus().equals("REJECT")){
+            txtStatus.setTextColor(Color.RED);
         }
 
         ((MainActivity)getActivity()).setOnBackPressedListener(this);

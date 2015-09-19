@@ -88,7 +88,7 @@ public class AdjListDetail2 extends android.support.v4.app.Fragment  implements 
             btnApprove.setVisibility(View.GONE);
             btnReject.setVisibility(View.GONE);
         }
-        if(dis.getStatus().equals("PENDING")){
+        if(dis.getStatus().equals("PENDING") || dis.getStatus().equals("REJECT")){
             txtStatus.setTextColor(Color.RED);
         }
 
