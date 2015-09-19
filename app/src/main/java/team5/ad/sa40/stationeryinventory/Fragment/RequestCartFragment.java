@@ -216,9 +216,9 @@ public class RequestCartFragment extends android.support.v4.app.Fragment impleme
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        Setup.priorityID = 2;
-                    } else {
                         Setup.priorityID = 1;
+                    } else {
+                        Setup.priorityID = 2;
                     }
                 }
             });

@@ -258,7 +258,7 @@ public class RequisitionDetailFragment extends android.support.v4.app.Fragment i
                                                 public void run() {
                                                     try {
                                                         for (int i = 0; i < 10; i++) {
-                                                            Thread.sleep(200);
+                                                            Thread.sleep(100);
                                                             p.setProgress(i);
                                                         }
                                                     } catch (InterruptedException e) {
