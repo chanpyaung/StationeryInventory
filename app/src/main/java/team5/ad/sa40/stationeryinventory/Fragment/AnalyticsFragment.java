@@ -6,8 +6,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -43,6 +47,7 @@ public class AnalyticsFragment extends android.support.v4.app.Fragment implement
     BarData data;
     int reportID;
     String reportName;
+    BarChart chart;
 
     public AnalyticsFragment() {
         // Required empty public constructor
@@ -55,7 +60,8 @@ public class AnalyticsFragment extends android.support.v4.app.Fragment implement
         inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_analytics_graph, container, false);
         getActivity().setTitle("Analytics Report");
-        final BarChart chart = (BarChart) view.findViewById(R.id.barChart);
+        setHasOptionsMenu(true);
+        chart = (BarChart) view.findViewById(R.id.barChart);
         if(getArguments()!=null){
             reportID = getArguments().getInt("ReportID");
             reportName = getArguments().getString("ReportName");
@@ -140,7 +146,7 @@ public class AnalyticsFragment extends android.support.v4.app.Fragment implement
 
                 data = new BarData(xAxis, dataSets);
                 chart.setData(data);
-                chart.setDescription("My Chart");
+                chart.setDescription(reportName);
                 chart.animateXY(2000, 2000);
                 chart.invalidate();
 
@@ -173,5 +179,21 @@ public class AnalyticsFragment extends android.support.v4.app.Fragment implement
                 Log.i("Fail getReports", error.toString());
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        this.getActivity().getMenuInflater().inflate(R.menu.analytics_save_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_save){
+            chart.saveToGallery(reportName,100);
+            Toast.makeText(getActivity(), "ReportBarChart image save successfully.", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

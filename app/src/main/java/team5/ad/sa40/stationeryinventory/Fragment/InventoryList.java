@@ -3,6 +3,7 @@ package team5.ad.sa40.stationeryinventory.Fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -52,6 +53,7 @@ public class InventoryList extends android.support.v4.app.Fragment {
     @Bind(R.id.spinnerInvCat) Spinner spinnerInvCat;
     @Bind(R.id.spinnerInvStatus) Spinner spinnerInvStatus;
     @Bind(R.id.scanBtn) Button scanBarcodeBtn;
+    @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
 
     public InventoryList() {
 
@@ -235,7 +237,38 @@ public class InventoryList extends android.support.v4.app.Fragment {
             }
         });
 
+        //pull to refresh
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                RestAdapter restAdapter2 = new RestAdapter.Builder().setEndpoint(Setup.baseurl).build();
+                InventoryAPI invAPI = restAdapter2.create(InventoryAPI.class);
+
+                invAPI.getList(new Callback<List<JSONItem>>() {
+                    @Override
+                    public void success(List<JSONItem> jsonItems, Response response) {
+                        Log.i("Result :", jsonItems.toString());
+                        Log.i("First item: ", jsonItems.get(0).getItemID().toString());
+                        Log.i("Response: ", response.getBody().toString());
+                        System.out.println("Response Status " + response.getStatus());
+                        InvListAdapter.mJSONItems = jsonItems;
+                        System.out.println("SIZE:::::" + InvListAdapter.mJSONItems.size());
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.i("Error: ", error.toString());
+                    }
+                });
+                InventoryList fragment = new InventoryList();
+                getFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+
         return view;
+
     }
 
     public void showAllInventory() {

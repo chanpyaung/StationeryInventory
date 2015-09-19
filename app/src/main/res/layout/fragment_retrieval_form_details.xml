@@ -89,9 +89,10 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ret_detail_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="fill_parent"
         android:layout_below="@+id/textView6"
-        android:layout_marginTop="3dp" />
+        android:layout_marginTop="3dp"
+        android:layout_above="@+id/ret_detail_submit" />
 
     <Button
         android:layout_width="fill_parent"

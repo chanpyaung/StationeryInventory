@@ -24,7 +24,7 @@ public class Setup {
     public static int MODE;
     public static int reqID;
     public static int priorityID;
-    public static String strRemark;
+    public static String strRemark = "NA";
 
     public static String parseDateToString(Date d) {
         String output = "";

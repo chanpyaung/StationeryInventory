@@ -1,8 +1,8 @@
 package team5.ad.sa40.stationeryinventory.Fragment;
 
 
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -64,7 +64,6 @@ public class AnalyticsListFragment extends android.support.v4.app.Fragment imple
         return view;
     }
 
-
     @Override
     public void onItemClick(View view, int position) {
 
@@ -88,4 +87,5 @@ public class AnalyticsListFragment extends android.support.v4.app.Fragment imple
             }
         });
     }
+
 }
