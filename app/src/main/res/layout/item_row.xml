@@ -61,10 +61,11 @@
                 android:layout_below="@+id/qtyLabel"
                 android:layout_toRightOf="@id/item_image"
                 android:textAlignment="center"
-                android:text="1"
+                android:hint="1"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="number"
+                android:digits="0123456789"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:layout_margin="15dp"
