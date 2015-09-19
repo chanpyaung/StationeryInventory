@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Collection Point:"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:textStyle="bold"
         android:id="@+id/textView7"
         android:layout_above="@+id/mapview"
@@ -72,6 +72,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtColPt"
         android:text="collection_point"
+        android:layout_marginBottom="10dp"
         android:layout_alignTop="@+id/textView7"
         android:layout_toEndOf="@+id/textView7" />
     <TextView
@@ -95,11 +96,12 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapview"
         android:paddingLeft="10dp"
-        android:layout_marginTop="8dp"
         android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_height="180dp"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp" />
 
     <ImageView
         android:layout_width="100dp"
@@ -107,7 +109,7 @@
         android:id="@+id/img2"
         android:layout_below="@+id/mapview"
         android:layout_alignStart="@+id/mapview"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="0dp" />
 
 
     <TextView
