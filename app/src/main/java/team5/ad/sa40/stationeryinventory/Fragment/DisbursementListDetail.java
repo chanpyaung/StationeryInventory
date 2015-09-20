@@ -100,6 +100,8 @@ public class DisbursementListDetail extends android.support.v4.app.Fragment impl
 
         if(dis.getStatus().equals("PENDING")){
             text_status.setTextColor(Color.RED);
+            signImage.setVisibility(View.GONE);
+            text_rep.setVisibility(View.GONE);
         }
 
         // Gets the MapView from the XML layout and creates it
